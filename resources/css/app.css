@@ -1,0 +1,67 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import "mfb/src/mfb.css";
+@import "toastr/build/toastr.css";
+@import "flatpickr/dist/flatpickr.min.css";
+
+
+/*
+Remove popping buttons on page load
+ */
+.btn {
+    -webkit-animation: unset!important;
+    animation:unset!important;
+}
+/*
+Center icons on FAB
+ */
+.mfb-component__button, .mfb-component__button--main, .mfb-component__button--child{
+    padding: 15px;
+}
+/*
+Disable animation on FAB
+ */
+.mfb-component__main-icon--active, .mfb-component__main-icon--resting {
+    transform: unset!important;
+}
+[data-mfb-label]:after{
+    opacity: 1!important;
+}
+.mfb-component__button, .mfb-component__button--main, .mfb-component__button--child{
+    background-color: hsla(var(--p) / var(--tw-bg-opacity))!important;
+}
+
+/*
+Used in ez multi select
+ */
+.ez-outline{
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px hsl(var(--b1)),0 0 0 4px hsla(var(--bc)/.2);
+}
+.ez-multi-select{
+    background-image: linear-gradient(
+        45deg,transparent 50%,currentColor 0),linear-gradient(
+        135deg,currentColor 50%,transparent 0);    background-position: calc(100% - 20px) calc(1px + 50%),calc(100% - 16px) calc(1px + 50%);
+    background-size: 4px 4px,4px 4px;
+    background-repeat: no-repeat;
+}
+
+
+/*
+Toast
+ */
+
+#toast-container > div{
+    opacity: 1!important;
+    border-radius: 15px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.32);
+}
+#toast-container > div:hover {
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.51);
+
+}
+.toast-close-button{
+    padding:7px!important;
+}
