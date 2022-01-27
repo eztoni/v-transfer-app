@@ -17,7 +17,8 @@ mix.js('resources/js/app.js', 'public/js')
     //Chart JS
     .js('node_modules/chart.js/dist/chart.js',
         'public/packages/chartjs/chartjs.js')
-
+    .js('resources/js/init-alpine.js',
+        'public/js/init-alpine.js')
     //Full Calendar
     .scripts('node_modules/fullcalendar/main.js',
         'public/packages/fullcalendar/calendar.js')

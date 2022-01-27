@@ -39,23 +39,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     });
 
     Route::get('/', Dashboard::class)->name('dashboard');
-    Route::get('radnici', WorkersOverview::class)->name('radnici');
 
-    Route::get('uredi-radnika/{id}', EditAddWorker::class)->name('uredi-radnika');
-    Route::get('dodaj-radnika', EditAddWorker::class)->name('dodaj-radnika');
-
-    Route::get('partneri', PartnersOverview::class)->name('partneri');
-
-    Route::get('dodaj-partnera', EditAddPartner::class)->name('dodaj-partnera');
-    Route::get('uredi-partnera/{id}', EditAddPartner::class)->name('uredi-partnera');
-
-    Route::get('poslovi/{partner}', TasksOverview::class)->name('poslovi');
-
-    Route::get('komentari/{id}', CommentsOverview::class)->name('komentari');
-
-    Route::get('statistika', Statistics::class)->name('statistika');
-
-    Route::get('prosli-poslovi', PastTasksOverview::class)->name('prosli-poslovi');
 
 });
 

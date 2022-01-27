@@ -17,7 +17,8 @@
         "rap2hpoutre/laravel-log-viewer": "^1.7",
         "rappasoft/laravel-livewire-tables": "^1.20",
         "spatie/laravel-backup": "^7.7",
-        "spatie/laravel-permission": "^5.1"
+        "spatie/laravel-permission": "^5.1",
+        "spatie/period": "^2.3"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
