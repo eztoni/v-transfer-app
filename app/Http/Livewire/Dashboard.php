@@ -7,12 +7,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Comment;
-use App\Models\Partner;
-use App\Models\PastTask;
-use App\Models\PastTaskWorker;
-use App\Models\Task;
-use App\Models\Worker;
+
 use Carbon\Carbon;
 use Debugbar;
 use Illuminate\Database\QueryException;
@@ -21,6 +16,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
 use Livewire\Component;
+use Spatie\Activitylog\Models\Activity;
 use function Symfony\Component\String\b;
 
 class Dashboard extends Component
@@ -29,9 +25,18 @@ class Dashboard extends Component
     public $selectedWorkers = [];
     public $comment;
 
+    public function testActivityLog(){
+        activity()->log('LOUG!');
+    }
+
+    public function mount()
+    {
+
+    }
 
     public function render()
     {
-        return view('livewire.dashboard');
+        $activites = Activity::all();
+        return view('livewire.dashboard', ['activites' => $activites]);
     }
 }
