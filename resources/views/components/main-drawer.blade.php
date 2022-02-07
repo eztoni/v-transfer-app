@@ -25,32 +25,7 @@
                     </x-slot>
                     Pregled
                 </x-nav-link>
-                <x-nav-link :href="route('statistika')" :active="request()->routeIs('statistika')">
-                    <x-slot name="icon">
-                        <i class="fas fa-pie-chart"></i>
-                    </x-slot>
-                    Statistika
-                </x-nav-link>
-                <x-nav-link :href="route('prosli-poslovi')" :active="request()->routeIs('prosli-poslovi')">
-                    <x-slot name="icon">
-                        <i class="fas fa-history"></i>
-                    </x-slot>
-                    Odrađeni poslovi
-                </x-nav-link>
-                <x-nav-link :href="route('radnici')" :active="request()->routeIs('radnici')">
-                    <x-slot name="icon">
-                        <i class="fas fa-users"></i>
-                    </x-slot>
-                    Radnici
-                </x-nav-link>
 
-
-                <x-nav-link :href="route('partneri')" :active="request()->routeIs('partneri')">
-                    <x-slot name="icon">
-                        <i class="fas fa-handshake"></i>
-                    </x-slot>
-                    Partneri
-                </x-nav-link>
 
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

@@ -2,6 +2,7 @@
     "/js/app.js": "/js/app.js",
     "/js/imports.js": "/js/imports.js",
     "/packages/chartjs/chartjs.js": "/packages/chartjs/chartjs.js",
+    "/js/init-alpine.js": "/js/init-alpine.js",
     "/css/app.css": "/css/app.css",
     "/packages/fullcalendar/calendar.css": "/packages/fullcalendar/calendar.css",
     "/packages/fullcalendar/calendar.js": "/packages/fullcalendar/calendar.js",

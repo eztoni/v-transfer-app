@@ -26,7 +26,6 @@ class Dashboard extends Component
     public $comment;
 
     public function testActivityLog(){
-        activity()->log('LOUG!');
     }
 
     public function mount()
@@ -36,7 +35,6 @@ class Dashboard extends Component
 
     public function render()
     {
-        $activites = Activity::all();
-        return view('livewire.dashboard', ['activites' => $activites]);
+        return view('livewire.dashboard');
     }
 }

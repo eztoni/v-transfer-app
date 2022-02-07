@@ -11,11 +11,7 @@
         <img width="120" src="{{asset('img/logo.png')}}">
     </div>
     <div class="flex-none hidden px-2 mx-2 lg:flex">
-        <div class="flex items-stretch">
 
-            @include('components.theme-picker')
-
-        </div>
     </div>
     @if(Auth::user()->hasRole('super-admin'))
         <div class="flex-none">

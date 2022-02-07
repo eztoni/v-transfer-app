@@ -28,9 +28,9 @@ class CreateSuperadmins extends Migration
 
 
         $user = new User();
-        $user->name = 'Marin Mijalić';
+        $user->name = 'Toni Njirić';
         $user->password = Hash::make('test12345');
-        $user->email = 'mijamijalic@gmail.com';
+        $user->email = 'toni.njiric@ez-booker.com';
         $user->email_verified_at = date("Y-m-d H:i:s");
         $user->save();
         $user->assignRole('super-admin');

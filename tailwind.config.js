@@ -23,7 +23,7 @@ module.exports = {
 
         themes: [
             {
-                'ezbooker':{
+                'valamar':{
                     'primary' : '#00a8cd',
                     'primary-focus' : '#00718a',
                     'primary-content' : '#ffffff',

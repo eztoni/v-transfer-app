@@ -17,8 +17,8 @@
         <div
             class="mt-16 overflow-y-auto shadow-2xl top-px dropdown-content h-96 w-52 rounded-b-box bg-base-200 text-base-content">
             <ul class="p-4 menu compact">
-                <li><a tabindex="0" data-set-theme="ezbooker" data-act-class="active" class="active"><img class="w-5 h-5 shadow rounded-full border-dark" src="@php echo asset('/img/ez-fav-icon.png') @endphp">
-                         EZ Booker</a></li>
+                <li><a tabindex="0" data-set-theme="valamar" data-act-class="active" class="active"><img class="w-5 h-5 shadow rounded-full border-dark" src="@php echo asset('/img/ez-fav-icon.png') @endphp">
+                         EZ Valamar</a></li>
                 <li><a tabindex="0" data-set-theme="light" data-act-class="active" >🌝
                          light</a></li>
                 <li><a tabindex="0" data-set-theme="dark" data-act-class="active">🌚  dark</a></li>

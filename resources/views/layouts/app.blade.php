@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-<html data-theme="ezbooker" x-data="{}" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html data-theme="valamar" x-data="{}" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <script>
-        if (localStorage.theme) document.documentElement.setAttribute("data-theme", window.localStorage.theme);
-    </script>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -37,6 +35,7 @@
 </div>
 @include('components.right-drawer')
 @stack('modals')
+@stack('scripts-bottom')
 @livewireScripts
 </body>
 </html>
