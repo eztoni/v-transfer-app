@@ -16,6 +16,7 @@
         "livewire/livewire": "v2.7.2",
         "rap2hpoutre/laravel-log-viewer": "^1.7",
         "rappasoft/laravel-livewire-tables": "^1.20",
+        "spatie/laravel-activitylog": "^4.4",
         "spatie/laravel-backup": "^7.7",
         "spatie/laravel-permission": "^5.1"
     },
@@ -70,7 +71,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
