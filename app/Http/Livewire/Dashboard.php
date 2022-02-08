@@ -8,6 +8,9 @@
 namespace App\Http\Livewire;
 
 
+use App\Models\Destination;
+use App\Scopes\CompanyScope;
+use App\Scopes\DestinationScope;
 use Carbon\Carbon;
 use Debugbar;
 use Illuminate\Database\QueryException;
@@ -21,16 +24,10 @@ use function Symfony\Component\String\b;
 
 class Dashboard extends Component
 {
-    public $tasks;
-    public $selectedWorkers = [];
-    public $comment;
 
-    public function testActivityLog(){
-    }
 
     public function mount()
     {
-
     }
 
     public function render()
