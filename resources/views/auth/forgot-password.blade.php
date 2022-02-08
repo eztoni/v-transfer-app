@@ -26,7 +26,7 @@
 
             <div class="flex flex-col items-center w-full mt-18  md:my-60">
 
-                <h1 class="font-bold text-4xl text-center  my-8">Password Reset - <span class="text-primary">Volarević Promet</span>
+                <h1 class="font-bold text-4xl text-center  my-8">Password Reset - <span class="text-primary">valamar</span>
                 </h1>
 
                 <form method="POST" action="{{ route('password.email') }}" class="w-9/12 max-w-screen-sm">

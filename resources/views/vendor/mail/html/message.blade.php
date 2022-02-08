@@ -21,7 +21,7 @@
 {{-- Footer --}}
 @slot('footer')
     @component('mail::footer')
-        © @lang('Volarevic')<br>
+        © @lang('valamar')<br>
         @lang('Prud 59, 20352 Vid')<br>
     @endcomponent
 @endslot
