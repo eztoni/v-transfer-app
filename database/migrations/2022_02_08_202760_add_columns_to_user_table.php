@@ -11,7 +11,10 @@ class AddColumnsToUserTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('city')->default('Area 52');
             $table->string('zip')->default('52');
-            $table->string('country_code')->default('GG');
+
+            $table->foreignIdFor(\App\Models\Company::class)->constrained();
+            $table->foreignIdFor(\App\Models\Destination::class)->constrained();
+
         });
     }
 

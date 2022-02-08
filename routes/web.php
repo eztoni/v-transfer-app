@@ -4,6 +4,7 @@ use App\Http\Controllers\LogController;
 use App\Http\Controllers\SuperAdminDashboardController;
 use App\Http\Controllers\EditUserController;
 use App\Http\Livewire\Dashboard;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,15 +21,31 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
-    Route::group(['middleware' => ['role:super-admin']], function () {
-        Route::get('laravel-logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('laravel-logs');
-        Route::get('super-admin-dashboard', [SuperAdminDashboardController::class, 'show'])->name('super-admin-dashboard');
-        Route::get('edit-user/{user}', [EditUserController::class, 'showUser'])->name('edit-user');
+    Route::middleware(
+        ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN . '|' . User::ROLE_USER]
+    )->group(function () {
+#------------------------------------------------------------------------------------------EVERYONE AUTHENTICATED
+        Route::get('/', Dashboard::class)->name('dashboard');
+#------------------------------------------------------------------------------------------EVERYONE AUTHENTICATED END
+        Route::middleware(
+            ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN]
+        )->group(function () {
+#------------------------------------------------------------------------------------------ADMINS
+
+
+#------------------------------------------------------------------------------------------ADMINS END
+            Route::middleware(
+                ['role:' . User::ROLE_SUPER_ADMIN]
+            )->group(function () {
+#------------------------------------------------------------------------------------------SUPERADMINS
+                Route::get('laravel-logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('laravel-logs');
+                Route::get('super-admin-dashboard', [SuperAdminDashboardController::class, 'show'])->name('super-admin-dashboard');
+                Route::get('edit-user/{user}', [EditUserController::class, 'showUser'])->name('edit-user');
+#------------------------------------------------------------------------------------------SUPERADMINS END
+
+            });
+        });
     });
-
-    Route::get('/', Dashboard::class)->name('dashboard');
-
-
 });
 
 

@@ -20,6 +20,14 @@ class User extends Authenticatable implements MustVerifyEmail
     use TwoFactorAuthenticatable;
     use HasRoles;
 
+    const ROLE_SUPER_ADMIN ='super-admin';
+    const ROLE_ADMIN ='admin';
+    const ROLE_USER ='user';
+
+
+
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -32,6 +40,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'city',
         'country_code',
         'password',
+        'company_id',
+        'destination_id'
     ];
 
     /**
@@ -63,4 +73,11 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function destination(){
+        return $this->belongsTo(Destination::class);
+    }
+    public function company(){
+        return $this->belongsTo(Company::class);
+    }
 }
