@@ -14,6 +14,7 @@
     @stack('scripts')
 
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/styles.css') }}">
     <script src="https://use.fontawesome.com/c4773b38c8.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
     @livewireStyles
@@ -30,7 +31,7 @@
         @include('components.navbar')
         {{ $slot }}
     </main>
-    @include('components.main-drawer')
+    <x-main-drawer></x-main-drawer>
 
 </div>
 @include('components.right-drawer')

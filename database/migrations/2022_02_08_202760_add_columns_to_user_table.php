@@ -13,7 +13,7 @@ class AddColumnsToUserTable extends Migration
             $table->string('zip')->default('52');
 
             $table->foreignIdFor(\App\Models\Company::class)->constrained();
-            $table->foreignIdFor(\App\Models\Destination::class)->constrained();
+            $table->foreignIdFor(\App\Models\Destination::class)->nullable();
 
         });
     }

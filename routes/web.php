@@ -31,8 +31,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
             ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN]
         )->group(function () {
 #------------------------------------------------------------------------------------------ADMINS
-
-
+            Route::prefix('admin')->name('admin.')->group(function () {
+                Route::get('/admin/edit-user', Dashboard::class)->name('edit-user');
+                Route::get('/admin/destinations', Dashboard::class)->name('destinations');
+            });
 #------------------------------------------------------------------------------------------ADMINS END
             Route::middleware(
                 ['role:' . User::ROLE_SUPER_ADMIN]

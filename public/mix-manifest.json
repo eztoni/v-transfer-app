@@ -5,6 +5,7 @@
     "/js/init-alpine.js": "/js/init-alpine.js",
     "/css/app.css": "/css/app.css",
     "/packages/fullcalendar/calendar.css": "/packages/fullcalendar/calendar.css",
+    "/css/styles.css": "/css/styles.css",
     "/packages/fullcalendar/calendar.js": "/packages/fullcalendar/calendar.js",
     "/packages/fullcalendar/hr.js": "/packages/fullcalendar/hr.js"
 }

@@ -11,28 +11,35 @@
                         <h4 class="text-secondary font-bold subpixel-antialiased">{{Auth::user()->name}}</h4>
                         <p class="font-thin   block group-hover:hidden text-xs text-gray-400 ">My Company</p>
                         <p class="font-thin   group-hover:block hidden text-xs text-secondary ">Edit Profile</p>
-
                     </div>
                 </div>
             </a>
         </div>
 
+
         <div>
             <ul class="menu flex flex-col  pt-4 ">
-                <x-nav-link :href=" route('dashboard')" :active="request()->routeIs('dashboard')">
-                    <x-slot name="icon">
-                        <i class="fas fa-tachometer-alt"></i>
-                    </x-slot>
-                    Pregled
-                </x-nav-link>
-
-
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="w-full absolute bottom-4 left-0 ml-auto mr-auto btn-ghost hover:btn-error rounded-none   btn-sm">
-                              Odjavi se
-                            </button>
-                        </form>
+                @foreach($menuItems as $item)
+                    @if(!key_exists('items',$item))
+                        <x-nav-link :href="$item['href']" :active="$item['active']">
+                            <x-slot name="icon">
+                                <i class="{{$item['icon']}}"></i>
+                            </x-slot>
+                            {{$item['text']}}
+                        </x-nav-link>
+                    @else
+                        <x-nav-submenu :active="$item['active']"  :text="$item['text']" :items="$item['items']">
+                                <i class="{{$item['icon']}}"></i>
+                        </x-nav-submenu>
+                    @endif
+                @endforeach
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit"
+                            class="w-full absolute bottom-4 left-0 ml-auto mr-auto btn-ghost hover:btn-error rounded-none   btn-sm">
+                        Odjavi se
+                    </button>
+                </form>
 
 
             </ul>
