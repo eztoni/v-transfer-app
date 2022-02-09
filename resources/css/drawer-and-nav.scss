@@ -1,0 +1,22 @@
+.drawer-submenu{
+    i:before{
+        width: 18px;
+        height: 16px;
+    }
+    .collapse-title,input{
+        height:48px!important;
+        min-height: unset !important;
+        padding-left: 20px!important;
+        padding-top: 12px!important;
+        padding-bottom: 12px!important;
+    }
+    .collapse-title:after{
+        top:17px!important;
+    }
+    .collapse-content{
+        padding: 0!important;
+    }
+    .sub-nav-item{
+        padding: 12px 20px;
+    }
+}
