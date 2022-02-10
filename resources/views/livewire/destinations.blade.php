@@ -2,7 +2,7 @@
 
     <x-ez-card>
         <x-slot name="title" class="flex justify-between">
-            Destinations {{$companyId}}
+            Destinations
 
             <button wire:click="openDestinationModal" class="btn btn-sm ">Add Destination</button>
 
