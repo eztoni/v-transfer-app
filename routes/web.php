@@ -4,6 +4,7 @@ use App\Http\Controllers\LogController;
 use App\Http\Controllers\SuperAdminDashboardController;
 use App\Http\Controllers\EditUserController;
 use App\Http\Livewire\Dashboard;
+use App\Http\Livewire\Destinations;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -32,8 +33,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         )->group(function () {
 #------------------------------------------------------------------------------------------ADMINS
             Route::prefix('admin')->name('admin.')->group(function () {
-                Route::get('/admin/edit-user', Dashboard::class)->name('edit-user');
-                Route::get('/admin/destinations', Dashboard::class)->name('destinations');
+                Route::get('/edit-user', Dashboard::class)->name('edit-user');
+                Route::get('/destinations', Destinations::class)->name('destinations');
             });
 #------------------------------------------------------------------------------------------ADMINS END
             Route::middleware(
