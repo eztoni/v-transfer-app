@@ -10,10 +10,10 @@ class Destinations extends Component
 {
 
     public $search = '';
-    public $user;
     public $destination;
     public $destinationModal;
     public $softDeleteModal;
+    public $updateId = '';
     public $deleteId = '';
     public $editData =[];
 
@@ -27,25 +27,29 @@ class Destinations extends Component
         $this->validateOnly($propertyName);
     }
 
-    public function mount(){
-        $this->user = Auth::user();
-    }
-
     public function openDestinationModal(){
+        $this->updateId = '';
         $this->destinationModal = true;
     }
 
     public function closeDestinationModal(){
         $this->destinationModal = false;
+        $this->updateId = '';
         $this->editData = [];
+    }
+
+    public function updateDestination($destinationId){
+        $this->openDestinationModal();
+        $this->updateId = $destinationId;
+        $this->editData = Destination::find($destinationId)->only('name');
     }
 
     public function saveDestinationData(){
         $this->validate();
 
-        $this->destination = new Destination();
+        $this->destination = Destination::findOrNew($this->updateId);
         $this->destination->fill($this->editData);
-        $this->destination->company_id = $this->user->company_id;
+        $this->destination->company_id = Auth::user()->company_id;
         $this->destination->save();
         $this->showToast('Saved','Destination Saved','success');
         $this->closeDestinationModal();
@@ -74,7 +78,8 @@ class Destinations extends Component
     public function render()
     {
         $destinations = Destination::search('name',$this->search)->paginate(10);
-        return view('livewire.destinations', compact('destinations'));
+        $companyId = Auth::user()->company_id;
+        return view('livewire.destinations', compact('destinations','companyId'));
 
     }
 }

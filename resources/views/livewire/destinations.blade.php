@@ -2,7 +2,7 @@
 
     <x-ez-card>
         <x-slot name="title" class="flex justify-between">
-            Destinations
+            Destinations {{$companyId}}
 
             <button wire:click="openDestinationModal" class="btn btn-sm ">Add Destination</button>
 
@@ -15,6 +15,7 @@
                 <tr>
                     <th>#Id</th>
                     <th>Name</th>
+                    <th>Update</th>
                     <th>Delete</th>
 
                 </tr>
@@ -26,6 +27,7 @@
                     <tr>
                         <th>{{ $destination->id }}</th>
                         <th>{{ $destination->name }}</th>
+                        <td ><button wire:click="updateDestination({{$destination->id}})" class="btn btn-sm btn-success">Update</button></td>
                         <td ><button wire:click="openSoftDeleteModal({{$destination->id}})" class="btn btn-sm btn-warning">Delete</button></td>
                     </tr>
 
@@ -81,7 +83,7 @@
 
                     <div class="mt-4 flex justify-between">
                         <button wire:click="closeDestinationModal()" class="btn btn-sm ">Close</button>
-                        <button wire:click="saveDestinationData()"  class="btn btn-sm ">Add</button>
+                        <button wire:click="saveDestinationData()"  class="btn btn-sm ">{{  !empty($this->updateId) ? 'Update':'Add' }}</button>
                     </div>
                 </div>
             </div>
@@ -90,24 +92,4 @@
 
     </x-ez-card>
 </div>
-<script>
-    function app(){
-        return {
-            deleteId:'',
-            showModal(id){
-                this.deleteId=id
-                this.$refs.modal.checked = true
-            },
-            closeModal(){
-                this.$refs.modal.checked = false
-            },
-            deleteModel(){
-                this.$wire.softDelete(this.deleteId)
-                this.closeModal()
-                this.deleteId=''
-            },
-        }
-    }
-
-</script>
 
