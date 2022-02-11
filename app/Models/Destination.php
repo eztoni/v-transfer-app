@@ -13,11 +13,15 @@ class Destination extends Model
     use HasFactory;
     use SoftDeletes;
 
+
     protected $fillable = [
         'company_id',
         'name',
     ];
+
+
     public function company(){
+
         return $this->belongsTo(Company::class);
     }
 

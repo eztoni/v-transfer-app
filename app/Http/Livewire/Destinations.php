@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Destination;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -13,13 +14,10 @@ class Destinations extends Component
     public $destination;
     public $destinationModal;
     public $softDeleteModal;
-    public $updateId = '';
     public $deleteId = '';
-    public $editData =[];
-
 
     protected $rules = [
-        'editData.name' => 'required|max:255',
+        'destination.name' => 'required|max:255',
     ];
 
     public function updated($propertyName)
@@ -28,27 +26,32 @@ class Destinations extends Component
     }
 
     public function openDestinationModal(){
-        $this->updateId = '';
         $this->destinationModal = true;
     }
 
     public function closeDestinationModal(){
         $this->destinationModal = false;
-        $this->updateId = '';
-        $this->editData = [];
     }
 
     public function updateDestination($destinationId){
         $this->openDestinationModal();
-        $this->updateId = $destinationId;
-        $this->editData = Destination::find($destinationId)->only('name');
+        $this->destination = Destination::find($destinationId);
+    }
+
+    public function addDestination(){
+        $this->openDestinationModal();
+        $this->destination = new Destination();
     }
 
     public function saveDestinationData(){
         $this->validate();
 
-        $this->destination = Destination::findOrNew($this->updateId);
-        $this->destination->fill($this->editData);
+        if(!Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN))
+            return;
+
+        if($this->destination->exists && $this->destination->company_id != Auth::user()->company_id )
+            return;
+
         $this->destination->company_id = Auth::user()->company_id;
         $this->destination->save();
         $this->showToast('Saved','Destination Saved','success');
@@ -78,8 +81,7 @@ class Destinations extends Component
     public function render()
     {
         $destinations = Destination::search('name',$this->search)->paginate(10);
-        $companyId = Auth::user()->company_id;
-        return view('livewire.destinations', compact('destinations','companyId'));
+        return view('livewire.destinations', compact('destinations'));
 
     }
 }

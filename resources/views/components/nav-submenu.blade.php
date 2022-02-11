@@ -9,6 +9,7 @@
     </div>
     <div class="collapse-content">
         @foreach($items as $item)
+            @if($item['show'])
             <a href="{{$item['href']}}" class="{{$item['active']?'active text-neutral-content':''}}">
                 <div class="sub-nav-item {{$item['active']?'shadow-lg   bg-primary  ':''}}">
 
@@ -16,6 +17,7 @@
 
                 </div>
             </a>
+            @endif
         @endforeach
 
     </div>

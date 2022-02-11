@@ -20,14 +20,14 @@
         <div>
             <ul class="menu flex flex-col  pt-4 ">
                 @foreach($menuItems as $item)
-                    @if(!key_exists('items',$item))
+                    @if(!key_exists('items',$item) && $item['show'])
                         <x-nav-link :href="$item['href']" :active="$item['active']">
                             <x-slot name="icon">
                                 <i class="{{$item['icon']}}"></i>
                             </x-slot>
                             {{$item['text']}}
                         </x-nav-link>
-                    @else
+                    @elseif($item['show'])
                         <x-nav-submenu :active="$item['active']"  :text="$item['text']" :items="$item['items']">
                                 <i class="{{$item['icon']}}"></i>
                         </x-nav-submenu>

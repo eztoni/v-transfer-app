@@ -33,7 +33,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         )->group(function () {
 #------------------------------------------------------------------------------------------ADMINS
             Route::prefix('admin')->name('admin.')->group(function () {
-                Route::get('/edit-user', Dashboard::class)->name('edit-user');
+                Route::get('/company-overview', \App\Http\Livewire\CompanyOverview::class)->name('company-overview');
                 Route::get('/destinations', Destinations::class)->name('destinations');
             });
 #------------------------------------------------------------------------------------------ADMINS END

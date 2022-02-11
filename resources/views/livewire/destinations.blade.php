@@ -4,7 +4,7 @@
         <x-slot name="title" class="flex justify-between">
             Destinations
 
-            <button wire:click="openDestinationModal" class="btn btn-sm ">Add Destination</button>
+            <button wire:click="addDestination" class="btn btn-sm ">Add Destination</button>
 
         </x-slot>
         <x-slot name="body">
@@ -15,8 +15,9 @@
                 <tr>
                     <th>#Id</th>
                     <th>Name</th>
-                    <th>Update</th>
-                    <th>Delete</th>
+                    <th class="text-center">Update</th>
+                    <th class="text-right"><span class="pr-4">Delete</span></th>
+
 
                 </tr>
                 </thead>
@@ -27,8 +28,16 @@
                     <tr>
                         <th>{{ $destination->id }}</th>
                         <th>{{ $destination->name }}</th>
-                        <td ><button wire:click="updateDestination({{$destination->id}})" class="btn btn-sm btn-success">Update</button></td>
-                        <td ><button wire:click="openSoftDeleteModal({{$destination->id}})" class="btn btn-sm btn-warning">Delete</button></td>
+                        <td class="text-center">
+                            <button wire:click="updateDestination({{$destination->id}})" class="btn btn-sm btn-success">
+                                Update
+                            </button>
+                        </td>
+                        <td class="text-right">
+                            <button wire:click="openSoftDeleteModal({{$destination->id}})" class="btn btn-sm btn-ghost">
+                                Delete
+                            </button>
+                        </td>
                     </tr>
 
                 @empty
@@ -60,7 +69,7 @@
 
                     <div class="mt-4 flex justify-between">
                         <button wire:click="closeSoftDeleteModal()" class="btn btn-sm ">Close</button>
-                        <button wire:click="softDelete()"  class="btn btn-sm ">Delete</button>
+                        <button wire:click="softDelete()" class="btn btn-sm ">Delete</button>
                     </div>
                 </div>
             </div>
@@ -75,15 +84,17 @@
                         <label class="label">
                             <span class="label-text">Destination name :</span>
                         </label>
-                        <input wire:model.debounce.500ms="editData.name" class="input input-bordered"
+                        <input wire:model="destination.name" class="input input-bordered"
                                placeholder="Destination name">
-                        @error('editData.name')
-                        <x-input-alert type='warning'>Destination name is required.</x-input-alert>@enderror
+                        @error('destination.name')
+                        <x-input-alert type='warning'>{{ $message }}</x-input-alert>
+                        @enderror
                     </div>
 
                     <div class="mt-4 flex justify-between">
                         <button wire:click="closeDestinationModal()" class="btn btn-sm ">Close</button>
-                        <button wire:click="saveDestinationData()"  class="btn btn-sm ">{{  !empty($this->updateId) ? 'Update':'Add' }}</button>
+                        <button wire:click="saveDestinationData()"
+                                class="btn btn-sm ">{{  !empty($this->destination->exists) ? 'Update':'Add' }}</button>
                     </div>
                 </div>
             </div>
