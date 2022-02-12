@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
             Route::prefix('admin')->name('admin.')->group(function () {
                 Route::get('/company-overview', \App\Http\Livewire\CompanyOverview::class)->name('company-overview');
                 Route::get('/destinations', Destinations::class)->name('destinations');
+                Route::get('/user-overview', \App\Http\Livewire\UserOverview::class)->name('user-overview');
             });
 #------------------------------------------------------------------------------------------ADMINS END
             Route::middleware(

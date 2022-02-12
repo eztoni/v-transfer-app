@@ -26,10 +26,17 @@ class MainDrawer extends Component
                 'show'=> true,
                 'items' => [
                     [
-                        'text' => 'Company users',
+                        'text' => 'Company',
                         'active' => request()->routeIs('admin.company-overview'),
                         'href' => route('admin.company-overview'),
                         'show'=> \Auth::user()->hasRole(User::ROLE_SUPER_ADMIN)
+                    ],
+                    [
+                        'text' => 'User Overview',
+                        'active' => request()->routeIs('admin.user-overview'),
+                        'href' => route('admin.user-overview'),
+                        'show'=> \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN)
+
                     ],
                     [
                         'text' => 'Destinations',
