@@ -1,4 +1,4 @@
-<div class="p-5">
+<div >
     <x-ez-card>
         <x-slot name="title">
 
@@ -122,13 +122,13 @@
                             @enderror
                         </div>
 
-                        @if($user)
+                        @if(!$user->exists)
                             <div class="form-control">
                                 <label class="label">
                                     <span class="label-text">Password:</span>
                                 </label>
-                                <input autocomplete="off" name="temp" wire:model="user.set_password" class="input input-bordered" placeholder="Password" type="password">
-                                @error('user.set_password') <x-input-alert type='warning'>{{ $message }}</x-input-alert>@enderror
+                                <input autocomplete="off"  wire:model="user.set_password" class="input input-bordered" placeholder="Password" type="password">
+                                @error('user.password') <x-input-alert type='warning'>{{ $message }}</x-input-alert>@enderror
                             </div>
 
                             <div class="form-control">
@@ -136,7 +136,7 @@
                                     <span class="label-text">Password Confirmation:</span>
                                 </label>
                                 <input  autocomplete="off" wire:model="user.set_password_confirmation" class="input input-bordered" placeholder="Password Confirmation" type="password">
-                                @error('user.set_password_confirmation') <x-input-alert type='warning'>{{ $message }}</x-input-alert>@enderror
+                                @error('user.password_confirmation') <x-input-alert type='warning'>{{ $message }}</x-input-alert>@enderror
                             </div>
                         @endif
 
@@ -148,7 +148,7 @@
                             <select class="select select-bordered" wire:model="userRole">
                                 <option  value="{{ null }}">Select Role</option>
                                 @foreach($roles as $role)
-                                    <option  value="{{$role->name}}">{{$role->name}}</option>
+                                    <option  value="{{$role->name}}">{{\Illuminate\Support\Str::headline($role->name)}}</option>
                                 @endforeach
                             </select>
                             @error('userRole') <x-input-alert type='warning'>{{ $message }}</x-input-alert>@enderror

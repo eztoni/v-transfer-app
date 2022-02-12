@@ -21,8 +21,8 @@ class UserOverview extends Component
         'user.destination_id' => 'required',
         'user.city' => 'min:1',
         'user.zip' => 'min:3',
-        'user.set_password'=>'nullable|min:6|confirmed',
-        'user.set_password_confirmation'=>'nullable',
+        'user.set_password'=>'nullable|min:6',
+        'user.set_password_confirmation'=>'nullable|same:user.set_password',
         'userRole'=>'required|in:admin,user'
     ];
 
@@ -49,6 +49,7 @@ class UserOverview extends Component
         $this->openUserModal();
         $this->user = User::find($userId);
         $this->userRole = $this->user->getRoleNames()->first();
+
     }
 
     public function saveUserData(){
@@ -60,8 +61,6 @@ class UserOverview extends Component
         if($this->user->exists && $this->user->company_id != Auth::user()->company_id )
             return;
 
-        // Maknut ?????
-        //$this->user->fill($this->editData);
 
 
         if($this->user->id){
@@ -85,6 +84,7 @@ class UserOverview extends Component
         $this->closeUserModal();
 
     }
+
 
     public function render()
     {

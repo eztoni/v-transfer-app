@@ -24,7 +24,7 @@ module.exports = {
         themes: [
             {
                 'valamar':{
-                    'primary' : '#00a8cd',
+                    'primary' : '#214392',
                     'primary-focus' : '#00718a',
                     'primary-content' : '#ffffff',
                     'secondary' : '#0042CB',
