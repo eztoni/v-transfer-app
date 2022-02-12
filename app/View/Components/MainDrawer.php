@@ -22,7 +22,7 @@ class MainDrawer extends Component
             [
                 'icon' => 'fas fa-tools',
                 'text' => 'Settings',
-                'active' => request()->routeIs('admin.company-overview','admin.destinations'),
+                'active' => request()->routeIs('admin.user-overview','admin.company-overview','admin.destinations'),
                 'show'=> true,
                 'items' => [
                     [

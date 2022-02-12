@@ -128,7 +128,7 @@
                                     <span class="label-text">Password:</span>
                                 </label>
                                 <input autocomplete="off"  wire:model="user.set_password" class="input input-bordered" placeholder="Password" type="password">
-                                @error('user.password') <x-input-alert type='warning'>{{ $message }}</x-input-alert>@enderror
+                                @error('user.set_password') <x-input-alert type='warning'>{{ $message }}</x-input-alert>@enderror
                             </div>
 
                             <div class="form-control">
@@ -136,7 +136,7 @@
                                     <span class="label-text">Password Confirmation:</span>
                                 </label>
                                 <input  autocomplete="off" wire:model="user.set_password_confirmation" class="input input-bordered" placeholder="Password Confirmation" type="password">
-                                @error('user.password_confirmation') <x-input-alert type='warning'>{{ $message }}</x-input-alert>@enderror
+                                @error('user.set_password_confirmation') <x-input-alert type='warning'>{{ $message }}</x-input-alert>@enderror
                             </div>
                         @endif
 

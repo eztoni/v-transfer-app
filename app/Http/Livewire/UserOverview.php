@@ -26,6 +26,11 @@ class UserOverview extends Component
         'userRole'=>'required|in:admin,user'
     ];
 
+    public function mount()
+    {
+        $this->user = new User();
+    }
+
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);

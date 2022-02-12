@@ -9,7 +9,7 @@
     background-size: cover;
     background-position: bottom;
     background-repeat: no-repeat;
-    background-image: url('{{URL('/img/bg_image.jpg')}}');
+    background-image: url('{{URL('/storage/static_images/login_bg.jpg')}}');
     background-image: linear-gradient(
 180deg,hsla(0,0%,100%,0) 42.52%,#0d3151),"
         >
@@ -19,8 +19,8 @@
         <div class=" lg:col-span-2 col-span-3 h-screen lg:px-20 px-5">
             <!-- Nav bar -->
             <div class="flex sm:justify-between flex-col  items-center sm:flex-row gap-5  py-8 mb-auto">
-                <div class="w-40 flex-shrink-0">
-                    <img src="{{URL('/img/logo.png')}}">
+                <div class="w-52 flex-shrink-0">
+                    <img src="{{URL('/storage/static_images/valamar_horizontal.png')}}">
                 </div>
                 <!-- <p class="pt-3">Not a member?
                     <b><a
@@ -33,7 +33,7 @@
 
             <div class="flex flex-col items-center w-full mt-18  md:my-60">
 
-                <h1 class="font-bold text-4xl text-center  my-8">Sign in for <span class="text-primary">valamar</span>
+                <h1 class="font-bold text-4xl text-center  my-8">Sign in for <span class="text-primary">Valamar</span>
                 </h1>
 
                 <form method="POST" action="{{ route('login') }}" class="w-9/12 max-w-screen-sm">

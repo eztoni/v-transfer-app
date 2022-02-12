@@ -12,7 +12,7 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                sans: ['Open Sans', ...defaultTheme.fontFamily.sans],
             },
         },
     },
@@ -24,24 +24,24 @@ module.exports = {
         themes: [
             {
                 'valamar':{
-                    'primary' : '#214392',
-                    'primary-focus' : '#00718a',
+                    'primary' : '#136bac',
+                    'primary-focus' : '#214392',
                     'primary-content' : '#ffffff',
-                    'secondary' : '#0042CB',
-                    'secondary-focus' : '#00339D',
+                    'secondary' : '#118acb',
+                    'secondary-focus' : '#214392',
                     'secondary-content' : '#ffffff',
-                    'accent' : '#00CB89',
-                    'accent-focus' : '#00A26D',
+                    'accent' : '#27bdbe',
+                    'accent-focus' : '#0db14b',
                     'accent-content' : '#ffffff',
-                    'neutral' : '#3d4451',
+                    'neutral' : '#707070',
                     'neutral-focus' : '#2a2e37',
                     'neutral-content' : '#ffffff',
                     'base-100' : '#ffffff',
                     'base-200' : '#f6f6f6',
                     'base-300' : '#d1d5db',
                     'base-content' : '#333',
-                    'info' : '#00a8cd',
-                    'success' : '#00CB89',
+                    'info' : '#118acb',
+                    'success' : '#0db14b',
                     'warning' : '#eca518',
                     'error' : '#e33244',
 

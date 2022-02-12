@@ -8,7 +8,7 @@
         </label></div>
     <div class="flex-1 px-2 mx-2">
 
-        <img width="120" src="{{asset('img/logo.png')}}">
+        <img width="175" src="{{asset('storage/static_images/valamar_horizontal.png')}}">
     </div>
     @role(\App\Models\User::ROLE_SUPER_ADMIN)
     <div class="flex-none hidden px-2 mx-2 lg:flex">
