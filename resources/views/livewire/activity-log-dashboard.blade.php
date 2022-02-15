@@ -11,9 +11,10 @@
                 <thead>
                 <tr>
                     <th>#Id</th>
-                    <th>Subject</th>
+                    <th>Subject Type</th>
                     <th>Causer</th>
                     <th>Description</th>
+                    <th>Timestamp</th>
                     <th class="text-center">View</th>
                 </tr>
                 </thead>
@@ -23,9 +24,10 @@
 
                     <tr>
                         <th>{{ $activity->id }}</th>
-                        <td>{{ $activity->subject }}</td>
+                        <td>{{ \Illuminate\Support\Str::limit($activity->subject_type, 50, $end='...') }}</td>
                         <th>{{ $activity->causer->name }}</th>
-                        <td>{{ \Illuminate\Support\Str::limit($activity->description, 80, $end='...') }}</td>
+                        <td>{{ \Illuminate\Support\Str::limit($activity->description, 50, $end='...') }}</td>
+                        <td>{{$activity->created_at}}</td>
                         <td class="text-center">
                             <button wire:click="openActivityModal({{$activity->id}})" class="btn btn-sm btn-success">
                                 View
@@ -54,37 +56,60 @@
             </table>
 
 
+            @if($activity)
+                <div class="modal {{ $activityModal ? 'modal-open fadeIn' : '' }}">
+                    <div class="modal-box max-h-screen overflow-y-auto">
+                        Activity #ID {{ $activity->id }}
+                        <hr class="my-4">
 
-            <div class="modal {{ $activityModal ? 'modal-open fadeIn' : '' }}">
-                <div class="modal-box max-h-screen overflow-y-auto">
-                    Activity #ID {{ $activity->id }}
-                    <hr class="my-4">
+                        <p><b>Causer</b> : {{$activity->causer->name}}</p>
+                        <p><b>Causer type</b> : {{$activity->causer_type}}</p>
+                        <p><b>Created at</b> : {{$activity->created_at}}</p>
 
-                    <p><b>Causer</b> : {{$activity->causer->name}}</p>
-                    <p><b>Causer type</b> : {{$activity->causer_type}}</p>
-                    <p><b>Created at</b> : {{$activity->created_at}}</p>
 
-                    <hr class="my-4">
+                        <hr class="my-4">
 
-                    <div class="collapse w-full rounded-box collapse-arrow ">
-                        <input type="checkbox">
-                        <div class="collapse-title text-md font-medium">
-                            JSON Raw Data
-                        </div>
-                        <div class="max-h-1 collapse-content">
-                            <div class="overflow-x-auto overflow-y-auto" style="max-height:250px !important;">
-                                <button  @click="copyTextToClipBoard" class="btn btn-xs"><i class="fas fa-clipboard-list"></i> <span class="pl-2">Copy</span></button> <span class="text-bg-primary" x-show="open">Data copied!</span>
-                                <pre x-ref="jsonText">{{json_encode($activity, JSON_PRETTY_PRINT)}}</pre>
+                        @if($activity->changes)
+
+                            <div class="collapse w-full rounded-box collapse-arrow ">
+                                <input type="checkbox">
+                                <div class="collapse-title text-md font-medium">
+                                    Changes
+                                </div>
+                                <div class="max-h-1 collapse-content">
+                                    <div class="overflow-x-auto overflow-y-auto" style="max-height:250px !important;">
+                                        <pre x-ref="jsonText">{{json_encode($activity->changes, JSON_PRETTY_PRINT)}}</pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                        @endif
+
+                        <hr class="my-4">
+
+                        <div class="collapse w-full rounded-box collapse-arrow ">
+                            <input type="checkbox">
+                            <div class="collapse-title text-md font-medium">
+                                JSON Raw Data
+                            </div>
+                            <div class="max-h-1 collapse-content">
+                                <div class="overflow-x-auto overflow-y-auto" style="max-height:250px !important;">
+                                    <button  @click="copyTextToClipBoard" class="btn btn-xs"><i class="fas fa-clipboard-list"></i> <span class="pl-2">Copy</span></button> <span class="text-bg-primary" x-show="open">Data copied!</span>
+                                    <pre x-ref="jsonText">{{json_encode($activity, JSON_PRETTY_PRINT)}}</pre>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
 
-                    <div class="mt-4 flex justify-between">
-                        <button wire:click="closeActivityModal()" class="btn btn-sm ">Close</button>
+
+
+                        <div class="mt-4 flex justify-between">
+                            <button wire:click="closeActivityModal()" class="btn btn-sm ">Close</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
+
 
         </x-slot>
 

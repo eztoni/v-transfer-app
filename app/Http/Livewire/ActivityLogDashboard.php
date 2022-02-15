@@ -16,7 +16,6 @@ class ActivityLogDashboard extends Component
 
     public function openActivityModal($activityId){
         $this->activity = Activity::find($activityId);
-        //dd($this->activity->causer);
         $this->activityModal = true;
     }
 
@@ -27,7 +26,8 @@ class ActivityLogDashboard extends Component
 
     public function render()
     {
-        $activities = Activity::search('description',$this->search)->paginate(10);
+
+        $activities = Activity::search('subject_type',$this->search)->paginate(10);
         return view('livewire.activity-log-dashboard', compact('activities'));
 
     }
