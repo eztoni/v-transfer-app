@@ -13,15 +13,36 @@ class MainDrawer extends Component
 
         $menuItems = [
             [
-                'icon' => 'fas fa-tachometer-alt',
-                'text' => 'Pregled',
-                'active' => request()->routeIs('dashboard'),
-                'href' => route('dashboard'),
+                'icon' => 'fas fa-database',
+                'text' => 'Master Data',
+                'active' => request()->routeIs('master-data'),
+                'href' => route('master-data'),
+                'show'=> true
+            ],
+            [
+                'icon' => 'fas fa-euro-sign',
+                'text' => 'Selling',
+                'active' => request()->routeIs('selling'),
+                'href' => route('selling'),
+                'show'=> true
+            ],
+            [
+                'icon' => 'fas fa-book',
+                'text' => 'Bookings',
+                'active' => request()->routeIs('bookings'),
+                'href' => route('bookings'),
+                'show'=> true
+            ],
+            [
+                'icon' => 'fas fa-chart-bar',
+                'text' => 'Reports',
+                'active' => request()->routeIs('reports'),
+                'href' => route('reports'),
                 'show'=> true
             ],
             [
                 'icon' => 'fas fa-tools',
-                'text' => 'Settings',
+                'text' => 'Administration',
                 'active' => request()->routeIs('admin.user-overview','admin.company-overview','admin.destinations'),
                 'show'=> true,
                 'items' => [

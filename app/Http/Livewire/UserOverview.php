@@ -15,16 +15,32 @@ class UserOverview extends Component
     public $userRole = '';
     public $editData = [];
 
-    protected $rules = [
+  /*  protected $rules = [
         'user.name' => 'required|min:3',
         'user.email' => 'required|email',
         'user.destination_id' => 'required',
-        'user.city' => 'min:1',
+        'user.city' => 'min:3',
         'user.zip' => 'min:3',
+        'user.oib' => 'min:13|max:13|integer|unique:users,oib',
         'user.set_password'=>'nullable|min:6',
         'user.set_password_confirmation'=>'nullable|same:user.set_password',
         'userRole'=>'required|in:admin,user'
-    ];
+    ];*/
+
+    protected function rules()
+    {
+        return [
+            'user.name' => 'required|min:3',
+            'user.email' => 'required|email',
+            'user.destination_id' => 'required',
+            'user.city' => 'min:3',
+            'user.zip' => 'min:3',
+            'user.oib' => 'digits:13|integer|unique:users,oib,'.$this->user->id,
+            'user.set_password'=>'nullable|min:6',
+            'user.set_password_confirmation'=>'nullable|same:user.set_password',
+            'userRole'=>'required|in:admin,user'
+        ];
+    }
 
     public function mount()
     {
@@ -51,6 +67,7 @@ class UserOverview extends Component
     }
 
     public function updateUser($userId){
+
         $this->openUserModal();
         $this->user = User::find($userId);
         $this->userRole = $this->user->getRoleNames()->first();

@@ -102,6 +102,17 @@
 
                         <div class="form-control">
                             <label class="label">
+                                <span class="label-text">OIB:</span>
+                            </label>
+                            <input wire:model="user.oib" class="input input-bordered"
+                                   placeholder="OIB">
+                            @error('user.oib')
+                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                            @enderror
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
                                 <span class="label-text">City:</span>
                             </label>
                             <input wire:model="user.city" class="input input-bordered"
@@ -122,7 +133,7 @@
                             @enderror
                         </div>
 
-                        @if(!$user->exists)
+                        @if(!$this->user->exists)
                             <div class="form-control">
                                 <label class="label">
                                     <span class="label-text">Password:</span>

@@ -11,6 +11,7 @@ class AddColumnsToUserTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('city')->default('Area 52');
             $table->string('zip')->default('52');
+            $table->string('oib')->unique();
 
             $table->foreignIdFor(\App\Models\Company::class)->constrained();
             $table->foreignIdFor(\App\Models\Destination::class)->nullable();
@@ -23,7 +24,7 @@ class AddColumnsToUserTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('city');
             $table->dropColumn('zip');
-            $table->dropColumn('country_code');
+            $table->dropColumn('oib');
         });
     }
 }

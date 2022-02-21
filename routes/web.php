@@ -27,6 +27,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     )->group(function () {
 #------------------------------------------------------------------------------------------EVERYONE AUTHENTICATED
         Route::get('/', Dashboard::class)->name('dashboard');
+        Route::get('/master-data', Dashboard::class)->name('master-data');
+        Route::get('/selling', Dashboard::class)->name('selling');
+        Route::get('/bookings', Dashboard::class)->name('bookings');
+        Route::get('/reports', Dashboard::class)->name('reports');
 #------------------------------------------------------------------------------------------EVERYONE AUTHENTICATED END
         Route::middleware(
             ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN]
