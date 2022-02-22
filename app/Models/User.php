@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\App;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -21,9 +22,9 @@ class User extends Authenticatable implements MustVerifyEmail
     use TwoFactorAuthenticatable;
     use HasRoles;
 
-    const ROLE_SUPER_ADMIN ='super-admin';
-    const ROLE_ADMIN ='admin';
-    const ROLE_USER ='user';
+    const ROLE_SUPER_ADMIN = 'super-admin';
+    const ROLE_ADMIN = 'admin';
+    const ROLE_USER = 'user';
 
     /**
      * The attributes that are mass assignable.
@@ -40,6 +41,40 @@ class User extends Authenticatable implements MustVerifyEmail
         'company_id',
         'destination_id'
     ];
+
+    public function getNameAttribute($value)
+    {
+        if (App::environment('production')) {
+
+            $value =
+                \Auth::user()->hasRole(self::ROLE_SUPER_ADMIN)
+                    ? \Str::mask($value, '*', 3)
+                    : $value;
+        }
+        return $value;
+    }
+
+    public function getEmailAttribute($value)
+    {
+        if (App::environment('production')) {
+            $value =
+                \Auth::user()->hasRole(self::ROLE_SUPER_ADMIN)
+                    ? \Str::mask($value, '*', 3)
+                    : $value;
+        }
+        return $value;
+    }
+
+    public function getOibAttribute($value)
+    {
+        if (App::environment('production')) {
+            $value =
+                \Auth::user()->hasRole(self::ROLE_SUPER_ADMIN)
+                    ? \Str::mask($value, '*', 3)
+                    : $value;
+        }
+        return $value;
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -71,10 +106,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_photo_url',
     ];
 
-    public function destination(){
+    public function destination()
+    {
         return $this->belongsTo(Destination::class);
     }
-    public function company(){
+
+    public function company()
+    {
         return $this->belongsTo(Company::class);
     }
 
