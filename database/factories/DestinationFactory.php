@@ -15,11 +15,8 @@ class DestinationFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-
             'company_id' => function () {
-                return Company::factory()->create()->id;
+                return Company::inRandomOrder()->first()->id;
             },
         ];
     }

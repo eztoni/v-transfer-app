@@ -15,17 +15,6 @@ class UserOverview extends Component
     public $userRole = '';
     public $editData = [];
 
-  /*  protected $rules = [
-        'user.name' => 'required|min:3',
-        'user.email' => 'required|email',
-        'user.destination_id' => 'required',
-        'user.city' => 'min:3',
-        'user.zip' => 'min:3',
-        'user.oib' => 'min:13|max:13|integer|unique:users,oib',
-        'user.set_password'=>'nullable|min:6',
-        'user.set_password_confirmation'=>'nullable|same:user.set_password',
-        'userRole'=>'required|in:admin,user'
-    ];*/
 
     protected function rules()
     {

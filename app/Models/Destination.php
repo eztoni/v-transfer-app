@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Scopes\CompanyScope;
+use App\Traits\FieldMask;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,7 +16,9 @@ class Destination extends Model
     use HasFactory;
     use SoftDeletes;
     use LogsActivity;
+    use FieldMask;
 
+    protected $masked = ['name'];
 
     protected $fillable = [
         'company_id',
