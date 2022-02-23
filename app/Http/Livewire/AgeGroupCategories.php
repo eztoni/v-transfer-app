@@ -54,8 +54,8 @@ class AgeGroupCategories extends Component
 
     public function validateOverlaps()
     {
-        $ageCategoriesOverlap = AgeCategory::where('id','!=',$this->ageCategory->id)->whereAgeGroupId($this->ageGroup->id)->where('age_from','<',$this->ageCategory->age_to)
-            ->where('age_to','>',$this->ageCategory->age_from )->get();
+        $ageCategoriesOverlap = AgeCategory::where('id','!=',$this->ageCategory->id)->whereAgeGroupId($this->ageGroup->id)->where('age_from','<=',$this->ageCategory->age_to)
+            ->where('age_to','>=',$this->ageCategory->age_from )->get();
         if($ageCategoriesOverlap->isNotEmpty()  ){
             $this->addError('ageOverlapError','This age overlaps with other ages');
             return false;
