@@ -18,13 +18,7 @@ class CreateDestinationsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
-        \App\Models\Destination::create(
-            [
-                'name' =>'Poreč',
-                'company_id' => 1,
 
-            ]
-        );
 
     }
 

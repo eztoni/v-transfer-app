@@ -25,7 +25,9 @@ class CreateSuperadmins extends Migration
         $user->oib = '12345678912';
         $user->email_verified_at = date("Y-m-d H:i:s");
         $user->company_id = 1;
-        $user->destination_id = 1;
+        $user->owner_id = 1;
+
+
         $user->save();
         $user->assignRole('super-admin');
 
@@ -37,7 +39,8 @@ class CreateSuperadmins extends Migration
         $user->oib = '12345678914';
         $user->email_verified_at = date("Y-m-d H:i:s");
         $user->company_id = 1;
-        $user->destination_id = 1;
+        $user->owner_id = 1;
+
         $user->save();
         $user->assignRole('super-admin');
 
@@ -49,7 +52,7 @@ class CreateSuperadmins extends Migration
         $user->oib = '12345678913';
         $user->email_verified_at = date("Y-m-d H:i:s");
         $user->company_id = 1;
-        $user->destination_id = 1;
+        $user->owner_id = 1;
         $user->save();
         $user->assignRole('super-admin');
     }

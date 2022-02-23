@@ -6,7 +6,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
             <span class="hidden md:inline ">
-          {{$userDestinationName}}
+          {{$userOwnerName}}
         </span>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1792"
                  class="inline-block w-4 h-4 ml-1 fill-current">
@@ -17,14 +17,14 @@
         <div
             class="mt-16 overflow-y-auto shadow-2xl top-px dropdown-content h-72 w-52 rounded-b-box bg-base-200 text-base-content">
             <ul class="p-4 menu compact">
-                @foreach($destinations as $destination)
+                @foreach($owners as $owner)
                     <li><a tabindex="0"
                            data-set-theme="valamar"
-                           wire:click="changeDestination({{$destination->id}})"
-                            @class(['active'=>$destination->id == Auth::user()->destination_id])
+                           wire:click="changeOwner({{$owner->id}})"
+                            @class(['active'=>$owner->id == Auth::user()->owner_id])
                         >
 
-                            #{{$destination->id}} - {{$destination->name}}
+                            #{{$owner->id}} - {{$owner->name}}
 
                         </a>
                     </li>

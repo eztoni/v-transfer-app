@@ -16,7 +16,9 @@ trait FieldMask
                     if (is_array($this->masked)) {
                         foreach ($this->masked as $fieldName) {
                             if ($name == $fieldName) {
-                                return \Str::mask(parent::getAttribute($name), '*', 3);
+                                if(is_string(parent::getAttribute($name))){
+                                    return \Str::mask(parent::getAttribute($name), '*', 3);
+                                }
                             }
                         }
                     }

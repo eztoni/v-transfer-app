@@ -69,15 +69,9 @@
 
                             <select  wire:model="ageCategory.category_name" class="select select-bordered">
                                 <option  value="{{ null }}">Select Age Group</option>
-                                @if(!empty($this->ageCategory->exists))
-                                    <option value="{{$this->ageCategory->category_name}}">{{Str::ucfirst($this->ageCategory->category_name)}}</option>
-                                @else
-                                    @foreach(\App\Models\AgeCategory::AGE_CATEGORIES as $age_category)
-                                        @if(!$existingCategories->contains($age_category))
+                                    @foreach($this->availableAgeCategories as $age_category)
                                             <option value="{{$age_category}}">{{Str::ucfirst($age_category)}}</option>
-                                        @endif
                                     @endforeach
-                                @endif
                             </select>
                             @error('ageCategory.category_name') <x-input-alert type='warning'>{{ $message }}</x-input-alert>@enderror
                         </div>

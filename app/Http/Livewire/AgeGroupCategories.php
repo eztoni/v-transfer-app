@@ -54,19 +54,12 @@ class AgeGroupCategories extends Component
 
     public function validateOverlaps()
     {
-
-
-
-        $ageCategoriesOverlap = AgeCategory::whereAgeGroupId($this->ageGroup->id)->where('age_from','<',$this->ageCategory->age_to)
+        $ageCategoriesOverlap = AgeCategory::where('id','!=',$this->ageCategory->id)->whereAgeGroupId($this->ageGroup->id)->where('age_from','<',$this->ageCategory->age_to)
             ->where('age_to','>',$this->ageCategory->age_from )->get();
-        if($ageCategoriesOverlap->isNotEmpty() AND $ageCategoriesOverlap->first()->id != $this->ageCategory->id ){
-            //dd($ageCategoriesOverlap->first()->id);
-            //dd($this->ageCategory->id);
+        if($ageCategoriesOverlap->isNotEmpty()  ){
             $this->addError('ageOverlapError','This age overlaps with other ages');
             return false;
         }
-
-
         return true;
     }
 
@@ -77,17 +70,25 @@ class AgeGroupCategories extends Component
             return false;
         }
 
-
         $this->ageCategory->age_group_id = $this->ageGroup->id;
         $this->ageCategory->save();
         $this->showToast('Saved','Age Category Saved','success');
         $this->closeAgeCategoryModal();
     }
 
+
+    public function getAvailableAgeCategoriesProperty(){
+
+        $existing = AgeCategory::whereAgeGroupId($this->ageGroup->id)->pluck('category_name')->toArray();
+        $newArray = array_diff(\App\Models\AgeCategory::AGE_CATEGORIES,$existing );
+
+        return  $newArray;
+    }
+
     public function render()
     {
         $ageCategories = AgeCategory::where('age_group_id','=',$this->ageGroup->id)->get();
-        $existingCategories = AgeCategory::whereAgeGroupId($this->ageGroup->id)->pluck('category_name');
-        return view('livewire.age-group-categories',compact('ageCategories','existingCategories'));
+
+        return view('livewire.age-group-categories',compact('ageCategories'));
     }
 }

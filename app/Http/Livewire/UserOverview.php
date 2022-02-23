@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Destination;
+use App\Models\Owner;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -21,7 +21,7 @@ class UserOverview extends Component
         return [
             'user.name' => 'required|min:3',
             'user.email' => 'required|email',
-            'user.destination_id' => 'required',
+            'user.owner_id' => 'required',
             'user.city' => 'min:3',
             'user.zip' => 'min:3',
             'user.oib' => 'digits:13|integer|unique:users,oib,'.$this->user->id,
@@ -105,8 +105,8 @@ class UserOverview extends Component
             return $user->hasRole(User::ROLE_SUPER_ADMIN);
         });
         $roles = \Spatie\Permission\Models\Role::where('name','!=','super-admin')->get();
-        $destinations = Destination::all();
+        $owners = Owner::all();
 
-        return view('livewire.user-overview',compact('users','currentUser','roles','destinations'));
+        return view('livewire.user-overview',compact('users','currentUser','roles','owners'));
     }
 }

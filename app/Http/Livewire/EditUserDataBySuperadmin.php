@@ -41,7 +41,7 @@ class EditUserDataBySuperadmin extends Component
         $this->validate();
         $this->user->fill($this->editData);
         $this->user->save();
-        $this->showToast('User Saved','PogU','success');
+        $this->showToast('User Saved','','success');
 
     }
 

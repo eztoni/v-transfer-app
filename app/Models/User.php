@@ -39,7 +39,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'country_code',
         'password',
         'company_id',
-        'destination_id'
+        'owner_id'
     ];
 
     public function getNameAttribute($value)

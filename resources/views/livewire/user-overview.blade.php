@@ -77,16 +77,16 @@
 
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text">Destination:</span>
+                                <span class="label-text">Owner:</span>
                             </label>
 
-                            <select class="select select-bordered" wire:model="user.destination_id">
-                                <option  value="{{ null }}">Select Destination</option>
-                                @foreach($destinations as $destination)
-                                    <option value="{{$destination->id}}">{{$destination->name}}</option>
+                            <select class="select select-bordered" wire:model="user.owner_id">
+                                <option  value="{{ null }}">Select Owner</option>
+                                @foreach($owners as $owner)
+                                    <option value="{{$owner->id}}">{{$owner->name}}</option>
                                 @endforeach
                             </select>
-                            @error('user.destination_id') <x-input-alert type='warning'>{{ $message }}</x-input-alert>@enderror
+                            @error('user.owner_id') <x-input-alert type='warning'>{{ $message }}</x-input-alert>@enderror
                         </div>
 
                         <div class="form-control">
