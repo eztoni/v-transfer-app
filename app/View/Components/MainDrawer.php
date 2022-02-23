@@ -15,9 +15,17 @@ class MainDrawer extends Component
             [
                 'icon' => 'fas fa-database',
                 'text' => 'Master Data',
-                'active' => request()->routeIs('master-data'),
+                'active' => request()->routeIs('age-groups',),
                 'href' => route('master-data'),
-                'show'=> true
+                'show'=> true,
+                'items' => [
+                    [
+                        'text' => 'Age Groups',
+                        'active' => request()->routeIs('age-groups'),
+                        'href' => route('age-groups'),
+                        'show' => true,
+                    ],
+                ]
             ],
             [
                 'icon' => 'fas fa-euro-sign',
