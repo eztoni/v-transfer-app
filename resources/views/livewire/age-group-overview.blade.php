@@ -25,7 +25,7 @@
                     <tr>
                         <th>{{ $ageGroup->id }}</th>
                         <th >{{ $ageGroup->name }}</th>
-                        <th>{{ $ageGroup->categories->implode('category', ',') }}</th>
+                        <th>{{ Str::headline($ageGroup->categories->implode('category_name', ',')) }}</th>
                         <td class="text-center">
                             <button wire:click="updateAgeGroup({{$ageGroup->id}})" class="btn btn-sm btn-warning">
                                 Update

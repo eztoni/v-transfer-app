@@ -25,6 +25,7 @@ class MainDrawer extends Component
                         'href' => route('age-groups'),
                         'show' => true,
                     ],
+
                 ]
             ],
             [
@@ -51,7 +52,7 @@ class MainDrawer extends Component
             [
                 'icon' => 'fas fa-tools',
                 'text' => 'Administration',
-                'active' => request()->routeIs('admin.user-overview','admin.company-overview','admin.destinations'),
+                'active' => request()->routeIs('admin.user-overview','admin.company-overview','admin.destinations','admin.points-overview'),
                 'show'=> true,
                 'items' => [
                     [
@@ -73,6 +74,12 @@ class MainDrawer extends Component
                         'href' => route('admin.destinations'),
                         'show'=> \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN)
 
+                    ],
+                    [
+                        'text' => 'Points',
+                        'active' => request()->routeIs('admin.points-overview'),
+                        'href' => route('admin.points-overview'),
+                        'show' =>\Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN),
                     ],
                 ]
             ],

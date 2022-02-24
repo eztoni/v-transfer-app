@@ -10,6 +10,7 @@ class CompanyScope implements \Illuminate\Database\Eloquent\Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        $builder->where('company_id', '=', Auth::user()->company_id);
+        if(!empty(Auth::user()->id))
+            $builder->where('company_id', '=', Auth::user()->company_id);
     }
 }

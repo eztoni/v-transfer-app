@@ -2,14 +2,14 @@
 
     <x-ez-card>
         <x-slot name="title" class="flex justify-between">
-            Companies
+            Points
 
-            <button wire:click="addCompany" class="btn btn-sm ">Add Company</button>
+            <button wire:click="addPoint" class="btn btn-sm ">Add Point</button>
 
         </x-slot>
         <x-slot name="body">
 
-            <input type="text" wire:model="search" class="input input-primary my-2" placeholder="Find Company">
+            <input type="text" wire:model="search" class="input input-primary my-2" placeholder="Find Point">
             <table class="table table-compact w-full" wire:loading.delay.class="opacity-50">
                 <thead>
                 <tr>
@@ -21,18 +21,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                @forelse ($companies as $company)
+                @forelse ($points  as $p)
 
                     <tr>
-                        <th>{{ $company->id }}</th>
-                        <th >{{ $company->name }}</th>
+                        <th>{{ $p->id }}</th>
+                        <th>{{ $p->name }}</th>
                         <td class="text-center">
-                            <button wire:click="updateCompany({{$company->id}})" class="btn btn-sm btn-success">
+                            <button wire:click="updatePoint({{$p->id}})" class="btn btn-sm btn-success">
                                 Update
                             </button>
                         </td>
                         <td class="text-right">
-                            <button wire:click="openSoftDeleteModal({{$company->id}})" class="btn btn-sm btn-ghost">
+                            <button wire:click="openSoftDeleteModal({{$p->id}})" class="btn btn-sm btn-ghost">
                                 Delete
                             </button>
                         </td>
@@ -48,7 +48,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                               d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
                                     </svg>
-                                    <label>No defined companies</label>
+                                    <label>No defined points</label>
                                 </div>
                             </div>
                         </TD>
@@ -62,7 +62,7 @@
             <div class="modal {{ $softDeleteModal ? 'modal-open fadeIn' : '' }}">
                 <div class="modal-box max-h-screen overflow-y-auto">
                     <b>Confirm deletion?</b>
-                    <p>This action will delete the company.</p>
+                    <p>This action will delete the point.</p>
                     <hr class="my-4">
 
                     <div class="mt-4 flex justify-between">
@@ -73,9 +73,9 @@
             </div>
 
 
-            <div class="modal {{ $companyModal ? 'modal-open fadeIn' : '' }}">
+            <div class="modal {{ $pointModal ? 'modal-open fadeIn' : '' }}">
                 <div class="modal-box max-h-screen overflow-y-auto">
-                    Adding new company
+                    Adding new point
                     <hr class="my-4">
 
                     <div class="form-control">
@@ -83,9 +83,9 @@
                             <label class="label">
                                 <span class="label-text">Name :</span>
                             </label>
-                            <input wire:model="company.name" class="input input-bordered"
+                            <input wire:model="point.name" class="input input-bordered"
                                    placeholder="Name">
-                            @error('company.name')
+                            @error('point.name')
                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
                             @enderror
                         </div>
@@ -93,50 +93,63 @@
                         <div class="form-control">
 
                             <label class="label">
-                                <span class="label-text">Country:</span>
+                                <span class="label-text">Destination:</span>
                             </label>
-                            <x-country-select class="w-full" livewireModel="company.country_id"></x-country-select>
-                            @error('company.country_id')
+                            <select wire:model="point.destination_id" class="select select-bordered">
+                                <option value="">Select a destination</option>
+                                @foreach($destinations as $destination)
+                                    <option value="{{$destination->id}}">{{$destination->name}}</option>
+                                @endforeach
+                            </select>
+
+                            @error('point.destination_id')
                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
                             @enderror
                         </div>
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text">Email:</span>
+                                <span class="label-text">Description:</span>
                             </label>
-                            <input wire:model="company.email" class="input input-bordered"
-                                   placeholder="email">
-                             @error('company.email')
+                            <textarea rows="3" wire:model="point.description" class="textarea textarea-bordered"
+                                      placeholder="ex. Near pile gate"></textarea>
+                            @error('point.description')
+                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                            @enderror
+                        </div>
+                        <div class="form-control" >
+                            <label for="address_address">Address</label>
+                            <input type="text" id="address-input" value="{{$point->address}}" class="input input-bordered rounded-b-none map-input">
+                            <input type="hidden"  wire:model="point.address" id="address-address" value="{{$point->address}}" />
+                            <input type="hidden"  wire:model="point.latitude" id="address-latitude" value="{{$point->latitude}}" />
+                            <input type="hidden"  wire:model="point.longitude" id="address-longitude" value="{{$point->longitude}}" />
+
+
+                        </div>
+                        <div id="address-map-container" wire:ignore style="width:100%;height:400px; ">
+                            <div style="width: 100%; height: 100%" id="address-map"></div>
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Type:</span>
+                            </label>
+                            <select wire:model="point.type" class="select select-bordered">
+                                <option value="">Select a point type</option>
+                                @foreach(\App\Models\Point::TYPE_ARRAY as $type)
+                                    <option value="{{$type}}">{{Str::headline($type)}}</option>
+                                @endforeach
+                            </select>
+
+                            @error('point.destination_id')
                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
                             @enderror
                         </div>
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text">Contact:</span>
+                                <span class="label-text">HIS code:</span>
                             </label>
-                            <input wire:model="company.contact" class="input input-bordered"
-                                   placeholder="Contact">
-                              @error('company.contact')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Zip :</span>
-                            </label>
-                            <input wire:model="company.zip" class="input input-bordered"
-                                   placeholder="Zip">
-                              @error('company.zip')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">City:</span>
-                            </label>
-                            <input wire:model="company.city" class="input input-bordered"
-                                   placeholder="City">
-                             @error('company.city')
+                            <input wire:model="point.his_code" class="input input-bordered"
+                            >
+                            @error('point.his_code')
                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
                             @enderror
                         </div>
@@ -145,9 +158,9 @@
                     </div>
 
                     <div class="mt-4 flex justify-between">
-                        <button wire:click="closeCompanyModal()" class="btn btn-sm ">Close</button>
-                        <button wire:click="saveCompanyData()"
-                                class="btn btn-sm ">{{  !empty($this->company->exists) ? 'Update':'Add' }}</button>
+                        <button wire:click="closePointModal()" class="btn btn-sm ">Close</button>
+                        <button wire:click="savePointData()"
+                                class="btn btn-sm ">{{  !empty($this->point->exists) ? 'Update':'Add' }}</button>
                     </div>
                 </div>
             </div>
@@ -155,5 +168,13 @@
         </x-slot>
 
     </x-ez-card>
+    @push('scripts-bottom')
+        @once
+            <script
+                src="https://maps.googleapis.com/maps/api/js?key={{ Config::get('valamar.google_maps_api_key') }}&libraries=places&callback=initialize"
+                async defer></script>
+            <script src="{{mix('js/mapInput.js')}}"></script>
+        @endonce
+    @endpush
 </div>
 

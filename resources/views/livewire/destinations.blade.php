@@ -1,4 +1,4 @@
-<div x-data="app()">
+<div >
 
     <x-ez-card>
         <x-slot name="title" class="flex justify-between">
