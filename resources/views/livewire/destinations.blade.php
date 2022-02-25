@@ -22,19 +22,19 @@
                 </tr>
                 </thead>
                 <tbody>
-                @forelse ($destinations as $destination)
+                @forelse ($destinations as $d)
 
 
                     <tr>
-                        <th>{{ $destination->id }}</th>
-                        <th>{{ $destination->name }}</th>
+                        <th>{{ $d->id }}</th>
+                        <th>{{ $d->name }}</th>
                         <td class="text-center">
-                            <button wire:click="updateDestination({{$destination->id}})" class="btn btn-sm btn-success">
+                            <button wire:click="updateDestination({{$d->id}})" class="btn btn-sm btn-success">
                                 Update
                             </button>
                         </td>
                         <td class="text-right">
-                            <button wire:click="openSoftDeleteModal({{$destination->id}})" class="btn btn-sm btn-ghost">
+                            <button wire:click="openSoftDeleteModal({{$d->id}})" class="btn btn-sm btn-ghost">
                                 Delete
                             </button>
                         </td>
@@ -57,9 +57,8 @@
                     </tr>
                 @endforelse
                 </tbody>
-
             </table>
-
+            {{ $destinations->links() }}
 
             <div class="modal {{ $softDeleteModal ? 'modal-open fadeIn' : '' }}">
                 <div class="modal-box max-h-screen overflow-y-auto">

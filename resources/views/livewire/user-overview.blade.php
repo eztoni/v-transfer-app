@@ -19,18 +19,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                @forelse ($users as $user)
+                @forelse ($users as $user_data)
                     @if($currentUser->id != $user->id)
                     <tr>
-                        <th>{{ $user->id }}</th>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td >@foreach($user->getRoleNames() as $roleName) <span class="badge"> {{$roleName}}</span> @endforeach</td>
+                        <th>{{ $user_data->id }}</th>
+                        <td>{{ $user_data->name }}</td>
+                        <td>{{ $user_data->email }}</td>
+                        <td >@foreach($user_data->getRoleNames() as $roleName) <span class="badge"> {{$roleName}}</span> @endforeach</td>
                         <td class="text-right">
-                            @if($user->hasRole('super-admin'))
+                            @if($user_data->hasRole('super-admin'))
                                 <button disabled class="btn btn-primary btn-sm disabled">Update</button>
                             @else
-                                <button wire:click="updateUser({{$user->id}})" class="btn btn-sm btn-success">
+                                <button wire:click="updateUser({{$user_data->id}})" class="btn btn-sm btn-success">
                                     Update
                                 </button>
                             @endif

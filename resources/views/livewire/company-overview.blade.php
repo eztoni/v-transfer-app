@@ -56,7 +56,9 @@
                 @endforelse
                 </tbody>
 
+
             </table>
+            {{$companies->links()}}
 
 
             <div class="modal {{ $softDeleteModal ? 'modal-open fadeIn' : '' }}">

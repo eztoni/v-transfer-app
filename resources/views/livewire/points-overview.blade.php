@@ -57,7 +57,7 @@
                 </tbody>
 
             </table>
-
+            {{$points->links()}}
 
             <div class="modal {{ $softDeleteModal ? 'modal-open fadeIn' : '' }}">
                 <div class="modal-box max-h-screen overflow-y-auto">
@@ -74,7 +74,7 @@
 
 
             <div class="modal {{ $pointModal ? 'modal-open fadeIn' : '' }}">
-                <div class="modal-box max-h-screen overflow-y-auto">
+                <div class="modal-box max-h-[45rem] overflow-y-auto">
                     Adding new point
                     <hr class="my-4">
 
@@ -110,7 +110,7 @@
                             <label class="label">
                                 <span class="label-text">Description:</span>
                             </label>
-                            <textarea rows="3" wire:model="point.description" class="textarea textarea-bordered"
+                            <textarea rows="2" wire:model="point.description" class="textarea textarea-bordered"
                                       placeholder="ex. Near pile gate"></textarea>
                             @error('point.description')
                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
@@ -118,14 +118,14 @@
                         </div>
                         <div class="form-control" >
                             <label for="address_address">Address</label>
-                            <input type="text" id="address-input" value="{{$point->address}}" class="input input-bordered rounded-b-none map-input">
+                            <input type="text" autocomplete="off" id="address-input" value="{{$point->address}}" class="input input-bordered rounded-b-none map-input">
                             <input type="hidden"  wire:model="point.address" id="address-address" value="{{$point->address}}" />
                             <input type="hidden"  wire:model="point.latitude" id="address-latitude" value="{{$point->latitude}}" />
                             <input type="hidden"  wire:model="point.longitude" id="address-longitude" value="{{$point->longitude}}" />
 
 
                         </div>
-                        <div id="address-map-container" wire:ignore style="width:100%;height:400px; ">
+                        <div id="address-map-container" wire:ignore class="pt-2" style="width:100%;height:400px; ">
                             <div style="width: 100%; height: 100%" id="address-map"></div>
                         </div>
                         <div class="form-control">

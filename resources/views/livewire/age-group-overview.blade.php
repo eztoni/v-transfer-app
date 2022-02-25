@@ -55,6 +55,7 @@
                 </tbody>
 
             </table>
+            {{$ageGroups->links()}}
 
 
             <div class="modal {{ $ageGroupModal ? 'modal-open fadeIn' : '' }}">

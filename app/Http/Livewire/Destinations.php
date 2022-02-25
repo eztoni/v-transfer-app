@@ -25,6 +25,10 @@ class Destinations extends Component
         $this->validateOnly($propertyName);
     }
 
+    public function mount(){
+        $this->destination = new Destination();
+    }
+
     public function openDestinationModal(){
         $this->destinationModal = true;
     }
