@@ -15,6 +15,8 @@
                 <tr>
                     <th>#Id</th>
                     <th>Name</th>
+                    <th>Start</th>
+                    <th>End</th>
                     <th class="text-center">Update</th>
                     <th class="text-right"><span class="pr-4">Delete</span></th>
 
@@ -26,6 +28,8 @@
                     <tr>
                         <th>{{ $r->id }}</th>
                         <th >{{ $r->name }}</th>
+                        <th >{{ \App\Models\Point::find( $r->starting_point_id)->name }}</th>
+                        <th >{{ \App\Models\Point::find( $r->ending_point_id)->name }}</th>
                         <td class="text-center">
                             <button wire:click="updateRoute({{$r->id}})" class="btn btn-sm btn-success">
                                 Update
