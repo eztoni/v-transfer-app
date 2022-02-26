@@ -63,7 +63,7 @@ class PointsOverview extends Component
     public function getRawAddressProperty(){
         if($this->point)
         return $this->point->address;
-}
+    }
 
     public function addPoint(){
         $this->openPointModal();

@@ -25,6 +25,12 @@ class MainDrawer extends Component
                         'href' => route('age-groups'),
                         'show' => true,
                     ],
+                    [
+                        'text' => 'Routes',
+                        'active' => request()->routeIs('routes-overview'),
+                        'href' => route('routes-overview'),
+                        'show' => true,
+                    ],
 
                 ]
             ],

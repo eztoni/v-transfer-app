@@ -36,6 +36,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         //Age Groups
         Route::get('/age-groups', \App\Http\Livewire\AgeGroupOverview::class)->name('age-groups');
         Route::get('/age-group-categories/{ageGroup}', \App\Http\Livewire\AgeGroupCategories::class)->name('age-group-categories');
+        //Routes
+        Route::get('/routes-overview', \App\Http\Livewire\RoutesOverview::class)->name('routes-overview');
 #------------------------------------------------------------------------------------------EVERYONE AUTHENTICATED END
         Route::middleware(
             ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN]
