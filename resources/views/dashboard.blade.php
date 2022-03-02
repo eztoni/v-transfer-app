@@ -2,6 +2,11 @@
     <x-ez-card>
         <x-slot name="body">
             <div id="calendar"></div>
+          @php
+
+                echo $rate;
+            @endphp
+
 
         </x-slot>
     </x-ez-card>
