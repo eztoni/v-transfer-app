@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Route extends Model
 {
-
+    use HasFactory;
 
     protected $fillable = [
         'name',
@@ -19,6 +20,15 @@ class Route extends Model
 
     public function destination(){
         return $this->belongsTo(Destination::class);
+    }
+
+    public function startingPoint()
+    {
+        return $this->belongsTo(Point::class,'starting_point_id');
+    }
+    public function endingPoint()
+    {
+        return $this->belongsTo(Point::class,'ending_point_id');
     }
 
 }

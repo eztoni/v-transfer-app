@@ -12,8 +12,8 @@ class CreateRoutesTable extends Migration
             $table->id();
             $table->string('name');
             $table->foreignIdFor(\App\Models\Destination::class)->constrained();
-            $table->integer('starting_point_id');
-            $table->integer('ending_point_id');
+            $table->foreignIdFor(\App\Models\Point::class,'starting_point_id');
+            $table->foreignIdFor(\App\Models\Point::class,'ending_point_id');
             $table->string('his_code')->nullable();
             $table->tinyInteger('active')->default(1);
             $table->timestamps();

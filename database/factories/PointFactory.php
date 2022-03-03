@@ -23,7 +23,7 @@ class PointFactory extends Factory
             'destination_id' => function (){
                 return Destination::inRandomOrder()->first()->id;
             },
-            'name' => $this->faker->name(),
+            'name' => $this->faker->word(),
             'description' => $this->faker->text(),
             'address' => $this->faker->address(),
             'latitude' => $this->faker->latitude(),

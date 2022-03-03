@@ -17,5 +17,7 @@ class DatabaseSeeder extends Seeder
         #It will create the companies aswell
         \App\Models\Destination::factory(5)->create();
         \App\Models\Point::factory(13)->create();
+        \App\Models\Partner::factory(13)->create();
+        \App\Models\Route::factory(13)->create();
     }
 }
