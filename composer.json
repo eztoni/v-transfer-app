@@ -23,6 +23,7 @@
         "rappasoft/laravel-livewire-tables": "^1.20",
         "spatie/laravel-activitylog": "^4.4",
         "spatie/laravel-backup": "^7.7",
+        "spatie/laravel-medialibrary": "^9.0.0",
         "spatie/laravel-permission": "^5.1",
         "spatie/period": "^2.3"
     },
