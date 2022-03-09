@@ -30,6 +30,12 @@ mix.js('resources/js/app.js', 'public/js')
     .css('node_modules/fullcalendar/main.css',
         'public/packages/fullcalendar/calendar.css')
 
+    //Dropzone
+    .scripts('node_modules/dropzone/dist/dropzone-min.js',
+        'public/packages/dropzone/dropzone.js')
+    .css('node_modules/dropzone/dist/dropzone.css',
+        'public/packages/dropzone/dropzone.css')
+
 
     .sass('resources/css/styles.scss', 'public/css')
 

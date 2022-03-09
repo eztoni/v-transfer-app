@@ -52,6 +52,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
                 Route::get('/company-overview', \App\Http\Livewire\CompanyOverview::class)->name('company-overview');
                 Route::get('/destinations', Destinations::class)->name('destinations');
                 Route::get('/user-overview', \App\Http\Livewire\UserOverview::class)->name('user-overview');
+                Route::post('/upload-images', [\App\Http\Controllers\UploadImageController::class,'store'])->name('upload-images');
             });
 #------------------------------------------------------------------------------------------ADMINS END
             Route::middleware(
