@@ -14,6 +14,8 @@ class ImageGalleryUploader extends Component
 
     public function mount($id)
     {
+
+
         $this->extraId = $id;
     }
 

@@ -1,7 +1,7 @@
 <div x-data="extraImages()">
 
-    <x-ez-card>
-        <x-slot name="body" class="p-0" wire:ignore>
+    <x-ez-card class="mb-4">
+        <x-slot name="body" class="px-0 pb-0 " wire:ignore>
             <p class="px-6 mb-4">Upload up to <span class="badge">{{$this->model::MAX_IMAGES}} images</span>  for your extra. Our app optimizes  images before storing them. <br>Maximum image size is
                 <span class="badge">3 MB</span>.
                 We suggest using extra like <a class="link text-blue-600" href="https://tinypng.com">TinyPNG</a> for optimizing your images before storing them, so your booking engine loads faster!

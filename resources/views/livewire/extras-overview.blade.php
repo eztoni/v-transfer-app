@@ -95,9 +95,9 @@
                             <label class="label">
                                 <span class="label-text">Price (EUR) : </span>
                             </label>
-                            <input wire:model="extra.price" type="number" class="input input-bordered"
+                            <input wire:model="price" class="input input-bordered"
                                    placeholder="Price">
-                            @error('extra.price')
+                            @error('price')
                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
                             @enderror
                         </div>
@@ -114,5 +114,6 @@
         </x-slot>
 
     </x-ez-card>
+
 </div>
 

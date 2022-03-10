@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Scopes\CompanyScope;
 use Cknow\Money\Casts\MoneyDecimalCast;
+use Cknow\Money\Casts\MoneyIntegerCast;
+use Cknow\Money\Casts\MoneyStringCast;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -25,8 +27,7 @@ class Extra extends Model implements HasMedia
     ];
 
     protected $casts = [
-      //cast money as decimal using the currency defined in the package config
-      'price' => MoneyDecimalCast::class,
+      'price' => MoneyIntegerCast::class,
     ];
 
     public function getPrimaryImageAttribute(){

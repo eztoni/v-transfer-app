@@ -65,3 +65,59 @@ Toast
 .toast-close-button{
     padding:7px!important;
 }
+.dropzone .dz-preview.dz-image-preview{
+    background: unset;
+}
+
+.dropzone{
+    border: unset !important;
+
+}
+
+.tab.tab-active{
+    @apply border-primary
+}
+
+.steps .step:after {
+    height: 1.6rem;
+    width: 1.6rem;
+}
+.steps .step:before{
+    height: 0.3rem;
+}
+/*FIX DROPZONE ERROR CUTOF */
+.dropzone .dz-preview .dz-error-message {
+    top: 93px;
+
+}
+
+.divider-horizontal {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    height: auto;
+    width: 1rem;
+}
+
+.divider-horizontal {
+    flex-direction: column;
+}
+.divider-horizontal:before {
+    height: 100%;
+    width: 0.125rem;
+}
+
+.divider:before {
+    background-color: hsl(var(--bc)/var(--tw-bg-opacity));
+    --tw-bg-opacity: .1;
+}
+.divider-horizontal:after {
+    height: 100%;
+    width: 0.125rem;
+}
+
+.divider:after {
+    background-color: hsl(var(--bc)/var(--tw-bg-opacity));
+    --tw-bg-opacity: .1;
+}

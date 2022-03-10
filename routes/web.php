@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         Route::get('/bookings', Dashboard::class)->name('bookings');
         Route::get('/reports', Dashboard::class)->name('reports');
 
+
         //Age Groups
         Route::get('/age-groups', \App\Http\Livewire\AgeGroupOverview::class)->name('age-groups');
         Route::get('/age-group-categories/{ageGroup}', \App\Http\Livewire\AgeGroupCategories::class)->name('age-group-categories');

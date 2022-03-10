@@ -5,10 +5,12 @@ namespace App\Http\Livewire;
 use App\Models\Extra;
 
 
+use Cknow\Money\Money;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
+use Money\Formatter\DecimalMoneyFormatter;
 use Money\Parser\DecimalMoneyParser;
 
 class ExtrasOverview extends Component
@@ -17,11 +19,12 @@ class ExtrasOverview extends Component
     public $search = '';
     public $extra;
     public $extraModal;
+    public $price;
 
     protected $rules = [
         'extra.name' => 'required|max:255',
         'extra.description' => 'max:255',
-        'extra.price' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/',
+        'price' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/',
     ];
 
     protected $messages = [
@@ -44,11 +47,16 @@ class ExtrasOverview extends Component
     public function updateExtra($extraId){
         $this->openExtraModal();
         $this->extra = Extra::find($extraId);
+
+        $currencies = new ISOCurrencies();
+        $moneyFormatter = new DecimalMoneyFormatter($currencies);
+        $this->price =  $moneyFormatter->format($this->extra->price->getMoney());
     }
 
     public function addExtra(){
         $this->openExtraModal();
         $this->extra = new Extra();
+        $this->price = 0;
     }
 
     public function saveExtraData(){
@@ -59,8 +67,7 @@ class ExtrasOverview extends Component
         //Money
         $currencies = new ISOCurrencies();
         $moneyParser = new DecimalMoneyParser($currencies);
-        $money = $moneyParser->parse($this->extra->price,new Currency('EUR'));
-
+        $money = $moneyParser->parse($this->price,new Currency('EUR'));
         $this->extra->company_id = Auth::user()->company_id;
         $this->extra->price = $money->getAmount();
         $this->extra->save();
