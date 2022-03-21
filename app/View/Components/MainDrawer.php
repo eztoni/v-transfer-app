@@ -32,6 +32,12 @@ class MainDrawer extends Component
                         'show' => true,
                     ],
                     [
+                        'text' => 'Vehicles',
+                        'active' => request()->routeIs('vehicle-overview'),
+                        'href' => route('vehicle-overview'),
+                        'show' => true,
+                    ],
+                    [
                         'text' => 'Partners',
                         'active' => request()->routeIs('partner-overview'),
                         'href' => route('partners-overview'),
