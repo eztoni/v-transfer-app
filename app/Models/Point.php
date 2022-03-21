@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Scopes\ActiveScope;
 use App\Scopes\CompanyScope;
+use App\Scopes\OwnerScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,8 +23,6 @@ class Point extends Model
     ];
 
     protected $fillable = [
-        'company_id',
-        'destination_id',
         'name',
         'description',
         'address',
@@ -44,7 +43,7 @@ class Point extends Model
     protected static function booted()
     {
         static::addGlobalScope(new ActiveScope());
-        static::addGlobalScope(new CompanyScope());
+        static::addGlobalScope(new OwnerScope());
 
     }
 }

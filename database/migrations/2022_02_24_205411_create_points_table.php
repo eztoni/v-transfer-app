@@ -10,7 +10,7 @@ class CreatePointsTable extends Migration
     {
         Schema::create('points', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Company::class)->constrained();
+            $table->foreignIdFor(\App\Models\Owner::class)->constrained();
             $table->foreignIdFor(\App\Models\Destination::class)->constrained();
             $table->text('name');
             $table->text('description')->nullable();

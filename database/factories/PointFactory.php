@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Company;
 use App\Models\Destination;
+use App\Models\Owner;
 use App\Models\Point;
 use App\Scopes\CompanyScope;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -17,11 +18,11 @@ class PointFactory extends Factory
     {
         return [
 
-            'company_id' => function (){
-                return Company::inRandomOrder()->first()->id;
+            'owner_id' => function (){
+                return Owner::inRandomOrder()->first()->id;
             },
-            'destination_id' => function (){
-                return Destination::inRandomOrder()->first()->id;
+            'destination_id' => function ($attr){
+                return Destination::whereOwnerId($attr['owner_id'])->inRandomOrder()->first()->id;
             },
             'name' => $this->faker->word(),
             'description' => $this->faker->text(),
