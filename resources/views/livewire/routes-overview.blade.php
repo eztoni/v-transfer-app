@@ -28,8 +28,8 @@
                     <tr>
                         <th>{{ $r->id }}</th>
                         <th >{{ $r->name }}</th>
-                        <th >{{ \App\Models\Point::find( $r->starting_point_id)->name }}</th>
-                        <th >{{ \App\Models\Point::find( $r->ending_point_id)->name }}</th>
+                        <th >{{$r->startingPoint->name}}</th>
+                        <th >{{ $r->endingPoint->name }}</th>
                         <td class="text-center">
                             <button wire:click="updateRoute({{$r->id}})" class="btn btn-sm btn-success">
                                 Update

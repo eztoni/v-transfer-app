@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\OwnerScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,11 +12,12 @@ class Route extends Model
 
     protected $fillable = [
         'name',
-        'destination_id',
-        'starting_point_id',
-        'ending_point_id',
         'his_code',
         'active',
+    ];
+
+    protected $with = [
+        'startingPoint','endingPoint'
     ];
 
     public function destination(){
@@ -30,5 +32,8 @@ class Route extends Model
     {
         return $this->belongsTo(Point::class,'ending_point_id');
     }
-
+    protected static function booted()
+    {
+        static::addGlobalScope(new OwnerScope());
+    }
 }

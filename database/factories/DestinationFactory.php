@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Company;
 use App\Models\Destination;
+use App\Models\Owner;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
@@ -15,8 +16,8 @@ class DestinationFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'company_id' => function () {
-                return Company::inRandomOrder()->first()->id;
+            'owner_id' => function () {
+                return Owner::inRandomOrder()->first()->id;
             },
         ];
     }

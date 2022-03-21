@@ -15,8 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         #It will create the companies aswell
-        \App\Models\Destination::factory(5)->create();
-        \App\Models\Point::factory(20)->create();
+        \App\Models\Destination::factory(15)->create();
+        \App\Models\Point::factory(40)->create();
         \App\Models\Partner::factory(13)->create();
         \App\Models\Route::factory(13)->create();
     }

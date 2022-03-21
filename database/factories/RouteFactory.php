@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Destination;
+use App\Models\Owner;
 use App\Models\Point;
 use App\Models\Route;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -15,8 +16,11 @@ class RouteFactory extends Factory
     public function definition(): array
     {
         return [
-            'destination_id' => function (){
-                return Destination::inRandomOrder()->first()->id;
+            'owner_id' => function (){
+                return Owner::inRandomOrder()->first()->id;
+            },
+            'destination_id' => function ($attr){
+                return Destination::whereOwnerId($attr['owner_id'])->inRandomOrder()->first()->id;
             },
             'name' => $this->faker->name(),
             'starting_point_id' => function ($attr){

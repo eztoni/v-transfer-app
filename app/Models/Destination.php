@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Scopes\CompanyScope;
+use App\Scopes\OwnerScope;
 use App\Traits\FieldMask;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,7 +22,6 @@ class Destination extends Model
     protected $masked = ['name'];
 
     protected $fillable = [
-        'company_id',
         'name',
     ];
 
@@ -40,6 +40,6 @@ class Destination extends Model
 
     protected static function booted()
     {
-        static::addGlobalScope(new CompanyScope());
+        static::addGlobalScope(new OwnerScope());
     }
 }
