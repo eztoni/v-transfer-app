@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Extra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +15,8 @@ class UploadImageController extends Controller
     {
         $input = $request->all();
 
-        $service = Extra::find($request->extra_id);
+        $model = 'App\\Models\\'. $request->model;
+        $model = $model::find($request->model_id);
 
         $validation = Validator::make($input, [
             'file' => 'dimensions:max_width=2248,max_height=1800|mimes:jpeg,png,jpg,webp|max:3000',
@@ -25,7 +25,7 @@ class UploadImageController extends Controller
         if ($validation->fails())
             return Response::make($validation->errors()->first(), 400);
 
-        $media = $service->getMedia('extraImages');
+        $media = $model->getMedia($request->mediaCollectionName);
 
         if($media->count() >= 12){
             return Response::make('You have reach a maximum of '. Extra::MAX_IMAGES .' images for this service', 400);
@@ -35,7 +35,7 @@ class UploadImageController extends Controller
 
         $optimizerChain = OptimizerChainFactory::create();
         $optimizerChain->setTimeout(4)->optimize(Storage::path($path));
-        $service->addMedia(Storage::path($path))->toMediaCollection('extraImages');
+        $model->addMedia(Storage::path($path))->toMediaCollection($request->mediaCollectionName);
 
 
 

@@ -43,6 +43,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         //Extras
         Route::get('/extras-overview', \App\Http\Livewire\ExtrasOverview::class)->name('extras-overview');
         Route::get('/extras-edit/{extra}', \App\Http\Livewire\ExtrasEdit::class)->name('extras-edit');
+        //Vehicles
+        Route::get('/vehicle-overview', \App\Http\Livewire\VehicleOverview::class)->name('vehicle-overview');
+        Route::get('/vehicle-edit/{vehicle}', \App\Http\Livewire\VehicleEdit::class)->name('vehicle-edit');
 #------------------------------------------------------------------------------------------EVERYONE AUTHENTICATED END
         Route::middleware(
             ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN]

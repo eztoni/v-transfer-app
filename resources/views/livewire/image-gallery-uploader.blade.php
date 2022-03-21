@@ -9,7 +9,9 @@
             <form id="dropzone"
                   class="dropzone bg-gradient-to-r  rounded-tl-none   rounded-lg  rounded-tr-none  gradient from-blue-400 to-blue-500 border-none text-white"
                   action="{{route('admin.upload-images')}}">
-                <input type="hidden" name="extra_id" value="{{$this->model->id}}">
+                <input type="hidden" name="model_id" value="{{$this->model->id}}">
+                <input type="hidden" name="model" value="{{ class_basename($this->model) }}">
+                <input type="hidden" name="mediaCollectionName" value="{{$this->mediaCollectionName}}">
                 <div class="dz-default dz-message">
                     <div class="dz-icon">
                         <i class="fas fa-upload text-6xl mb-4"></i>
@@ -35,7 +37,7 @@
                 @foreach($this->model->getMedia($this->mediaCollectionName) as $media )
                     <div class=" group block py-4  " >
                         <div class="   relative">
-                            @if($media->hasCustomProperty(\App\Models\Extra::IMAGE_PRIMARY_PROPERTY))
+                            @if($media->hasCustomProperty($this->model::IMAGE_PRIMARY_PROPERTY))
                                 <div class="badge badge-success gap-2 bg-success text-neutral-content absolute bottom-5 left-5">
                                     Primary
                                 </div>
@@ -67,7 +69,6 @@
                     });
                     myDropzone.on("queuecomplete", file => {
                         this.$wire.render()
-
                     });
                 }
             }
