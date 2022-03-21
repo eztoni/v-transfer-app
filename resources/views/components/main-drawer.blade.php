@@ -24,7 +24,7 @@
         <div>
             <ul class="menu flex flex-col  pt-4 ">
                 @foreach($menuItems as $item)
-                    @if(!key_exists('items',$item) && $item['show'])
+                    @if(!array_key_exists('items',$item) && $item['show'])
                         <x-nav-link :href="$item['href']" :active="$item['active']">
                             <x-slot name="icon">
                                 <i class="{{$item['icon']}}"></i>
@@ -32,7 +32,13 @@
                             {{$item['text']}}
                         </x-nav-link>
                     @elseif($item['show'])
-                        <x-nav-submenu :active="$item['active']"  :text="$item['text']" :items="$item['items']">
+                        @php
+                            $subActive = !empty(Arr::where($item['items'],function ($value,$key){
+                                return $value['active'];
+                            }));
+
+                        @endphp
+                        <x-nav-submenu :active="$subActive"  :text="$item['text']" :items="$item['items']">
                                 <i class="{{$item['icon']}}"></i>
                         </x-nav-submenu>
                     @endif

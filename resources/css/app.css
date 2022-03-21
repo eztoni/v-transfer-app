@@ -87,10 +87,11 @@ Toast
 }
 /*FIX DROPZONE ERROR CUTOF */
 .dropzone .dz-preview .dz-error-message {
-    top: 93px;
-
+    top: 66px!important;
 }
-
+.dropzone .dz-preview.dz-image-preview{
+    background: transparent!important;
+}
 .divider-horizontal {
     margin-top: 0;
     margin-bottom: 0;

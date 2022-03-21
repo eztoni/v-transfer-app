@@ -1,11 +1,24 @@
 <?php
 
-use App\Http\Controllers\LogController;
 use App\Http\Controllers\SuperAdminDashboardController;
 use App\Http\Controllers\EditUserController;
+use App\Http\Controllers\UploadImageController;
+use App\Http\Livewire\ActivityLogDashboard;
+use App\Http\Livewire\AgeGroupCategories;
+use App\Http\Livewire\AgeGroupOverview;
+use App\Http\Livewire\CompanyOverview;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\Destinations;
+use App\Http\Livewire\ExtrasEdit;
+use App\Http\Livewire\ExtrasOverview;
+use App\Http\Livewire\InternalReservation;
+use App\Http\Livewire\PartnersOverview;
 use App\Http\Livewire\PointsOverview;
+use App\Http\Livewire\RoutesOverview;
+use App\Http\Livewire\TransferOverview;
+use App\Http\Livewire\UserOverview;
+use App\Http\Livewire\VehicleEdit;
+use App\Http\Livewire\VehicleOverview;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +38,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
     Route::middleware(
         ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN . '|' . User::ROLE_USER]
-    )->group(function () {
+    )->group(callback: function () {
 #------------------------------------------------------------------------------------------EVERYONE AUTHENTICATED
         Route::get('/', Dashboard::class)->name('dashboard');
         Route::get('/master-data', Dashboard::class)->name('master-data');
@@ -35,17 +48,24 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
 
         //Age Groups
-        Route::get('/age-groups', \App\Http\Livewire\AgeGroupOverview::class)->name('age-groups');
-        Route::get('/age-group-categories/{ageGroup}', \App\Http\Livewire\AgeGroupCategories::class)->name('age-group-categories');
+        Route::get('/age-groups', AgeGroupOverview::class)->name('age-groups');
+        Route::get('/age-group-categories/{ageGroup}', AgeGroupCategories::class)->name('age-group-categories');
         //Routes
-        Route::get('/routes-overview', \App\Http\Livewire\RoutesOverview::class)->name('routes-overview');
-        Route::get('/partners-overview', \App\Http\Livewire\PartnersOverview::class)->name('partners-overview');
+        Route::get('/routes-overview', RoutesOverview::class)->name('routes-overview');
+        Route::get('/partners-overview', PartnersOverview::class)->name('partners-overview');
         //Extras
-        Route::get('/extras-overview', \App\Http\Livewire\ExtrasOverview::class)->name('extras-overview');
-        Route::get('/extras-edit/{extra}', \App\Http\Livewire\ExtrasEdit::class)->name('extras-edit');
+        Route::get('/extras-overview', ExtrasOverview::class)->name('extras-overview');
+        Route::get('/extras-edit/{extra}', ExtrasEdit::class)->name('extras-edit');
         //Vehicles
-        Route::get('/vehicle-overview', \App\Http\Livewire\VehicleOverview::class)->name('vehicle-overview');
-        Route::get('/vehicle-edit/{vehicle}', \App\Http\Livewire\VehicleEdit::class)->name('vehicle-edit');
+        Route::get('/vehicle-overview', VehicleOverview::class)->name('vehicle-overview');
+        Route::get('/vehicle-edit/{vehicle}', VehicleEdit::class)->name('vehicle-edit');
+
+        Route::get('/transfer-overview', TransferOverview::class)->name('transfer-overview');
+        Route::get('/transfer-edit/{transfer}', \App\Http\Livewire\TransferEdit::class)->name('transfer-edit');
+
+        Route::get('/internal-reservation', InternalReservation::class)->name('internal-reservation');
+
+
 #------------------------------------------------------------------------------------------EVERYONE AUTHENTICATED END
         Route::middleware(
             ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN]
@@ -53,10 +73,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 #------------------------------------------------------------------------------------------ADMINS
             Route::prefix('admin')->name('admin.')->group(function () {
                 Route::get('/points-overview', PointsOverview::class)->name('points-overview');
-                Route::get('/company-overview', \App\Http\Livewire\CompanyOverview::class)->name('company-overview');
+                Route::get('/company-overview', CompanyOverview::class)->name('company-overview');
                 Route::get('/destinations', Destinations::class)->name('destinations');
-                Route::get('/user-overview', \App\Http\Livewire\UserOverview::class)->name('user-overview');
-                Route::post('/upload-images', [\App\Http\Controllers\UploadImageController::class,'store'])->name('upload-images');
+                Route::get('/user-overview', UserOverview::class)->name('user-overview');
+                Route::post('/upload-images', [UploadImageController::class, 'store'])->name('upload-images');
             });
 #------------------------------------------------------------------------------------------ADMINS END
             Route::middleware(
@@ -66,7 +86,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
                 Route::get('laravel-logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('laravel-logs');
                 Route::get('super-admin-dashboard', [SuperAdminDashboardController::class, 'show'])->name('super-admin-dashboard');
                 Route::get('edit-user/{user}', [EditUserController::class, 'showUser'])->name('edit-user');
-                Route::get('activity-log-dashboard', \App\Http\Livewire\ActivityLogDashboard::class)->name('activity-log-dashboard');
+                Route::get('activity-log-dashboard', ActivityLogDashboard::class)->name('activity-log-dashboard');
 #------------------------------------------------------------------------------------------SUPERADMINS END
 
             });

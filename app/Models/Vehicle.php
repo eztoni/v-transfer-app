@@ -48,6 +48,11 @@ class Vehicle extends Model implements HasMedia
             ->sharpen(10);
     }
 
+    public function transfer()
+    {
+        return $this->belongsTo(Transfer::class);
+    }
+
     protected static function booted()
     {
         static::addGlobalScope(new OwnerScope());

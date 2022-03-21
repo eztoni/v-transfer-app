@@ -15,7 +15,6 @@ class MainDrawer extends Component
             [
                 'icon' => 'fas fa-database',
                 'text' => 'Master Data',
-                'active' => request()->routeIs('age-groups',),
                 'href' => route('master-data'),
                 'show'=> true,
                 'items' => [
@@ -39,7 +38,7 @@ class MainDrawer extends Component
                     ],
                     [
                         'text' => 'Partners',
-                        'active' => request()->routeIs('partner-overview'),
+                        'active' => request()->routeIs('partners-overview'),
                         'href' => route('partners-overview'),
                         'show' => true,
                     ],
@@ -49,15 +48,27 @@ class MainDrawer extends Component
                         'href' => route('extras-overview'),
                         'show' => true,
                     ],
-
+                    [
+                        'text' => 'Transfers',
+                        'active' => request()->routeIs('transfer-overview'),
+                        'href' => route('transfer-overview'),
+                        'show' => true,
+                    ],
                 ]
             ],
             [
                 'icon' => 'fas fa-euro-sign',
                 'text' => 'Selling',
-                'active' => request()->routeIs('selling'),
                 'href' => route('selling'),
-                'show'=> true
+                'show'=> true,
+                'items'=>[
+                    [
+                        'text' => 'Transfer Reservation',
+                        'active' => request()->routeIs('internal-reservation'),
+                        'href' => route('internal-reservation'),
+                        'show' => true,
+                    ],
+                ]
             ],
             [
                 'icon' => 'fas fa-book',
@@ -76,7 +87,6 @@ class MainDrawer extends Component
             [
                 'icon' => 'fas fa-tools',
                 'text' => 'Administration',
-                'active' => request()->routeIs('admin.user-overview','admin.company-overview','admin.destinations','admin.points-overview'),
                 'show'=> true,
                 'items' => [
                     [

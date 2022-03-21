@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^8.0",
         "cknow/laravel-money": "^6.3",
         "dyrynda/laravel-cascade-soft-deletes": "^4.1",
         "florianv/laravel-swap": "^2.3",
@@ -28,6 +28,7 @@
         "spatie/period": "^2.3"
     },
     "require-dev": {
+
         "barryvdh/laravel-debugbar": "^3.6",
         "barryvdh/laravel-ide-helper": "^2.10",
         "facade/ignition": "^2.5",

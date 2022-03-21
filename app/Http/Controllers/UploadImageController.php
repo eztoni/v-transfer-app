@@ -27,8 +27,8 @@ class UploadImageController extends Controller
 
         $media = $model->getMedia($request->mediaCollectionName);
 
-        if($media->count() >= 12){
-            return Response::make('You have reach a maximum of '. Extra::MAX_IMAGES .' images for this service', 400);
+        if($media->count() >= $model::MAX_IMAGES){
+            return Response::make('You have reach a maximum of '. $model::MAX_IMAGES .' images for this service', 400);
         }
 
         $path = Storage::putFile('tempImages',  $request->file('file'));

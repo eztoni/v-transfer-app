@@ -19,7 +19,7 @@
     }
     .sub-nav-item{
         padding: 12px 20px;
-        &:hover{
+        &:hover:not(.active){
             background: #d5d5d5;
         }
     }

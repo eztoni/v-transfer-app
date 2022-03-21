@@ -11,7 +11,7 @@ class CreateTransfersTable extends Migration
         Schema::create('transfers', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\Owner::class);
-            $table->string('name');
+            $table->text('name');
 
             $table->timestamps();
         });

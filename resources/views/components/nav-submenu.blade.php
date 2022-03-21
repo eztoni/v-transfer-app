@@ -11,7 +11,7 @@
         @foreach($items as $item)
             @if($item['show'])
             <a href="{{$item['href']}}" class="{{$item['active']?'active text-neutral-content':''}}">
-                <div class="sub-nav-item {{$item['active']?'shadow-lg   bg-primary  ':''}}">
+                <div class="sub-nav-item {{$item['active']?'shadow-lg active  bg-primary  ':''}}">
 
                     {{$item['text']}}
 
