@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Scopes\OwnerScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Route extends Model
 {
@@ -21,6 +22,7 @@ class Route extends Model
     ];
 
     public function destination(){
+
         return $this->belongsTo(Destination::class);
     }
 

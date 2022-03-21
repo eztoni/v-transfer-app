@@ -12,12 +12,16 @@ class DestinationFactory extends Factory
 {
     protected $model = Destination::class;
 
+    public $ownerId = 1;
+
     public function definition(): array
     {
         return [
             'name' => $this->faker->name(),
             'owner_id' => function () {
-                return Owner::inRandomOrder()->first()->id;
+            $id = $this->ownerId;
+            $this->ownerId++;
+                return $id;
             },
         ];
     }

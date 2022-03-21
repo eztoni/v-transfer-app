@@ -15,11 +15,12 @@ class PartnerFactory extends Factory
     public function definition(): array
     {
         return [
-            'destination_id' => function (){
-              return   Destination::inRandomOrder()->first()->id;
-            },
-            'owner_id' => function (){
+
+            'owner_id' => function ($attr){
                 return   Owner::inRandomOrder()->first()->id;
+            },
+            'destination_id' => function ($attr){
+                return   Destination::whereOwnerId($attr['owner_id'])->inRandomOrder()->first()->id;
             },
             'name' => $this->faker->company(),
             'contact' => $this->faker->name(),

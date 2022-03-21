@@ -19,7 +19,11 @@
     }
     .sub-nav-item{
         padding: 12px 20px;
+        &:hover{
+            background: #d5d5d5;
+        }
     }
+
 }
 
 .drawer-side{

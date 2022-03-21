@@ -1,6 +1,7 @@
 <div class="drawer-side  lg:p-2"><label for="main-menu" class="drawer-overlay z-10"></label>
 
     <aside
+        style="max-width: 260px;"
         class="flex flex-col  relative border mb-2 mt-2 md:mt-0  shadow-xl rounded-box bg-base-100 text-base-content w-80">
         <img class="logo-img absolute" src="{{asset('/storage/static_images/valamar-puzina.png')}}">
 

@@ -1,5 +1,7 @@
 <div class="drawer-side"><label for="main-menu" class="drawer-overlay"></label>
-    <aside class="flex flex-col justify-between border-r border-base-200 bg-base-100 text-base-content w-80">
+    <aside
+
+        class="flex flex-col justify-between border-r border-base-200 bg-base-100 text-base-content w-80">
         <div
             class="sticky inset-x-0 top-0 z-50 hidden w-full py-1 transition duration-200 ease-in-out border-b lg:block border-base-200 bg-base-100">
             <div class="mx-auto space-x-1 navbar max-w-none">
