@@ -15,5 +15,5 @@
     </x-ez-card>
 
 
-   @livewire('image-gallery-uploader',['id' => $extra->id,'model' => $extra])
+   @livewire('image-gallery-uploader',['id' => $extra->id,'model' => $extra,'mediaCollectionName' => 'extraImages'])
 </div>

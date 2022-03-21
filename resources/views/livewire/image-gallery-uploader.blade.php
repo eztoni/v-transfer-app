@@ -27,12 +27,12 @@
     <x-ez-card >
 
         <x-slot name="title">
-            Images: {{$this->model->getMedia('extraImages')->count()}}/{{$this->model::MAX_IMAGES}}
+            Images: {{$this->model->getMedia($this->mediaCollectionName)->count()}}/{{$this->model::MAX_IMAGES}}
         </x-slot>
 
         <x-slot name="body" class="">
             <div class="grid  lg:grid-cols-4 sm:grid-cols-3 grid-cols-1 gap-4">
-                @foreach($this->model->getMedia('extraImages') as $media )
+                @foreach($this->model->getMedia($this->mediaCollectionName) as $media )
                     <div class=" group block py-4  " >
                         <div class="   relative">
                             @if($media->hasCustomProperty(\App\Models\Extra::IMAGE_PRIMARY_PROPERTY))

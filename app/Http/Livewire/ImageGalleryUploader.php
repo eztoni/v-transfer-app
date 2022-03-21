@@ -9,18 +9,17 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class ImageGalleryUploader extends Component
 {
 
-    public $extraId;
+    public $modelId;
     public $model;
+    public $mediaCollectionName;
 
     public function mount($id)
     {
-
-
-        $this->extraId = $id;
+        $this->modelId = $id;
     }
 
     public function delete($id){
-        $images = $this->model::findOrFail($this->extraId)->getMedia('extraImages');
+        $images = $this->model::findOrFail($this->modelId)->getMedia($this->mediaCollectionName);
 
         if ($image = $images->where('id', '=', $id)->first()) {
             $image->delete();
@@ -30,7 +29,7 @@ class ImageGalleryUploader extends Component
 
     public function makePrimary($id)
     {
-        $images = $this->model::findOrFail($this->extraId)->getMedia('extraImages');
+        $images = $this->model::findOrFail($this->modelId)->getMedia($this->mediaCollectionName);
 
 
         if ($image = $images->where('id', '=', $id)->first()) {
@@ -47,8 +46,8 @@ class ImageGalleryUploader extends Component
 
     public function moveRight($id)
     {
-        $extra = $this->model::findOrFail($this->extraId);
-        $images = $extra->getMedia('extraImages');
+        $extra = $this->model::findOrFail($this->modelId);
+        $images = $extra->getMedia($this->mediaCollectionName);
 
         $ids = $images->pluck('id')->toArray();
 
@@ -63,8 +62,8 @@ class ImageGalleryUploader extends Component
 
     public function moveLeft($id)
     {
-        $extra = $this->model::findOrFail($this->extraId);
-        $images = $extra->getMedia('extraImages');
+        $extra = $this->model::findOrFail($this->modelId);
+        $images = $extra->getMedia($this->mediaCollectionName);
 
         $ids = $images->pluck('id')->toArray();
         $insertId = [$id];
@@ -77,7 +76,8 @@ class ImageGalleryUploader extends Component
 
     public function render()
     {
-        $extra = $this->model::findOrFail($this->extraId);
-        return view('livewire.image-gallery-uploader',compact('extra'));
+        $this->model = $this->model::findOrFail($this->modelId);
+
+        return view('livewire.image-gallery-uploader');
     }
 }
