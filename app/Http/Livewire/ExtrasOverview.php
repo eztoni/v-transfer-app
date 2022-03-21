@@ -68,7 +68,7 @@ class ExtrasOverview extends Component
         $currencies = new ISOCurrencies();
         $moneyParser = new DecimalMoneyParser($currencies);
         $money = $moneyParser->parse($this->price,new Currency('EUR'));
-        $this->extra->company_id = Auth::user()->company_id;
+        $this->extra->owner_id = Auth::user()->owner_id;
         $this->extra->price = $money->getAmount();
         $this->extra->save();
         $this->showToast('Success','Extra saved, add some info to it!');

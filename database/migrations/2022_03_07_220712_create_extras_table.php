@@ -11,7 +11,7 @@ class CreateExtrasTable extends Migration
     {
         Schema::create('extras', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Company::class)->constrained();
+            $table->foreignIdFor(\App\Models\Owner::class)->constrained();
             $table->string('name');
             $table->text('description')->nullable();
             $table->bigInteger('price');

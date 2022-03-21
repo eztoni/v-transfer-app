@@ -11,6 +11,7 @@ class CreatePartnersTable extends Migration
         Schema::create('partners', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\Destination::class)->constrained();
+            $table->foreignIdFor(\App\Models\Owner::class)->constrained();
             $table->string('name');
             $table->string('contact');
             $table->string('email');

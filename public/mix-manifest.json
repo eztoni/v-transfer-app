@@ -5,8 +5,10 @@
     "/js/init-alpine.js": "/js/init-alpine.js",
     "/css/styles.css": "/css/styles.css",
     "/css/app.css": "/css/app.css",
+    "/packages/dropzone/dropzone.css": "/packages/dropzone/dropzone.css",
     "/packages/fullcalendar/calendar.css": "/packages/fullcalendar/calendar.css",
     "/js/mapInput.js": "/js/mapInput.js",
     "/packages/fullcalendar/calendar.js": "/packages/fullcalendar/calendar.js",
-    "/packages/fullcalendar/hr.js": "/packages/fullcalendar/hr.js"
+    "/packages/fullcalendar/hr.js": "/packages/fullcalendar/hr.js",
+    "/packages/dropzone/dropzone.js": "/packages/dropzone/dropzone.js"
 }

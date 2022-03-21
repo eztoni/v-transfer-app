@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Scopes\CompanyScope;
+use App\Scopes\OwnerScope;
 use Cknow\Money\Casts\MoneyDecimalCast;
 use Cknow\Money\Casts\MoneyIntegerCast;
 use Cknow\Money\Casts\MoneyStringCast;
@@ -56,6 +57,6 @@ class Extra extends Model implements HasMedia
 
     protected static function booted()
     {
-        static::addGlobalScope(new CompanyScope());
+        static::addGlobalScope(new OwnerScope());
     }
 }

@@ -64,6 +64,8 @@ class PartnersOverview extends Component
         if(!Auth::user()->hasRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN]))
             return;
 
+        $this->partner->owner_id = Auth::user()->owner_id;
+
         $this->validate();
         $this->partner->save();
         $this->showToast('Saved','Partner Saved','success');

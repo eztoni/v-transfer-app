@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Destination;
+use App\Models\Owner;
 use App\Models\Partner;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
@@ -16,6 +17,9 @@ class PartnerFactory extends Factory
         return [
             'destination_id' => function (){
               return   Destination::inRandomOrder()->first()->id;
+            },
+            'owner_id' => function (){
+                return   Owner::inRandomOrder()->first()->id;
             },
             'name' => $this->faker->company(),
             'contact' => $this->faker->name(),
