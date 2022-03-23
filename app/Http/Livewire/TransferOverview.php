@@ -58,8 +58,14 @@ class TransferOverview extends Component
 
         $vehicles = $this->getVehiclesProperty();
 
+        if(empty($this->vehicleId)){
+            $this->addError('vehicleId','Please choose a vehicle.');
+            return;
+        }
+
+
         if($vehicles->isEmpty()){
-            $this->addError('vehicleId','Vehicle already taken');
+            $this->addError('vehicleId','Vehicle already taken.');
             return;
         }
 

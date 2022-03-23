@@ -67,7 +67,7 @@
                     <div class="form-control">
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text">Name :</span>
+                                <span class="label-text">Name:</span>
                             </label>
                             <input wire:model="transfer.name" class="input input-bordered"
                                    placeholder="Name">
