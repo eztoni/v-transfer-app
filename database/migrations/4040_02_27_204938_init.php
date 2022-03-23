@@ -19,11 +19,11 @@ class Init extends Migration
             ]
         );
 
-        $company = \App\Models\Company::create(
+        \App\Models\Company::create(
             [
-                'name' => 'My Agency',
-                'contact' => 'Ez Booker',
-                'email' => 'modrictin7@gmail.com',
+                'name' => 'Valamar',
+                'contact' => 'Valamar',
+                'email' => 'Valamar',
                 'country_id' => 1,
                 'city' => 'Dubrovnik',
                 'zip' => '20236',
@@ -43,12 +43,11 @@ class Init extends Migration
             ]
         );
 
-        $language =  \App\Models\Language::create(['name' => 'Hrvatski','language_code' => 'hr']);
-
-        $company->languages()->attach($language);
+         \App\Models\Language::create(['name' => 'Hrvatski','language_code' => 'hr']);
 
 
-        $role = Role::create(['name' => User::ROLE_SUPER_ADMIN]);
+
+         Role::create(['name' => User::ROLE_SUPER_ADMIN]);
 
 
         $user = new User();
@@ -86,10 +85,16 @@ class Init extends Migration
         $user->save();
         $user->assignRole('super-admin');
 
-
-
-
-
+        $user = new User();
+        $user->name = 'Valamar Test';
+        $user->password = Hash::make('&5T%4$5a#2lK');
+        $user->email = 'valamar.test@ez-booker.com';
+        $user->email_verified_at = date("Y-m-d H:i:s");
+        $user->company_id = 1;
+        $user->owner_id = 1;
+        $user->oib = 4;
+        $user->save();
+        $user->assignRole(User::ROLE_ADMIN);
 
     }
 

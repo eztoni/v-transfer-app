@@ -1,5 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
-
+const colors = require('tailwindcss/colors')
 module.exports = {
     mode: 'jit',
     purge: [
@@ -13,7 +13,13 @@ module.exports = {
         extend: {
             fontFamily: {
                 sans: ['Open Sans', ...defaultTheme.fontFamily.sans],
+
             },
+            colors: {
+                green: colors.emerald,
+                yellow: colors.amber,
+                purple: colors.violet,
+            }
         },
     },
 

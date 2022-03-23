@@ -15,8 +15,6 @@
                     <th>#Id</th>
                     <th>Name</th>
                     <th>Type</th>
-                    <th>Images</th>
-                    <th class="text-center">Update</th>
                     <th class="text-center">Edit Vehicle</th>
                 </tr>
                 </thead>
@@ -27,14 +25,9 @@
                         <th>{{ $ve->id }}</th>
                         <th >{{ $ve->name }}</th>
                         <th >{{ $ve->type }}</th>
-                        <th >{{ $ve->getMedia('vehicleImages')->count()}}/{{$ve::MAX_IMAGES}}</th>
+
                         <td class="text-center">
-                            <button wire:click="updateVehicle({{$ve->id}})" class="btn btn-sm btn-warning">
-                                Update
-                            </button>
-                        </td>
-                        <td class="text-center">
-                            <a href="{{ route('vehicle-edit',$ve) }}"><button class="btn btn-sm btn-success">Images</button></a>
+                            <a href="{{ route('vehicle-edit',$ve) }}"><button class="btn btn-sm btn-success">Edit</button></a>
                         </td>
                     </tr>
 
@@ -70,9 +63,9 @@
                             <label class="label">
                                 <span class="label-text">Name :</span>
                             </label>
-                            <input wire:model="vehicle.name" class="input input-bordered"
+                            <input wire:model="vehicleName" class="input input-bordered"
                                    placeholder="Name">
-                            @error('vehicle.name')
+                            @error('vehicleName')
                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
                             @enderror
                         </div>

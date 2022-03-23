@@ -22,16 +22,7 @@ class CreateCompaniesTable extends Migration
             $table->timestamps();
         });
 
-        \App\Models\Company::create(
-            [
-                'name' => 'Valamar',
-                'contact' => 'Valamar',
-                'email' => 'Valamar',
-                'country_id' => 1,
-                'city' => 'Dubrovnik',
-                'zip' => '20236',
-            ]
-        );
+
 
     }
 

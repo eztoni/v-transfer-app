@@ -14,12 +14,13 @@ class VehicleOverview extends Component
     public $search = '';
     public $vehicle;
     public $vehicleModal;
+    public $vehicleName;
 
     protected $rules = [
-        'vehicle.name' => 'required|max:255',
+        'vehicleName' => 'required|max:255',
         'vehicle.type' => 'max:255',
-        'vehicle.max_luggage' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/',
-        'vehicle.max_occ' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/',
+        'vehicle.max_luggage' => 'required|integer',
+        'vehicle.max_occ' => 'required|integer',
     ];
 
     public function updated($propertyName)
@@ -35,10 +36,7 @@ class VehicleOverview extends Component
         $this->vehicleModal = false;
     }
 
-    public function updateVehicle($vehicleId){
-        $this->openVehicleModal();
-        $this->vehicle = Vehicle::find($vehicleId);
-    }
+
 
     public function addVehicle(){
         $this->openVehicleModal();
@@ -48,11 +46,13 @@ class VehicleOverview extends Component
     public function saveVehicleData(){
 
         $this->validate();
+        $this->vehicle->name = $this->vehicleName;
+
         $this->vehicle->owner_id = Auth::user()->owner_id;
         $this->vehicle->save();
         $this->showToast('Success','Vehicle saved, add some info to it!');
         $this->closeVehicleModal();
-
+        return \Redirect::to(route('vehicle-edit',['vehicle'=>$this->vehicle->id]));
     }
 
     public function render()

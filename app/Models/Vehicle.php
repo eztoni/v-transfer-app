@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Translatable\HasTranslations;
 
 class Vehicle extends Model implements HasMedia
 {
-
+    use HasTranslations;
     use InteractsWithMedia;
     const MAX_IMAGES = 5;
 
@@ -23,6 +24,7 @@ class Vehicle extends Model implements HasMedia
         'max_luggage',
         'max_occ',
     ];
+    public $translatable = ['name'];
 
     public function getPrimaryImageAttribute(){
         $image = $this->getMedia('vehicleImages', function (Media $media) {

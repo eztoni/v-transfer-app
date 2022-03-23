@@ -1,4 +1,4 @@
-<div>
+<div x-data="transferSettings">
     <x-ez-card class="mb-5">
 
         <x-slot name="title">
@@ -15,11 +15,33 @@
     @livewire('image-gallery-uploader',['id' => $transfer->id,'model' => $transfer,'mediaCollectionName' => 'transferImages'])
 
 
-    <div class="">
+    <div class="mt-4">
         <x-ez-card class="h-full ">
             <x-slot name="body">
-                <div class="">
+                <div class="flex md:flex-row flex-col gap-2">
+                    <div class="basis-1/5 flex-shrink">
 
+                        <p class="text-xl font-bold mb-1">
+                            Transfer Settings
+                        </p>
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text">Vehicle:</span>
+                                </label>
+
+                                <select class="my-select" wire:model="vehicleId">
+                                    @foreach($this->vehicles as $vehicle)
+                                        <option
+                                            value="{{$vehicle->id}}">{{$vehicle->name}}</option>
+                                    @endforeach
+                                </select>
+                                @error('vehicleId')
+                                <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                                @enderror
+                            </div>
+                    </div>
+                    <div class="divider divider-horizontal md:opacity-100 opacity-0"></div>
+                    <div class=" basis-4/5">
                         <div class="flex justify-between ">
                             <p class="text-xl font-bold">
                                 Name
@@ -51,22 +73,27 @@
                             </div>
 
                         @endforeach
-                        @if($this->transfer->isDirty() )
                             <button class="btn float-right btn-sm btn-success ml-auto mt-4"
                                     wire:click="saveTransfer">Save Transfer
-
                             </button>
 
-                        @endif
-
                     </div>
+                </div>
 
             </x-slot>
         </x-ez-card>
     </div>
+    <script>
+        function transferSettings() {
+            return {
+                selectedLanguage: 'en',
+                modal: false,
+                init() {
 
-
-
+                }
+            }
+        }
+    </script>
 
 
 </div>

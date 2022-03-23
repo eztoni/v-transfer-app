@@ -32,10 +32,7 @@ class TransferOverview extends Component
         $this->transferModal = false;
     }
 
-    public function updateTransfer($transferId){
-        $this->openTransferModal();
-        $this->transfer = Transfer::find($transferId);
-    }
+
 
     public function addTransfer(){
         $this->openTransferModal();
@@ -52,6 +49,7 @@ class TransferOverview extends Component
         return collect();
     }
 
+
     public function saveTransferData(){
         $this->validate();
         $this->transfer->owner_id = Auth::user()->owner_id;
@@ -62,7 +60,6 @@ class TransferOverview extends Component
             $this->addError('vehicleId','Please choose a vehicle.');
             return;
         }
-
 
         if($vehicles->isEmpty()){
             $this->addError('vehicleId','Vehicle already taken.');
