@@ -11,6 +11,12 @@
                     </x-slot>
                         Error Log View
                 </x-nav-link>
+                <x-nav-link :href="route('language-overview')" :active="request()->routeIs('language-overview')">
+                    <x-slot name="icon">
+                        <i class="fas fa-language"></i>
+                    </x-slot>
+                    Languages Overview
+                </x-nav-link>
                 <x-nav-link :href="route('super-admin-dashboard')" :active="request()->routeIs('super-admin-dashboard')">
                     <x-slot name="icon">
                         <i class="fas fa-user-cog"></i>

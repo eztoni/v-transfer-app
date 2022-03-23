@@ -30,5 +30,8 @@ class Company extends Model
             ->logOnlyDirty();
     }
 
+    public function languages(){
+        return $this->belongsToMany(Language::class);
+    }
 
 }
