@@ -156,7 +156,7 @@
                 </x-slot>
             </x-ez-card>
 
-            <div class="bg-primary text-accent-content rounded-box flex items-center p-4 shadow-xl mb-4">
+            <div class="bg-primary text-accent-content rounded-box flex items-center p-4 shadow-xl mt-4 mb-4">
                 <i class="fas fa-users text-4xl mr-4 "> </i>
                 <div class="flex-1 px-2"><h2 class="text-3xl font-extrabold"> {{$usersCount}}</h2>
                     <p class="text-sm text-opacity-80">Company users</p></div>
