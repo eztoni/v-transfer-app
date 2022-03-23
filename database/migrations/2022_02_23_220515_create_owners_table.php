@@ -16,19 +16,6 @@ class CreateOwnersTable extends Migration
 
             $table->timestamps();
         });
-
-        \App\Models\Owner::create(
-            [
-                'name' =>'Valamar Rivijera',
-                'company_id' => 1,
-            ]
-        );
-        \App\Models\Owner::create(
-            [
-                'name' =>'Imperial Rab',
-                'company_id' => 1,
-            ]
-        );
     }
 
     public function down()
