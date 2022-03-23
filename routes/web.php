@@ -65,6 +65,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 #------------------------------------------------------------------------------------------SUPERADMINS
                 Route::get('laravel-logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('laravel-logs');
                 Route::get('super-admin-dashboard', [SuperAdminDashboardController::class, 'show'])->name('super-admin-dashboard');
+                Route::get('/language-overview', \App\Http\Livewire\LanguageOverview::class)->name('language-overview');
                 Route::get('edit-user/{user}', [EditUserController::class, 'showUser'])->name('edit-user');
                 Route::get('activity-log-dashboard', \App\Http\Livewire\ActivityLogDashboard::class)->name('activity-log-dashboard');
 #------------------------------------------------------------------------------------------SUPERADMINS END
