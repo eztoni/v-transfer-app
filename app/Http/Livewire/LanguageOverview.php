@@ -15,13 +15,19 @@ class LanguageOverview extends Component
     public $languageModal;
     public $softDeleteModal;
     public $deleteId = '';
-    public $selectedLanguages = [];
-
 
     protected $rules = [
         'language.name' => 'required|max:255',
         'language.language_code' => 'required|min:2|max:2|unique:languages,language_code',
     ];
+
+    protected function rules()
+    {
+        return [
+            'language.name' => 'required|max:255',
+            'language.language_code' => 'required|min:2|max:2|unique:languages,language_code,'.$this->language->id,
+        ];
+    }
 
     public function updated($propertyName)
     {
@@ -38,7 +44,7 @@ class LanguageOverview extends Component
 
     public function updateLanguage($languageId){
         $this->openLanguageModal();
-        $this->language = Language::find($languageId);
+        $this->language = Language::withoutGlobalScope(CompanyScope::class)->find($languageId);
     }
 
     public function addLanguage(){
