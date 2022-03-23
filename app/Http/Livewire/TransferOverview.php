@@ -14,9 +14,9 @@ class TransferOverview extends Component
     public $transfer;
     public $vehicleId;
     public $transferModal;
-
+    public $transferName;
     protected $rules = [
-        'transfer.name' => 'required|max:255',
+        'transferName' => 'required|max:255',
     ];
 
     public function updated($propertyName)
@@ -45,7 +45,7 @@ class TransferOverview extends Component
     public function getVehiclesProperty()
     {
         if($this->transfer)
-            return Vehicle::whereNull('transfer_id')->when($this->transfer->exists(),function ($q){
+            return Vehicle::whereNull('transfer_id')->when($this->transfer->exists,function ($q){
                 $q->orWhere('transfer_id',$this->transfer->vehicle->id);
             })->get();
 
@@ -68,11 +68,14 @@ class TransferOverview extends Component
             $this->addError('vehicleId','Vehicle already taken.');
             return;
         }
-
+        $this->transfer->name = $this->transferName;
         $this->transfer->save();
         $this->transfer->vehicle()->save(Vehicle::findOrFail($this->vehicleId));
         $this->showToast('Success','Transfer saved, add some info to it!');
         $this->closeTransferModal();
+
+        return \Redirect::to(route('transfer-edit',['transfer'=>$this->transfer->id]));
+
     }
 
 

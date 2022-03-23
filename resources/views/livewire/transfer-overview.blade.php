@@ -14,10 +14,7 @@
                 <tr>
                     <th>#Id</th>
                     <th>Name</th>
-
-                    <th>Images</th>
-                    <th class="text-center">Update</th>
-                    <th class="text-center">Transfer Images</th>
+                    <th class="text-center">Edit</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -26,14 +23,9 @@
                     <tr>
                         <th>{{ $tr->id }}</th>
                         <th >{{ $tr->name }}</th>
-                        <th >{{ $tr->getMedia('transferImages')->count()}}/{{$tr::MAX_IMAGES}}</th>
+
                         <td class="text-center">
-                            <button wire:click="updateTransfer({{$tr->id}})" class="btn btn-sm btn-warning">
-                                Update
-                            </button>
-                        </td>
-                        <td class="text-center">
-                            <a href="{{ route('transfer-edit',$tr) }}"><button class="btn btn-sm btn-success">Images</button></a>
+                            <a href="{{ route('transfer-edit',$tr) }}"><button class="btn btn-sm btn-success">Edit</button></a>
                         </td>
                     </tr>
 
@@ -69,9 +61,9 @@
                             <label class="label">
                                 <span class="label-text">Name:</span>
                             </label>
-                            <input wire:model="transfer.name" class="input input-bordered"
+                            <input wire:model="transferName" class="input input-bordered"
                                    placeholder="Name">
-                            @error('transfer.name')
+                            @error('transferName')
                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
                             @enderror
                         </div>

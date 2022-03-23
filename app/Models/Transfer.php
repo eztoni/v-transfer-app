@@ -7,17 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Translatable\HasTranslations;
 
 class Transfer extends Model implements HasMedia
 {
     use InteractsWithMedia;
+    use HasTranslations;
+
     const MAX_IMAGES = 5;
     const IMAGE_PRIMARY_PROPERTY = 'primary';
 
     protected $fillable = [
         'name',
-
     ];
+    public $translatable = ['name'];
 
     public function registerMediaCollections(): void
     {
