@@ -3,17 +3,20 @@
 namespace App\Models;
 
 use App\Scopes\CompanyScope;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Language extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'name',
         'language_code',
     ];
 
-    public function companies(){
+    public function companies()
+    {
         return $this->belongsToMany(Company::class);
     }
 
@@ -21,5 +24,5 @@ class Language extends Model
     {
         static::addGlobalScope(new CompanyScope(true));
     }
-
 }
+
