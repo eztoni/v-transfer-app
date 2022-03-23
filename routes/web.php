@@ -77,6 +77,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
                 Route::get('/destinations', Destinations::class)->name('destinations');
                 Route::get('/user-overview', UserOverview::class)->name('user-overview');
                 Route::post('/upload-images', [UploadImageController::class, 'store'])->name('upload-images');
+                Route::get('/company-dashboard', \App\Http\Livewire\CompanyDashboard::class)->name('company-dashboard');
             });
 #------------------------------------------------------------------------------------------ADMINS END
             Route::middleware(
@@ -87,6 +88,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
                 Route::get('super-admin-dashboard', [SuperAdminDashboardController::class, 'show'])->name('super-admin-dashboard');
                 Route::get('/language-overview', \App\Http\Livewire\LanguageOverview::class)->name('language-overview');
                 Route::get('edit-user/{user}', [EditUserController::class, 'showUser'])->name('edit-user');
+                Route::get('/company-overview', \App\Http\Livewire\CompanyOverview::class)->name('company-overview');
                 Route::get('activity-log-dashboard', ActivityLogDashboard::class)->name('activity-log-dashboard');
 #------------------------------------------------------------------------------------------SUPERADMINS END
 

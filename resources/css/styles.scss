@@ -2,5 +2,39 @@
 
 @import "drawer-and-nav";
 
+.select2-container--default .select2-selection--multiple {
+    min-height: 48px;
+    cursor:pointer;
+    background-color: white;
+    border: 1px solid hsla(var(--bc)/var(--tw-border-opacity,1)) !important;
+    border-radius: 6px !important;
+    padding-bottom: 5px;
+    padding-right: 5px;
+    position: relative;
+}
 
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: hsla(var(--p) / var(--tw-bg-opacity));
+    border: 1px solid hsla(var(--p) / var(--tw-bg-opacity));
+    border-radius: 6px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    background-color: transparent;
+    height: 100%;
+    border-right: 1px solid hsla(var(--p) / var(--tw-bg-opacity));
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    color: white !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+    color: white !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover, {
+    color: hsla(var(--p) / var(--tw-bg-opacity)) !important;
+}
 
