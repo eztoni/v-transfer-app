@@ -16,6 +16,7 @@ class Language extends Model
     public function companies(){
         return $this->belongsToMany(Company::class);
     }
+
     protected static function booted()
     {
         static::addGlobalScope(new CompanyScope(true));
