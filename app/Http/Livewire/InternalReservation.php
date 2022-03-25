@@ -6,7 +6,9 @@ use Livewire\Component;
 
 class InternalReservation extends Component
 {
-
+    public $destinationId;
+    public $pickupPointId;
+    public $dropOffPointId;
 
     public function render()
     {

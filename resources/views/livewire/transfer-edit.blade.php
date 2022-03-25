@@ -39,6 +39,23 @@
                                 <x-input-alert type='warning'>{{$message}}</x-input-alert>
                                 @enderror
                             </div>
+                        <div class="form-control">
+
+                            <label class="label">
+                                <span class="label-text">Destination:</span>
+                            </label>
+                            <select wire:model="destinationId" class="select select-bordered">
+                                <option value="">Select a destination</option>
+                                @foreach(\App\Models\Destination::all() as $dest )
+                                    <option value="{{$dest->id}}">{{$dest->name}}</option>
+                                @endforeach
+
+                            </select>
+
+                            @error('destinationId')
+                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                            @enderror
+                        </div>
                     </div>
                     <div class="divider divider-horizontal md:opacity-100 opacity-0"></div>
                     <div class=" basis-4/5">
@@ -52,10 +69,10 @@
                                        x-bind:class="selectedLanguage ==='{{$languageIso}}'?'tab-active':''">
                                         {{Str::upper($languageIso)}}
                                     </a>
-
                                 @endforeach
 
                             </div>
+
                         </div>
                         @foreach($this->companyLanguages as $languageIso)
                             <div x-show="selectedLanguage ==='{{$languageIso}}'" x-transition:enter>
@@ -73,7 +90,7 @@
                             </div>
 
                         @endforeach
-                            <button class="btn float-right btn-sm btn-success ml-auto mt-4"
+                            <button class="btn float-right btn-sm btn-success ml-auto mt-4 absolute bottom-4 right-4"
                                     wire:click="saveTransfer">Save Transfer
                             </button>
 

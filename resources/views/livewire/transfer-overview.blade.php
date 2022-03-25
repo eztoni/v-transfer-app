@@ -90,6 +90,23 @@
                         @enderror
                     </div>
 
+                    <div class="form-control">
+
+                        <label class="label">
+                            <span class="label-text">Destination:</span>
+                        </label>
+                        <select wire:model="destinationId" class="select select-bordered">
+                            <option value="">Select a destination</option>
+                                @foreach(\App\Models\Destination::all() as $dest )
+                                    <option value="{{$dest->id}}">{{$dest->name}}</option>
+                                @endforeach
+
+                        </select>
+
+                        @error('destinationId')
+                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                        @enderror
+                    </div>
 
                     <div class="mt-4 flex justify-between">
                         <button wire:click="closeTransferModal()" class="btn btn-sm ">Close</button>

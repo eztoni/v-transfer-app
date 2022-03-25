@@ -30,7 +30,7 @@
                         <div class="form-control">
                             <div class="form-control">
                                 <label class="label">
-                                    <span class="label-text">Type : </span>
+                                    <span class="label-text">Type: </span>
                                 </label>
                                 <input wire:model="vehicle.type" class="input input-bordered"
                                        placeholder="Vehicle Type">
@@ -43,7 +43,7 @@
                         <div class="form-control">
                             <div class="form-control">
                                 <label class="label">
-                                    <span class="label-text">Max Occ : </span>
+                                    <span class="label-text">Max Occ: </span>
                                 </label>
                                 <input wire:model="vehicle.max_occ" class="input input-bordered"
                                        placeholder="Max Occ.">
@@ -56,7 +56,7 @@
                         <div class="form-control">
                             <div class="form-control">
                                 <label class="label">
-                                    <span class="label-text">Max Luggage : </span>
+                                    <span class="label-text">Max Luggage: </span>
                                 </label>
                                 <input wire:model="vehicle.max_luggage" class="input input-bordered"
                                        placeholder="Max Luggage">

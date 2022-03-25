@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         \App\Models\Point::factory(40)->create();
         \App\Models\Partner::factory(4)->create();
         \App\Models\Route::factory(6)->create();
+        \App\Models\Vehicle::factory(6)->create();
     }
 }

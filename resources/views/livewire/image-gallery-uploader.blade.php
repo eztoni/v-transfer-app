@@ -34,7 +34,7 @@
 
         <x-slot name="body" class="">
             <div class="grid  lg:grid-cols-4 sm:grid-cols-3 grid-cols-1 gap-4">
-                @foreach($this->model->getMedia($this->mediaCollectionName) as $media )
+                @forelse($this->model->getMedia($this->mediaCollectionName) as $media )
                     <div class=" group block py-4  " >
                         <div class="   relative">
                             @if($media->hasCustomProperty($this->model::IMAGE_PRIMARY_PROPERTY))
@@ -54,7 +54,13 @@
                         </div>
 
                     </div>
-                @endforeach
+                @empty
+                    <div class="col-span-10">
+                        <x-input-alert  type='warning'>Please upload at least one image!</x-input-alert>
+
+                    </div>
+
+                @endforelse
             </div>
         </x-slot>
     </x-ez-card>
