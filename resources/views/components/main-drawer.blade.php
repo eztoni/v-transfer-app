@@ -20,6 +20,25 @@
             </a>
         </div>
 
+        <div class="border-b border-base-300 p-4 py-1 ">
+            <div class="flex justify-between">
+                <a class="btn btn-circle  btn-ghost "
+                   @if(\Auth::user()->hasAnyRole(App\Models\User::ROLE_SUPER_ADMIN
+
+,App\Models\User::ROLE_ADMIN))
+                   href="{{route('admin.company-dashboard')}}"
+                    @endif
+                >
+                    <i class="fas fa-building text-xl "></i>
+                </a>
+                <button class="btn btn-circle  btn-ghost">
+                    <i class="fas fa-users text-xl"></i>
+                </button>
+                <button class="btn btn-circle  btn-ghost">
+                    <i class="fas fa-truck-loading"></i>
+                </button>
+            </div>
+        </div>
 
         <div>
             <ul class="menu flex flex-col  pt-4 ">
