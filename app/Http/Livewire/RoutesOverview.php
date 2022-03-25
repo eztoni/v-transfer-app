@@ -82,7 +82,6 @@ class RoutesOverview extends Component
         $this->route->save();
         $this->showToast('Saved','Route Saved','success');
         $this->closeRouteModal();
-
     }
 
     //------------ Soft Delete ------------------
