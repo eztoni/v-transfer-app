@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Destination;
 use App\Models\Language;
 use App\Models\Transfer;
 use App\Models\Vehicle;
@@ -13,6 +14,7 @@ class TransferEdit extends Component
     public Transfer $transfer;
     public $companyLanguages = ['en'];
     public $vehicleId = null;
+    public $destinationId = null;
     public $transferName = [
         'en' => null
     ];
@@ -20,6 +22,7 @@ class TransferEdit extends Component
     {
         $ruleArray = [
             'transferName.en' => 'required|min:3',
+            'destinationId' => 'required|numeric|exists:App\Models\Destination,id',
             'vehicleId' => 'required|numeric|exists:App\Models\Vehicle,id',
         ];
         foreach ($this->companyLanguages as $lang) {
@@ -43,7 +46,7 @@ class TransferEdit extends Component
         $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
 
         $this->vehicleId = $this->transfer->vehicle->id;
-
+        $this->destinationId = $this->transfer->destination_id;
         foreach ($this->companyLanguages as $lang) {
             $this->transferName[$lang] = $this->transfer->getTranslation('name', $lang, false);
         }
@@ -70,6 +73,10 @@ class TransferEdit extends Component
     public function saveTransfer()
     {
         $this->transfer->setTranslations('name', $this->transferName);
+        $destination = Destination::findOrFail($this->destinationId);
+
+        $this->transfer->destination_id = $destination->id;
+
         $this->transfer->save();
 
         $vehicles = $this->getVehiclesProperty();
@@ -83,10 +90,11 @@ class TransferEdit extends Component
             $this->addError('vehicleId','Vehicle already taken.');
             return;
         }
-        $vehicle = Vehicle::findOrFail($this->vehicleId);
-        Vehicle::where('transfer_id',$this->transfer->id)->update(['transfer_id' => null]);
-        $this->transfer->vehicle()->save($vehicle);
 
+        Vehicle::where('transfer_id',$this->transfer->id)->update(['transfer_id' => null]);
+        $vehicle = Vehicle::findOrFail($this->vehicleId);
+        $vehicle->transfer_id = $this->transfer->id;
+        $vehicle->save();
         $this->showToast('Update successful');
     }
 

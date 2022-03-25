@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Destination;
 use App\Models\Transfer;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Auth;
@@ -15,8 +16,13 @@ class TransferOverview extends Component
     public $vehicleId;
     public $transferModal;
     public $transferName;
+    public $destinationId;
+
+
+
     protected $rules = [
         'transferName' => 'required|max:255',
+        'destinationId' => 'required|numeric|exists:App\Models\Destination,id',
     ];
 
     public function updated($propertyName)
@@ -65,7 +71,12 @@ class TransferOverview extends Component
             $this->addError('vehicleId','Vehicle already taken.');
             return;
         }
+
+        $destination = Destination::findOrFail($this->destinationId);
+        $this->transfer->destination_id = $destination->id;
+
         $this->transfer->name = $this->transferName;
+
         $this->transfer->save();
         $this->transfer->vehicle()->save(Vehicle::findOrFail($this->vehicleId));
         $this->showToast('Success','Transfer saved, add some info to it!');

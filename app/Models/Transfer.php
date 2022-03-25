@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Scopes\OwnerScope;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -13,6 +14,7 @@ class Transfer extends Model implements HasMedia
 {
     use InteractsWithMedia;
     use HasTranslations;
+    use HasFactory;
 
     const MAX_IMAGES = 5;
     const IMAGE_PRIMARY_PROPERTY = 'primary';
@@ -39,7 +41,10 @@ class Transfer extends Model implements HasMedia
     {
         static::addGlobalScope(new OwnerScope());
     }
-
+    public function destination()
+    {
+        return $this->belongsTo(Destination::class);
+    }
     public function vehicle()
     {
         return $this->hasOne(Vehicle::class);
