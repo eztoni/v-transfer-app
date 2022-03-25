@@ -19,12 +19,6 @@ class MainDrawer extends Component
                 'show'=> true,
                 'items' => [
                     [
-                        'text' => 'Age Groups',
-                        'active' => request()->routeIs('age-groups'),
-                        'href' => route('age-groups'),
-                        'show' => true,
-                    ],
-                    [
                         'text' => 'Routes',
                         'active' => request()->routeIs('routes-overview'),
                         'href' => route('routes-overview'),
