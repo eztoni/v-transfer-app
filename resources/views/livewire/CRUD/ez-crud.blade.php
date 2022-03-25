@@ -21,7 +21,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @forelse ($this->models as $m)
+                @forelse ($models as $m)
 
                     <tr>
                         @foreach($this->setTableColumns() as $column => $text)

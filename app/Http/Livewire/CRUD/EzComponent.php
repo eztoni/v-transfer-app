@@ -15,7 +15,8 @@ abstract class EzComponent extends \Livewire\Component
      * @var string
      */
     protected string $view;
-    public Model $model;
+    public string $model;
+    public string $modelClass;
     public bool $crudModal = false;
     /**
      * Set array of roles as value of this array to only allow those roles to do the action
@@ -26,7 +27,7 @@ abstract class EzComponent extends \Livewire\Component
         'update'=>false
     ];
     private string $deleteId;
-    private bool $softDeleteModal = false;
+    public bool $softDeleteModal = false;
 
     private array $withArray;
     public string $modelName;
@@ -36,7 +37,7 @@ abstract class EzComponent extends \Livewire\Component
     public function render()
     {
 
-        $models =  $this->setTableModelsQuery();
+        $models = $this->setTableModelsQuery();
 
         return view('livewire.CRUD.ez-crud', compact('models'));
     }
@@ -48,7 +49,7 @@ abstract class EzComponent extends \Livewire\Component
     }
     private function initComponent()
     {
-        $this->setModel();
+        $this->modelClass=$this->setModelClass();
         $this->modelName = $this->modelName();
         $this->pluralModelName = \Str::plural($this->modelName);
 
@@ -68,11 +69,11 @@ abstract class EzComponent extends \Livewire\Component
     }
     public function updateModel($modelId){
         $this->openCrudModal();
-        $this->model = $this->model::find($modelId);
+        $this->model = $this->modelClass::find($modelId);
     }
     public function addModel(){
         $this->openCrudModal();
-        $this->model = new $this->model();
+        $this->model = new $this->modelClass();
     }
 
     public function saveRouteData(){
@@ -109,16 +110,16 @@ abstract class EzComponent extends \Livewire\Component
                 return;
             }
         }
-        $this->model::findOrFail($this->deleteId)->delete();
+        $this->modelClass::findOrFail($this->deleteId)->delete();
         $this->closeSoftDeleteModal();
         $this->showToast('Deleting successful!','',);
     }
 
     /**
-     * Needs to return a Model that will be used in CRUD operations
-     * @return Model
+     * Needs to return a Model class that will be used in CRUD operations
+     * @return string
      */
-    abstract public function setModel():Model;
+    abstract public function setModelClass(): string;
 
 
      public function setModelCollection():Builder
@@ -141,6 +142,10 @@ abstract class EzComponent extends \Livewire\Component
     {
         $this->withArray = $withArray;
         return $this;
+    }
+
+    protected function setTableModelsQuery(){
+        return $this->modelClass::paginate(10);
     }
 
     /**
