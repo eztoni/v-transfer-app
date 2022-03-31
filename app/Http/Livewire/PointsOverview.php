@@ -77,7 +77,7 @@ class PointsOverview extends Component
             return;
 
         $this->validate();
-        $this->point->company_id = Auth::user()->company_id;
+        $this->point->owner_id = Auth::user()->owner_id;
         $this->point->save();
         $this->showToast('Saved','Point Saved','success');
         $this->closePointModal();

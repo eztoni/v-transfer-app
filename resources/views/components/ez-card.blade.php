@@ -1,4 +1,4 @@
-<div {{ $attributes->merge(['class' => 'card bg-base-100 shadow-lg overflow-x-auto']) }}>
+<div {{ $attributes->merge(['class' => 'card bg-base-100 border shadow-lg overflow-x-auto']) }}>
 
     <div  {{ $body->attributes->merge(['class' => 'card-body p-4']) }}>
 

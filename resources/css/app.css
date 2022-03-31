@@ -123,3 +123,6 @@ Toast
     background-color: hsl(var(--bc)/var(--tw-bg-opacity));
     --tw-bg-opacity: .1;
 }
+.btn{
+    font-weight: 500!important;
+}

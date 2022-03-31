@@ -33,8 +33,8 @@ class Point extends Model
         'active',
     ];
 
-    public function company(){
-        return $this->belongsTo(Company::class);
+    public function owner(){
+        return $this->belongsTo(Owner::class);
     }
     public function destination(){
         return $this->belongsTo(Destination::class);
@@ -44,6 +44,5 @@ class Point extends Model
     {
         static::addGlobalScope(new ActiveScope());
         static::addGlobalScope(new OwnerScope());
-
     }
 }

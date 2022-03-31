@@ -57,6 +57,7 @@ class RoutesOverview extends Component
         $this->route->ending_point_id = null;
     }
 
+
     //Computed
     public function getStartingPointsProperty(){
         $starting_points = Point::whereDestinationId($this->route->destination_id)->where('id','!=',$this->route->ending_point_id)->get()->map->only(['name', 'id'])->toArray();

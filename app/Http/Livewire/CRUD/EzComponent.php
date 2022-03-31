@@ -6,16 +6,17 @@ use App\Models\Route;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 abstract class EzComponent extends \Livewire\Component
 {
-    /**
-     * Name of the view file. The
-     * @var string
-     */
+
+    const FIELD_TYPE_TEXT = 1;
+    const FIELD_TYPE_SELECT = 2;
+
     protected string $view;
-    public string $model;
+    public Model $model;
     public string $modelClass;
     public bool $crudModal = false;
     /**
@@ -23,73 +24,115 @@ abstract class EzComponent extends \Livewire\Component
      * @var array|false[]
      */
     public array $rolesPermission = [
-        'save'=>false,
-        'update'=>false
+        'save' => false,
+        'update' => false
     ];
     private string $deleteId;
     public bool $softDeleteModal = false;
 
-    private array $withArray;
+
     public string $modelName;
     public string $pluralModelName;
+    public array $fieldRuleNames;
 
 
     public function render()
     {
 
-        $models = $this->setTableModelsQuery();
+        $models = $this->tableModelsQuery();
 
         return view('livewire.CRUD.ez-crud', compact('models'));
+    }
+
+    public function getModelPropertyBasedOnDottedString($model, $dottedString)
+    {
+        $value = $model;
+        foreach (explode('.',$dottedString) as $property) {
+            $value  = $this->getNestedProperty($property, $value);
+        }
+        return $value;
+    }
+
+    private function getNestedProperty($property, $object)
+    {
+        return $object->{$property};
     }
 
     public function __construct($id = null)
     {
         parent::__construct($id);
-         $this->initComponent();
+        $this->initComponent();
     }
+
     private function initComponent()
     {
-        $this->modelClass=$this->setModelClass();
+        $this->modelClass = $this->setModelClass();
         $this->modelName = $this->modelName();
         $this->pluralModelName = \Str::plural($this->modelName);
-
-
     }
+
+
 
     public function updated($propertyName)
     {
-        $this->validateOnly($propertyName);
+        $this->validateOnly($propertyName, null, [], $this->fieldRuleNames);
     }
-    public function openCrudModal(){
+
+    public function openCrudModal()
+    {
         $this->crudModal = true;
     }
 
-    public function closeCrudModal(){
+    public function closeCrudModal()
+    {
         $this->crudModal = false;
     }
-    public function updateModel($modelId){
+
+    public function updateModel($modelId)
+    {
         $this->openCrudModal();
         $this->model = $this->modelClass::find($modelId);
     }
-    public function addModel(){
+
+    public function addModel()
+    {
         $this->openCrudModal();
-        $this->model = new $this->modelClass();
+        $this->model = app($this->modelClass);
+
     }
 
-    public function saveRouteData(){
+    public function saveModelData()
+    {
 
-        if(!empty($this->rolesPermission['save'])){
-            if(!Auth::user()->hasRole($this->rolesPermission['save'])){
-                $this->showToast('Save failed','You do not have required permissions to do this!','error');
+        if (!empty($this->rolesPermission['save'])) {
+            if (!Auth::user()->hasRole($this->rolesPermission['save'])) {
+                $this->showToast('Save failed', 'You do not have required permissions to do this!', 'error');
                 return;
             }
         }
-        $this->validate();
+        $this->validate(null, [], $this->fieldRuleNames);
+
+        $beforeSaveBool = $this->beforeSave();
+
+        if(!$beforeSaveBool) {
+            return;
+        }
 
         $this->model->save();
-        $this->showToast('Save successful','','success');
+
+        $this->afterSave();
+        $this->showToast('Save successful', '', 'success');
         $this->closeCrudModal();
     }
+
+    // RETURN FALSE IF YOU WANT TO STOP THE SAVE
+    protected function beforeSave(){
+        return true;
+    }
+    protected function afterSave(){
+
+    }
+
 
     public function openSoftDeleteModal($id): void
     {
@@ -103,16 +146,17 @@ abstract class EzComponent extends \Livewire\Component
         $this->softDeleteModal = false;
     }
 
-    public function softDelete(){
-        if(!empty($this->rolesPermission['delete'])){
-            if(!Auth::user()->hasRole($this->rolesPermission['save'])){
-                $this->showToast('Delete failed','You do not have required permissions to do this!','error');
+    public function softDelete()
+    {
+        if (!empty($this->rolesPermission['delete'])) {
+            if (!Auth::user()->hasRole($this->rolesPermission['save'])) {
+                $this->showToast('Delete failed', 'You do not have required permissions to do this!', 'error');
                 return;
             }
         }
         $this->modelClass::findOrFail($this->deleteId)->delete();
         $this->closeSoftDeleteModal();
-        $this->showToast('Deleting successful!','',);
+        $this->showToast('Deleting successful!', '',);
     }
 
     /**
@@ -122,47 +166,37 @@ abstract class EzComponent extends \Livewire\Component
     abstract public function setModelClass(): string;
 
 
-     public function setModelCollection():Builder
-     {
-        return  $this->model::with($this->withArray)->get()->paginate(10);
-     }
-
     /**
      * return the array containing the attributes you want to show as key
      * and table column string as value
      * @return array
      */
-    abstract public function setTableColumns():array;
+    abstract public function tableColumns(): array;
 
     /**
      * @param array $withArray
      * @return EzComponent
      */
-    public function setWithArray(array $withArray): EzComponent
+    protected function withArray(): array
     {
-        $this->withArray = $withArray;
-        return $this;
+        return [];
     }
 
-    protected function setTableModelsQuery(){
-        return $this->modelClass::paginate(10);
+    protected function tableModelsQuery()
+    {
+        return $this->modelClass::with($this->withArray())->paginate(10);
     }
 
-    /**
-     * Return rules array!
-     * @return array
-     */
-    abstract protected function rules():array;
 
+    abstract protected function modelName(): string;
+    abstract protected function rules(): array;
 
-    abstract protected function modelName():string;
 
     /**
-     * Return array with key value pair. Key being rules() array keys.
-     * Value being field name
-     * @return array
+     *  Return collection of fields
+     * @return Collection
      */
-    abstract protected function fieldRuleNames():array;
+    abstract public function formFields(): Collection;
 
     /**
      * @param string $view
@@ -170,9 +204,9 @@ abstract class EzComponent extends \Livewire\Component
      */
     public function setView(string $view, $append = true): EzComponent
     {
-        if($append){
-            $this->view = 'livewire.CRUD.'.$view;
-        }else{
+        if ($append) {
+            $this->view = 'livewire.CRUD.' . $view;
+        } else {
             $this->view = $view;
         }
         return $this;
