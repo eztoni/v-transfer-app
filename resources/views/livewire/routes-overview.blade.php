@@ -81,7 +81,7 @@
 
             <div class="modal {{ $routeModal ? 'modal-open fadeIn' : '' }}">
                 <div class="modal-box max-h-screen overflow-y-auto">
-                    Adding new company
+                    Adding new route
                     <hr class="my-4">
 
                     <div class="form-control">
