@@ -9,18 +9,21 @@ use Livewire\Component;
 class TransferPrices extends Component
 {
 
-    public $transfer;
     public $pivotModal;
     public $routePrice = [];
     public $routeSaveButton = [];
     public $routeId;
     public $price;
     public $transferId = null;
-    public $transferRoutes = null;
     public $showSearch = true;
 
     public function mount()
     {
+       $this->setModelPrices();
+    }
+
+
+    private function setModelPrices(){
         if($this->transferId > 0){
             $this->transfer = Transfer::with('routes')->find($this->transferId);
 
@@ -31,21 +34,22 @@ class TransferPrices extends Component
         }
     }
 
+    public function updated($property)
+    {
+        $this->validateOnly($property);
+    }
+
     public function updatedTransferId()
     {
-        if($this->transferId > 0){
-            $this->transfer = Transfer::with('routes')->find($this->transferId);
+        $this->routePrice =  [];
 
-            $routes = $this->transfer->routes;
-            foreach($routes as $r){
-                $this->routePrice[$r->id] = $r->pivot->price;
-            }
-        }
+        $this->setModelPrices();
     }
 
     protected $rules = [
         'routeId' => 'required|max:255',
         'price' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/',
+        'routePrice.*' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/',
     ];
 
     public function openPivotModal(){
@@ -60,33 +64,32 @@ class TransferPrices extends Component
 
     public function getTransferRoutesProperty(){
         if($this->transferId > 0){
-            $this->transfer = Transfer::with('routes')->find($this->transferId);
-            $routes = $this->transfer->routes;
-            return $routes;
+            return Transfer::find($this->transferId)->routes;
         }
+        return collect();
     }
 
     public function getRoutesProperty(){
-        $id = $this->transferId;
-        $routes = Route::whereDoesntHave('transfers', function($q) use ($id){
-            $q->where('transfer_id', $id);
-        })->get();
-
-        return  $routes;
+        return  Route::all();
     }
 
     public function saveRoutePrice($routeId){
+        dd($this->validate());
 
-        $this->transfer->routes()->syncWithPivotValues($routeId , ['price' => $this->routePrice[$routeId]]);
-        $this->transfer->save();
+        $transfer = Transfer::findOrFail($this->transferId);
+        $transfer->routes()->syncWithPivotValues($routeId , ['price' => $this->routePrice[$routeId]]);
+        $transfer->save();
         $this->showToast('Saved', 'Route Price Saved', 'success');
 
     }
 
     public function savePivotData(){
         $this->validate();
-        $this->transfer->routes()->attach($this->routeId,['price' => $this->price]);
-        $this->transfer->save();
+        $transfer = Transfer::findOrFail($this->transferId);
+
+        $transfer->routes()->attach($this->routeId,['price' => $this->price]);
+        $transfer->save();
+        $this->setModelPrices();
         $this->closePivotModal();
         $this->showToast('Saved', 'Route Saved', 'success');
 
@@ -94,7 +97,6 @@ class TransferPrices extends Component
 
     public function render()
     {
-
         $transfers = Transfer::all();
 
         return view('livewire.transfer-prices',compact('transfers'));
