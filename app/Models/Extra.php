@@ -7,6 +7,7 @@ use App\Scopes\OwnerScope;
 use Cknow\Money\Casts\MoneyDecimalCast;
 use Cknow\Money\Casts\MoneyIntegerCast;
 use Cknow\Money\Casts\MoneyStringCast;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -14,7 +15,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Extra extends Model implements HasMedia
 {
-
+    use HasFactory;
     use InteractsWithMedia;
     const MAX_IMAGES = 5;
 

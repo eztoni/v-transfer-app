@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Transfer;
+use Database\Tools\SeedImagesToModels;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,12 +15,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
         #It will create the companies aswell
         \App\Models\Destination::factory(2)->create();
         \App\Models\Point::factory(40)->create();
         \App\Models\Partner::factory(4)->create();
         \App\Models\Route::factory(6)->create();
-        \App\Models\Vehicle::factory(6)->create();
+
+        (new  SeedImagesToModels())(Transfer::all(),'transferImages');
+
+
+        $this->call([
+            VehicleSeeder::class,
+            ExtrasSeeder::class
+        ]);
+
     }
 }

@@ -16,9 +16,7 @@ class RouteFactory extends Factory
     public function definition(): array
     {
         return [
-            'owner_id' => function (){
-                return Owner::inRandomOrder()->first()->id;
-            },
+            'owner_id' => 1,
             'destination_id' => function ($attr){
                 return Destination::whereOwnerId($attr['owner_id'])->inRandomOrder()->first()->id;
             },
