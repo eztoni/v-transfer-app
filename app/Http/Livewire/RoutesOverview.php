@@ -79,7 +79,9 @@ class RoutesOverview extends Component
         if(!Auth::user()->hasRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN]))
             return;
 
+
         $this->validate();
+        $this->route->owner_id = Auth::user()->owner_id;
         $this->route->save();
         $this->showToast('Saved','Route Saved','success');
         $this->closeRouteModal();

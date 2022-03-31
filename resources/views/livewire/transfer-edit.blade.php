@@ -16,7 +16,7 @@
 
 
     <div class="mt-4">
-        <x-ez-card class="h-full ">
+        <x-ez-card class="h-full mb-4">
             <x-slot name="body">
                 <div class="flex md:flex-row flex-col gap-2">
                     <div class="basis-1/5 flex-shrink">
@@ -99,7 +99,12 @@
 
             </x-slot>
         </x-ez-card>
+
+        @livewire('transfer-prices',['transferId' => $transfer->id,'showSearch' => false])
     </div>
+
+
+
     <script>
         function transferSettings() {
             return {

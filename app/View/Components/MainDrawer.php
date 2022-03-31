@@ -62,6 +62,12 @@ class MainDrawer extends Component
                         'href' => route('internal-reservation'),
                         'show' => true,
                     ],
+                    [
+                        'text' => 'Transfer Prices',
+                        'active' => request()->routeIs('transfer-prices'),
+                        'href' => route('transfer-prices'),
+                        'show' => true,
+                    ],
                 ]
             ],
             [

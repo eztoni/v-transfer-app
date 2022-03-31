@@ -21,6 +21,10 @@ class Route extends Model
         'startingPoint','endingPoint'
     ];
 
+    public function transfers(){
+        return $this->belongsToMany(Transfer::class);
+    }
+
     public function destination(){
 
         return $this->belongsTo(Destination::class);
