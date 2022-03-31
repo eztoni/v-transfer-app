@@ -3,11 +3,13 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 use Spatie\Activitylog\Models\Activity;
 
 class ActivityLogDashboard extends Component
 {
 
+    use WithPagination;
 
     public $activity;
     public $search = '';

@@ -5,12 +5,15 @@ namespace App\Http\Livewire;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Parser\DecimalMoneyParser;
 
 class VehicleOverview extends Component
 {
+    use WithPagination;
+
     public $search = '';
     public $vehicle;
     public $vehicleModal;

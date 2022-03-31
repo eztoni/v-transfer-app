@@ -53,10 +53,10 @@ class Destinations extends Component
         if(!Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN))
             return;
 
-        if($this->destination->exists && $this->destination->company_id != Auth::user()->company_id )
+        if($this->destination->exists && $this->destination->owner_id != Auth::user()->owner_id )
             return;
 
-        $this->destination->company_id = Auth::user()->company_id;
+        $this->destination->owner_id = Auth::user()->owner_id;
         $this->destination->save();
         $this->showToast('Saved','Destination Saved','success');
         $this->closeDestinationModal();

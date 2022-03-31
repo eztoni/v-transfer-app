@@ -7,9 +7,13 @@ use App\Models\User;
 use App\Scopes\CompanyScope;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class LanguageOverview extends Component
 {
+
+    use WithPagination;
+
     public $search = '';
     public $language;
     public $languageModal;

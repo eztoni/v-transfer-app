@@ -6,9 +6,13 @@ use App\Models\Company;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class CompanyOverview extends Component
 {
+
+    use WithPagination;
+
     public $search = '';
     public $company;
     public $companyModal;

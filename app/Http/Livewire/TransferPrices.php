@@ -12,8 +12,6 @@ class TransferPrices extends Component
     public $pivotModal;
     public $routePrice = [];
     public $routeSaveButton = [];
-    public $routeId;
-    public $price;
     public $transferId = null;
     public $showSearch = true;
 
@@ -47,20 +45,9 @@ class TransferPrices extends Component
     }
 
     protected $rules = [
-        'routeId' => 'required|max:255',
-        'price' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/',
         'routePrice.*' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/',
     ];
 
-    public function openPivotModal(){
-        $this->pivotModal = true;
-    }
-
-    public function closePivotModal(){
-        $this->pivotModal = false;
-        $this->routeId = null;
-        $this->price = null;
-    }
 
     public function getTransferRoutesProperty(){
         if($this->transferId > 0){
@@ -74,24 +61,12 @@ class TransferPrices extends Component
     }
 
     public function saveRoutePrice($routeId){
-        dd($this->validate());
+        $this->validate();
 
         $transfer = Transfer::findOrFail($this->transferId);
         $transfer->routes()->syncWithPivotValues($routeId , ['price' => $this->routePrice[$routeId]]);
         $transfer->save();
         $this->showToast('Saved', 'Route Price Saved', 'success');
-
-    }
-
-    public function savePivotData(){
-        $this->validate();
-        $transfer = Transfer::findOrFail($this->transferId);
-
-        $transfer->routes()->attach($this->routeId,['price' => $this->price]);
-        $transfer->save();
-        $this->setModelPrices();
-        $this->closePivotModal();
-        $this->showToast('Saved', 'Route Saved', 'success');
 
     }
 
