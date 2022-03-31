@@ -5,9 +5,12 @@ namespace App\Http\Livewire;
 use App\Models\AgeGroup;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class AgeGroupOverview extends Component
 {
+
+    use WithPagination;
 
     public $search = '';
     public $ageGroup;

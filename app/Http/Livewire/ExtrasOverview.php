@@ -8,6 +8,7 @@ use App\Models\Extra;
 use Cknow\Money\Money;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Formatter\DecimalMoneyFormatter;
@@ -15,6 +16,7 @@ use Money\Parser\DecimalMoneyParser;
 
 class ExtrasOverview extends Component
 {
+    use WithPagination;
 
     public $search = '';
     public $extra;

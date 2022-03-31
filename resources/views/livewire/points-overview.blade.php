@@ -55,119 +55,120 @@
                     </tr>
                 @endforelse
                 </tbody>
-
             </table>
             {{$points->links()}}
-
-            <div class="modal {{ $softDeleteModal ? 'modal-open fadeIn' : '' }}">
-                <div class="modal-box max-h-screen overflow-y-auto">
-                    <b>Confirm deletion?</b>
-                    <p>This action will delete the point.</p>
-                    <hr class="my-4">
-
-                    <div class="mt-4 flex justify-between">
-                        <button wire:click="closeSoftDeleteModal()" class="btn btn-sm ">Close</button>
-                        <button wire:click="softDelete()" class="btn btn-sm ">Delete</button>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="modal {{ $pointModal ? 'modal-open fadeIn' : '' }}">
-                <div class="modal-box max-h-[45rem] overflow-y-auto">
-                    Adding new point
-                    <hr class="my-4">
-
-                    <div class="form-control">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Name :</span>
-                            </label>
-                            <input wire:model="point.name" class="input input-bordered"
-                                   placeholder="Name">
-                            @error('point.name')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
-
-                        <div class="form-control">
-
-                            <label class="label">
-                                <span class="label-text">Destination:</span>
-                            </label>
-                            <select wire:model="point.destination_id" class="select select-bordered">
-                                <option value="">Select a destination</option>
-                                @foreach($destinations as $destination)
-                                    <option value="{{$destination->id}}">{{$destination->name}}</option>
-                                @endforeach
-                            </select>
-
-                            @error('point.destination_id')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Description:</span>
-                            </label>
-                            <textarea rows="2" wire:model="point.description" class="textarea textarea-bordered"
-                                      placeholder="ex. Near pile gate"></textarea>
-                            @error('point.description')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
-                        <div class="form-control" >
-                            <label for="address_address">Address</label>
-                            <input type="text" autocomplete="off" id="address-input" value="{{$point->address}}" class="input input-bordered rounded-b-none map-input">
-                            <input type="hidden"  wire:model="point.address" id="address-address" value="{{$point->address}}" />
-                            <input type="hidden"  wire:model="point.latitude" id="address-latitude" value="{{$point->latitude}}" />
-                            <input type="hidden"  wire:model="point.longitude" id="address-longitude" value="{{$point->longitude}}" />
-
-
-                        </div>
-                        <div id="address-map-container" wire:ignore class="pt-2" style="width:100%;height:400px; ">
-                            <div style="width: 100%; height: 100%" id="address-map"></div>
-                        </div>
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Type:</span>
-                            </label>
-                            <select wire:model="point.type" class="select select-bordered">
-                                <option value="">Select a point type</option>
-                                @foreach(\App\Models\Point::TYPE_ARRAY as $type)
-                                    <option value="{{$type}}">{{Str::headline($type)}}</option>
-                                @endforeach
-                            </select>
-
-                            @error('point.destination_id')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">HIS code:</span>
-                            </label>
-                            <input wire:model="point.his_code" class="input input-bordered"
-                            >
-                            @error('point.his_code')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
-
-
-                    </div>
-
-                    <div class="mt-4 flex justify-between">
-                        <button wire:click="closePointModal()" class="btn btn-sm ">Close</button>
-                        <button wire:click="savePointData()"
-                                class="btn btn-sm ">{{  !empty($this->point->exists) ? 'Update':'Add' }}</button>
-                    </div>
-                </div>
-            </div>
-
         </x-slot>
-
     </x-ez-card>
+
+
+    <div class="modal {{ $softDeleteModal ? 'modal-open fadeIn' : '' }}">
+        <div class="modal-box max-h-screen overflow-y-auto">
+            <b>Confirm deletion?</b>
+            <p>This action will delete the point.</p>
+            <hr class="my-4">
+
+            <div class="mt-4 flex justify-between">
+                <button wire:click="closeSoftDeleteModal()" class="btn btn-sm ">Close</button>
+                <button wire:click="softDelete()" class="btn btn-sm ">Delete</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal {{ $pointModal ? 'modal-open fadeIn' : '' }}">
+        <div class="modal-box max-h-[45rem] overflow-y-auto">
+            Adding new point
+            <hr class="my-4">
+
+            <div class="form-control">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Name :</span>
+                    </label>
+                    <input wire:model="point.name" class="input input-bordered"
+                           placeholder="Name">
+                    @error('point.name')
+                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                    @enderror
+                </div>
+
+                <div class="form-control">
+
+                    <label class="label">
+                        <span class="label-text">Destination:</span>
+                    </label>
+                    <select wire:model="point.destination_id" class="select select-bordered">
+                        <option value="">Select a destination</option>
+                        @foreach($destinations as $destination)
+                            <option value="{{$destination->id}}">{{$destination->name}}</option>
+                        @endforeach
+                    </select>
+
+                    @error('point.destination_id')
+                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                    @enderror
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Description:</span>
+                    </label>
+                    <textarea rows="2" wire:model="point.description" class="textarea textarea-bordered"
+                              placeholder="ex. Near pile gate"></textarea>
+                    @error('point.description')
+                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                    @enderror
+                </div>
+                <div class="form-control" >
+                    <label for="address_address">Address</label>
+                    <input type="text" autocomplete="off" id="address-input" value="{{$point->address}}" class="input input-bordered rounded-b-none map-input">
+                    <input type="hidden"  wire:model="point.address" id="address-address" value="{{$point->address}}" />
+                    <input type="hidden"  wire:model="point.latitude" id="address-latitude" value="{{$point->latitude}}" />
+                    <input type="hidden"  wire:model="point.longitude" id="address-longitude" value="{{$point->longitude}}" />
+
+
+                </div>
+                <div id="address-map-container" wire:ignore class="pt-2" style="width:100%;height:400px; ">
+                    <div style="width: 100%; height: 100%" id="address-map"></div>
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Type:</span>
+                    </label>
+                    <select wire:model="point.type" class="select select-bordered">
+                        <option value="">Select a point type</option>
+                        @foreach(\App\Models\Point::TYPE_ARRAY as $type)
+                            <option value="{{$type}}">{{Str::headline($type)}}</option>
+                        @endforeach
+                    </select>
+
+                    @error('point.destination_id')
+                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                    @enderror
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">HIS code:</span>
+                    </label>
+                    <input wire:model="point.his_code" class="input input-bordered"
+                    >
+                    @error('point.his_code')
+                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                    @enderror
+                </div>
+
+
+            </div>
+
+            <div class="mt-4 flex justify-between">
+                <button wire:click="closePointModal()" class="btn btn-sm ">Close</button>
+                <button wire:click="savePointData()"
+                        class="btn btn-sm ">{{  !empty($this->point->exists) ? 'Update':'Add' }}</button>
+            </div>
+        </div>
+    </div>
+
+
+
     @push('scripts-bottom')
         @once
             <script

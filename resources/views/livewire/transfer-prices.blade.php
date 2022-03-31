@@ -37,7 +37,6 @@
 
             <x-slot name="title" class="flex justify-between">
                 Transfer Prices
-                <button wire:click="openPivotModal" class="btn btn-sm ">Add New Route</button>
             </x-slot>
 
             <x-slot name="body">

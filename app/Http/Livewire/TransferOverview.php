@@ -7,9 +7,12 @@ use App\Models\Transfer;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class TransferOverview extends Component
 {
+
+    use WithPagination;
 
     public $search = '';
     public $transfer;

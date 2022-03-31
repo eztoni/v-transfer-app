@@ -9,9 +9,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class RoutesOverview extends Component
 {
+
+    use WithPagination;
 
     public $search = '';
     public $route;
