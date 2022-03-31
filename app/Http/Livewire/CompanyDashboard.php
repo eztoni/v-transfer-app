@@ -44,7 +44,6 @@ class CompanyDashboard extends Component
         'company.city' => 'required|max:255',
         'company.contact' => 'required|max:255',
         'company.email' => 'required|email|max:255',
-        'company.website' => 'max:255',
     ];
 
     public function toggleCompanyData()

@@ -96,16 +96,6 @@
                         @enderror
                     </div>
                 </div>
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text">Website:</span>
-                    </label>
-                    <input wire:model="company.website" class="input input-bordered"
-                           placeholder="Website">
-                    @error('company.website')
-                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                    @enderror
-                </div>
 
                 <button wire:click="saveCompanyData" class="btn primary ml-auto mt-4 btn-success">Save</button>
             </x-slot>
