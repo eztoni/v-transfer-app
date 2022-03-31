@@ -14,11 +14,22 @@ class InternalReservation extends Component
         'dropOffPointId'=>null,
     ];
 
+    public $step = 1;
+
+    public $travellers = [1];
+
+    public function addTraveller()
+    {
+        $this->travellers[]=1;
+    }
 
     public function getTransfersProperty(){
         return Transfer::with('media')->get();
     }
 
+    public function selectTransfer(){
+        $this->step=2;
+    }
 
     public function render()
     {

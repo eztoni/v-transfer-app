@@ -11,3 +11,15 @@ window.select2 = select2;
 import { Iodine } from '@kingshott/iodine';
 
 new Iodine();
+
+// import {WOW} from 'wowjs'
+// let wow = new WOW();
+// wow.init()
+// document.addEventListener("DOMContentLoaded", () => {
+//     Livewire.hook('message.processed', (message, component) => {
+//         wow.sync()
+//     })
+//     Livewire.hook('message.received', (message, component) => {
+//         wow.sync()
+//     })
+// });

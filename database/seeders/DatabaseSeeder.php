@@ -21,13 +21,11 @@ class DatabaseSeeder extends Seeder
         \App\Models\Partner::factory(4)->create();
         \App\Models\Route::factory(6)->create();
 
-        (new  SeedImagesToModels())(Transfer::all(),'transferImages');
-
-
         $this->call([
             VehicleSeeder::class,
             ExtrasSeeder::class
         ]);
+        (new  SeedImagesToModels())(Transfer::all(),'transferImages');
 
     }
 }

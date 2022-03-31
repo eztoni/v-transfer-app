@@ -3,9 +3,9 @@
     <x-ez-card class="mb-5">
 
         <x-slot name="title">
-            <div class="flex justify-between">
+            <div class="flex w-full justify-between">
                 <span>  Upload Images:</span>
-                <a href="{{route('extras-overview')}}" class="btn btn-link btn-sm">Back to extras overview</a>
+                <a href="{{route('extras-overview')}}" class="btn btn-link  btn-sm">Back to extras overview</a>
 
             </div>
           </x-slot>

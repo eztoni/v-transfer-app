@@ -9,22 +9,28 @@ class EzTextInput extends Component
 {
     public string $label;
     public $model;
-    public $errorString ;
-    public $parentDivClasses ;
-    public $labelClasses ;
+    public $errorString;
+    public $parentDivClasses;
+    public $labelClasses;
     public $labelTextClasses;
     public $placeholder;
-
+    public $value = '';
+    public $sm;
 
     public function __construct(
         $label,
-        $model,
-        $errorString=null,
+        $model = '',
+        $errorString = null,
         $parentDivClasses = null,
         $labelClasses = null,
-        $labelTextClasses = null)
+        $labelTextClasses = null,
+        $value = '',
+        $sm=false,
+    )
     {
+        $this->sm = $sm;
         $this->label = $label;
+        $this->value = $value;
         $this->model = $model;
         $this->errorString = empty($errorString) ? $this->model : $errorString;
         $this->parentDivClasses = $parentDivClasses;

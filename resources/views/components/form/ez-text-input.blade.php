@@ -3,7 +3,11 @@
     <label class="label {{$labelClasses}}">
         <span class="label-text {{$labelTextClasses}}">{{$label}}</span>
     </label>
-    <input  {{$attributes}} placeholder="" wire:model="{{$model}}"   {{$attributes->merge(['class'=>' input input-bordered'])}}>
+    <input  {{$attributes}} placeholder=""
+            @if(!empty($model)) wire:model="{{$model}}" @endif
+            @if(!empty($value)) value="{{$value}}" @endif
+
+             {{$attributes->class(['input-sm'=>!empty($sm)])->merge(['class'=>' input input-bordered'])}}>
     @error($errorString)
     <x-input-alert type='warning'>{{$message}}</x-input-alert>
     @enderror
