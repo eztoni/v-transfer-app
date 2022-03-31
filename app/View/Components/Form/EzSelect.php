@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\form;
+namespace App\View\Components\Form;
 
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;

@@ -4,8 +4,8 @@ namespace App\Http\Livewire\CRUD;
 
 use App\Models\Destination;
 use App\Models\Point;
-use App\View\Components\form\EzSelect;
-use App\View\Components\form\EzTextInput;
+use App\View\Components\Form\EzSelect;
+use App\View\Components\Form\EzTextInput;
 use Illuminate\Support\Collection;
 use JetBrains\PhpStorm\ArrayShape;
 

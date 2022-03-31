@@ -1,4 +1,3 @@
-
 <div class="form-control {{$parentDivClasses}}">
     <label class="label {{$labelClasses}}">
         <span class="label-text {{$labelTextClasses}}">{{$label}}</span>
