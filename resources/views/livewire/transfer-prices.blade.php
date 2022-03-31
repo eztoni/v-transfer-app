@@ -44,39 +44,45 @@
                 @if ($this->routes->isNotEmpty())
 
 
-                    <div class="overflow-x-auto">
-                        <table class="table w-full">
+                        <table class="table table-compact">
                             <!-- head -->
                             <thead>
                             <tr>
                                 <th>#ID</th>
-                                <th>Route</th>
-                                <th>Price</th>
-                                <th>Action</th>
+                                <th>Route name</th>
+                                <th>From</th>
+                                <th>To</th>
+
+                                <th class="text-right pr-8">Price</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach ($this->routes as $r)
-                                <tr x-data="{dirty:true}">
+                                <tr x-data="{dirty:{{'true'}} }"  wire:key="{{$r->id}}">
                                     <th>#{{$r->id}}</th>
                                     <td>{{$r->name}}</td>
-                                    <td>
-                                        <input wire:model="routePrice.{{$r->id}}" @keyup="dirty=false" class="input input-bordered">
-                                        @error('routePrice.'.$r->id)
-                                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                        @enderror
+                                    <td>{{$r->startingPoint->name}}</td>
+                                    <td>{{$r->endingPoint->name}}</td>
+                                    <td class="text-right">
+                                        <div class="form-control ">
+                                            <div class="input-group justify-end">
+                                                <input wire:model="routePrice.{{$r->id}}" placeholder="Price" @keyup="dirty=false" class="input input-sm input-bordered">
+                                                @error('routePrice.'.$r->id)
+                                                <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                                                @enderror
+                                                <button wire:click="saveRoutePrice({{$r->id}})"  :disabled="dirty"  class="btn btn-sm  btn-success">
+                                                    Save
+                                                </button>
+                                            </div>
+                                        </div>
+
                                     </td>
-                                    <td>
-                                        <button wire:click="saveRoutePrice({{$r->id}})"  :disabled="dirty"  class="btn  btn-sm btn-success">
-                                            Save
-                                        </button>
-                                    </td>
+
                                 </tr>
                             @endforeach
 
                             </tbody>
                         </table>
-                    </div>
 
                 @else
                     No routes for this transfer, add new route!

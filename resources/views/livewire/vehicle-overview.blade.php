@@ -15,19 +15,21 @@
                     <th>#Id</th>
                     <th>Name</th>
                     <th>Type</th>
-                    <th class="text-center">Edit Vehicle</th>
+                    <th class="text-center">Edit</th>
                 </tr>
                 </thead>
                 <tbody>
                 @forelse ($vehicles as $ve)
 
                     <tr>
-                        <th>{{ $ve->id }}</th>
-                        <th >{{ $ve->name }}</th>
-                        <th >{{ $ve->type }}</th>
+                        <td>{{ $ve->id }}</td>
+                        <td >{{ $ve->name }}</td>
+                        <td >{{ $ve->type }}</td>
 
                         <td class="text-center">
-                            <a href="{{ route('vehicle-edit',$ve) }}"><button class="btn btn-sm btn-success">Edit</button></a>
+                            <a href="{{ route('vehicle-edit',$ve) }}" class="btn btn-circle btn-sm btn-success">
+                                <i class="fas fa-pen"></i>
+                            </a>
                         </td>
                     </tr>
 

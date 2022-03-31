@@ -17,7 +17,10 @@
                         <th>{{$text}}</th>
                     @endforeach
                     <th class="text-center">Update</th>
-                    <th class="text-center"><span>Delete</span></th>
+                        @if($this->enableDelete)
+
+                        <th class="text-center"><span>Delete</span></th>
+                            @endif
                 </tr>
                 </thead>
                 <tbody>
@@ -33,12 +36,15 @@
                                 <i class="fas fa-pen"></i>
                             </button>
                         </td>
-                        <td class="text-center">
-                            <button wire:click="openSoftDeleteModal({{$m->id}})"
-                                    class="btn btn-sm btn-circle btn-outline ">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
+                            @if($this->enableDelete)
+                                <td class="text-center">
+                                    <button wire:click="openSoftDeleteModal({{$m->id}})"
+                                            class="btn btn-sm btn-circle btn-outline ">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            @endif
+
                     </tr>
 
                 @empty

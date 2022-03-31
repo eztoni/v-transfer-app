@@ -15,6 +15,8 @@ abstract class EzComponent extends \Livewire\Component
     const FIELD_TYPE_TEXT = 1;
     const FIELD_TYPE_SELECT = 2;
 
+    public bool $enableDelete = false;
+
     protected string $view;
     public Model $model;
     public string $modelClass;
@@ -136,18 +138,28 @@ abstract class EzComponent extends \Livewire\Component
 
     public function openSoftDeleteModal($id): void
     {
+        if(!$this->enableDelete) {
+            return;
+        }
         $this->deleteId = $id;
         $this->softDeleteModal = true;
     }
 
     public function closeSoftDeleteModal(): void
     {
+        if(!$this->enableDelete) {
+            return;
+        }
         $this->deleteId = '';
         $this->softDeleteModal = false;
     }
 
     public function softDelete()
     {
+        if(!$this->enableDelete) {
+            return;
+        }
+
         if (!empty($this->rolesPermission['delete'])) {
             if (!Auth::user()->hasRole($this->rolesPermission['save'])) {
                 $this->showToast('Delete failed', 'You do not have required permissions to do this!', 'error');

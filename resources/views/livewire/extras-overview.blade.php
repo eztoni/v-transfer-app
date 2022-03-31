@@ -16,26 +16,32 @@
                     <th>Name</th>
                     <th>Price</th>
                     <th>Images</th>
-                    <th class="text-center">Update</th>
-                    <th class="text-center">Edit Extra</th>
+                    <th class="text-center">Images</th>
+
+                    <th class="text-center">Edit</th>
                 </tr>
                 </thead>
                 <tbody>
                 @forelse ($extras as $ex)
 
                     <tr>
-                        <th>{{ $ex->id }}</th>
-                        <th >{{ $ex->name }}</th>
-                        <th >{{ $ex->price }}</th>
-                        <th >{{ $ex->getMedia('extraImages')->count()}}/{{$ex::MAX_IMAGES}}</th>
+                        <td>{{ $ex->id }}</td>
+                        <td>{{ $ex->name }}</td>
+                        <td>{{ $ex->price }}</td>
+                        <td>{{ $ex->getMedia('extraImages')->count()}}/{{$ex::MAX_IMAGES}}</td>
                         <td class="text-center">
-                            <button wire:click="updateExtra({{$ex->id}})" class="btn btn-sm btn-warning">
-                                Update
+
+                            <a href="{{ route('extras-edit',$ex) }}">
+                                <button class="btn btn-circle btn-sm btn-primary"><i class="fas fa-image"></i></button>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <button wire:click="updateExtra({{$ex->id}})" class="btn btn-circle btn-sm btn-success">
+                                <i class="fas fa-pen"></i>
                             </button>
+
                         </td>
-                        <td class="text-center">
-                            <a href="{{ route('extras-edit',$ex) }}"><button class="btn btn-sm btn-success">Images</button></a>
-                        </td>
+
                     </tr>
 
                 @empty

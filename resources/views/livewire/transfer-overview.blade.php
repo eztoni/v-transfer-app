@@ -14,6 +14,7 @@
                 <tr>
                     <th>#Id</th>
                     <th>Name</th>
+                    <th>Destination</th>
                     <th class="text-center">Edit</th>
                 </tr>
                 </thead>
@@ -21,11 +22,13 @@
                 @forelse ($transfers as $tr)
 
                     <tr>
-                        <th>{{ $tr->id }}</th>
-                        <th >{{ $tr->name }}</th>
+                        <td>{{ $tr->id }}</td>
+                        <td >{{ $tr->name }}</td>
+                        <td >{{ $tr->destination->name }}</td>
 
                         <td class="text-center">
-                            <a href="{{ route('transfer-edit',$tr) }}"><button class="btn btn-sm btn-success">Edit</button></a>
+
+                            <a href="{{ route('transfer-edit',$tr) }}"><button class="btn btn-circle btn-sm btn-success">     <i class="fas fa-pen"></i></button></a>
                         </td>
                     </tr>
 

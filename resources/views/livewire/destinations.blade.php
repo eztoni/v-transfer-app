@@ -16,7 +16,6 @@
                     <th>#Id</th>
                     <th>Name</th>
                     <th class="text-center">Update</th>
-                    <th class="text-right"><span class="pr-4">Delete</span></th>
 
 
                 </tr>
@@ -26,18 +25,15 @@
 
 
                     <tr>
-                        <th>{{ $d->id }}</th>
-                        <th>{{ $d->name }}</th>
+                        <td>{{ $d->id }}</td>
+                        <td>{{ $d->name }}</td>
                         <td class="text-center">
-                            <button wire:click="updateDestination({{$d->id}})" class="btn btn-sm btn-success">
-                                Update
+                            <button wire:click="updateDestination({{$d->id}})" class="btn btn-circle btn-sm btn-success">
+                                <i class="fas fa-pen"></i>
                             </button>
+
                         </td>
-                        <td class="text-right">
-                            <button wire:click="openSoftDeleteModal({{$d->id}})" class="btn btn-sm btn-ghost">
-                                Delete
-                            </button>
-                        </td>
+
                     </tr>
 
                 @empty

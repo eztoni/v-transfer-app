@@ -18,7 +18,6 @@
                     <th>Contact</th>
                     <th>Email</th>
                     <th class="text-center">Update</th>
-                    <th class="text-right"><span class="pr-4">Delete</span></th>
 
                 </tr>
                 </thead>
@@ -26,20 +25,17 @@
                 @forelse ($partners as $p)
 
                     <tr>
-                        <th>{{ $p->id }}</th>
-                        <th >{{ $p->name }}</th>
-                        <th >{{ $p->contact }}</th>
-                        <th >{{ $p->email }}</th>
+                        <td>{{ $p->id }}</td>
+                        <td >{{ $p->name }}</td>
+                        <td >{{ $p->contact }}</td>
+                        <td >{{ $p->email }}</td>
                         <td class="text-center">
-                            <button wire:click="updatePartner({{$p->id}})" class="btn btn-sm btn-success">
-                                Update
+                            <button wire:click="updatePartner({{$p->id}})" class="btn btn-circle btn-sm btn-success">
+                                <i class="fas fa-pen"></i>
                             </button>
+
                         </td>
-                        <td class="text-right">
-                            <button wire:click="openSoftDeleteModal({{$p->id}})" class="btn btn-sm btn-ghost">
-                                Delete
-                            </button>
-                        </td>
+
                     </tr>
 
                 @empty

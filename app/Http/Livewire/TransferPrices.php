@@ -18,6 +18,8 @@ class TransferPrices extends Component
     public function mount()
     {
        $this->setModelPrices();
+        $first = Transfer::first();
+        $this->transferId = $first->id ?? null;
     }
 
 
@@ -57,7 +59,7 @@ class TransferPrices extends Component
     }
 
     public function getRoutesProperty(){
-        return  Route::all();
+        return  Route::with(['startingPoint','endingPoint'])->get();
     }
 
     public function saveRoutePrice($routeId){

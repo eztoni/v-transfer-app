@@ -43,6 +43,7 @@ class TransferOverview extends Component
 
 
 
+
     public function addTransfer(){
         $this->openTransferModal();
         $this->transfer = new Transfer();
@@ -92,7 +93,7 @@ class TransferOverview extends Component
 
     public function render()
     {
-        $transfers = Transfer::search('name',$this->search)->paginate(10);
+        $transfers = Transfer::with('destination')->search('name',$this->search)->paginate(10);
 
         return view('livewire.transfer-overview',compact('transfers'));
     }

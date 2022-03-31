@@ -205,7 +205,7 @@
                         <div class="divider my-1    "></div>
 
                         <div class="alert alert-info alert-sm ">
-                            <div class="text-right ml-auto gap-2 pr-2">
+                            <div class="text-right ml-auto text-white gap-2 pr-2">
                                 Total price:  <b> 1,233 EUR</b>
                             </div>
                         </div>
