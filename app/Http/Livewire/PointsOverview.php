@@ -22,7 +22,6 @@ class PointsOverview extends Component
     public $destinationId;
     public $destination;
     public $point;
-    public $points;
     public $pointModal;
     public $softDeleteModal;
     public $deleteId = '';
@@ -44,17 +43,17 @@ class PointsOverview extends Component
     private function setDestination(){
         if($this->destinationId > 0){
             $this->destination = Destination::with('points')->find($this->destinationId);
-            $this->points = $this->destination->points;
         }
     }
 
 
- /*  public function getPointsProperty(){
+    public function getPointsProperty(){
         if($this->destinationId > 0){
+            $this->destination->refresh();
             return $this->destination->points;
         }
         return collect();
-    } */
+    }
 
 
     protected function rules()
@@ -128,8 +127,7 @@ class PointsOverview extends Component
 
     public function render()
     {
-        $points = Point::search('name',$this->search)->paginate(10);
         $destinations = Destination::all();
-        return view('livewire.points-overview',compact('points','destinations'));
+        return view('livewire.points-overview',compact('destinations'));
     }
 }
