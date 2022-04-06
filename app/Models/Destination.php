@@ -32,11 +32,13 @@ class Destination extends Model
             ->logOnlyDirty();
     }
 
+    public function points(){
+        return $this->hasMany(Point::class);
+    }
 
     public function company(){
         return $this->belongsTo(Company::class);
     }
-
 
     protected static function booted()
     {

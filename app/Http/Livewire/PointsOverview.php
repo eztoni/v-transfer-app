@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Company;
 use App\Models\Destination;
 use App\Models\Point;
+use App\Models\Transfer;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -18,26 +19,55 @@ class PointsOverview extends Component
     use WithPagination;
 
     public $search = '';
+    public $destinationId;
+    public $destination;
     public $point;
+    public $points;
     public $pointModal;
     public $softDeleteModal;
     public $deleteId = '';
+
+    public function mount()
+    {
+        $first = Destination::first();
+        $this->destinationId = $first->id ?? null;
+        $this->point = new Point();
+        $this->setDestination();
+    }
+
+    public function updatedDestinationId()
+    {
+        $this->setDestination();
+    }
+
+
+    private function setDestination(){
+        if($this->destinationId > 0){
+            $this->destination = Destination::with('points')->find($this->destinationId);
+            $this->points = $this->destination->points;
+        }
+    }
+
+
+ /*  public function getPointsProperty(){
+        if($this->destinationId > 0){
+            return $this->destination->points;
+        }
+        return collect();
+    } */
 
 
     protected function rules()
     {
         return [
             'point.name'=>'required|max:255|min:2',
-            'point.destination_id'=>'required|numeric',
             'point.description'=>'nullable|min:3',
             'point.address'=>'required|min:3',
-            'point.latitude'=>'required|min:3',
-            'point.longitude'=>'required|min:3',
             'point.type'=>[
                 'required',
                 Rule::in(Point::TYPE_ARRAY),
             ],
-            'point.his_code'=>'nullable',
+            'point.pms_code'=>'nullable',
         ];
     }
     public function updated($propertyName)
@@ -54,25 +84,14 @@ class PointsOverview extends Component
         $this->pointModal = false;
     }
 
-    public function mount(){
-        $this->point = new Point();
-    }
-
     public function updatePoint($pointId){
         $this->openPointModal();
         $this->point = Point::find($pointId);
-        $this->emit('updateMap',['lat'=>$this->point->latitude,'lng'=>$this->point->longitude]);
-    }
-
-    public function getRawAddressProperty(){
-        if($this->point)
-        return $this->point->address;
     }
 
     public function addPoint(){
         $this->openPointModal();
         $this->point = new Point();
-        $this->emit('updateMap',['lat'=>$this->point->latitude,'lng'=>$this->point->longitude]);
     }
 
     public function savePointData(){
@@ -81,6 +100,7 @@ class PointsOverview extends Component
             return;
 
         $this->validate();
+        $this->point->destination_id = $this->destinationId;
         $this->point->owner_id = Auth::user()->owner_id;
         $this->point->save();
         $this->showToast('Saved','Point Saved','success');

@@ -23,7 +23,7 @@ class PartnerFactory extends Factory
                 return   Destination::whereOwnerId($attr['owner_id'])->inRandomOrder()->first()->id;
             },
             'name' => $this->faker->company(),
-            'contact' => $this->faker->name(),
+            'phone' => $this->faker->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

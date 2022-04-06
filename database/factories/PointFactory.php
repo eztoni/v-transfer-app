@@ -32,7 +32,7 @@ class PointFactory extends Factory
             'type' => function(){
                 return \Arr::random(Point::TYPE_ARRAY);
             },
-            'his_code' => $this->faker->word(),
+            'pms_code' => $this->faker->word(),
             'active' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

@@ -13,7 +13,7 @@ class CreatePartnersTable extends Migration
             $table->foreignIdFor(\App\Models\Destination::class)->constrained();
             $table->foreignIdFor(\App\Models\Owner::class)->constrained();
             $table->string('name');
-            $table->string('contact');
+            $table->string('phone');
             $table->string('email');
             $table->timestamps();
         });

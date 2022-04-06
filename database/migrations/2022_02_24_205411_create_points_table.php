@@ -18,7 +18,7 @@ class CreatePointsTable extends Migration
             $table->double('latitude')->nullable();
             $table->double('longitude')->nullable();
             $table->enum('type',\App\Models\Point::TYPE_ARRAY);
-            $table->string('his_code')->nullable();
+            $table->string('pms_code')->nullable();
             $table->tinyInteger('active')->default(1);
 
             $table->timestamps();

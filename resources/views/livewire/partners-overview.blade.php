@@ -15,7 +15,7 @@
                 <tr>
                     <th>#Id</th>
                     <th>Name</th>
-                    <th>Contact</th>
+                    <th>Phone</th>
                     <th>Email</th>
                     <th class="text-center">Update</th>
 
@@ -27,7 +27,7 @@
                     <tr>
                         <td>{{ $p->id }}</td>
                         <td >{{ $p->name }}</td>
-                        <td >{{ $p->contact }}</td>
+                        <td >{{ $p->phone }}</td>
                         <td >{{ $p->email }}</td>
                         <td class="text-center">
                             <button wire:click="updatePartner({{$p->id}})" class="btn btn-circle btn-sm btn-success">
@@ -96,11 +96,11 @@
                     <div class="form-control">
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text">Contact :</span>
+                                <span class="label-text">Phone :</span>
                             </label>
-                            <input wire:model="partner.contact" class="input input-bordered"
-                                   placeholder="Contact">
-                            @error('partner.contact')
+                            <input wire:model="partner.phone" class="input input-bordered"
+                                   placeholder="+385 91 119 9111">
+                            @error('partner.phone')
                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
                             @enderror
                         </div>

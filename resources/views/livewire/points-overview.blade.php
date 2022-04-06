@@ -1,60 +1,87 @@
 <div>
 
-    <x-ez-card>
+    <x-ez-card class="mb-4">
+
         <x-slot name="title" class="flex justify-between">
-            Points
-
-            <button wire:click="addPoint" class="btn btn-sm ">Add Point</button>
-
+            <span>Destination <i class="fas fa-map-alt"></i></span>
         </x-slot>
+
         <x-slot name="body">
 
-            <input type="text" wire:model="search" class="input input-primary my-2" placeholder="Find Point">
-            <table class="table table-compact w-full" wire:loading.delay.class="opacity-50">
-                <thead>
-                <tr>
-                    <th>#Id</th>
-                    <th>Name</th>
-                    <th class="text-center">Update</th>
+            <div class="form-control">
 
-                </tr>
-                </thead>
-                <tbody>
-                @forelse ($points  as $p)
+                <label class="label">
+                    <span class="label-text">Select a destination :</span>
+                </label>
+                <select wire:model="destinationId" class="select select-bordered">
+                    @foreach($destinations as $d)
+                        <option value="{{$d->id}}">{{$d->name}}</option>
+                    @endforeach
+                </select>
 
-                    <tr>
-                        <td>{{ $p->id }}</td>
-                        <td>{{ $p->name }}</td>
-                        <td class="text-center">
-                            <button wire:click="updatePoint({{$p->id}})" class="btn btn-circle btn-sm btn-success">
-                                <i class="fas fa-pen"></i>
-                            </button>
-                        </td>
+                @error('destinationId')
+                <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                @enderror
+            </div>
 
-                    </tr>
-
-                @empty
-                    <tr>
-                        <td colspan="999">
-                            <div class="alert alert-warning">
-                                <div class="flex-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         class="w-6 h-6 mx-2 stroke-current">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                                    </svg>
-                                    <label>No defined points</label>
-                                </div>
-                            </div>
-                        </TD>
-                    </tr>
-                @endforelse
-                </tbody>
-            </table>
-            {{$points->links()}}
         </x-slot>
     </x-ez-card>
 
+    @if ($destinationId)
+        <x-ez-card>
+
+            <x-slot name="title" class="flex justify-between">
+                {{$destination->name}} - Points
+
+                <button wire:click="addPoint" class="btn btn-sm ">Add Point</button>
+            </x-slot>
+
+            <x-slot name="body">
+
+                @if ($this->points->isNotEmpty())
+
+
+                    <table class="table table-compact">
+                        <!-- head -->
+                        <thead>
+                        <tr>
+                            <th>#ID</th>
+                            <th>Name</th>
+                            <th>Update</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($this->points as $p)
+                            <tr>
+                                <td>{{ $p->id }}</td>
+                                <td>{{ $p->name }}</td>
+                                <td>
+                                    <button wire:click="updatePoint({{$p->id}})" class="btn btn-circle btn-sm btn-success">
+                                        <i class="fas fa-pen"></i>
+                                    </button>
+                                </td>
+
+                            </tr>
+                        @endforeach
+
+                        </tbody>
+                    </table>
+
+                @else
+                    No points for {{$destination->name}}, add new points!
+                @endif
+
+
+            </x-slot>
+
+        </x-ez-card>
+    @else
+        <x-ez-card>
+            <x-slot name="body">
+                Select a destination to add points!
+            </x-slot>
+        </x-ez-card>
+    @endif
 
     <div class="modal {{ $softDeleteModal ? 'modal-open fadeIn' : '' }}">
         <div class="modal-box max-h-screen overflow-y-auto">
@@ -86,23 +113,6 @@
                     <x-input-alert type='warning'>{{$message}}</x-input-alert>
                     @enderror
                 </div>
-
-                <div class="form-control">
-
-                    <label class="label">
-                        <span class="label-text">Destination:</span>
-                    </label>
-                    <select wire:model="point.destination_id" class="select select-bordered">
-                        <option value="">Select a destination</option>
-                        @foreach($destinations as $destination)
-                            <option value="{{$destination->id}}">{{$destination->name}}</option>
-                        @endforeach
-                    </select>
-
-                    @error('point.destination_id')
-                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                    @enderror
-                </div>
                 <div class="form-control">
                     <label class="label">
                         <span class="label-text">Description:</span>
@@ -114,16 +124,12 @@
                     @enderror
                 </div>
                 <div class="form-control" >
-                    <label for="address_address">Address</label>
-                    <input type="text" autocomplete="off" id="address-input" value="{{$point->address}}" class="input input-bordered rounded-b-none map-input">
-                    <input type="hidden"  wire:model="point.address" id="address-address" value="{{$point->address}}" />
-                    <input type="hidden"  wire:model="point.latitude" id="address-latitude" value="{{$point->latitude}}" />
-                    <input type="hidden"  wire:model="point.longitude" id="address-longitude" value="{{$point->longitude}}" />
-
-
-                </div>
-                <div id="address-map-container" wire:ignore class="pt-2" style="width:100%;height:400px; ">
-                    <div style="width: 100%; height: 100%" id="address-map"></div>
+                    <label>Address</label>
+                    <input wire:model="point.address" class="input input-bordered"
+                           placeholder="Address">
+                    @error('point.address')
+                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                    @enderror
                 </div>
                 <div class="form-control">
                     <label class="label">
@@ -136,17 +142,17 @@
                         @endforeach
                     </select>
 
-                    @error('point.destination_id')
+                    @error('point.point.type')
                     <x-input-alert type='warning'>{{$message}}</x-input-alert>
                     @enderror
                 </div>
                 <div class="form-control">
                     <label class="label">
-                        <span class="label-text">HIS code:</span>
+                        <span class="label-text">PMS code:</span>
                     </label>
-                    <input wire:model="point.his_code" class="input input-bordered"
+                    <input wire:model="point.pms_code" class="input input-bordered"
                     >
-                    @error('point.his_code')
+                    @error('point.pms_code')
                     <x-input-alert type='warning'>{{$message}}</x-input-alert>
                     @enderror
                 </div>
@@ -162,15 +168,5 @@
         </div>
     </div>
 
-
-
-    @push('scripts-bottom')
-        @once
-            <script
-                src="https://maps.googleapis.com/maps/api/js?key={{ Config::get('valamar.google_maps_api_key') }}&libraries=places&callback=initialize"
-                async defer></script>
-            <script src="{{mix('js/mapInput.js')}}"></script>
-        @endonce
-    @endpush
 </div>
 

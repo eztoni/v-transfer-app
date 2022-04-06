@@ -29,7 +29,7 @@ class Point extends Model
         'latitude',
         'longitude',
         'type',
-        'his_code',
+        'pms_code',
         'active',
     ];
 

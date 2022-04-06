@@ -26,7 +26,7 @@ class PartnersOverview extends Component
             'partner.name'=>'required|max:255|min:2',
             'partner.destination_id'=>'required|numeric',
             'partner.email'=>'required|email',
-            'partner.contact'=>'required',
+            'partner.phone'=>'required|max:255',
         ];
     }
     public function updated($propertyName)
