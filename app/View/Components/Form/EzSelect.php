@@ -16,6 +16,8 @@ class EzSelect extends Component
     public  $labelTextClasses;
     public array $items;
 
+    public  $sm;
+
     public function __construct(
          $label,
          $model,
@@ -23,9 +25,12 @@ class EzSelect extends Component
         $errorString=null,
         $parentDivClasses = null,
         $labelClasses = null,
-        $labelTextClasses = null)
+        $labelTextClasses = null,
+        $sm = false,
+    )
     {
         $this->label = $label;
+        $this->sm = $sm;
         $this->model = $model;
         $this->items = $items;
         $this->errorString = empty($errorString) ? $this->model : $errorString;

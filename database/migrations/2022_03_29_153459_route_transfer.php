@@ -11,6 +11,7 @@ class RouteTransfer extends Migration
         Schema::create('route_transfer', function (Blueprint $table) {
             $table->foreignId('route_id')->constrained();
             $table->foreignId('transfer_id')->constrained();
+            $table->foreignId('partner_id')->default(0);
             $table->bigInteger('price');
             $table->timestamps();
         });

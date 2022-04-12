@@ -11,13 +11,13 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class RoutesOverview extends EzComponent
 {
-public array $fieldRuleNames=[
-    'model.name' => 'name',
-    'model.destination_id' => 'destination',
-    'model.ending_point_id' => 'ending point',
-    'model.starting_point_id' => 'starting point',
-    'model.his_code'=>'his code',
-];
+    public array $fieldRuleNames=[
+        'model.name' => 'name',
+        'model.destination_id' => 'destination',
+        'model.ending_point_id' => 'ending point',
+        'model.starting_point_id' => 'starting point',
+        'model.his_code'=>'his code',
+    ];
 
     public function setModelClass(): string
     {

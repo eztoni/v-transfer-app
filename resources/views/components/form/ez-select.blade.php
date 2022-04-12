@@ -3,7 +3,9 @@
     <label class="label {{$labelClasses}}">
         <span class="label-text {{$labelTextClasses}}">{{$label}}</span>
     </label>
-    <select   {{$attributes}} wire:model="{{$model}}"  {{$attributes->merge(['class'=>' input input-bordered'])}}>
+    <select   {{$attributes}} wire:model="{{$model}}"
+        {{$attributes->class(['select-sm p-1'=>!empty($sm)])->merge(['class'=>' select select-bordered'])}}
+    >
         <option value="">Please select a {{\Str::lower($label)}}</option>
         @foreach($items as $id => $text)
             <option value="{{$id}}">{{$text}}</option>

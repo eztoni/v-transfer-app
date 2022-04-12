@@ -126,3 +126,7 @@ Toast
 .btn{
     font-weight: 500!important;
 }
+.select-sm {
+
+    line-height: 1rem!important;
+}

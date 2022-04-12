@@ -28,6 +28,7 @@ class EzTextInput extends Component
         $sm=false,
     )
     {
+
         $this->sm = $sm;
         $this->label = $label;
         $this->value = $value;

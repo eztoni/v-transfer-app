@@ -115,5 +115,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(Company::class);
     }
-
+    public function owner()
+    {
+        return $this->belongsTo(Owner::class);
+    }
 }

@@ -13,7 +13,7 @@
                 <div class="form-control">
 
                     <label class="label">
-                        <span class="label-text">Select a transfer :</span>
+                        <span class="label-text">Select a transfer:</span>
                     </label>
                     <select wire:model="transferId" class="select select-bordered">
                         <option value="">Select a transfer</option>
@@ -36,7 +36,20 @@
         <x-ez-card>
 
             <x-slot name="title" class="flex justify-between">
-                Transfer Prices
+              <div class="">
+                  Transfer Prices
+              </div>
+                <div class="">
+                    <label class="label">
+                        <span class="label-text">Partner:</span>
+                    </label>
+                    <select class="my-select" wire:model="partnerId">
+                        <option value="0">{{\Auth::user()->owner->name}}</option>
+                        @foreach(\App\Models\Partner::all() as $partner)
+                            <option value="{{$partner->id}}">{{$partner->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
             </x-slot>
 
             <x-slot name="body">

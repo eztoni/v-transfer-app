@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Route;
 use App\Models\Transfer;
+use Carbon\Carbon;
 use Livewire\Component;
 
 class TransferPrices extends Component
@@ -14,24 +15,30 @@ class TransferPrices extends Component
     public $routeSaveButton = [];
     public $transferId = null;
     public $showSearch = true;
+    public $partnerId = 0;
 
     public function mount()
     {
-        $this->setModelPrices();
         $first = Transfer::first();
         $this->transferId = $first->id ?? null;
+        $this->setModelPrices();
+
     }
 
 
     private function setModelPrices(){
         if($this->transferId > 0){
-            $this->transfer = Transfer::with('routes')->find($this->transferId);
+            $this->transfer = Transfer::with(['routes'=>function ($q){
+                $q->where('partner_id',$this->partnerId);
+            }])->find($this->transferId);
 
             $routes = $this->transfer->routes;
             foreach($routes as $r){
                 $this->routePrice[$r->id] = $r->pivot->price;
             }
+
         }
+
     }
 
     public function updated($property)
@@ -45,7 +52,12 @@ class TransferPrices extends Component
 
         $this->setModelPrices();
     }
+    public function updatedPartnerId()
+    {
+        $this->routePrice =  [];
 
+        $this->setModelPrices();
+    }
     protected $rules = [
         'routePrice.*' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/',
     ];
@@ -63,12 +75,20 @@ class TransferPrices extends Component
     }
 
     public function saveRoutePrice($routeId){
-        $this->validate();
 
-        $transfer = Transfer::findOrFail($this->transferId);
-        $transfer->routes()->syncWithPivotValues($routeId , ['price' => $this->routePrice[$routeId]]);
-        $transfer->save();
-        $this->showToast('Saved', 'Route Price Saved', 'success');
+        $this->validate();
+        \DB::table('route_transfer')->updateOrInsert(
+            [
+                'route_id'=>$routeId,
+                'transfer_id'=>$this->transferId,
+                'partner_id'=>$this->partnerId,
+            ],
+            [
+                'price' =>  $this->routePrice[$routeId]
+            ]
+        );
+
+        $this->showToast('Saved', 'Route Price Saved');
 
     }
 

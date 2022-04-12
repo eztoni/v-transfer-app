@@ -1,16 +1,17 @@
-<div class="internal-reservation">
-
+<div class="internal-reservation container ">
+    <div class="grid grid-cols-3 gap-4">
+        <div class="col-span-2 ">
     @if($step === 1)
         <x-ez-card class="mb-4 ">
 
             <x-slot name="title">
-                Search
+               <i class="fas fa-search"></i> Search
             </x-slot>
 
             <x-slot name="body" class="">
                 <div class="flex justify-between gap-4">
                     <div class="form-control flex-grow basis-1/3">
-                        <select class="my-select" wire:model="stepOneFields.destinationId">
+                        <select class="my-select select-sm" wire:model="stepOneFields.destinationId">
                             <option value="">Pick a destination</option>
                             @foreach(\App\Models\Destination::all() as $destination)
                                 <option value="{{$destination->id}}">{{$destination->name}}</option>
@@ -24,7 +25,7 @@
 
                     <div class="form-control flex-grow basis-1/3">
                         @if(!empty($this->stepOneFields['destinationId']))
-                            <select class="my-select" wire:model="stepOneFields.pickupPointId">
+                            <select class="my-select select-sm" wire:model="stepOneFields.pickupPointId">
                                 <option value="">Pickup location</option>
 
                             </select>
@@ -35,7 +36,7 @@
                     <div class="form-control flex-grow basis-1/3">
                         @if(!empty($this->stepOneFields['destinationId']))
 
-                            <select class="my-select" wire:model="stepOneFields.dropOffPointId">
+                            <select class="my-select select-sm" wire:model="stepOneFields.dropOffPointId">
                                 <option value="">Drop off location</option>
 
                             </select>
@@ -46,21 +47,37 @@
 
                 </div>
                 <div class="divider my-1    "></div>
-                <div class="flex justify-between gap-4">
-                    <div class="basis-2/5  ">
-                        <div class="flex justify-between gap-4">
-                            <div class="form-control flex-grow ">
+                <div class="flex justify-between gap-2">
+                    <div class="basis-3/5  ">
+                        <div class="flex  gap-2">
+                            <div class="form-control  flex-grow">
                                 <label class="label">
                                     <span class="label-text">Date:</span>
                                 </label>
-                                <input class="my-input input-sm flex-grow" placeholder="" value="31.04.2022">
+                                <input class="my-input input-sm w-full " placeholder="" value="31.04.2022">
+
+                            </div>
+                            <div class="form-control  flex-grow">
+                                <label class="label">
+                                    <span class="label-text">Time:</span>
+                                </label>
+                                <input class="my-input input-sm w-full" placeholder="" value="22:45">
+
+                            </div>
+
+
+                            <div class="form-control  flex-grow">
+                                <label class="label">
+                                    <span class="label-text">Date (return):</span>
+                                </label>
+                                <input class="my-input input-sm w-full" placeholder="" value="31.04.2022">
 
                             </div>
                             <div class="form-control flex-grow ">
                                 <label class="label">
-                                    <span class="label-text">Time:</span>
+                                    <span class="label-text">Time (return):</span>
                                 </label>
-                                <input class="my-input input-sm flex-grow" placeholder="" value="22:45">
+                                <input class="my-input input-sm w-full" placeholder="" value="22:45">
 
                             </div>
                         </div>
@@ -71,72 +88,54 @@
                                  Two way</span>
                                 <input type="checkbox" checked="checked" class="checkbox">
                             </label>
-                            <div class="flex justify-between gap-4">
-                                <div class="form-control flex-grow ">
-                                    <label class="label">
-                                        <span class="label-text">Date (return):</span>
-                                    </label>
-                                    <input class="my-input input-sm flex-grow" placeholder="" value="31.04.2022">
 
-                                </div>
-                                <div class="form-control flex-grow ">
-                                    <label class="label">
-                                        <span class="label-text">Time (return):</span>
-                                    </label>
-                                    <input class="my-input input-sm flex-grow" placeholder="" value="22:45">
-
-                                </div>
-                            </div>
                         </div>
 
                     </div>
 
 
-                    <div class="divider divider-horizontal md:opacity-100 opacity-0"></div>
+                    <div class="divider divider-horizontal  md:opacity-100 opacity-0" style="margin: 0;"></div>
 
-                    <div class="basis-3/5">
-                        <div class="flex justify-between gap-4">
+                    <div class="basis-2/5">
+                        <div class="flex  gap-2">
 
                             <div class="form-control flex-grow ">
                                 <label class="label">
                                     <span class="label-text">Senior:</span>
                                 </label>
-                                <input class="my-input input-sm flex-grow" placeholder="" value="1">
+                                <input class="my-input input-sm w-full" placeholder="" value="1">
 
                             </div>
                             <div class="form-control flex-grow ">
                                 <label class="label">
                                     <span class="label-text">Adult:</span>
                                 </label>
-                                <input class="my-input input-sm flex-grow" placeholder="" value="2">
+                                <input class="my-input input-sm w-full" placeholder="" value="2">
 
                             </div>
-
-                        </div>
-                        <div class="flex justify-between gap-4">
-
                             <div class="form-control flex-grow ">
                                 <label class="label">
                                     <span class="label-text">Child(3-17):</span>
                                 </label>
-                                <input class="my-input input-sm flex-grow" placeholder="" value="1">
+                                <input class="my-input input-sm w-full" placeholder="" value="1">
 
                             </div>
                             <div class="form-control flex-grow ">
                                 <label class="label">
                                     <span class="label-text">Infant(0-2):</span>
                                 </label>
-                                <input class="my-input input-sm flex-grow" placeholder="" value="1">
+                                <input class="my-input input-sm w-full" placeholder="" value="1">
 
                             </div>
                         </div>
+
                         <div class="flex justify-between gap-4">
 
                             <div class="form-control flex-grow ">
                                 <label class="label">
                                     <span class="label-text">Luggage</span>
                                 </label>
-                                <input class="my-input input-sm flex-grow" placeholder="" value="1">
+                                <input class="my-input input-sm w-1/2" placeholder="" value="1">
 
                             </div>
 
@@ -151,8 +150,7 @@
     @endif
 
 
-    <div class="grid grid-cols-3 gap-4">
-        <div class="col-span-2 ">
+
             @if($step === 1)
 
             <x-ez-card class="">
@@ -242,9 +240,7 @@
                                 <div class="col-span-1">
                                     <x-form.ez-text-input sm value="14:30" label="Pickup time" ></x-form.ez-text-input>
                                 </div>
-                                <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Child seats" value="2"></x-form.ez-text-input>
-                                </div>
+
                                 <div class="col-span-1">
                                     <x-form.ez-text-input sm label="Remark"></x-form.ez-text-input>
                                 </div>
@@ -253,29 +249,70 @@
                         </x-slot>
                     </x-ez-card>
                     <x-ez-card class="mb-4"  >
-                        <x-slot name="title">Lead traveller details</x-slot>
+                        <x-slot name="title">Child seats</x-slot>
+                        <x-slot name="body">
+                            <div class="grid grid-cols-4 gap-4">
+                                @foreach($seats as $seat)
+                                    <div class="col-span-2">
+                                        <x-form.ez-select model=""  :label="'Seat #'.$loop->index +1 .':'" :items="['Booster (10-15 kg)','Egg (0-5 kg)','Classic(5-10 kg)']" sm="true"></x-form.ez-select>
+                                    </div>
+
+
+                                @endforeach
+
+                            </div>
+                            <div class="flex justify-end gap-4">
+
+                                <button class="btn btn-outline  btn-sm btn-circle" wire:click="addSeat"><i class="fas fa-plus"></i></button>
+                                <button class="btn btn-outline  btn-sm btn-circle" wire:click="removeSeat"><i class="fas fa-minus"></i></button>
+                            </div>
+
+                        </x-slot>
+                    </x-ez-card>
+                    <x-ez-card class="mb-4"  >
+                        <x-slot name="title">
+                            <div class="flex justify-between w-full">
+                                <span>                              Lead traveller details
+
+                                </span>
+                                <div>
+                                <x-ez-modal >
+                                    <x-slot name="button" class="btn-sm">Pull traveller</x-slot>
+
+                                    <x-form.ez-text-input sm label="Reservation id" value="3127863"></x-form.ez-text-input>
+                                    <x-slot name="footer">
+                                        <label for="ez-modal" wire:click="pullTraveller" class="btn btn-sm btn-success">
+                                            Pull data
+                                        </label>
+                                    </x-slot>
+
+                                </x-ez-modal>
+                                </div>
+                            </div>
+
+                        </x-slot>
                         <x-slot name="body">
                             <div class="grid grid-cols-3 gap-4">
 
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Title" value="Mr."></x-form.ez-text-input>
+                                    <x-form.ez-text-input sm label="Title" value="{{$fakeData['title']}}"></x-form.ez-text-input>
                                 </div>
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="First name" value="John "></x-form.ez-text-input>
+                                    <x-form.ez-text-input sm label="First name" value="{{$fakeData['fName']}}"></x-form.ez-text-input>
                                 </div>
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm  label="Last name" value="Doe"></x-form.ez-text-input>
+                                    <x-form.ez-text-input sm  label="Last name" value="{{$fakeData['lName']}}"></x-form.ez-text-input>
 
                                 </div>
 
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Reservation number" value="1872351"></x-form.ez-text-input>
+                                    <x-form.ez-text-input sm label="Reservation number" value="{{$fakeData['resNum']}}"></x-form.ez-text-input>
                                 </div>
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Email" value="john@doe.test"></x-form.ez-text-input>
+                                    <x-form.ez-text-input sm label="Email" value="{{$fakeData['email']}}"></x-form.ez-text-input>
                                 </div>
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm value="Phone" label="+385 91 119 9111" ></x-form.ez-text-input>
+                                    <x-form.ez-text-input sm label="Phone" value="{{$fakeData['phone']}}" ></x-form.ez-text-input>
 
                                 </div>
 
@@ -306,7 +343,11 @@
                                 @endforeach
 
                             </div>
-                            <button class="btn btn-outline ml-auto btn-sm btn-circle" wire:click="addTraveller"><i class="fas fa-plus"></i></button>
+                            <div class="flex justify-end gap-4">
+
+                            <button class="btn btn-outline  btn-sm btn-circle" wire:click="addTraveller"><i class="fas fa-plus"></i></button>
+                            <button class="btn btn-outline  btn-sm btn-circle" wire:click="removeTraveller"><i class="fas fa-minus"></i></button>
+                            </div>
 
                         </x-slot>
                     </x-ez-card>
