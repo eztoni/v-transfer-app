@@ -13,6 +13,11 @@ class Partner extends Model
     protected $fillable = [
 
     ];
+
+    public function extras(){
+        return $this->belongsToMany(Extra::class);
+    }
+
     protected static function booted()
     {
         static::addGlobalScope(new OwnerScope());

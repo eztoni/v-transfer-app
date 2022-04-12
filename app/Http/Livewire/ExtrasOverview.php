@@ -22,15 +22,31 @@ class ExtrasOverview extends Component
     public $extra;
     public $extraModal;
     public $price;
-
-    protected $rules = [
-        'extra.name' => 'required|max:255',
-        'extra.description' => 'max:255',
-        'price' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/',
+    public $companyLanguages = ['en'];
+    public $extraName = [
+        'en' => null
+    ];
+    public $extraDescription = [
+        'en' => null
     ];
 
+   // 'price' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/',
+
+    protected function rules()
+    {
+        $ruleArray = [
+            'extraName.en' => 'required|min:3',
+            'extraDescription.en' => 'max:100',
+        ];
+        return $ruleArray;
+    }
+
+
     protected $messages = [
-        'extra.price.regex' => 'The price format must be in 00.00',
+       // 'extra.price.regex' => 'The price format must be in 00.00',
+        'extraName.en.required' => 'The extra name is required!',
+        'extraName.en.min' => 'The extra name must be at least 3 characters.',
+        'extraDescription.en.max' => 'The extra description max characters is 100.',
     ];
 
     public function updated($propertyName)
@@ -50,15 +66,15 @@ class ExtrasOverview extends Component
         $this->openExtraModal();
         $this->extra = Extra::find($extraId);
 
-        $currencies = new ISOCurrencies();
+      /*  $currencies = new ISOCurrencies();
         $moneyFormatter = new DecimalMoneyFormatter($currencies);
-        $this->price =  $moneyFormatter->format($this->extra->price->getMoney());
+        $this->price =  $moneyFormatter->format($this->extra->price->getMoney());*/
     }
 
     public function addExtra(){
         $this->openExtraModal();
         $this->extra = new Extra();
-        $this->price = 0;
+       /* $this->price = 0;*/
     }
 
     public function saveExtraData(){
@@ -67,11 +83,13 @@ class ExtrasOverview extends Component
         $this->validate();
 
         //Money
-        $currencies = new ISOCurrencies();
+    /*    $currencies = new ISOCurrencies();
         $moneyParser = new DecimalMoneyParser($currencies);
         $money = $moneyParser->parse($this->price,new Currency('EUR'));
+        $this->extra->price = $money->getAmount();*/
+        $this->extra->setTranslations('name', $this->extraName);
+        $this->extra->setTranslations('description', $this->extraDescription);
         $this->extra->owner_id = Auth::user()->owner_id;
-        $this->extra->price = $money->getAmount();
         $this->extra->save();
         $this->showToast('Success','Extra saved, add some info to it!');
         $this->closeExtraModal();
