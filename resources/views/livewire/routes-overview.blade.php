@@ -152,11 +152,11 @@
                     <div class="form-control">
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text">HIS code :</span>
+                                <span class="label-text">PMS code :</span>
                             </label>
-                            <input wire:model="route.his_code" class="input input-bordered"
-                                   placeholder="HIS code">
-                            @error('route.his_code')
+                            <input wire:model="route.pms_code" class="input input-bordered"
+                                   placeholder="PMS code">
+                            @error('route.pms_code')
                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
                             @enderror
                         </div>

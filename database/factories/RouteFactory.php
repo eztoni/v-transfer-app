@@ -27,7 +27,7 @@ class RouteFactory extends Factory
             'ending_point_id' => function ($attr){
                 return Point::whereDestinationId($attr['destination_id'])->where('id','!=',$attr['starting_point_id'])->inRandomOrder()->first()->id;
             },
-            'his_code' => $this->faker->word(),
+            'pms_code' => $this->faker->word(),
             'active' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
