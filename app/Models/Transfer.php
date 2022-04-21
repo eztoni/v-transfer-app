@@ -26,9 +26,23 @@ class Transfer extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('transferImages');
+        $this
+            ->addMediaCollection('transferImages')
+            ->useFallbackUrl('	https://app.ez-booker.com/modules/img/default_image.jpg');
     }
+    public function getPrimaryImageUrlAttribute()
+    {
+        $image = $this->getMedia('transferImages', function (Media $media) {
+            return isset($media->custom_properties[self::IMAGE_PRIMARY_PROPERTY]);
+        })->first();
 
+        if (!$image) {
+            return $this->getFirstMediaUrl('transferImages');
+        }
+
+        return $image->getFullUrl();
+
+    }
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')

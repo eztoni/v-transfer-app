@@ -2,7 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Point;
+use App\Models\Route;
 use App\Models\Transfer;
+use App\Services\TransferAvailability;
 use Livewire\Component;
 
 class InternalReservation extends Component
@@ -10,10 +13,73 @@ class InternalReservation extends Component
 
     public $stepOneFields = [
         'destinationId' => null,
-        'pickupPointId' => null,
-        'dropOffPointId' => null,
+        'startingPointId' => null,
+        'endingPointId' => null,
+        'dateTo'=> null,
+        'timeTo'=>null,
+        'dateFrom'=>null,
+        'timeFrom'=>null,
+        'seniors'=>0,
+        'adults'=>1,
+        'children'=>0,
+        'infants'=>0,
+        'luggage'=>1,
     ];
+    public bool $twoWay = false;
+    public int $step = 1;
 
+
+    /*
+     * CLEAN
+     */
+
+    //reset the points when we change destination
+    public function updatedStepOneFieldsDestinationId()
+    {
+        $this->stepOneFields['startingPointId'] = $this->stepOneFields['endingPointId'] = '';
+    }
+    //reset the points when we change destination
+    public function updatedStepOneFieldsStartingPointId()
+    {
+        $this->stepOneFields['endingPointId'] = '';
+    }
+
+    public function getStartingPointsProperty()
+    {
+        return Point::query()
+            ->where('destination_id',$this->stepOneFields['destinationId'])
+            ->get();
+    }
+
+    public function getEndingPointsProperty()
+    {
+
+        return Route::query()
+                ->with('endingPoint')
+                ->where('destination_id',$this->stepOneFields['destinationId'])
+                ->where('starting_point_id',$this->stepOneFields['startingPointId'])
+                ->get()
+                ->pluck('endingPoint') ;
+    }
+
+
+    public function getAvailableTransfersProperty(){
+        return (new TransferAvailability())
+            ->setAdults($this->stepOneFields['adults'])
+            ->setChildren($this->stepOneFields['children'])
+            ->setSeniors($this->stepOneFields['seniors'])
+            ->setInfants($this->stepOneFields['infants'])
+            ->setLuggage($this->stepOneFields['luggage'])
+            ->setDestinationId($this->stepOneFields['destinationId'])
+            ->getAvailableTransfers();
+
+    }
+
+
+
+    /*
+     * CLEAN
+     */
     public $fakeData = [
         'title'=>'',
         'fName'=>'',
@@ -23,9 +89,7 @@ class InternalReservation extends Component
         'phone'=>'',
     ];
 
-    public bool $twoWay = false;
 
-    public int $step = 1;
 
     public array $travellers = [1];
     public array $seats = [1];
@@ -60,10 +124,7 @@ class InternalReservation extends Component
         array_pop($this->seats);
     }
 
-    public function getTransfersProperty()
-    {
-        return Transfer::with('media')->get();
-    }
+
 
     public function selectTransfer()
     {
