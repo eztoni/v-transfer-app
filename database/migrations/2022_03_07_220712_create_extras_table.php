@@ -14,7 +14,6 @@ class CreateExtrasTable extends Migration
             $table->foreignIdFor(\App\Models\Owner::class)->constrained();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->bigInteger('price');
             $table->timestamps();
         });
     }

@@ -14,10 +14,7 @@
                 <tr>
                     <th>#Id</th>
                     <th>Name</th>
-                    <th>Price</th>
-                    <th>Images</th>
-                    <th class="text-center">Images</th>
-
+                    <th>Description</th>
                     <th class="text-center">Edit</th>
                 </tr>
                 </thead>
@@ -27,21 +24,14 @@
                     <tr>
                         <td>{{ $ex->id }}</td>
                         <td>{{ $ex->name }}</td>
-                        <td>{{ $ex->price }}</td>
-                        <td>{{ $ex->getMedia('extraImages')->count()}}/{{$ex::MAX_IMAGES}}</td>
+                        <td>{{ $ex->description }}</td>
                         <td class="text-center">
-
-                            <a href="{{ route('extras-edit',$ex) }}">
-                                <button class="btn btn-circle btn-sm btn-primary"><i class="fas fa-image"></i></button>
+                            <a href="{{ route('extras-edit',$ex)}}">
+                                <button  class="btn btn-circle btn-sm btn-success">
+                                    <i class="fas fa-pen"></i>
+                                </button>
                             </a>
                         </td>
-                        <td class="text-center">
-                            <button wire:click="updateExtra({{$ex->id}})" class="btn btn-circle btn-sm btn-success">
-                                <i class="fas fa-pen"></i>
-                            </button>
-
-                        </td>
-
                     </tr>
 
                 @empty
@@ -76,9 +66,9 @@
                             <label class="label">
                                 <span class="label-text">Name :</span>
                             </label>
-                            <input wire:model="extra.name" class="input input-bordered"
-                                   placeholder="Name">
-                            @error('extra.name')
+                            <input wire:model="extraName.en" class="my-input  "
+                                   placeholder="ex. Drinks">
+                            @error('extraName.en')
                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
                             @enderror
                         </div>
@@ -90,22 +80,9 @@
                             <label class="label">
                                 <span class="label-text">Description : </span>
                             </label>
-                            <input wire:model="extra.description" class="input input-bordered"
+                            <input wire:model="extraDescription.en" class="input input-bordered"
                                    placeholder="Description">
-                            @error('extra.description')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-control">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Price (EUR) : </span>
-                            </label>
-                            <input wire:model="price" class="input input-bordered"
-                                   placeholder="Price">
-                            @error('price')
+                            @error('extraDescription.en')
                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
                             @enderror
                         </div>

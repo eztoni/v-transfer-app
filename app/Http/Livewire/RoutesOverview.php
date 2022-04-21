@@ -29,7 +29,7 @@ class RoutesOverview extends Component
             'route.destination_id'=>'required|numeric',
             'route.starting_point_id'=>'required|numeric',
             'route.ending_point_id'=>'required|numeric',
-            'route.his_code'=>'nullable',
+            'route.pms_code'=>'nullable',
         ];
     }
     public function updated($propertyName)

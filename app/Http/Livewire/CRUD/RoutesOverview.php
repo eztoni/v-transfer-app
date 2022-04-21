@@ -16,7 +16,7 @@ class RoutesOverview extends EzComponent
         'model.destination_id' => 'destination',
         'model.ending_point_id' => 'ending point',
         'model.starting_point_id' => 'starting point',
-        'model.his_code'=>'his code',
+        'model.pms_code'=>'his code',
     ];
 
     public function setModelClass(): string
@@ -74,7 +74,7 @@ class RoutesOverview extends EzComponent
             new EzSelect('Destination','model.destination_id',$this->destinationSelect),
             new EzSelect('Starting point','model.starting_point_id',$this->startingPoints),
             new EzSelect('Ending point ','model.ending_point_id',$this->endingPoints),
-            new EzTextInput('HIS code','model.his_code'),
+            new EzTextInput('PMS code','model.pms_code'),
         ]);
     }
 
@@ -85,7 +85,7 @@ class RoutesOverview extends EzComponent
            'model.destination_id' => 'required',
            'model.ending_point_id' => 'required',
            'model.starting_point_id' => 'required',
-           'model.his_code'=>'nullable',
+           'model.pms_code'=>'nullable',
        ];
     }
 }

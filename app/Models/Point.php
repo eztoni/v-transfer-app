@@ -15,11 +15,13 @@ class Point extends Model
     const TYPE_AIRPORT = 'airport';
     const TYPE_ACCOMMODATION = 'accommodation';
     const TYPE_HARBOR = 'harbor';
+    const TYPE_CITY = 'city';
 
     const  TYPE_ARRAY = [
         self::TYPE_AIRPORT,
         self::TYPE_ACCOMMODATION,
         self::TYPE_HARBOR,
+        self::TYPE_CITY,
     ];
 
     protected $fillable = [

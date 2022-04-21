@@ -12,11 +12,13 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Translatable\HasTranslations;
 
 class Extra extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
+    use HasTranslations;
     const MAX_IMAGES = 5;
 
     #DONT CHANGE
@@ -27,6 +29,8 @@ class Extra extends Model implements HasMedia
         'description',
         'price',
     ];
+
+    public $translatable = ['name','description'];
 
     protected $casts = [
       'price' => MoneyIntegerCast::class,
@@ -54,6 +58,22 @@ class Extra extends Model implements HasMedia
             ->width(368)
             ->height(232)
             ->sharpen(10);
+    }
+
+
+    public function getPrice($partnerId){
+
+        $price = 0;
+        $extraPrice = (\DB::table('extra_partner')
+            ->select('price')
+            ->where('partner_id','=',$partnerId)
+            ->where('extra_id','=',$this->id)->first());
+
+        if($extraPrice){
+            $price = $extraPrice->price;
+        }
+
+        return $price;
     }
 
     protected static function booted()
