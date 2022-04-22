@@ -91,6 +91,7 @@
                 </x-slot>
 
                 <div class="form-control">
+
                     <label class="label">
                         <span class="label-text">Price:</span>
                     </label>

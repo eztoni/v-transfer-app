@@ -6,6 +6,7 @@ use App\Models\Route;
 use App\Models\Transfer;
 use Carbon\Carbon;
 use Livewire\Component;
+use function Symfony\Component\String\b;
 
 class TransferPrices extends Component
 {
@@ -59,7 +60,7 @@ class TransferPrices extends Component
         $this->setModelPrices();
     }
     protected $rules = [
-        'routePrice.*' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/',
+        'routePrice.*' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/|min:1',
     ];
 
 
@@ -77,6 +78,11 @@ class TransferPrices extends Component
     public function saveRoutePrice($routeId){
 
         $this->validate();
+
+        if(empty($this->routePrice[$routeId])){
+            return;
+        }
+
         \DB::table('route_transfer')->updateOrInsert(
             [
                 'route_id'=>$routeId,

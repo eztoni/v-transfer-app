@@ -5,7 +5,13 @@ namespace App\Http\Livewire;
 use App\Models\Extra;
 use App\Models\Language;
 use App\Models\Transfer;
+use Cknow\Money\Casts\MoneyIntegerCast;
+use Cknow\Money\Money;
 use Livewire\Component;
+use Money\Currencies\ISOCurrencies;
+use Money\Currency;
+use Money\Formatter\DecimalMoneyFormatter;
+use Money\Parser\DecimalMoneyParser;
 
 class ExtrasEdit extends Component
 {
@@ -21,11 +27,15 @@ class ExtrasEdit extends Component
         'en' => null
     ];
 
+    protected $casts = [
+        'extraPrice' => MoneyIntegerCast::class. ':EUR,true',
+    ];
+
     protected function rules()
     {
         $ruleArray = [
             'extraName.en' => 'required|min:3',
-            'extraPrice.*' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/',
+            'extraPrice' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/',
         ];
         foreach ($this->companyLanguages as $lang) {
             if ($lang !== 'en') {
@@ -41,14 +51,6 @@ class ExtrasEdit extends Component
     {
         $this->instantiateComponentValues();
         $this->setModelPrices();
-    }
-
-
-    private function setModelPrices(){
-        if($this->extraId > 0){
-            $this->extraPrice = $this->extra->getPrice($this->partnerId);
-        }
-
     }
 
     public function updatedPartnerId()
@@ -80,17 +82,31 @@ class ExtrasEdit extends Component
         $this->validateOnly($field);
     }
 
+    private function setModelPrices(){
+
+        if($this->extraId > 0){
+            $this->extraPrice = Money::EUR($this->extra->getPrice($this->partnerId))->format(null, null, \NumberFormatter::DECIMAL); // 1,99;
+        }
+
+    }
 
     public function saveExtraPrice(){
 
         $this->validate();
+
+        $currencies = new ISOCurrencies();
+        $moneyParser = new DecimalMoneyParser($currencies);
+        $money = $moneyParser->parse($this->extraPrice,new Currency('EUR'));
+        $price = $money->getAmount();
+
+
         \DB::table('extra_partner')->updateOrInsert(
             [
                 'extra_id'=>$this->extraId,
                 'partner_id'=>$this->partnerId,
             ],
             [
-                'price' =>  $this->extraPrice
+                'price' => $price
             ]
         );
 

@@ -79,17 +79,14 @@
                                     <td class="text-right">
                                         <div class="form-control ">
                                             <div class="input-group justify-end">
-                                                <input wire:model="routePrice.{{$r->id}}" placeholder="Price" @keyup="dirty=false" class="input input-sm input-bordered">
-                                                @error('routePrice.'.$r->id)
-                                                <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                                @enderror
+                                                <input wire:model="routePrice.{{$r->id}}" placeholder="Price" @keyup="dirty=false" class="@error('routePrice.'.$r->id) input-error @enderror input input-sm input-bordered">
                                                 <button wire:click="saveRoutePrice({{$r->id}})"  :disabled="dirty"  class="btn btn-sm  btn-success">
                                                     Save
                                                 </button>
                                             </div>
                                         </div>
-
                                     </td>
+
 
                                 </tr>
                             @endforeach

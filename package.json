@@ -23,6 +23,7 @@
         "tailwindcss": "^3.0.23"
     },
     "dependencies": {
+        "@alpinejs/mask": "^3.10.2",
         "@fullcalendar/core": "^5.10.0",
         "@fullcalendar/daygrid": "^5.10.0",
         "@fullcalendar/list": "^5.10.0",

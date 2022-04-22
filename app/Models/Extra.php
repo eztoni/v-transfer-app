@@ -33,7 +33,7 @@ class Extra extends Model implements HasMedia
     public $translatable = ['name','description'];
 
     protected $casts = [
-      'price' => MoneyIntegerCast::class,
+      'price' => MoneyIntegerCast::class. ':EUR,true',
     ];
 
     public function getPrimaryImageAttribute(){
