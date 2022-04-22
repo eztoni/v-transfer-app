@@ -60,8 +60,9 @@
                 @endforelse
                 </tbody>
 
-
             </table>
+
+
             {{$routes->links()}}
 
 

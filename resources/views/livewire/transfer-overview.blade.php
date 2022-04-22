@@ -9,6 +9,7 @@
         <x-slot name="body">
 
             <input type="text" wire:model="search" class="input input-primary my-2" placeholder="Find Transfer">
+
             <table class="table table-compact w-full" wire:loading.delay.class="opacity-50">
                 <thead>
                 <tr>
