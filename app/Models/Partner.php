@@ -14,6 +14,10 @@ class Partner extends Model
 
     ];
 
+    public function destination(){
+        return $this->belongsTo(Destination::class);
+    }
+
     public function extras(){
         return $this->belongsToMany(Extra::class);
     }

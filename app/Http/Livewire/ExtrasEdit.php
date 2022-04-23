@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Extra;
 use App\Models\Language;
+use App\Models\Partner;
 use App\Models\Transfer;
 use Cknow\Money\Casts\MoneyIntegerCast;
 use Cknow\Money\Money;
@@ -49,8 +50,12 @@ class ExtrasEdit extends Component
 
     public function mount()
     {
+
         $this->instantiateComponentValues();
+        $this->partnerId = Partner::first()->id;
+
         $this->setModelPrices();
+
     }
 
     public function updatedPartnerId()

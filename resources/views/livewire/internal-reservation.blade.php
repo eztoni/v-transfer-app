@@ -237,8 +237,11 @@
                                                         <span class=" ">Max. Occ: {{$transfer->vehicle->max_occ}}</span>
                                                         <span class=" ">Max. Luggage:{{$transfer->vehicle->max_luggage}}</span>
 
+                                                    </div>z
+                                                    <span class="  ">Price: <b> {{Cknow\Money\Money::EUR($transfer->pivot->price)}} EUR</b></span>
+                                                    <div class="badge badge-info top-2 right-2 absolute">
+                                                        {{$transfer->partner->name}}
                                                     </div>
-                                                    <span class="  ">Price: <b>342.25 EUR</b></span>
                                                     <button
                                                         class="btn btn-sm btn-primary absolute bottom-2 rounded-xl right-2"
                                                         wire:click="selectTransfer({{$transfer->id}})">Select

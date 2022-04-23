@@ -98,7 +98,7 @@ class PartnersOverview extends Component
     public function render()
     {
         $destinations = Destination::all();
-        $partners = Partner::search('name',$this->search)->paginate(10);
+        $partners = Partner::with('destination')->search('name',$this->search)->paginate(10);
         return view('livewire.partners-overview',compact('partners','destinations'));
     }
 }

@@ -14,6 +14,8 @@ class RouteTransfer extends Migration
             $table->foreignId('partner_id')->default(0);
             $table->bigInteger('price');
             $table->timestamps();
+
+            $table->unique(['route_id', 'transfer_id','partner_id']);
         });
     }
 

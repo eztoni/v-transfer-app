@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Partner;
+use App\Models\Route;
 use App\Models\Transfer;
 use Carbon\Carbon;
 
@@ -14,7 +16,7 @@ class TransferAvailability
     private Carbon $timeFrom;
     private bool $twoWay = false;
 
-    private  $destinationId;
+    private Route $route;
 
     private int $luggage = 0;
     private int $seniors = 0;
@@ -22,26 +24,40 @@ class TransferAvailability
     private int $children = 0;
     private int $infants = 0;
 
-    private function getTotalNumOfPeople() : int
+    private function getTotalNumOfPeople(): int
     {
         return $this->seniors + $this->adults + $this->children + $this->infants;
     }
 
-    public function getAvailableTransfers()
+    public function getAvailablePartnerTransfers()
     {
-        if(empty($this->getTotalNumOfPeople())){
+        if (empty($this->getTotalNumOfPeople())) {
+            return collect([]);
+        }
+        if (!$this->route) {
             return collect([]);
         }
 
+        $routeWithTransfersPerPartner =
+            Route::whereId($this->route->id)->with(['transfers', 'transfers.vehicle'])
+                ->whereHas('transfers.vehicle', function ($q) {
+                    $q->where('max_luggage', '>=', $this->luggage)
+                        ->where('max_occ', '>=', $this->getTotalNumOfPeople());
+                })->first();
 
-        return Transfer::query()
-            ->with(['vehicle'])
-            ->whereHas('vehicle',function ($q){
-                $q->where('max_luggage','>=',$this->luggage)
-                    ->where('max_occ','>=',$this->getTotalNumOfPeople());
-            })
-            ->where('destination_id',$this->destinationId)
-            ->get();
+
+        if ($routeWithTransfersPerPartner) {
+            $partnerIds = array_unique($routeWithTransfersPerPartner->transfers->pluck('pivot.partner_id')->toArray());
+
+            $partners = Partner::findMany($partnerIds);
+
+            $routeWithTransfersPerPartner->transfers = $routeWithTransfersPerPartner->transfers->map(function ($item) use ($partners) {
+                $item->partner = $partners->where('id', $item->pivot->partner_id)->first();
+                return $item;
+            });
+        }
+
+        return $routeWithTransfersPerPartner->transfers ?? collect([]);
     }
 
 
@@ -145,13 +161,14 @@ class TransferAvailability
         return $this;
     }
 
+
     /**
-     * @param int $destinationId
+     * @param Route $route
      * @return TransferAvailability
      */
-    public function setDestinationId( $destinationId): TransferAvailability
+    public function setRoute(Route $route): TransferAvailability
     {
-        $this->destinationId = $destinationId;
+        $this->route = $route;
         return $this;
     }
 

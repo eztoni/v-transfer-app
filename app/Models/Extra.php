@@ -27,7 +27,6 @@ class Extra extends Model implements HasMedia
     protected $fillable = [
         'name',
         'description',
-        'price',
     ];
 
     public $translatable = ['name','description'];

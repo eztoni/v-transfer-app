@@ -27,6 +27,7 @@ class InternalReservation extends Component
     ];
     public bool $twoWay = false;
     public int $step = 1;
+    public int $selectedTransfer;
 
 
     /*
@@ -34,6 +35,7 @@ class InternalReservation extends Component
      */
 
     //reset the points when we change destination
+
     public function updatedStepOneFieldsDestinationId()
     {
         $this->stepOneFields['startingPointId'] = $this->stepOneFields['endingPointId'] = '';
@@ -64,18 +66,25 @@ class InternalReservation extends Component
 
 
     public function getAvailableTransfersProperty(){
+
+        $route = Route::where('starting_point_id',$this->stepOneFields['startingPointId'])
+            ->where('ending_point_id',$this->stepOneFields['endingPointId'])
+            ->first();
+
+        if(!$route){
+            return collect([]);
+        }
+
         return (new TransferAvailability())
             ->setAdults($this->stepOneFields['adults'])
             ->setChildren($this->stepOneFields['children'])
             ->setSeniors($this->stepOneFields['seniors'])
             ->setInfants($this->stepOneFields['infants'])
             ->setLuggage($this->stepOneFields['luggage'])
-            ->setDestinationId($this->stepOneFields['destinationId'])
-            ->getAvailableTransfers();
+            ->setRoute($route)
+            ->getAvailablePartnerTransfers();
 
     }
-
-
 
     /*
      * CLEAN
@@ -126,8 +135,15 @@ class InternalReservation extends Component
 
 
 
-    public function selectTransfer()
+    public function selectTransfer($transferId)
     {
+        //Simple validation
+        $transfer = Transfer::findOrFail($transferId);
+
+        //TODO: Validate
+
+        $this->selectedTransfer = $transfer->id;
+
         $this->step = 2;
     }
 

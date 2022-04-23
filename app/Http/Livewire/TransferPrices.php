@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Partner;
 use App\Models\Route;
 use App\Models\Transfer;
 use Carbon\Carbon;
@@ -18,17 +19,19 @@ class TransferPrices extends Component
     public $showSearch = true;
     public $partnerId = 0;
 
-    public function mount()
+    public function mount(): void
     {
         $first = Transfer::first();
         $this->transferId = $first->id ?? null;
+        $this->partnerId = Partner::first()->id;
         $this->setModelPrices();
 
     }
 
 
-    private function setModelPrices(){
-        if($this->transferId > 0){
+    private function setModelPrices(): void
+    {
+        if( !empty($this->transferId) && !empty($this->partnerId)){
             $this->transfer = Transfer::with(['routes'=>function ($q){
                 $q->where('partner_id',$this->partnerId);
             }])->find($this->transferId);
@@ -42,18 +45,18 @@ class TransferPrices extends Component
 
     }
 
-    public function updated($property)
+    public function updated($property): void
     {
         $this->validateOnly($property);
     }
 
-    public function updatedTransferId()
+    public function updatedTransferId(): void
     {
         $this->routePrice =  [];
 
         $this->setModelPrices();
     }
-    public function updatedPartnerId()
+    public function updatedPartnerId(): void
     {
         $this->routePrice =  [];
 

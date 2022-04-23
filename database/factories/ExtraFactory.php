@@ -17,7 +17,6 @@ class ExtraFactory extends Factory
             'owner_id' => 1,
             'name' => $this->faker->word(),
             'description' => $this->faker->text(),
-            'price' => random_int(100,10000),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

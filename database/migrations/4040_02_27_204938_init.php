@@ -43,6 +43,11 @@ class Init extends Migration
             ]
         );
 
+
+
+
+
+
          \App\Models\Language::create(['name' => 'Hrvatski','language_code' => 'hr']);
 
 

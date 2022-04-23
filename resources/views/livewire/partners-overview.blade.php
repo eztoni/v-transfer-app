@@ -17,6 +17,7 @@
                     <th>Name</th>
                     <th>Phone</th>
                     <th>Email</th>
+                    <th>Destination</th>
                     <th class="text-center">Update</th>
 
                 </tr>
@@ -29,6 +30,7 @@
                         <td >{{ $p->name }}</td>
                         <td >{{ $p->phone }}</td>
                         <td >{{ $p->email }}</td>
+                        <td >{{ $p->destination->name }}</td>
                         <td class="text-center">
                             <button wire:click="updatePartner({{$p->id}})" class="btn btn-circle btn-sm btn-success">
                                 <i class="fas fa-pen"></i>

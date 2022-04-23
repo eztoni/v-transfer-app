@@ -82,7 +82,6 @@
                             <span class="label-text">Partner:</span>
                         </label>
                         <select class="my-select select-sm" wire:model="partnerId">
-                            <option value="0">{{\Auth::user()->owner->name}}</option>
                             @foreach(\App\Models\Partner::all() as $partner)
                                 <option value="{{$partner->id}}">{{$partner->name}}</option>
                             @endforeach
