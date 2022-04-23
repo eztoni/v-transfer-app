@@ -13,7 +13,7 @@
                             <div class="form-control ">
                                 <select class="my-select select-sm" wire:model="stepOneFields.destinationId">
                                     <option value="">Pick a destination</option>
-                                    @foreach(\App\Models\Destination::all() as $destination)
+                                    @foreach($this->destinationsWithRoutes as $destination)
                                         <option value="{{$destination->id}}">{{$destination->name}}</option>
 
                                     @endforeach
@@ -161,7 +161,7 @@
                                             <label class="label">
                                                 <span class="label-text">Senior:</span>
                                             </label>
-                                            <input class="my-input input-sm w-full" placeholder=""
+                                            <input class="my-input input-sm w-full"  placeholder=""
                                                    wire:model="stepOneFields.seniors">
 
                                         </div>
@@ -235,16 +235,18 @@
                                                     <div class="flex gap-4 mb-2">
                                                         <span class=" ">Type: Van</span>
                                                         <span class=" ">Max. Occ: {{$transfer->vehicle->max_occ}}</span>
-                                                        <span class=" ">Max. Luggage:{{$transfer->vehicle->max_luggage}}</span>
+                                                        <span
+                                                            class=" ">Max. Luggage:{{$transfer->vehicle->max_luggage}}</span>
 
-                                                    </div>z
+                                                    </div>
                                                     <span class="  ">Price: <b> {{Cknow\Money\Money::EUR($transfer->pivot->price)}} EUR</b></span>
                                                     <div class="badge badge-info top-2 right-2 absolute">
                                                         {{$transfer->partner->name}}
                                                     </div>
                                                     <button
                                                         class="btn btn-sm btn-primary absolute bottom-2 rounded-xl right-2"
-                                                        wire:click="selectTransfer({{$transfer->id}})">Select
+                                                        wire:click="selectTransfer({{$transfer->id}},{{$transfer->partner->id}})">
+                                                        Select
                                                     </button>
                                                 </div>
                                             </div>
@@ -359,30 +361,30 @@
                             <div class="grid grid-cols-3 gap-4">
 
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Title"
-                                                          value="{{$fakeData['title']}}"></x-form.ez-text-input>
+                                    <x-form.ez-text-input sm label="Title"   wire:model="stepTwoFields.leadTraveller.title"
+                                    ></x-form.ez-text-input>
                                 </div>
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="First name"
-                                                          value="{{$fakeData['fName']}}"></x-form.ez-text-input>
+                                    <x-form.ez-text-input sm label="First name"   wire:model="stepTwoFields.leadTraveller.firstName"
+                                    ></x-form.ez-text-input>
                                 </div>
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Last name"
-                                                          value="{{$fakeData['lName']}}"></x-form.ez-text-input>
+                                    <x-form.ez-text-input sm label="Last name"   wire:model="stepTwoFields.leadTraveller.lastName"
+                                    ></x-form.ez-text-input>
 
                                 </div>
 
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Reservation number"
-                                                          value="{{$fakeData['resNum']}}"></x-form.ez-text-input>
+                                    <x-form.ez-text-input sm label="Reservation number"   wire:model="stepTwoFields.leadTraveller.reservationNumber"
+                                    ></x-form.ez-text-input>
                                 </div>
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Email"
-                                                          value="{{$fakeData['email']}}"></x-form.ez-text-input>
+                                    <x-form.ez-text-input sm label="Email"   wire:model="stepTwoFields.leadTraveller.email"
+                                    ></x-form.ez-text-input>
                                 </div>
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Phone"
-                                                          value="{{$fakeData['phone']}}"></x-form.ez-text-input>
+                                    <x-form.ez-text-input sm label="Phone"   wire:model="stepTwoFields.leadTraveller.phone"
+                                    ></x-form.ez-text-input>
 
                                 </div>
 
@@ -395,32 +397,28 @@
                         <x-slot name="title">Other traveller details</x-slot>
                         <x-slot name="body">
                             <div class="grid grid-cols-4 gap-4">
-                                @foreach($travellers as $traveler)
+                                @foreach($this->stepTwoFields['otherTravellers'] as $i => $traveler)
                                     <div class="col-span-1">
-                                        <x-form.ez-text-input sm label="Title" value="Mr."></x-form.ez-text-input>
+                                        <x-form.ez-text-input sm label="Title" wire:model="stepTwoFields.otherTravellers.{{$i}}.title" ></x-form.ez-text-input>
                                     </div>
                                     <div class="col-span-1">
-                                        <x-form.ez-text-input sm label="First name"
-                                                              value="John "></x-form.ez-text-input>
+                                        <x-form.ez-text-input sm label="First name" wire:model="stepTwoFields.otherTravellers.{{$i}}.firstName"
+                                                             ></x-form.ez-text-input>
                                     </div>
                                     <div class="col-span-1">
-                                        <x-form.ez-text-input sm label="Last name" value="Doe"></x-form.ez-text-input>
+                                        <x-form.ez-text-input sm label="Last name" wire:model="stepTwoFields.otherTravellers.{{$i}}.lastName"
+                                        ></x-form.ez-text-input>
                                     </div>
 
                                     <div class="col-span-1">
-                                        <x-form.ez-text-input sm label="Comment" value=""></x-form.ez-text-input>
+                                        <x-form.ez-text-input sm label="Comment"   wire:model="stepTwoFields.otherTravellers.{{$i}}.comment"
+                                        ></x-form.ez-text-input>
                                     </div>
 
                                 @endforeach
 
                             </div>
-                            <div class="flex justify-end gap-4">
 
-                                <button class="btn btn-outline  btn-sm btn-circle" wire:click="addTraveller"><i
-                                        class="fas fa-plus"></i></button>
-                                <button class="btn btn-outline  btn-sm btn-circle" wire:click="removeTraveller"><i
-                                        class="fas fa-minus"></i></button>
-                            </div>
 
                         </x-slot>
                     </x-ez-card>
@@ -428,30 +426,48 @@
 
             @endif
         </div>
-        <div class="col-span-1 ">
-            <x-ez-card class="sticky" style="top:5vh">
-                <x-slot name="title">Reservation details</x-slot>
-                <x-slot name="body">
+        @if($this->availableTransfers->isNotEmpty() && !empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
+            <div x-data="{open: false}" x-show="open" x-transition
+                 x-init="setTimeout(() => { open = true })">
+                <div class="col-span-1 ">
+                    <x-ez-card class="sticky" style="top:5vh">
+                        <x-slot name="title">Reservation details</x-slot>
+                        <x-slot name="body">
 
-                    <div class="divider my-1    "></div>
-                    <div class="res-details">
-                        <p><span>From:</span> <b>Poreč</b></p>
-                        <p>To: <b>Rijeka airport</b></p>
-                        <p>Departure: <b>Nov 06, 2022</b></p>
-                        <p>Passengers: <b>3</b></p>
-                        <p>Ticket type: <b>One way</b></p>
-                    </div>
-                    <div class="divider my-1    "></div>
+                            <div class="divider my-1    "></div>
+                            <div class="res-details">
+                                @if($this->selectedStartingPoint)
+                                    <p><span>From:</span> <b>{{$this->selectedStartingPoint->name}}</b></p>
+                                @endif
+                                @if($this->selectedEndingPoint)
 
-                    <div class="alert alert-info alert-sm ">
-                        <div class="text-right ml-auto text-white gap-2 pr-2">
-                            Total price: <b> 1,233 EUR</b>
-                        </div>
-                    </div>
-                </x-slot>
-            </x-ez-card>
+                                    <p>To: <b>{{$this->selectedEndingPoint->name}}</b></p>
+                                @endif
+                                @if(!empty($this->stepOneFields['dateTo']))
+                                    <p>Departure:
+                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['dateTo'])->format('d.m.Y')}}</b>
+                                    </p>
 
-        </div>
+                                @endif
+                                <p>Passengers: <b>{{$this->totalPassengers}}</b></p>
+                                <p>Ticket type: <b>{{$this->twoWay ? 'Two way' : 'One way'}}</b></p>
+                            </div>
+                            <div class="divider my-1    "></div>
+
+                            @if($this->totalPrice)
+                                <div class="alert alert-info alert-sm ">
+                                    <div class="text-right ml-auto text-white gap-2 pr-2">
+                                        Total price: <b> {{$this->totalPrice}} EUR</b>
+                                    </div>
+                                </div>
+                            @endif
+
+                        </x-slot>
+                    </x-ez-card>
+
+                </div>
+            </div>
+        @endif
 
     </div>
 
