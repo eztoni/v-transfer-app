@@ -14,6 +14,8 @@ class TransferPrices extends Component
 
     public $pivotModal;
     public $routePrice = [];
+    public $routeTwoWay = [];
+    public $routePriceTwoWay = [];
     public $routeSaveButton = [];
     public $transferId = null;
     public $showSearch = true;
@@ -37,10 +39,12 @@ class TransferPrices extends Component
             }])->find($this->transferId);
 
             $routes = $this->transfer->routes;
+
             foreach($routes as $r){
                 $this->routePrice[$r->id] = $r->pivot->price;
+                $this->routeTwoWay[$r->id] = $r->pivot->two_way;
+                $this->routePriceTwoWay[$r->id] = $r->pivot->price_two_way;
             }
-
         }
 
     }
@@ -53,17 +57,21 @@ class TransferPrices extends Component
     public function updatedTransferId(): void
     {
         $this->routePrice =  [];
-
+        $this->routePriceTwoWay = [];
+        $this->routeTwoWay = [];
         $this->setModelPrices();
     }
     public function updatedPartnerId(): void
     {
         $this->routePrice =  [];
-
+        $this->routePriceTwoWay = [];
+        $this->routeTwoWay = [];
         $this->setModelPrices();
     }
+
     protected $rules = [
         'routePrice.*' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/|min:1',
+        'routePriceTwoWay.*' => 'numeric|regex:/^\d*(\.\d{1,2})?$/|min:1',
     ];
 
 
@@ -76,6 +84,23 @@ class TransferPrices extends Component
 
     public function getRoutesProperty(){
         return  Route::with(['startingPoint','endingPoint'])->get();
+    }
+
+    public function saveTwoWay($routeId){
+        $saved = $this->routeTwoWay[$routeId];
+
+        \DB::table('route_transfer')->updateOrInsert(
+            [
+                'route_id'=>$routeId,
+                'transfer_id'=>$this->transferId,
+                'partner_id'=>$this->partnerId,
+            ],
+            [
+                'two_way' => $saved,
+            ]
+        );
+
+        $this->showToast('Updated', 'Two Way Data');
     }
 
     public function saveRoutePrice($routeId){
@@ -94,6 +119,31 @@ class TransferPrices extends Component
             ],
             [
                 'price' =>  $this->routePrice[$routeId]
+            ]
+        );
+
+        $this->showToast('Saved', 'Route Price Saved');
+
+    }
+
+    public function saveRoutePriceTwoWay($routeId){
+
+        //$this->validate('routePriceTwoWay.'.$routeId);
+
+
+        if(empty($this->routePriceTwoWay[$routeId])){
+            $this->addError('routePriceTwoWay.'.$routeId, 'The email field is invalid.');
+            return;
+        }
+
+        \DB::table('route_transfer')->updateOrInsert(
+            [
+                'route_id'=>$routeId,
+                'transfer_id'=>$this->transferId,
+                'partner_id'=>$this->partnerId,
+            ],
+            [
+                'price_two_way' =>  $this->routePriceTwoWay[$routeId]
             ]
         );
 
