@@ -65,7 +65,8 @@
                                 <th>Route name</th>
                                 <th>From</th>
                                 <th>To</th>
-
+                                <th>Two Way</th>
+                                <th>Two Way Price</th>
                                 <th class="text-right pr-8">Price</th>
                             </tr>
                             </thead>
@@ -76,6 +77,17 @@
                                     <td>{{$r->name}}</td>
                                     <td>{{$r->startingPoint->name}}</td>
                                     <td>{{$r->endingPoint->name}}</td>
+                                    <td><input wire:click="saveTwoWay({{$r->id}})" wire:model="routeTwoWay.{{$r->id}}" @if(!empty($routeTwoWay[$r->id])) checked @endif type="checkbox" class="toggle toggle-primary"></td>
+                                    <td class="text-right">
+                                        <div class="form-control">
+                                            <div class="input-group justify">
+                                                <input wire:model="routePriceTwoWay.{{$r->id}}" @if(empty($routeTwoWay[$r->id])) disabled @endif placeholder="Price" class=" @error('routePriceTwoWay.'.$r->id) input-error @enderror input input-sm input-bordered">
+                                                <button wire:click="saveRoutePriceTwoWay({{$r->id}})" @if(empty($routeTwoWay[$r->id])) disabled @endif class="btn btn-sm  btn-success">
+                                                    Save
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
                                     <td class="text-right">
                                         <div class="form-control ">
                                             <div class="input-group justify-end">
