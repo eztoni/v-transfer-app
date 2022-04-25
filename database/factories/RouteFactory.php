@@ -17,10 +17,8 @@ class RouteFactory extends Factory
     {
         return [
             'owner_id' => 1,
-            'destination_id' => function ($attr){
-                return Destination::whereOwnerId($attr['owner_id'])->inRandomOrder()->first()->id;
-            },
-            'name' => $this->faker->name(),
+            'destination_id' => 1,
+            'name' => $this->faker->sentence(2),
             'starting_point_id' => function ($attr){
                 return Point::whereDestinationId($attr['destination_id'])->inRandomOrder()->first()->id;
             },

@@ -106,6 +106,19 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_photo_url',
     ];
 
+    public function changeCompany($companyId){
+
+    }
+
+    public function changeOwner(){
+
+    }
+
+    public function changeDestination(){
+
+    }
+
+
     public function destination()
     {
         return $this->belongsTo(Destination::class);

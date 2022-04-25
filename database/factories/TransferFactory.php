@@ -15,10 +15,10 @@ class TransferFactory extends Factory
     {
         return [
             'owner_id' => 1,
-            'name' => $this->faker->name(),
+            'name' => $this->faker->sentence(2),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'destination_id' => Destination::factory(),
+            'destination_id' => 1,
         ];
     }
 }

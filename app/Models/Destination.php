@@ -23,6 +23,7 @@ class Destination extends Model
 
     protected $fillable = [
         'name',
+        'owner_id',
     ];
 
     public function getActivitylogOptions(): LogOptions

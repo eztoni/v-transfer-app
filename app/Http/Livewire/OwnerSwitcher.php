@@ -15,8 +15,17 @@ class OwnerSwitcher extends Component
         if(!Auth::user()->hasAnyRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN]))
             return;
 
+        $owner = Owner::findOrFail($ownerId);
+
+        if($owner->destinations->isEmpty()){
+            $this->showToast('Action failed!','Selected owner has no destinations!','error');
+            return;
+        }
+
         $user = Auth::user();
         $user->owner_id = $ownerId;
+        $user->destination_id = $owner->destinations->first()->id;
+
         $user->save();
         $this->redirect('/');
     }
@@ -27,6 +36,7 @@ class OwnerSwitcher extends Component
         $userOwnerName = 'Owners';
         if($owners->isNotEmpty())
             $userOwnerName = $owners->where('id','=',Auth::user()->owner_id)->first()->name;
+
 
 
         return view('livewire.owner-switcher',compact('owners','userOwnerName'));

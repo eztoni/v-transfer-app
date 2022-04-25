@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Company;
 use App\Models\Destination;
+use App\Models\Owner;
 use App\Models\User;
 use App\Scopes\CompanyScope;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +22,13 @@ class CompanySwitcher extends Component
         if(!$firstDestination)
             return;
 
+        $firstOwner = Owner::withoutGlobalScope(CompanyScope::class)->where('company_id','=',$firstDestination->id)->first()->id;
+        if(!$firstOwner)
+            return;
 
         $user = Auth::user();
         $user->company_id = $companyId;
+        $user->owner_id = $firstOwner;
         $user->destination_id = $firstDestination;
         $user->save();
         $this->redirect('/');

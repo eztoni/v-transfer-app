@@ -28,31 +28,15 @@ class PointsOverview extends Component
 
     public function mount()
     {
-        $first = Destination::first();
-        $this->destinationId = $first->id ?? null;
         $this->point = new Point();
-        $this->setDestination();
+        $this->destinationId = Auth::user()->destination_id;
+        $this->destination = Auth::user()->destination;
     }
 
-    public function updatedDestinationId()
-    {
-        $this->setDestination();
-    }
-
-
-    private function setDestination(){
-        if($this->destinationId > 0){
-            $this->destination = Destination::with('points')->find($this->destinationId);
-        }
-    }
 
 
     public function getPointsProperty(){
-        if($this->destinationId > 0){
-            $this->destination->refresh();
-            return $this->destination->points;
-        }
-        return collect();
+        return Point::whereDestinationId(Auth::user()->destination_id)->get();
     }
 
 

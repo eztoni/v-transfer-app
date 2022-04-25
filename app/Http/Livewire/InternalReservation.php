@@ -9,6 +9,7 @@ use App\Models\Route;
 use App\Models\Transfer;
 use App\Services\TransferAvailability;
 use Livewire\Component;
+use function Clue\StreamFilter\fun;
 
 class InternalReservation extends Component
 {
@@ -21,7 +22,6 @@ class InternalReservation extends Component
         'timeTo' => null,
         'dateFrom' => null,
         'timeFrom' => null,
-        'seniors' => 0,
         'adults' => 1,
         'children' => 0,
         'infants' => 0,
@@ -69,13 +69,15 @@ class InternalReservation extends Component
      * CLEAN
      */
 
+    public function mount(){
+        $this->stepOneFields['destinationId'] = \Auth::user()->destination_id;
+    }
+
     public function updated($property)
     {
 
-
         if (in_array($property, [
             'stepOneFields.adults',
-            'stepOneFields.seniors',
             'stepOneFields.children',
             'stepOneFields.infants',
         ])) {
@@ -108,7 +110,11 @@ class InternalReservation extends Component
     //reset the points when we change destination
     public function updatedStepOneFieldsStartingPointId()
     {
-        $this->stepOneFields['endingPointId'] = '';
+        if(!$this->getEndingPointsProperty()->contains(function ($item){
+            return $item->id === (int)$this->stepOneFields['endingPointId'];
+        })){
+            $this->stepOneFields['endingPointId'] = '';
+        }
     }
 
     public function getDestinationsWithRoutesProperty()
@@ -149,7 +155,7 @@ class InternalReservation extends Component
 
     public function getTotalPassengersProperty()
     {
-        return $this->stepOneFields['adults'] + $this->stepOneFields['seniors'] + $this->stepOneFields['infants'] + $this->stepOneFields['children'];
+        return $this->stepOneFields['adults']  + $this->stepOneFields['infants'] + $this->stepOneFields['children'];
     }
 
     public function getTotalPriceProperty()
@@ -182,7 +188,6 @@ class InternalReservation extends Component
         return (new TransferAvailability())
             ->setAdults($this->stepOneFields['adults'])
             ->setChildren($this->stepOneFields['children'])
-            ->setSeniors($this->stepOneFields['seniors'])
             ->setInfants($this->stepOneFields['infants'])
             ->setLuggage($this->stepOneFields['luggage'])
             ->setRoute($route)

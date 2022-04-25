@@ -15,4 +15,8 @@ class Owner extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function destinations()
+    {
+        return $this->hasMany(Destination::class);
+    }
 }

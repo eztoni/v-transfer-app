@@ -16,12 +16,8 @@ class PartnerFactory extends Factory
     {
         return [
 
-            'owner_id' => function ($attr){
-                return   Owner::inRandomOrder()->first()->id;
-            },
-            'destination_id' => function ($attr){
-                return   Destination::whereOwnerId($attr['owner_id'])->inRandomOrder()->first()->id;
-            },
+            'owner_id' => 1,
+            'destination_id' => 1,
             'name' => $this->faker->company(),
             'phone' => $this->faker->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),

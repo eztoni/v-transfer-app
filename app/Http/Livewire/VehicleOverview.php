@@ -51,7 +51,7 @@ class VehicleOverview extends Component
         $this->validate();
         $this->vehicle->name = $this->vehicleName;
 
-        $this->vehicle->owner_id = Auth::user()->owner_id;
+        $this->vehicle->destination_id = Auth::user()->destination_id;
         $this->vehicle->save();
         $this->showToast('Success','Vehicle saved, add some info to it!');
         $this->closeVehicleModal();

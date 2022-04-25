@@ -15,6 +15,7 @@ class AddColumnsToUserTable extends Migration
 
             $table->foreignIdFor(\App\Models\Company::class)->constrained();
             $table->foreignIdFor(\App\Models\Owner::class)->nullable();
+            $table->foreignIdFor(\App\Models\Destination::class)->nullable();
 
         });
     }

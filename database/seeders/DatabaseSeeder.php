@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         #It will create the companies aswell
-        \App\Models\Destination::factory(2)->create();
         \App\Models\Point::factory(40)->create();
         \App\Models\Partner::factory(4)->create();
         \App\Models\Route::factory(6)->create();

@@ -22,6 +22,11 @@
     </div>
     @endhasanyrole
 
+    @hasanyrole(\App\Models\User::ROLE_SUPER_ADMIN.'|'.\App\Models\User::ROLE_ADMIN)
+    <div class="flex-none hidden px-2 mx-2 lg:flex">
+        <livewire:destination-switcher></livewire:destination-switcher>
+    </div>
+    @endhasanyrole
     @if(Auth::user()->hasRole('super-admin'))
         <div class="flex-none">
             <label class="btn btn-square btn-ghost" for="right-drawer-4" >

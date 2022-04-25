@@ -15,8 +15,8 @@ class VehicleFactory extends Factory
     public function definition(): array
     {
         return [
-            'owner_id' => 1,
-            'name' => $this->faker->name(),
+            'destination_id' => 1,
+            'name' => $this->faker->word(),
             'type' => $this->faker->word(),
             'max_luggage' => $this->faker->randomNumber(),
             'max_occ' => $this->faker->randomNumber(),

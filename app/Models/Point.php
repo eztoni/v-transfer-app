@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Scopes\ActiveScope;
 use App\Scopes\CompanyScope;
+use App\Scopes\DestinationScope;
 use App\Scopes\OwnerScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -45,6 +46,6 @@ class Point extends Model
     protected static function booted()
     {
         static::addGlobalScope(new ActiveScope());
-        static::addGlobalScope(new OwnerScope());
+        static::addGlobalScope(new DestinationScope());
     }
 }

@@ -9,23 +9,24 @@
                     </x-slot>
 
                     <x-slot name="body" class="">
-                        <div class="grid grid-cols-3 gap-4">
-                            <div class="form-control ">
-                                <select class="my-select select-sm" wire:model="stepOneFields.destinationId">
-                                    <option value="">Pick a destination</option>
-                                    @foreach($this->destinationsWithRoutes as $destination)
-                                        <option value="{{$destination->id}}">{{$destination->name}}</option>
+                        <div class="grid grid-cols-2 gap-4">
+{{--                            <div class="form-control ">--}}
+{{--                                <select class="my-select select-sm" wire:model="stepOneFields.destinationId">--}}
+{{--                                    <option value="">Pick a destination</option>--}}
+{{--                                    @foreach($this->destinationsWithRoutes as $destination)--}}
+{{--                                        <option value="{{$destination->id}}">{{$destination->name}}</option>--}}
 
-                                    @endforeach
+{{--                                    @endforeach--}}
 
 
-                                </select>
+{{--                                </select>--}}
 
-                            </div>
+{{--                            </div>--}}
 
                             <div class="form-control ">
                                 @if(!empty($this->stepOneFields['destinationId']))
                                     @if($this->startingPoints->isNotEmpty())
+                                        <label class="label-text ">Pickup location</label>
                                         <select class="my-select select-sm" wire:model="stepOneFields.startingPointId">
                                             <option value="">Pickup location</option>
                                             @foreach($this->startingPoints as $point)
@@ -37,11 +38,16 @@
                                         <div class="alert alert-warning">No Pickup points for that destination</div>
                                     @endif
                                 @endif
+                                    @if($this->stepOneFields['startingPointId'] && $this->stepOneFields['endingPointId'] )
+
+                                    <x-form.ez-text-input sm label="Pickup address"></x-form.ez-text-input>
+                                    @endif
                             </div>
                             @if(!empty($this->stepOneFields['startingPointId']))
-
                                 <div class="form-control ">
-                                    @if($this->endingPoints->isNotEmpty())
+                                    <label class="label-text ">Dropoff location</label>
+
+                                @if($this->endingPoints->isNotEmpty())
                                         <select class="my-select select-sm" wire:model="stepOneFields.endingPointId">
                                             <option value="">Drop off location</option>
                                             @foreach($this->endingPoints as $point)
@@ -51,6 +57,10 @@
                                     @else
                                         <div class="alert alert-warning">No Dropoff points for that pickup point!</div>
 
+                                    @endif
+                                    @if($this->stepOneFields['startingPointId'] && $this->stepOneFields['endingPointId'] )
+
+                                    <x-form.ez-text-input sm  label="Dropoff address"></x-form.ez-text-input>
                                     @endif
                                 </div>
                             @endif
@@ -76,7 +86,7 @@
                                         defaultDate:'{{$stepOneFields['dateTo']}}'});
                                         " readonly
                                                    wire:model="stepOneFields.dateTo"
-                                                   class="ml-2 input input-bordered input-sm mt-2"
+                                                   class=" input input-bordered input-sm mt-2"
                                                    placeholder="Date to:">
 
                                         </div>
@@ -157,14 +167,7 @@
                                 <div class="">
                                     <div class="flex flex-wrap gap-2">
 
-                                        <div class="form-control  ">
-                                            <label class="label">
-                                                <span class="label-text">Senior:</span>
-                                            </label>
-                                            <input class="my-input input-sm w-full"  placeholder=""
-                                                   wire:model="stepOneFields.seniors">
 
-                                        </div>
                                         <div class="form-control  ">
                                             <label class="label">
                                                 <span class="label-text">Adult:</span>
@@ -195,7 +198,7 @@
                                             <label class="label">
                                                 <span class="label-text">Luggage</span>
                                             </label>
-                                            <input class="my-input input-sm w-1/2" placeholder=""
+                                            <input class="my-input input-sm " placeholder=""
                                                    wire:model="stepOneFields.luggage">
 
                                         </div>

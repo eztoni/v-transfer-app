@@ -32,27 +32,60 @@ class Init extends Migration
 
         \App\Models\Owner::create(
             [
-                'name' =>'Valamar Rivijera',
+                'name' => 'Valamar Rivijera',
                 'company_id' => 1,
             ]
         );
         \App\Models\Owner::create(
             [
-                'name' =>'Imperial Rab',
+                'name' => 'Imperial Rab',
                 'company_id' => 1,
             ]
         );
 
+        $destinations = [
+            [
+                'name' => 'Dubrovnik'
+            ],
+            [
+                'name' => 'Makarska'
+            ],
+            [
+                'name' => 'Poreč'
+            ],
+            [
+                'name' => 'Rabac'
+            ],
+            [
+                'name' => 'Krk'
+            ],
+            [
+                'name' => 'Rab'
+            ],
+            [
+                'name' => 'Hvar'
+            ],
+            [
+                'name' => 'Obertauern'
+            ],
+
+        ];
+
+        $owner = \App\Models\Owner::find(1);
+        foreach ($destinations as $destinationData){
+            $destination = new \App\Models\Destination();
+            $destination->owner_id = 1;
+            $destination->fill($destinationData);
+            $destination->save();
+            $owner->destinations()->save(($destination));
+        }
 
 
 
+        \App\Models\Language::create(['name' => 'Hrvatski', 'language_code' => 'hr']);
 
 
-         \App\Models\Language::create(['name' => 'Hrvatski','language_code' => 'hr']);
-
-
-
-         Role::create(['name' => User::ROLE_SUPER_ADMIN]);
+        Role::create(['name' => User::ROLE_SUPER_ADMIN]);
 
 
         $user = new User();
@@ -62,6 +95,7 @@ class Init extends Migration
         $user->email_verified_at = date("Y-m-d H:i:s");
         $user->company_id = 1;
         $user->owner_id = 1;
+        $user->destination_id = 1;
         $user->oib = 1;
         $user->save();
         $user->assignRole('super-admin');
@@ -74,6 +108,8 @@ class Init extends Migration
         $user->email_verified_at = date("Y-m-d H:i:s");
         $user->company_id = 1;
         $user->owner_id = 1;
+        $user->destination_id = 1;
+
         $user->oib = 2;
         $user->save();
         $user->assignRole('super-admin');
@@ -86,6 +122,8 @@ class Init extends Migration
         $user->email_verified_at = date("Y-m-d H:i:s");
         $user->company_id = 1;
         $user->owner_id = 1;
+        $user->destination_id = 1;
+
         $user->oib = 3;
         $user->save();
         $user->assignRole('super-admin');
@@ -97,6 +135,8 @@ class Init extends Migration
         $user->email_verified_at = date("Y-m-d H:i:s");
         $user->company_id = 1;
         $user->owner_id = 1;
+        $user->destination_id = 1;
+
         $user->oib = 4;
         $user->save();
         $user->assignRole(User::ROLE_ADMIN);

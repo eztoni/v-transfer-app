@@ -104,7 +104,7 @@ class MainDrawer extends Component
 
                     ],
                     [
-                        'text' => 'Points',
+                        'text' => 'Pickup & Dropoff Points',
                         'active' => request()->routeIs('admin.points-overview'),
                         'href' => route('admin.points-overview'),
                         'show' =>\Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN),

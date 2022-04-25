@@ -11,7 +11,7 @@ class CreateVehiclesTable extends Migration
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignIdFor(\App\Models\Owner::class);
+            $table->foreignIdFor(\App\Models\Destination::class);
             $table->foreignIdFor(\App\Models\Transfer::class)->nullable();
 
             $table->text('name');

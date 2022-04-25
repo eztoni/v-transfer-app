@@ -18,13 +18,9 @@ class PointFactory extends Factory
     {
         return [
 
-            'owner_id' => function (){
-                return Owner::inRandomOrder()->first()->id;
-            },
-            'destination_id' => function ($attr){
-                return Destination::whereOwnerId($attr['owner_id'])->inRandomOrder()->first()->id;
-            },
-            'name' => $this->faker->word(),
+            'owner_id' => 1,
+            'destination_id' => 1,
+            'name' => $this->faker->city(),
             'description' => $this->faker->text(),
             'address' => $this->faker->address(),
             'latitude' => $this->faker->latitude(),

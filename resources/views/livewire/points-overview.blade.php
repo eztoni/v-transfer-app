@@ -1,37 +1,12 @@
 <div>
 
-    <x-ez-card class="mb-4">
 
-        <x-slot name="title" class="flex justify-between">
-            <span>Destination <i class="fas fa-map-alt"></i></span>
-        </x-slot>
-
-        <x-slot name="body">
-
-            <div class="form-control">
-
-                <label class="label">
-                    <span class="label-text">Select a destination :</span>
-                </label>
-                <select wire:model="destinationId" class="select select-bordered">
-                    @foreach($destinations as $d)
-                        <option value="{{$d->id}}">{{$d->name}}</option>
-                    @endforeach
-                </select>
-
-                @error('destinationId')
-                <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                @enderror
-            </div>
-
-        </x-slot>
-    </x-ez-card>
 
     @if ($destinationId)
         <x-ez-card>
 
             <x-slot name="title" class="flex justify-between">
-                {{$destination->name}} - Points
+                {{$destination->name}} - Pickup & Dropoff Points
 
                 <button wire:click="addPoint" class="btn btn-sm ">Add Point</button>
             </x-slot>
@@ -68,7 +43,7 @@
                     </table>
 
                 @else
-                    No points for {{$destination->name}}, add new points!
+                    No Pickup&Dropoff Points for {{$destination->name}}, add new points!
                 @endif
 
 
@@ -78,7 +53,7 @@
     @else
         <x-ez-card>
             <x-slot name="body">
-                Select a destination to add points!
+                Select a destination to add Pickup&Dropoff Points!
             </x-slot>
         </x-ez-card>
     @endif
