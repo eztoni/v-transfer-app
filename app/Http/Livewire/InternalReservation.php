@@ -13,15 +13,17 @@ use function Clue\StreamFilter\fun;
 
 class InternalReservation extends Component
 {
-
+    //TODO: REMOVE HARDCODE FOR TESTING
     public $stepOneFields = [
-        'destinationId' => null,
-        'startingPointId' => null,
-        'endingPointId' => null,
+        'destinationId' => 1,
+        'startingPointId' => 1,
+        'endingPointId' => 37,
         'dateTo' => null,
         'timeTo' => null,
         'dateFrom' => null,
         'timeFrom' => null,
+        'dropoffAddress' => null,
+        'pickupAddress' => null,
         'adults' => 1,
         'children' => 0,
         'infants' => 0,
@@ -37,6 +39,7 @@ class InternalReservation extends Component
         'arrivalDate' => null,
         'timeOfArrival' => null,
         'pickupTimeArrival' => null,
+
 
         'departureFlightNumber' => null,
         'departureDate' => null,
