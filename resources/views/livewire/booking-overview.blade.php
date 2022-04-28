@@ -17,7 +17,7 @@
                     <button class="btn btn-sm btn-primary">Search</button>
                 </div>
 
-                <button class="btn btn-sm btn-success" wire:click="saveTransfer">+ Add Booking </button>
+                <a href="{{route('internal-reservation')}}"><button class="btn btn-sm btn-success" wire:click="saveTransfer">+ Add Booking </button></a>
             </div>
         </x-slot>
     </x-ez-card>
@@ -31,7 +31,7 @@
                 <span class="badge badge-success">One Way</span>
             </div>
 
-            <button class="btn btn-sm btn-primary" wire:click="saveTransfer">View </button>
+            <b href="{{route('reservation-view')}}"><button class="btn btn-sm btn-primary" wire:click="saveTransfer">View </button></b>
         </x-slot>
 
         <x-slot name="body">
@@ -61,7 +61,7 @@
                 <span class="badge badge-success">Two Way</span>
             </div>
 
-            <button class="btn btn-sm btn-primary" wire:click="saveTransfer">View </button>
+            <b href="{{route('reservation-view')}}"><button class="btn btn-sm btn-primary" wire:click="saveTransfer">View </button></b>
         </x-slot>
 
         <x-slot name="body">
