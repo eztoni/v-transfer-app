@@ -5,15 +5,18 @@ namespace App\Http\Livewire;
 use App\Models\Destination;
 use App\Models\Partner;
 use App\Models\Point;
+use App\Models\Reservation;
 use App\Models\Route;
 use App\Models\Transfer;
+use App\Models\Traveller;
 use App\Services\TransferAvailability;
+use Carbon\Carbon;
 use Livewire\Component;
 use function Clue\StreamFilter\fun;
 
 class InternalReservation extends Component
 {
-
+    //TODO: REMOVE HARDCODE FOR TESTING
     public $stepOneFields = [
         'destinationId' => null,
         'startingPointId' => null,
@@ -22,11 +25,16 @@ class InternalReservation extends Component
         'timeTo' => null,
         'dateFrom' => null,
         'timeFrom' => null,
+        'dropoffAddress' => null,
+        'pickupAddress' => null,
         'adults' => 1,
         'children' => 0,
         'infants' => 0,
         'luggage' => 1,
     ];
+
+    public $resSaved = false;
+
     public bool $twoWay = false;
     public int $step = 1;
     public $selectedTransfer = null;
@@ -37,6 +45,7 @@ class InternalReservation extends Component
         'arrivalDate' => null,
         'timeOfArrival' => null,
         'pickupTimeArrival' => null,
+
 
         'departureFlightNumber' => null,
         'departureDate' => null,
@@ -63,6 +72,36 @@ class InternalReservation extends Component
         'infants' => 0,
         'luggage' => 1,
     ];
+    public function saveReservation()
+    {
+        $reservation = new \App\BusinessModels\Reservation\Reservation(new \App\Models\Reservation());
+
+
+        $traveller = new Traveller();
+
+        $traveller->first_name = $this->stepTwoFields['leadTraveller']['firstName'];
+        $traveller->last_name = $this->stepTwoFields['leadTraveller']['lastName'];
+
+        $traveller->save();
+
+        $reservation->setDate(Carbon::make($this->stepOneFields['dateTo']))
+            ->setTime(Carbon::make($this->stepOneFields['timeTo']))
+            ->setPickupLocation(Point::find($this->stepOneFields['startingPointId']))
+            ->setDropoffLocation(Point::find($this->stepOneFields['endingPointId']))
+            ->setPickupAddress($this->stepOneFields['pickupAddress'])
+            ->setDropoffAddress($this->stepOneFields['dropoffAddress'])
+            ->setAdults($this->stepOneFields['adults'])
+            ->setInfants($this->stepOneFields['infants'])
+            ->setChildren($this->stepOneFields['children'])
+            ->setLuggage($this->stepOneFields['luggage'])
+            ->addLeadTraveller($traveller);
+
+      $reservation->saveReservation();
+      $this->showToast('Reservation saved');
+      $this->resSaved= true;
+        //redirect(route('register'));
+
+    }
 
 
     /*
@@ -249,6 +288,10 @@ class InternalReservation extends Component
 
         $this->step = 2;
     }
+
+
+
+
 
     public function render()
     {

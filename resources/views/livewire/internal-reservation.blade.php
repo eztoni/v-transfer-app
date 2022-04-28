@@ -10,18 +10,18 @@
 
                     <x-slot name="body" class="">
                         <div class="grid grid-cols-2 gap-4">
-{{--                            <div class="form-control ">--}}
-{{--                                <select class="my-select select-sm" wire:model="stepOneFields.destinationId">--}}
-{{--                                    <option value="">Pick a destination</option>--}}
-{{--                                    @foreach($this->destinationsWithRoutes as $destination)--}}
-{{--                                        <option value="{{$destination->id}}">{{$destination->name}}</option>--}}
+                            {{--                            <div class="form-control ">--}}
+                            {{--                                <select class="my-select select-sm" wire:model="stepOneFields.destinationId">--}}
+                            {{--                                    <option value="">Pick a destination</option>--}}
+                            {{--                                    @foreach($this->destinationsWithRoutes as $destination)--}}
+                            {{--                                        <option value="{{$destination->id}}">{{$destination->name}}</option>--}}
 
-{{--                                    @endforeach--}}
+                            {{--                                    @endforeach--}}
 
 
-{{--                                </select>--}}
+                            {{--                                </select>--}}
 
-{{--                            </div>--}}
+                            {{--                            </div>--}}
 
                             <div class="form-control ">
                                 @if(!empty($this->stepOneFields['destinationId']))
@@ -38,16 +38,17 @@
                                         <div class="alert alert-warning">No Pickup points for that destination</div>
                                     @endif
                                 @endif
-                                    @if($this->stepOneFields['startingPointId'] && $this->stepOneFields['endingPointId'] )
+                                @if($this->stepOneFields['startingPointId'] && $this->stepOneFields['endingPointId'] )
 
-                                    <x-form.ez-text-input sm label="Pickup address"></x-form.ez-text-input>
-                                    @endif
+                                    <x-form.ez-text-input sm label="Pickup address"
+                                                          wire:model="stepOneFields.pickupAddress"></x-form.ez-text-input>
+                                @endif
                             </div>
                             @if(!empty($this->stepOneFields['startingPointId']))
                                 <div class="form-control ">
                                     <label class="label-text ">Dropoff location</label>
 
-                                @if($this->endingPoints->isNotEmpty())
+                                    @if($this->endingPoints->isNotEmpty())
                                         <select class="my-select select-sm" wire:model="stepOneFields.endingPointId">
                                             <option value="">Drop off location</option>
                                             @foreach($this->endingPoints as $point)
@@ -60,7 +61,8 @@
                                     @endif
                                     @if($this->stepOneFields['startingPointId'] && $this->stepOneFields['endingPointId'] )
 
-                                    <x-form.ez-text-input sm  label="Dropoff address"></x-form.ez-text-input>
+                                        <x-form.ez-text-input sm label="Dropoff address"
+                                                              wire:model="stepOneFields.dropoffAddress"></x-form.ez-text-input>
                                     @endif
                                 </div>
                             @endif
@@ -148,16 +150,21 @@
 
                                             </div>
                                         @endif
-                                    </div>
-                                    <div class="form-control rounded ">
-                                        <label class="label cursor-pointer bg-gray-100 rounded mt-6 mb-1  ">
-                            <span class="label-text">
-                              <i class="fas fa-exchange-alt mx-4"></i>
-                                 Two way</span>
-                                            <input type="checkbox" wire:model="twoWay" class="checkbox">
-                                        </label>
+                                        <div @class([   'form-control',
+                                                        'col-span-2'=>!$this->twoWay,
+                                                        'col-span-4'=>$this->twoWay])>
 
+                                            <label
+                                                class="label cursor-pointer ml-auto mr-2 {{!$twoWay? 'mt-10':'mt-2'}}  mb-1  ">
+                                            <span class="label-text mr-2">
+                                              <i class="fas fa-exchange-alt mx-4"></i>
+                                                 Two way</span>
+                                                <input type="checkbox" wire:model="twoWay" class="checkbox">
+                                            </label>
+
+                                        </div>
                                     </div>
+
 
                                 </div>
 
@@ -273,36 +280,17 @@
                             <div class="grid grid-cols-3 gap-4">
 
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Arrival flight number"
+                                    <x-form.ez-text-input sm label="Flight number {{$twoWay?'#1':''}}"
                                                           value="31782563"></x-form.ez-text-input>
                                 </div>
-                                <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Arrival date"
-                                                          value="01.01.2022"></x-form.ez-text-input>
-                                </div>
-                                <div class="col-span-1">
-                                    <x-form.ez-text-input sm value="12:30"
-                                                          label="Time of arrival"></x-form.ez-text-input>
 
-                                </div>
+                                @if($twoWay)
+                                    <div class="col-span-1">
+                                        <x-form.ez-text-input sm label="Flight number #2"
+                                                              value="1872351"></x-form.ez-text-input>
+                                    </div>
+                                @endif
 
-                                <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Departure flight number"
-                                                          value="1872351"></x-form.ez-text-input>
-                                </div>
-                                <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Departure date"
-                                                          value="07.01.2022"></x-form.ez-text-input>
-                                </div>
-                                <div class="col-span-1">
-                                    <x-form.ez-text-input sm value="14:30"
-                                                          label="Time of departure"></x-form.ez-text-input>
-
-                                </div>
-
-                                <div class="col-span-1">
-                                    <x-form.ez-text-input sm value="14:30" label="Pickup time"></x-form.ez-text-input>
-                                </div>
 
                                 <div class="col-span-1">
                                     <x-form.ez-text-input sm label="Remark"></x-form.ez-text-input>
@@ -311,31 +299,34 @@
 
                         </x-slot>
                     </x-ez-card>
-                    <x-ez-card class="mb-4">
-                        <x-slot name="title">Child seats</x-slot>
-                        <x-slot name="body">
-                            <div class="grid grid-cols-4 gap-4">
-                                @foreach($seats as $seat)
-                                    <div class="col-span-2">
-                                        <x-form.ez-select model="" :label="'Seat #'.$loop->index +1 .':'"
-                                                          :items="['Booster (10-15 kg)','Egg (0-5 kg)','Classic(5-10 kg)']"
-                                                          sm="true"></x-form.ez-select>
-                                    </div>
+                    @if($stepOneFields['children']>1 || $stepOneFields['infants']>1)
+                        <x-ez-card class="mb-4">
+                            <x-slot name="title">Child seats</x-slot>
+                            <x-slot name="body">
+                                <div class="grid grid-cols-4 gap-4">
+                                    @foreach($seats as $seat)
+                                        <div class="col-span-2">
+                                            <x-form.ez-select model="" :label="'Seat #'.$loop->index +1 .':'"
+                                                              :items="['Booster (10-15 kg)','Egg (0-5 kg)','Classic(5-10 kg)']"
+                                                              sm="true"></x-form.ez-select>
+                                        </div>
 
 
-                                @endforeach
+                                    @endforeach
 
-                            </div>
-                            <div class="flex justify-end gap-4">
+                                </div>
+                                <div class="flex justify-end gap-4">
 
-                                <button class="btn btn-outline  btn-sm btn-circle" wire:click="addSeat"><i
-                                        class="fas fa-plus"></i></button>
-                                <button class="btn btn-outline  btn-sm btn-circle" wire:click="removeSeat"><i
-                                        class="fas fa-minus"></i></button>
-                            </div>
+                                    <button class="btn btn-outline  btn-sm btn-circle" wire:click="addSeat"><i
+                                            class="fas fa-plus"></i></button>
+                                    <button class="btn btn-outline  btn-sm btn-circle" wire:click="removeSeat"><i
+                                            class="fas fa-minus"></i></button>
+                                </div>
 
-                        </x-slot>
-                    </x-ez-card>
+                            </x-slot>
+                        </x-ez-card>
+
+                    @endif
                     <x-ez-card class="mb-4">
                         <x-slot name="title">
                             <div class="flex justify-between w-full">
@@ -364,29 +355,35 @@
                             <div class="grid grid-cols-3 gap-4">
 
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Title"   wire:model="stepTwoFields.leadTraveller.title"
+                                    <x-form.ez-text-input sm label="Title"
+                                                          wire:model="stepTwoFields.leadTraveller.title"
                                     ></x-form.ez-text-input>
                                 </div>
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="First name"   wire:model="stepTwoFields.leadTraveller.firstName"
+                                    <x-form.ez-text-input sm label="First name"
+                                                          wire:model="stepTwoFields.leadTraveller.firstName"
                                     ></x-form.ez-text-input>
                                 </div>
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Last name"   wire:model="stepTwoFields.leadTraveller.lastName"
+                                    <x-form.ez-text-input sm label="Last name"
+                                                          wire:model="stepTwoFields.leadTraveller.lastName"
                                     ></x-form.ez-text-input>
 
                                 </div>
 
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Reservation number"   wire:model="stepTwoFields.leadTraveller.reservationNumber"
+                                    <x-form.ez-text-input sm label="Reservation number"
+                                                          wire:model="stepTwoFields.leadTraveller.reservationNumber"
                                     ></x-form.ez-text-input>
                                 </div>
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Email"   wire:model="stepTwoFields.leadTraveller.email"
+                                    <x-form.ez-text-input sm label="Email"
+                                                          wire:model="stepTwoFields.leadTraveller.email"
                                     ></x-form.ez-text-input>
                                 </div>
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Phone"   wire:model="stepTwoFields.leadTraveller.phone"
+                                    <x-form.ez-text-input sm label="Phone"
+                                                          wire:model="stepTwoFields.leadTraveller.phone"
                                     ></x-form.ez-text-input>
 
                                 </div>
@@ -396,35 +393,42 @@
 
                         </x-slot>
                     </x-ez-card>
-                    <x-ez-card>
-                        <x-slot name="title">Other traveller details</x-slot>
-                        <x-slot name="body">
-                            <div class="grid grid-cols-4 gap-4">
-                                @foreach($this->stepTwoFields['otherTravellers'] as $i => $traveler)
-                                    <div class="col-span-1">
-                                        <x-form.ez-text-input sm label="Title" wire:model="stepTwoFields.otherTravellers.{{$i}}.title" ></x-form.ez-text-input>
-                                    </div>
-                                    <div class="col-span-1">
-                                        <x-form.ez-text-input sm label="First name" wire:model="stepTwoFields.otherTravellers.{{$i}}.firstName"
-                                                             ></x-form.ez-text-input>
-                                    </div>
-                                    <div class="col-span-1">
-                                        <x-form.ez-text-input sm label="Last name" wire:model="stepTwoFields.otherTravellers.{{$i}}.lastName"
-                                        ></x-form.ez-text-input>
-                                    </div>
+                    @if($this->totalPassengers >1)
+                        <x-ez-card>
+                            <x-slot name="title">Other traveller details</x-slot>
+                            <x-slot name="body">
+                                <div class="grid grid-cols-4 gap-4">
+                                    @foreach($this->stepTwoFields['otherTravellers'] as $i => $traveler)
+                                        <div class="col-span-1">
+                                            <x-form.ez-text-input sm label="Title"
+                                                                  wire:model="stepTwoFields.otherTravellers.{{$i}}.title"></x-form.ez-text-input>
+                                        </div>
+                                        <div class="col-span-1">
+                                            <x-form.ez-text-input sm label="First name"
+                                                                  wire:model="stepTwoFields.otherTravellers.{{$i}}.firstName"
+                                            ></x-form.ez-text-input>
+                                        </div>
+                                        <div class="col-span-1">
+                                            <x-form.ez-text-input sm label="Last name"
+                                                                  wire:model="stepTwoFields.otherTravellers.{{$i}}.lastName"
+                                            ></x-form.ez-text-input>
+                                        </div>
 
-                                    <div class="col-span-1">
-                                        <x-form.ez-text-input sm label="Comment"   wire:model="stepTwoFields.otherTravellers.{{$i}}.comment"
-                                        ></x-form.ez-text-input>
-                                    </div>
+                                        <div class="col-span-1">
+                                            <x-form.ez-text-input sm label="Comment"
+                                                                  wire:model="stepTwoFields.otherTravellers.{{$i}}.comment"
+                                            ></x-form.ez-text-input>
+                                        </div>
 
-                                @endforeach
+                                    @endforeach
 
-                            </div>
+                                </div>
 
 
-                        </x-slot>
-                    </x-ez-card>
+                            </x-slot>
+                        </x-ez-card>
+
+                    @endif
                 </div>
 
             @endif
@@ -441,14 +445,44 @@
                             <div class="res-details">
                                 @if($this->selectedStartingPoint)
                                     <p><span>From:</span> <b>{{$this->selectedStartingPoint->name}}</b></p>
+
+                                    @if($this->stepOneFields['pickupAddress'])
+                                        <p><span>Address:</span> <b>{{$this->stepOneFields['pickupAddress']}}</b></p>
+                                    @endif
+                                    <div class="divider my-1    "></div>
+
                                 @endif
                                 @if($this->selectedEndingPoint)
 
                                     <p>To: <b>{{$this->selectedEndingPoint->name}}</b></p>
-                                @endif
+
+                                    @if($this->stepOneFields['dropoffAddress'])
+                                        <p><span>Address:</span> <b>{{$this->stepOneFields['dropoffAddress']}}</b></p>
+                                    @endif
+                                        <div class="divider my-1    "></div>
+
+                                    @endif
                                 @if(!empty($this->stepOneFields['dateTo']))
-                                    <p>Departure:
+                                    <p>Date to:
                                         <b>{{\Carbon\Carbon::make($this->stepOneFields['dateTo'])->format('d.m.Y')}}</b>
+                                    </p>
+
+                                @endif
+                                @if(!empty($this->stepOneFields['timeTo']))
+                                    <p>Time to:
+                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['timeTo'])->format('H:i')}}</b>
+                                    </p>
+
+                                @endif
+                                @if(!empty($this->stepOneFields['dateFrom']))
+                                    <p>Time from:
+                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['dateFrom'])->format('d.m.Y')}}</b>
+                                    </p>
+
+                                @endif
+                                @if(!empty($this->stepOneFields['timeFrom']))
+                                    <p>Time from:
+                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['timeFrom'])->format('H:i')}}</b>
                                     </p>
 
                                 @endif
@@ -467,6 +501,15 @@
 
                         </x-slot>
                     </x-ez-card>
+
+                    @if($step === 2 && $resSaved == false)
+                        <x-ez-card class="mt-4">
+                            <x-slot name="body">
+                                <button class="btn btn-large btn-accent rounded-box" wire:click="saveReservation"><span class="mr-4">Complete reservation</span>
+                                    <i class="fas fa-arrow-right float-right"></i></button>
+                            </x-slot>
+                        </x-ez-card>
+                    @endif
 
                 </div>
             </div>
