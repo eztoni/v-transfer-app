@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://valamar.test'),
+    'url' => env('APP_URL', 'localhost'),
 
     'asset_url' => env('ASSET_URL', null),
 
