@@ -502,10 +502,10 @@
                         </x-slot>
                     </x-ez-card>
 
-                    @if($step === 2)
+                    @if($step === 2 && $resSaved == false)
                         <x-ez-card class="mt-4">
                             <x-slot name="body">
-                                <button class="btn btn-large btn-accent rounded-box"><span class="mr-4">Complete reservation</span>
+                                <button class="btn btn-large btn-accent rounded-box" wire:click="saveReservation"><span class="mr-4">Complete reservation</span>
                                     <i class="fas fa-arrow-right float-right"></i></button>
                             </x-slot>
                         </x-ez-card>

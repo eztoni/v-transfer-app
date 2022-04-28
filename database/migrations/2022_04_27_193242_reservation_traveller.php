@@ -8,7 +8,7 @@ class ReservationTraveller extends Migration
 {
     public function up()
     {
-        Schema::create('', function (Blueprint $table) {
+        Schema::create('reservation_traveller', function (Blueprint $table) {
             $table->id();
 
             $table->foreignIdFor(\App\Models\Traveller::class);
