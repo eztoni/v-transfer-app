@@ -19,14 +19,9 @@ class TransferPrices
             return null;
         }
 
-        $price =  DB::table('route_transfer')
-            ->where('route_id',$this->routeId)
-            ->where('partner_id',$this->partnerId)
-            ->where('transfer_id',$this->transferId)
-            ->first();
+        $price =  $this->getRouteData();
 
         if(!$price){
-
             return null;
         }
 
@@ -34,9 +29,15 @@ class TransferPrices
         return Money::EUR(
             $price->price
         );
-
     }
 
+    public function getRouteData(){
+        return DB::table('route_transfer')
+            ->where('route_id',$this->routeId)
+            ->where('partner_id',$this->partnerId)
+            ->where('transfer_id',$this->transferId)
+            ->first();
+    }
 
     /**
      * @param mixed $transferId

@@ -85,9 +85,9 @@
                                         disableMobile: 'true',
                                         minDate:'today',
                                         dateFormat:'d.m.Y',
-                                        defaultDate:'{{$stepOneFields['dateTo']}}'});
+                                        defaultDate:'{{$stepOneFields['date']}}'});
                                         " readonly
-                                                   wire:model="stepOneFields.dateTo"
+                                                   wire:model="stepOneFields.date"
                                                    class=" input input-bordered input-sm mt-2"
                                                    placeholder="Date to:">
 
@@ -103,9 +103,9 @@
                                         noCalendar: true,
                                         dateFormat: "H:i",
                                         time_24hr: true,
-                                        defaultDate:"{{$stepOneFields['timeTo']}}"});
+                                        defaultDate:"{{$stepOneFields['time']}}"});
                                         ' readonly
-                                                   wire:model="stepOneFields.timeTo"
+                                                   wire:model="stepOneFields.time"
                                                    class="ml-2 input input-bordered input-sm mt-2"
                                                    placeholder="Time to:">
 
@@ -123,9 +123,9 @@
                                         disableMobile: 'true',
                                         minDate:'today',
                                         dateFormat:'d.m.Y',
-                                        defaultDate:'{{$stepOneFields['dateFrom']}}'});
+                                        defaultDate:'{{$stepOneFields['returnDate']}}'});
                                         " readonly
-                                                       wire:model="stepOneFields.dateFrom"
+                                                       wire:model="stepOneFields.returnDate"
                                                        class="ml-2 input input-bordered input-sm mt-2"
                                                        placeholder="Date from:">
 
@@ -142,9 +142,9 @@
                                         dateFormat: "H:i",
                                         time_24hr: true,
 
-                                        defaultDate:"{{$stepOneFields['timeFrom']}}"});
+                                        defaultDate:"{{$stepOneFields['returnTime']}}"});
                                         ' readonly
-                                                       wire:model="stepOneFields.timeFrom"
+                                                       wire:model="stepOneFields.returnTime"
                                                        class="ml-2 input input-bordered input-sm mt-2"
                                                        placeholder="Time from:">
 
@@ -462,27 +462,27 @@
                                         <div class="divider my-1    "></div>
 
                                     @endif
-                                @if(!empty($this->stepOneFields['dateTo']))
+                                @if(!empty($this->stepOneFields['date']))
                                     <p>Date to:
-                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['dateTo'])->format('d.m.Y')}}</b>
+                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['date'])->format('d.m.Y')}}</b>
                                     </p>
 
                                 @endif
-                                @if(!empty($this->stepOneFields['timeTo']))
+                                @if(!empty($this->stepOneFields['time']))
                                     <p>Time to:
-                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['timeTo'])->format('H:i')}}</b>
+                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['time'])->format('H:i')}}</b>
                                     </p>
 
                                 @endif
-                                @if(!empty($this->stepOneFields['dateFrom']))
+                                @if(!empty($this->stepOneFields['returnDate']))
                                     <p>Time from:
-                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['dateFrom'])->format('d.m.Y')}}</b>
+                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['returnDate'])->format('d.m.Y')}}</b>
                                     </p>
 
                                 @endif
-                                @if(!empty($this->stepOneFields['timeFrom']))
+                                @if(!empty($this->stepOneFields['returnTime']))
                                     <p>Time from:
-                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['timeFrom'])->format('H:i')}}</b>
+                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['returnTime'])->format('H:i')}}</b>
                                     </p>
 
                                 @endif

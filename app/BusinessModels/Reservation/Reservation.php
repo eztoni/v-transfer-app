@@ -2,7 +2,10 @@
 
 namespace App\BusinessModels\Reservation;
 
+use App\Models\Partner;
 use App\Models\Point;
+use App\Models\Route;
+use App\Models\Transfer;
 use App\Models\Traveller;
 use Carbon\Carbon;
 use Carbon\Exceptions\Exception;
@@ -15,6 +18,10 @@ class Reservation
 
     private Carbon $date;
     private Carbon $time;
+
+    private Carbon $returnDate;
+    private Carbon $returnTime;
+
     private Point $pickupLocation;
     private string $pickupAddress;
 
@@ -25,10 +32,20 @@ class Reservation
     private int $children;
     private int $infants;
 
+
     private Collection $otherTravellers;
     private Traveller $leadTraveller;
 
+    private Transfer $transfer;
 
+    private Partner $partner;
+
+    private  $routeObject;
+
+    private int $price;
+
+    private int $luggage;
+    private bool $twoWay;
 
 
     public function __construct(\App\Models\Reservation $model)
@@ -52,13 +69,46 @@ class Reservation
 
         $this->model->luggage = $this->luggage;
 
+        $this->model->route = json_encode((array)$this->routeObject);
+        $this->model->transfer = $this->transfer->toJson();
+        $this->model->partner_id = $this->partner->id;
+
+        $this->model->price = $this->price;
+
+
+
+
+        if($this->twoWay){
+            $this->saveTwoWay();
+
+        }
+
         $this->model->save();
+        $this->model->travellers()->save($this->leadTraveller);
+
 
     }
+    private function saveTwoWay(){
+        $twoWay = $this->model->replicate();
+
+        $twoWay->date = $this->returnDate;
+        $twoWay->time = $this->returnTime;
+
+        $twoWay->save();
+    }
+    public function twoWay($returnDate,$returnTime)
+    {
+        $this->twoWay = true;
+        $this->returnDate = $returnDate;
+        $this->returnTime = $returnTime;
+    }
+
+
 
     public function addLeadTraveller(Traveller $traveller)
     {
         $this->leadTraveller = $traveller;
+        return $this;
     }
 
 
@@ -172,27 +222,52 @@ class Reservation
         return $this;
     }
 
-    /**
-     * @param bool $two_way
-     * @return Reservation
-     */
-    public function setTwoWay(bool $two_way): Reservation
-    {
-        $this->two_way = $two_way;
-        return $this;
-    }
-    private int $luggage;
-    private bool $two_way;
-
-
 
     /**
      * @param Reservation $model
      * @return Reservation
      */
-    public function setModel(Reservation $model): Reservation
+    public function setModel(\App\Models\Reservation $model): Reservation
     {
         $this->model = $model;
+        return $this;
+    }
+
+    public function setTransfer(Transfer $transfer) : Reservation
+    {
+        $this->transfer = $transfer;
+        return $this;
+    }
+
+    /**
+     * @param Partner $partner
+     * @return Reservation
+     */
+    public function setPartner(Partner $partner): Reservation
+    {
+        $this->partner = $partner;
+        return $this;
+    }
+
+
+
+    /**
+     * @param mixed $routeObject
+     * @return Reservation
+     */
+    public function setRouteObject($routeObject)
+    {
+        $this->routeObject = $routeObject;
+        return $this;
+    }
+
+    /**
+     * @param int $price
+     * @return Reservation
+     */
+    public function setPrice(int $price): Reservation
+    {
+        $this->price = $price;
         return $this;
     }
 

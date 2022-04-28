@@ -11,6 +11,7 @@ use App\Models\Transfer;
 use App\Models\Traveller;
 use App\Services\TransferAvailability;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Redirect;
 use Livewire\Component;
 use function Clue\StreamFilter\fun;
 
@@ -21,10 +22,10 @@ class InternalReservation extends Component
         'destinationId' => null,
         'startingPointId' => null,
         'endingPointId' => null,
-        'dateTo' => null,
-        'timeTo' => null,
-        'dateFrom' => null,
-        'timeFrom' => null,
+        'date' => null,
+        'time' => null,
+        'returnDate' => null,
+        'returnTime' => null,
         'dropoffAddress' => null,
         'pickupAddress' => null,
         'adults' => 1,
@@ -56,12 +57,12 @@ class InternalReservation extends Component
         'remark' => null,
 
         'leadTraveller' => [
-            'title'=>null,
-            'firstName'=>null,
-            'lastName'=>null,
-            'reservationNumber'=>null,
-            'email'=>null,
-            'phone'=>null,
+            'title' => null,
+            'firstName' => null,
+            'lastName' => null,
+            'reservationNumber' => null,
+            'email' => null,
+            'phone' => null,
         ],
 
         'otherTravellers' => [
@@ -72,20 +73,25 @@ class InternalReservation extends Component
         'infants' => 0,
         'luggage' => 1,
     ];
+
     public function saveReservation()
     {
         $reservation = new \App\BusinessModels\Reservation\Reservation(new \App\Models\Reservation());
-
 
         $traveller = new Traveller();
 
         $traveller->first_name = $this->stepTwoFields['leadTraveller']['firstName'];
         $traveller->last_name = $this->stepTwoFields['leadTraveller']['lastName'];
 
-        $traveller->save();
+        $route = $this->getSelectedRouteProperty();
 
-        $reservation->setDate(Carbon::make($this->stepOneFields['dateTo']))
-            ->setTime(Carbon::make($this->stepOneFields['timeTo']))
+        $priceHandler =  (new \App\Services\TransferPrices())
+            ->setPartnerId($this->selectedPartner)
+            ->setTransferId($this->selectedTransfer)
+            ->setRouteId($route ? $route->id : null);
+
+        $reservation->setDate(Carbon::make($this->stepOneFields['date']))
+            ->setTime(Carbon::make($this->stepOneFields['time']))
             ->setPickupLocation(Point::find($this->stepOneFields['startingPointId']))
             ->setDropoffLocation(Point::find($this->stepOneFields['endingPointId']))
             ->setPickupAddress($this->stepOneFields['pickupAddress'])
@@ -93,13 +99,27 @@ class InternalReservation extends Component
             ->setAdults($this->stepOneFields['adults'])
             ->setInfants($this->stepOneFields['infants'])
             ->setChildren($this->stepOneFields['children'])
+            ->setTransfer(Transfer::find($this->selectedTransfer))
+            ->setPartner(Partner::find($this->selectedPartner))
             ->setLuggage($this->stepOneFields['luggage'])
-            ->addLeadTraveller($traveller);
+            ->addLeadTraveller($traveller)
+            ->setRouteObject($priceHandler->getRouteData())
+            ->setPrice($priceHandler->getPrice()->getAmount());
 
-      $reservation->saveReservation();
-      $this->showToast('Reservation saved');
-      $this->resSaved= true;
-        //redirect(route('register'));
+
+        if ($this->twoWay) {
+            $reservation->twoWay(
+                Carbon::make($this->stepOneFields['returnDate']),
+                Carbon::make($this->stepOneFields['returnTime'])
+            );
+        }
+
+        $reservation->saveReservation();
+
+        $this->showToast('Reservation saved');
+        $this->resSaved=true;
+        Redirect::route('reservation-view');
+
 
     }
 
@@ -108,7 +128,8 @@ class InternalReservation extends Component
      * CLEAN
      */
 
-    public function mount(){
+    public function mount()
+    {
         $this->stepOneFields['destinationId'] = \Auth::user()->destination_id;
     }
 
@@ -127,15 +148,15 @@ class InternalReservation extends Component
 
     public function setOtherTravellers()
     {
-       $this->stepTwoFields['otherTravellers'] = [];
-       for ($i=0;$i<$this->getTotalPassengersProperty() - 1 ;$i++){
-           $this->stepTwoFields['otherTravellers'][] = [
-               'title'=>null,
-               'firstName'=>null,
-               'lastName'=>null,
-               'comment'=>null,
-           ];
-       }
+        $this->stepTwoFields['otherTravellers'] = [];
+        for ($i = 0; $i < $this->getTotalPassengersProperty() - 1; $i++) {
+            $this->stepTwoFields['otherTravellers'][] = [
+                'title' => null,
+                'firstName' => null,
+                'lastName' => null,
+                'comment' => null,
+            ];
+        }
     }
 
 
@@ -149,9 +170,9 @@ class InternalReservation extends Component
     //reset the points when we change destination
     public function updatedStepOneFieldsStartingPointId()
     {
-        if(!$this->getEndingPointsProperty()->contains(function ($item){
+        if (!$this->getEndingPointsProperty()->contains(function ($item) {
             return $item->id === (int)$this->stepOneFields['endingPointId'];
-        })){
+        })) {
             $this->stepOneFields['endingPointId'] = '';
         }
     }
@@ -194,7 +215,7 @@ class InternalReservation extends Component
 
     public function getTotalPassengersProperty()
     {
-        return $this->stepOneFields['adults']  + $this->stepOneFields['infants'] + $this->stepOneFields['children'];
+        return $this->stepOneFields['adults'] + $this->stepOneFields['infants'] + $this->stepOneFields['children'];
     }
 
     public function getTotalPriceProperty()
@@ -250,8 +271,6 @@ class InternalReservation extends Component
     public array $seats = [1];
 
 
-
-
     public function addSeat()
     {
         $this->seats[] = 1;
@@ -281,16 +300,13 @@ class InternalReservation extends Component
         $transfer = Transfer::findOrFail($transferId);
         $partner = Partner::findOrFail($partnerId);
 
-        //TODO: Validate
+
 
         $this->selectedTransfer = $transfer->id;
         $this->selectedPartner = $partner->id;
 
         $this->step = 2;
     }
-
-
-
 
 
     public function render()

@@ -25,6 +25,14 @@ class CreateReservationsTable extends Migration
 
             $table->boolean('two_way');
 
+            $table->foreignIdFor(\App\Models\Partner::class);
+
+            $table->text('route');
+
+            $table->text('transfer');
+
+            $table->integer('price');
+
             $table->date('date');
             $table->time('time');
 
