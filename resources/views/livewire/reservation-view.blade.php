@@ -67,8 +67,8 @@
 
                     <div class="flex flex-col w-full">
                         <span>Name :  <span class="text-info font-bold">Mr. Joe Doe</span> </span>
-                        <span>Email :  joeboy@jondoe.com </span>
-                        <span>Phone :  +384 4332 3232  </span>
+                        <span>Email :  <a href="mailto: joeboy@jondoe.com"> joeboy@jondoe.com</a></span>
+                        <span>Phone :  <a href="tel:123-456-7890">123-456-7890</a> </span>
                     </div>
                 </x-slot>
             </x-ez-card>
