@@ -31,7 +31,7 @@
                 <span class="badge badge-success">One Way</span>
             </div>
 
-            <b href="{{route('reservation-view')}}"><button class="btn btn-sm btn-primary" wire:click="saveTransfer">View </button></b>
+            <a href="{{route('reservation-view')}}"><button class="btn btn-sm btn-primary">View</button></a>
         </x-slot>
 
         <x-slot name="body">
@@ -61,7 +61,7 @@
                 <span class="badge badge-success">Two Way</span>
             </div>
 
-            <b href="{{route('reservation-view')}}"><button class="btn btn-sm btn-primary" wire:click="saveTransfer">View </button></b>
+            <a href="{{route('reservation-view')}}"><button class="btn btn-sm btn-primary">View </button></a>
         </x-slot>
 
         <x-slot name="body">
