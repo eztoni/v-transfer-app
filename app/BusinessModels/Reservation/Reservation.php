@@ -45,7 +45,7 @@ class Reservation
     private int $price;
 
     private int $luggage;
-    private bool $twoWay;
+    private bool $twoWay = false;
 
 
     public function __construct(\App\Models\Reservation $model)

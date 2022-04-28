@@ -66,8 +66,8 @@
                                 <th>From</th>
                                 <th>To</th>
                                 <th>Two Way</th>
-                                <th>Two Way Price</th>
-                                <th class="text-right pr-8">Price</th>
+                                <th>Two Way Price (EUR)</th>
+                                <th class="text-right pr-8">Price (EUR)</th>
                             </tr>
                             </thead>
                             <tbody>
