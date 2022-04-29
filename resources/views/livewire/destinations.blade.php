@@ -15,6 +15,7 @@
                 <tr>
                     <th>#Id</th>
                     <th>Name</th>
+                    <th>Prioritized partner</th>
                     <th class="text-center">Update</th>
 
 
@@ -27,6 +28,7 @@
                     <tr>
                         <td>{{ $d->id }}</td>
                         <td>{{ $d->name }}</td>
+                        <td>{{ $d->partner_id ? $partners->find($d->partner_id)->name : '-'}}</td>
                         <td class="text-center">
                             <button wire:click="updateDestination({{$d->id}})" class="btn btn-circle btn-sm btn-success">
                                 <i class="fas fa-pen"></i>
