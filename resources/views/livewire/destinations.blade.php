@@ -86,6 +86,19 @@
                         @enderror
                     </div>
 
+                    <div class="form-control">
+
+                        <label class="label">
+                            <span class="label-text">Prioritized partner:</span>
+                        </label>
+                        <select wire:model="destination.partner_id" class="select select-bordered">
+                            <option value="">Select a partner</option>
+                            @foreach($partners as $p)
+                                <option value="{{$p->id}}">{{$p->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <div class="mt-4 flex justify-between">
                         <button wire:click="closeDestinationModal()" class="btn btn-sm ">Close</button>
                         <button wire:click="saveDestinationData()"

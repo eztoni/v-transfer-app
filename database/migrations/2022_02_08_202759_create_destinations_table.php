@@ -12,6 +12,7 @@ class CreateDestinationsTable extends Migration
             $table->bigIncrements('id');
 
             $table->foreignIdFor(\App\Models\Owner::class);
+            $table->foreignIdFor(\App\Models\Partner::class)->nullable();
 
             $table->string('name');
 

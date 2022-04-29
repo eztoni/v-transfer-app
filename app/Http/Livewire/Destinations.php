@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Destination;
+use App\Models\Partner;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -18,6 +19,7 @@ class Destinations extends Component
 
     protected $rules = [
         'destination.name' => 'required|max:255',
+        'destination.partner_id' => 'nullable',
     ];
 
     public function updated($propertyName)
@@ -85,7 +87,8 @@ class Destinations extends Component
     public function render()
     {
         $destinations = Destination::search('name',$this->search)->paginate(10);
-        return view('livewire.destinations', compact('destinations'));
+        $partners = Partner::all();
+        return view('livewire.destinations', compact('destinations','partners'));
 
     }
 }
