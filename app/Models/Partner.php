@@ -22,6 +22,10 @@ class Partner extends Model
         return $this->belongsToMany(Extra::class);
     }
 
+    public function destinations(){
+        return $this->belongsToMany(Destination::class);
+    }
+
     protected static function booted()
     {
         static::addGlobalScope(new OwnerScope());

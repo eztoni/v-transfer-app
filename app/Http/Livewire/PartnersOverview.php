@@ -19,12 +19,13 @@ class PartnersOverview extends Component
     public $partnerModal;
     public $softDeleteModal;
     public $deleteId = '';
+    public $selectedDestinations = [];
+
 
     protected function rules()
     {
         return [
             'partner.name'=>'required|max:255|min:2',
-            'partner.destination_id'=>'required|numeric',
             'partner.email'=>'required|email',
             'partner.phone'=>'required|max:255',
         ];
@@ -38,25 +39,32 @@ class PartnersOverview extends Component
         $this->partnerModal = true;
     }
 
+    public function getPartnerDestinationsProperty()
+    {
+        $partners = Partner::with('destinations')->where('id', '=', 2)->first();
+        if(empty($partners)){
+            return collect();
+        }
+        return $partners->destinations;
+    }
+
+    public function getDestinationPartnersProperty()
+    {
+        return Partner::with('destinations')->where('id', '=', 2)->first()->destinations;
+    }
+
     public function closePartnerModal(){
         $this->partnerModal = false;
     }
 
     public function mount(){
-
         $this->partner = new Partner();
-    }
-
-    public function updatePartner($partnerId){
-        $this->openPartnerModal();
-        $this->partner = Partner::find($partnerId);
     }
 
     public function updatedPartnerDestinationId(){
         $this->partner->starting_point_id = null;
         $this->partner->ending_point_id = null;
     }
-
 
     public function addPartner(){
         $this->openPartnerModal();
@@ -69,7 +77,6 @@ class PartnersOverview extends Component
             return;
 
         $this->partner->owner_id = Auth::user()->owner_id;
-
         $this->validate();
         $this->partner->save();
         $this->showToast('Saved','Partner Saved','success');
@@ -99,6 +106,7 @@ class PartnersOverview extends Component
     {
         $destinations = Destination::all();
         $partners = Partner::with('destination')->search('name',$this->search)->paginate(10);
+        $partners = Partner::search('name',$this->search)->paginate(10);
         return view('livewire.partners-overview',compact('partners','destinations'));
     }
 }

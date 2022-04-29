@@ -6,14 +6,17 @@ use App\Http\Controllers\UploadImageController;
 use App\Http\Livewire\ActivityLogDashboard;
 use App\Http\Livewire\AgeGroupCategories;
 use App\Http\Livewire\AgeGroupOverview;
+use App\Http\Livewire\BookingOverview;
 use App\Http\Livewire\CompanyOverview;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\Destinations;
 use App\Http\Livewire\ExtrasEdit;
 use App\Http\Livewire\ExtrasOverview;
 use App\Http\Livewire\InternalReservation;
+use App\Http\Livewire\PartnerEdit;
 use App\Http\Livewire\PartnersOverview;
 use App\Http\Livewire\PointsOverview;
+use App\Http\Livewire\ReservationView;
 use App\Http\Livewire\RoutesOverview;
 use App\Http\Livewire\TransferOverview;
 use App\Http\Livewire\UserOverview;
@@ -43,8 +46,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         Route::get('/', Dashboard::class)->name('dashboard');
         Route::get('/master-data', Dashboard::class)->name('master-data');
         Route::get('/selling', Dashboard::class)->name('selling');
-        Route::get('/bookings', \App\Http\Livewire\BookingOverview::class)->name('bookings');
-        Route::get('/reservation-view', \App\Http\Livewire\ReservationView::class)->name('reservation-view');
+        Route::get('/bookings', BookingOverview::class)->name('bookings');
+        Route::get('/reservation-view', ReservationView::class)->name('reservation-view');
         Route::get('/reports', Dashboard::class)->name('reports');
 
 
@@ -53,7 +56,6 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         Route::get('/age-group-categories/{ageGroup}', AgeGroupCategories::class)->name('age-group-categories');
         //Routes
         Route::get('/routes-overview', \App\Http\Livewire\CRUD\RoutesOverview::class)->name('routes-overview');
-        Route::get('/partners-overview', PartnersOverview::class)->name('partners-overview');
         //Extras
         Route::get('/extras-overview', ExtrasOverview::class)->name('extras-overview');
         Route::get('/extras-edit/{extra}', ExtrasEdit::class)->name('extras-edit');
@@ -80,6 +82,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
                 Route::get('/user-overview', UserOverview::class)->name('user-overview');
                 Route::post('/upload-images', [UploadImageController::class, 'store'])->name('upload-images');
                 Route::get('/company-dashboard', \App\Http\Livewire\CompanyDashboard::class)->name('company-dashboard');
+
+                Route::get('/partners-overview', PartnersOverview::class)->name('partners-overview');
+                Route::get('/partner-edit/{partner}', PartnerEdit::class)->name('partner-edit');
             });
 #------------------------------------------------------------------------------------------ADMINS END
             Route::middleware(
