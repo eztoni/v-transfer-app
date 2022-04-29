@@ -19,7 +19,6 @@ class Destinations extends Component
 
     protected $rules = [
         'destination.name' => 'required|max:255',
-        'destination.partner_id' => 'nullable',
     ];
 
     public function updated($propertyName)
@@ -87,8 +86,7 @@ class Destinations extends Component
     public function render()
     {
         $destinations = Destination::search('name',$this->search)->paginate(10);
-        $partners = Partner::all();
-        return view('livewire.destinations', compact('destinations','partners'));
+        return view('livewire.destinations', compact('destinations'));
 
     }
 }

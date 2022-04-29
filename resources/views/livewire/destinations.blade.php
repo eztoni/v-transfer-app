@@ -15,7 +15,6 @@
                 <tr>
                     <th>#Id</th>
                     <th>Name</th>
-                    <th>Prioritized partner</th>
                     <th class="text-center">Update</th>
 
 
@@ -28,7 +27,6 @@
                     <tr>
                         <td>{{ $d->id }}</td>
                         <td>{{ $d->name }}</td>
-                        <td>{{ $d->partner_id ? $partners->find($d->partner_id)->name : '-'}}</td>
                         <td class="text-center">
                             <button wire:click="updateDestination({{$d->id}})" class="btn btn-circle btn-sm btn-success">
                                 <i class="fas fa-pen"></i>
@@ -86,19 +84,6 @@
                         @error('destination.name')
                         <x-input-alert type='warning'>{{ $message }}</x-input-alert>
                         @enderror
-                    </div>
-
-                    <div class="form-control">
-
-                        <label class="label">
-                            <span class="label-text">Prioritized partner:</span>
-                        </label>
-                        <select wire:model="destination.partner_id" class="select select-bordered">
-                            <option value="">Select a partner</option>
-                            @foreach($partners as $p)
-                                <option value="{{$p->id}}">{{$p->name}}</option>
-                            @endforeach
-                        </select>
                     </div>
 
                     <div class="mt-4 flex justify-between">
