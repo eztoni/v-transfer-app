@@ -23,7 +23,7 @@ class Route extends Model
     ];
 
     public function transfers(){
-        return $this->belongsToMany(Transfer::class)->withPivot(['price','partner_id','two_way']);
+        return $this->belongsToMany(Transfer::class)->withPivot(['price','partner_id','round_trip']);
     }
 
     public function destination(){

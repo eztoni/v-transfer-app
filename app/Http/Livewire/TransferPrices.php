@@ -14,8 +14,8 @@ class TransferPrices extends Component
 
     public $pivotModal;
     public $routePrice = [];
-    public $routeTwoWay = [];
-    public $routePriceTwoWay = [];
+    public $routeRoundTrip = [];
+    public $routePriceRoundTrip = [];
     public $routeSaveButton = [];
     public $transferId = null;
     public $showSearch = true;
@@ -42,8 +42,8 @@ class TransferPrices extends Component
 
             foreach($routes as $r){
                 $this->routePrice[$r->id] = $r->pivot->price;
-                $this->routeTwoWay[$r->id] = $r->pivot->two_way;
-                $this->routePriceTwoWay[$r->id] = $r->pivot->price_two_way;
+                $this->routeRoundTrip[$r->id] = $r->pivot->round_trip;
+                $this->routePriceRoundTrip[$r->id] = $r->pivot->price_round_trip;
             }
         }
 
@@ -57,21 +57,21 @@ class TransferPrices extends Component
     public function updatedTransferId(): void
     {
         $this->routePrice =  [];
-        $this->routePriceTwoWay = [];
-        $this->routeTwoWay = [];
+        $this->routePriceRoundTrip = [];
+        $this->routeRoundTrip = [];
         $this->setModelPrices();
     }
     public function updatedPartnerId(): void
     {
         $this->routePrice =  [];
-        $this->routePriceTwoWay = [];
-        $this->routeTwoWay = [];
+        $this->routePriceRoundTrip = [];
+        $this->routeRoundTrip = [];
         $this->setModelPrices();
     }
 
     protected $rules = [
         'routePrice.*' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/|min:1',
-        'routePriceTwoWay.*' => 'numeric|regex:/^\d*(\.\d{1,2})?$/|min:1',
+        'routePriceRoundTrip.*' => 'numeric|regex:/^\d*(\.\d{1,2})?$/|min:1',
     ];
 
 
@@ -86,8 +86,8 @@ class TransferPrices extends Component
         return  Route::with(['startingPoint','endingPoint'])->get();
     }
 
-    public function saveTwoWay($routeId){
-        $saved = $this->routeTwoWay[$routeId];
+    public function saveRoundTrip($routeId){
+        $saved = $this->routeRoundTrip[$routeId];
 
         \DB::table('route_transfer')->updateOrInsert(
             [
@@ -96,7 +96,7 @@ class TransferPrices extends Component
                 'partner_id'=>$this->partnerId,
             ],
             [
-                'two_way' => $saved,
+                'round_trip' => $saved,
             ]
         );
 
@@ -126,13 +126,13 @@ class TransferPrices extends Component
 
     }
 
-    public function saveRoutePriceTwoWay($routeId){
+    public function saveRoutePriceRoundTrip($routeId){
 
-        //$this->validate('routePriceTwoWay.'.$routeId);
+        //$this->validate('routePriceRoundTrip.'.$routeId);
 
 
-        if(empty($this->routePriceTwoWay[$routeId])){
-            $this->addError('routePriceTwoWay.'.$routeId, 'The email field is invalid.');
+        if(empty($this->routePriceRoundTrip[$routeId])){
+            $this->addError('routePriceRoundTrip.'.$routeId, 'The email field is invalid.');
             return;
         }
 
@@ -143,7 +143,7 @@ class TransferPrices extends Component
                 'partner_id'=>$this->partnerId,
             ],
             [
-                'price_two_way' =>  $this->routePriceTwoWay[$routeId]
+                'price_round_trip' =>  $this->routePriceRoundTrip[$routeId]
             ]
         );
 

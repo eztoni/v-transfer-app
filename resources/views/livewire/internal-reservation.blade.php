@@ -1,4 +1,4 @@
-<div class="internal-reservation container ">
+<div class="internal-reservation container " x-data="app()">
     <div class="grid grid-cols-3 gap-4">
         <div class="col-span-2 ">
             @if($step === 1)
@@ -10,25 +10,13 @@
 
                     <x-slot name="body" class="">
                         <div class="grid grid-cols-2 gap-4">
-                            {{--                            <div class="form-control ">--}}
-                            {{--                                <select class="my-select select-sm" wire:model="stepOneFields.destinationId">--}}
-                            {{--                                    <option value="">Pick a destination</option>--}}
-                            {{--                                    @foreach($this->destinationsWithRoutes as $destination)--}}
-                            {{--                                        <option value="{{$destination->id}}">{{$destination->name}}</option>--}}
-
-                            {{--                                    @endforeach--}}
-
-
-                            {{--                                </select>--}}
-
-                            {{--                            </div>--}}
-
                             <div class="form-control ">
                                 @if(!empty($this->stepOneFields['destinationId']))
                                     @if($this->startingPoints->isNotEmpty())
                                         <label class="label-text ">Pickup location</label>
                                         <select class="my-select select-sm" wire:model="stepOneFields.startingPointId">
                                             <option value="">Pickup location</option>
+
                                             @foreach($this->startingPoints as $point)
                                                 <option value="{{$point->id}}">{{$point->name}}</option>
                                             @endforeach
@@ -40,8 +28,28 @@
                                 @endif
                                 @if($this->stepOneFields['startingPointId'] && $this->stepOneFields['endingPointId'] )
 
-                                    <x-form.ez-text-input sm label="Pickup address"
-                                                          wire:model="stepOneFields.pickupAddress"></x-form.ez-text-input>
+                                    <div class="form-control pt-2" wire:ignore>
+                                        <label class="label-text ">Pickup address</label>
+                                        <select id="pickupSelect" x-init=" $(' #pickupSelect').select2(
+                                        {
+                                        closeOnSelect: true,
+                                        tags: true,
+                                        placeholder: 'Select or type pickup address',
+
+                                        }
+                                        ).on('change', function (e) {
+                                        @this.
+                                        set('stepOneFields.pickupAddress', $('#pickupSelect').select2('val'))
+                                        })
+                                        ">
+                                            <option></option>
+                                            @foreach($this->pickupAddressPoints as $pickupAddressPoint)
+                                                <option
+                                                    value="{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}">{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}</option>
+                                            @endforeach
+
+                                        </select>
+                                    </div>
                                 @endif
                             </div>
                             @if(!empty($this->stepOneFields['startingPointId']))
@@ -59,10 +67,30 @@
                                         <div class="alert alert-warning">No Dropoff points for that pickup point!</div>
 
                                     @endif
-                                    @if($this->stepOneFields['startingPointId'] && $this->stepOneFields['endingPointId'] )
 
-                                        <x-form.ez-text-input sm label="Dropoff address"
-                                                              wire:model="stepOneFields.dropoffAddress"></x-form.ez-text-input>
+                                    @if($this->stepOneFields['startingPointId'] && $this->stepOneFields['endingPointId']  )
+                                        <div class="form-control pt-2" wire:ignore>
+                                            <label class="label-text ">Dropoff address</label>
+
+                                            <select id="dropoffSelect" x-init=" $('#dropoffSelect').select2(
+                                                {
+                                                    closeOnSelect: true,
+                                                    tags: true,
+                                                      placeholder: 'Select or type dropoff address',
+                                                }
+                                            ).on('change', function (e) {
+                                                @this.
+                                                set('stepOneFields.dropoffAddress', $('#dropoffSelect').val())
+                                            })
+                                            ">
+                                                <option></option>
+                                                @foreach($this->dropoffAddressPoints as $dropoffAddressPoint)
+                                                    <option
+                                                        value="{{$dropoffAddressPoint->name . ' ' . $dropoffAddressPoint->address}}">{{$dropoffAddressPoint->name. ' ' . $dropoffAddressPoint->address}}</option>
+                                                @endforeach
+
+                                            </select>
+                                        </div>
                                     @endif
                                 </div>
                             @endif
@@ -111,7 +139,7 @@
 
                                         </div>
 
-                                        @if($twoWay)
+                                        @if($roundTrip)
 
 
                                             <div class="form-control  ">
@@ -151,17 +179,14 @@
                                             </div>
                                         @endif
                                         <div @class([   'form-control',
-                                                        'col-span-2'=>!$this->twoWay,
-                                                        'col-span-4'=>$this->twoWay])>
-
+                                                        'col-span-2'=>!$this->roundTrip,
+                                                        'col-span-4'=>$this->roundTrip])>
                                             <label
-                                                class="label cursor-pointer ml-auto mr-2 {{!$twoWay? 'mt-10':'mt-2'}}  mb-1  ">
+                                                class="label cursor-pointer ml-auto mr-2 {{!$roundTrip? 'mt-10':'mt-2'}}  mb-1  ">
                                             <span class="label-text mr-2">
-                                              <i class="fas fa-exchange-alt mx-4"></i>
-                                                 Two way</span>
-                                                <input type="checkbox" wire:model="twoWay" class="checkbox">
+                                              <i class="fas fa-exchange-alt mx-4"></i>Round trip</span>
+                                                <input type="checkbox" wire:model="roundTrip" class="checkbox">
                                             </label>
-
                                         </div>
                                     </div>
 
@@ -280,11 +305,11 @@
                             <div class="grid grid-cols-3 gap-4">
 
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Flight number {{$twoWay?'#1':''}}"
+                                    <x-form.ez-text-input sm label="Flight number {{$roundTrip?'#1':''}}"
                                                           value="31782563"></x-form.ez-text-input>
                                 </div>
 
-                                @if($twoWay)
+                                @if($roundTrip)
                                     <div class="col-span-1">
                                         <x-form.ez-text-input sm label="Flight number #2"
                                                               value="1872351"></x-form.ez-text-input>
@@ -447,7 +472,7 @@
                                     <p><span>From:</span> <b>{{$this->selectedStartingPoint->name}}</b></p>
 
                                     @if($this->stepOneFields['pickupAddress'])
-                                        <p><span>Address:</span> <b>{{$this->stepOneFields['pickupAddress']}}</b></p>
+                                        <p><span>Address:</span> <b class="text-right">{{$this->stepOneFields['pickupAddress']}}</b></p>
                                     @endif
                                     <div class="divider my-1    "></div>
 
@@ -457,11 +482,11 @@
                                     <p>To: <b>{{$this->selectedEndingPoint->name}}</b></p>
 
                                     @if($this->stepOneFields['dropoffAddress'])
-                                        <p><span>Address:</span> <b>{{$this->stepOneFields['dropoffAddress']}}</b></p>
+                                        <p><span>Address:</span> <b class="text-right">{{$this->stepOneFields['dropoffAddress']}}</b></p>
                                     @endif
-                                        <div class="divider my-1    "></div>
+                                    <div class="divider my-1    "></div>
 
-                                    @endif
+                                @endif
                                 @if(!empty($this->stepOneFields['date']))
                                     <p>Date to:
                                         <b>{{\Carbon\Carbon::make($this->stepOneFields['date'])->format('d.m.Y')}}</b>
@@ -487,7 +512,7 @@
 
                                 @endif
                                 <p>Passengers: <b>{{$this->totalPassengers}}</b></p>
-                                <p>Ticket type: <b>{{$this->twoWay ? 'Two way' : 'One way'}}</b></p>
+                                <p>Ticket type: <b>{{$this->roundTrip ? 'Two way' : 'One way'}}</b></p>
                             </div>
                             <div class="divider my-1    "></div>
 
@@ -505,7 +530,8 @@
                     @if($step === 2 && $resSaved == false)
                         <x-ez-card class="mt-4">
                             <x-slot name="body">
-                                <button class="btn btn-large btn-accent rounded-box" wire:click="saveReservation"><span class="mr-4">Complete reservation</span>
+                                <button class="btn btn-large btn-accent rounded-box" wire:click="saveReservation"><span
+                                        class="mr-4">Complete reservation</span>
                                     <i class="fas fa-arrow-right float-right"></i></button>
                             </x-slot>
                         </x-ez-card>
@@ -517,5 +543,15 @@
 
     </div>
 
+    <script>
+        function app() {
+            return {
 
+                init() {
+
+
+                }
+            }
+        }
+    </script>
 </div>
