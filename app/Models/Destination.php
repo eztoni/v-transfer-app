@@ -46,6 +46,10 @@ class Destination extends Model
         return $this->hasMany(Route::class);
     }
 
+    public function partners(){
+        return $this->belongsToMany(Partner::class);
+    }
+
     protected static function booted()
     {
         static::addGlobalScope(new OwnerScope());

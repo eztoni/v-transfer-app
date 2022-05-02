@@ -10,11 +10,8 @@ class CreateDestinationsTable extends Migration
     {
         Schema::create('destinations', function (Blueprint $table) {
             $table->bigIncrements('id');
-
             $table->foreignIdFor(\App\Models\Owner::class);
-
             $table->string('name');
-
             $table->softDeletes();
             $table->timestamps();
         });

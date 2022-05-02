@@ -31,12 +31,6 @@ class MainDrawer extends Component
                         'show' => true,
                     ],
                     [
-                        'text' => 'Partners',
-                        'active' => request()->routeIs('partners-overview'),
-                        'href' => route('partners-overview'),
-                        'show' => true,
-                    ],
-                    [
                         'text' => 'Extras',
                         'active' => request()->routeIs('extras-overview'),
                         'href' => route('extras-overview'),
@@ -95,6 +89,12 @@ class MainDrawer extends Component
                         'href' => route('admin.user-overview'),
                         'show'=> \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN)
 
+                    ],
+                    [
+                        'text' => 'Partners',
+                        'active' => request()->routeIs('admin.partners-overview'),
+                        'href' => route('admin.partners-overview'),
+                        'show' => true,
                     ],
                     [
                         'text' => 'Destinations',

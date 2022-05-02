@@ -1,4 +1,4 @@
-<div>
+<div x-data="">
 
     <x-ez-card>
         <x-slot name="title" class="flex justify-between">
@@ -30,12 +30,11 @@
                         <td >{{ $p->name }}</td>
                         <td >{{ $p->phone }}</td>
                         <td >{{ $p->email }}</td>
-                        <td >{{ $p->destination->name }}</td>
+                        <td >{{ Str::headline($p->destinations->implode('name', ',')) }}</td>
                         <td class="text-center">
-                            <button wire:click="updatePartner({{$p->id}})" class="btn btn-circle btn-sm btn-success">
+                            <a href="{{route('admin.partner-edit',$p)}}"><button class="btn btn-circle btn-sm btn-success">
                                 <i class="fas fa-pen"></i>
-                            </button>
-
+                            </button></a>
                         </td>
 
                     </tr>
@@ -121,24 +120,6 @@
                         </div>
                     </div>
 
-
-                    <div class="form-control">
-
-                        <label class="label">
-                            <span class="label-text">Destination:</span>
-                        </label>
-                        <select wire:model="partner.destination_id" class="select select-bordered">
-                            <option value="">Select a destination</option>
-                            @foreach($destinations as $destination)
-                                <option value="{{$destination->id}}">{{$destination->name}}</option>
-                            @endforeach
-                        </select>
-
-                        @error('partner.destination_id')
-                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                        @enderror
-                    </div>
-
                     <div class="mt-4 flex justify-between">
                         <button wire:click="closePartnerModal()" class="btn btn-sm ">Close</button>
                         <button wire:click="savePartnerData()"
@@ -150,5 +131,6 @@
         </x-slot>
 
     </x-ez-card>
+
 </div>
 

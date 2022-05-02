@@ -17,7 +17,6 @@ class PartnerFactory extends Factory
         return [
 
             'owner_id' => 1,
-            'destination_id' => 1,
             'name' => $this->faker->company(),
             'phone' => $this->faker->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
