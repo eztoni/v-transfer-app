@@ -6,11 +6,11 @@
                 <div class="text-sm breadcrumbs">
                     <ul>
                         <li><a href="{{route('bookings')}}">Bookings</a></li>
-                        <li class="text-info">RES #584372032</li>
+                        <li class="text-info">RES #{{$this->reservation->id}}</li>
                     </ul>
                 </div>
                 <div>
-                    <p class="title font-extrabold">RES #584372032</p>
+                    <p class="title font-extrabold">RES #{{$this->reservation->id}}</p>
                 </div>
             </div>
         </x-slot>
@@ -26,6 +26,8 @@
         <a class="tab tab-lifted" :class="{ 'tab-active': tab === 'log' }" x-on:click.prevent="tab = 'log'" href="#">Log</a>
     </div>
 
+
+
     <!-- TAB RESERVATION -->
     <div x-show="tab === 'reservation'" class="grid md:grid-cols-3 grid-cols-1 gap-4">
 
@@ -36,7 +38,7 @@
                     <div>
                         <span class="text-md">Transfer</span>
                     </div>
-                    <a href="{{route('reservation-view')}}"><button class="btn btn-sm btn-primary">View</button></a>
+                    <a href="{{route('reservation-view',1)}}"><button class="btn btn-sm btn-primary">View</button></a>
                 </x-slot>
 
                 <x-slot name="body">
@@ -45,10 +47,10 @@
                     <div class="flex flex-col w-full">
                         <span>Seller :  <span class="text-info">Valamar Rivijera</span> </span>
                         <span>Type :  <span class="badge badge-success">One Way</span> </span>
-                        <span>Total :  <b>EUR 257</b> </span>
+                        <span>Total :  <b>{{$this->reservation->getPrice()}}</b> </span>
                         <span>Status :  <span class="badge badge-success">Confirmed</span> </span>
                         <span>Payment Status :  <span class="badge badge-success">Paid in full</span> </span>
-                        <span>Created :  <span>Tue 26. Apr 2022 12:45:34</span> </span>
+                        <span>Created :  <span>{{$this->reservation->created_at}}</span> </span>
                     </div>
                 </x-slot>
             </x-ez-card>
@@ -66,9 +68,9 @@
                     <div class="divider mt-0 mb-0"></div>
 
                     <div class="flex flex-col w-full">
-                        <span>Name :  <span class="text-info font-bold">Mr. Joe Doe</span> </span>
-                        <span>Email :  <a href="mailto: joeboy@jondoe.com"> joeboy@jondoe.com</a></span>
-                        <span>Phone :  <a href="tel:123-456-7890">123-456-7890</a> </span>
+                        <span>Name :  <span class="text-info font-bold">{{$this->leadTraveller->full_name}}</span> </span>
+                        <span>Email :  <a href="mailto: joeboy@jondoe.com">{{$this->leadTraveller->email}}</a></span>
+                        <span>Phone :  <a href="tel:123-456-7890">{{$this->leadTraveller->phone}}</a> </span>
                     </div>
                 </x-slot>
             </x-ez-card>
@@ -89,9 +91,9 @@
 
                     <div class="flex md:flex-row gap-4 flex-col w-full">
                         <div class="basis-2/3 flex flex-col ">
-                            <span>Passangers :  <b>4</b> </span>
-                            <span>Luggage :  <b>4</b> </span>
-                            <span>Pickup :  <b>Zadar - <b>25.5.2022</b> @ <b>12:45</b></b>  </span>
+                            <span>Passangers :  <b>{{$this->reservation->num_passangers}}</b> </span>
+                            <span>Luggage :  <b>{{$this->reservation->luggage}}</b> </span>
+                            <span>Pickup :  <b>{{$this->pickupLocationString}}</b>  </span>
                             <span>Dropoff :  <b>Šibenik - <b>28.5.2022</b> @ <b>12:45</b></b>  </span>
                         </div>
 
@@ -105,37 +107,19 @@
 
                     <p class="text-xl font-extrabold">Other Travellers</p>
                     <div class="flex flex-wrap md:flex-col gap-4 flex-col">
-                        <div class="flex flex-wrap md:flex-row flex-col">
-                            <p class="text-info">Passanger #1:</p>
-                            <p>Title: Mrs.</p>
-                            <p>First Name: Smith</p>
-                            <p>Last Name: Jones</p>
-                            <p>Comment: Will pay for the trip</p>
-                            <button class="btn md:btn-circle btn-sm btn-success">
-                                <i class="fas fa-pen"></i>
-                            </button>
-                        </div>
 
-                        <div class="flex flex-wrap md:flex-row flex-col">
-                            <p class="text-info">Passanger #2:</p>
-                            <p>Title: - </p>
-                            <p>First Name: - </p>
-                            <p>Last Name: - </p>
-                            <p>Comment: - </p>
-                            <button class="btn md:btn-circle btn-sm btn-success">
-                                <i class="fas fa-pen"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-wrap md:flex-row flex-col">
-                            <p class="text-info">Passanger #3:</p>
-                            <p>Title: - </p>
-                            <p>First Name: - </p>
-                            <p>Last Name: - </p>
-                            <p>Comment: - </p>
-                            <button class="btn md:btn-circle btn-sm btn-success">
-                                <i class="fas fa-pen"></i>
-                            </button>
-                        </div>
+                        @foreach($this->otherTravellers as $otherTraveller)
+                            <div class="flex flex-wrap md:flex-row flex-col">
+                                <p class="text-info">Passanger #{{$loop->iteration}}:</p>
+                                <p>Title: {{$otherTraveller->title}}</p>
+                                <p>First Name: {{$otherTraveller->first_name}}</p>
+                                <p>Last Name: {{$otherTraveller->last_name}}</p>
+                                <p>Comment: {{$otherTraveller->reservations->first()->pivot->comment}}</p>
+                                <button wire:click="openOtherTravellerModal({{$otherTraveller->id}})" class="btn md:btn-circle btn-sm btn-success">
+                                    <i class="fas fa-pen"></i>
+                                </button>
+                            </div>
+                        @endforeach
                     </div>
 
 
@@ -153,6 +137,75 @@
 
     </div>
     <!-- END OF TAB INVOICE -->
+
+
+    <div class="modal {{ $otherTravellerModal ? 'modal-open fadeIn' : '' }}">
+        <div class="modal-box max-h-screen overflow-y-auto">
+            Update other traveller data
+            <hr class="my-4">
+
+            <div class="form-control">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Title :</span>
+                    </label>
+                    <input wire:model="otherTraveller.title" class="input input-bordered"
+                           placeholder="Title">
+                    @error('otherTraveller.title')
+                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-control">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">First Name :</span>
+                    </label>
+                    <input wire:model="otherTraveller.first_name" class="input input-bordered"
+                           placeholder="First Name">
+                    @error('otherTraveller.first_name')
+                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-control">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Last Name :</span>
+                    </label>
+                    <input wire:model="otherTraveller.last_name" class="input input-bordered"
+                           placeholder="Last Name">
+                    @error('otherTraveller.last_name')
+                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-control">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Comment :</span>
+                    </label>
+                    <input wire:model="otherTravellerComment" class="input input-bordered"
+                           placeholder="Comment">
+                    @error('otherTravellerComment')
+                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                    @enderror
+                </div>
+            </div>
+
+
+
+            <div class="mt-4 flex justify-between">
+                <button wire:click="closeOtherTravellerModal()" class="btn btn-sm ">Close</button>
+                <button wire:click="saveOtherTravellerData()"
+                        class="btn btn-sm ">Update</button>
+            </div>
+        </div>
+    </div>
+
 
 
     <script>
