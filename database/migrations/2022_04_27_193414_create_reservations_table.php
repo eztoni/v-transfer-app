@@ -23,7 +23,7 @@ class CreateReservationsTable extends Migration
 
             $table->integer('luggage');
 
-            $table->boolean('two_way');
+            $table->boolean('round_trip');
 
             $table->foreignIdFor(\App\Models\Partner::class);
 

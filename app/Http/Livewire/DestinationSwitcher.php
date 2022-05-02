@@ -6,6 +6,8 @@ use App\Models\Destination;
 use App\Models\Owner;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Livewire\Component;
 
 class DestinationSwitcher extends Component
@@ -18,7 +20,8 @@ class DestinationSwitcher extends Component
         $user = Auth::user();
         $user->destination_id = $destinationId;
         $user->save();
-        $this->redirect('/');
+
+        $this->emit('destination_changed');
     }
 
     public function render()

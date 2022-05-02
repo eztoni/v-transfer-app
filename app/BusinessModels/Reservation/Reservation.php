@@ -45,7 +45,7 @@ class Reservation
     private int $price;
 
     private int $luggage;
-    private bool $twoWay = false;
+    private bool $roundTrip = false;
 
 
     public function __construct(\App\Models\Reservation $model)
@@ -65,7 +65,7 @@ class Reservation
         $this->model->adults = $this->adults;
         $this->model->children = $this->children;
         $this->model->infants = $this->infants;
-        $this->model->two_way = false;
+        $this->model->round_trip = false;
 
         $this->model->luggage = $this->luggage;
 
@@ -75,12 +75,8 @@ class Reservation
 
         $this->model->price = $this->price;
 
-
-
-
-        if($this->twoWay){
-            $this->saveTwoWay();
-
+        if($this->roundTrip){
+            $this->saveRoundTrip();
         }
 
         $this->model->save();
@@ -88,17 +84,17 @@ class Reservation
 
 
     }
-    private function saveTwoWay(){
-        $twoWay = $this->model->replicate();
+    private function saveRoundTrip(){
+        $roundTrip = $this->model->replicate();
 
-        $twoWay->date = $this->returnDate;
-        $twoWay->time = $this->returnTime;
+        $roundTrip->date = $this->returnDate;
+        $roundTrip->time = $this->returnTime;
 
-        $twoWay->save();
+        $roundTrip->save();
     }
-    public function twoWay($returnDate,$returnTime)
+    public function roundTrip($returnDate,$returnTime)
     {
-        $this->twoWay = true;
+        $this->roundTrip = true;
         $this->returnDate = $returnDate;
         $this->returnTime = $returnTime;
     }

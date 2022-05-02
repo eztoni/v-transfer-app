@@ -13,8 +13,8 @@ class RouteTransfer extends Migration
             $table->foreignId('transfer_id')->constrained();
             $table->foreignId('partner_id')->default(0);
             $table->bigInteger('price')->default(0);
-            $table->bigInteger('price_two_way')->default(0);
-            $table->boolean('two_way')->default(false);
+            $table->bigInteger('price_round_trip')->default(0);
+            $table->boolean('round_trip')->default(false);
             $table->timestamps();
 
             $table->unique(['route_id', 'transfer_id','partner_id']);

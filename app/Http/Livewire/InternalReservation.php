@@ -34,9 +34,10 @@ class InternalReservation extends Component
         'luggage' => 1,
     ];
 
+
     public $resSaved = false;
 
-    public bool $twoWay = false;
+    public bool $roundTrip = false;
     public int $step = 1;
     public $selectedTransfer = null;
     public $selectedPartner = null;
@@ -107,8 +108,8 @@ class InternalReservation extends Component
             ->setPrice($priceHandler->getPrice()->getAmount());
 
 
-        if ($this->twoWay) {
-            $reservation->twoWay(
+        if ($this->roundTrip) {
+            $reservation->roundTrip(
                 Carbon::make($this->stepOneFields['returnDate']),
                 Carbon::make($this->stepOneFields['returnTime'])
             );
@@ -137,6 +138,13 @@ class InternalReservation extends Component
     {
 
         if (in_array($property, [
+            'stepOneFields.startingPointId',
+            'stepOneFields.endingPointId',
+        ])) {
+            $this->resetAdresses();
+        }
+
+        if (in_array($property, [
             'stepOneFields.adults',
             'stepOneFields.children',
             'stepOneFields.infants',
@@ -145,6 +153,13 @@ class InternalReservation extends Component
         }
 
     }
+
+    public function resetAdresses()
+    {
+        $this->stepOneFields['pickupAddress'] = $this->stepOneFields['dropoffAddress'] = '';
+        $this->pickupAddressPointId = $this->dropoffAddressPointId = null;
+    }
+
 
     public function setOtherTravellers()
     {
@@ -188,7 +203,8 @@ class InternalReservation extends Component
             ->where('destination_id', $this->stepOneFields['destinationId'])
             ->with('startingPoint')
             ->get()
-            ->pluck('startingPoint');
+            ->pluck('startingPoint')
+            ->unique();
     }
 
     public function getEndingPointsProperty()
@@ -199,7 +215,29 @@ class InternalReservation extends Component
             ->where('destination_id', $this->stepOneFields['destinationId'])
             ->where('starting_point_id', $this->stepOneFields['startingPointId'])
             ->get()
-            ->pluck('endingPoint');
+            ->pluck('endingPoint')
+            ->unique();
+    }
+    public function getPickupAddressPointsProperty()
+    {
+        return Point::query()
+            ->whereNotIn('id', [
+                (int)$this->stepOneFields['startingPointId'],
+                (int)$this->stepOneFields['endingPointId'],
+                (int)$this->dropoffAddressPointId
+            ])
+            ->get();
+    }
+    public function getDropoffAddressPointsProperty()
+    {
+        return Point::query()
+            ->whereNotIn('id', [
+                (int)$this->stepOneFields['startingPointId'],
+                (int)$this->stepOneFields['endingPointId'],
+                (int)$this->pickupAddressPointId
+            ])
+            ->get();
+
     }
 
 
@@ -313,4 +351,6 @@ class InternalReservation extends Component
     {
         return view('livewire.internal-reservation');
     }
+
+
 }

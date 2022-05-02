@@ -14,7 +14,7 @@ class TransferAvailability
     private Carbon $timeTo;
     private Carbon $dateFrom;
     private Carbon $timeFrom;
-    private bool $twoWay = false;
+    private bool $roundTrip = false;
 
     private Route $route;
 
@@ -72,12 +72,12 @@ class TransferAvailability
     }
 
     /**
-     * @param bool $twoWay
+     * @param bool $roundTrip
      * @return TransferAvailability
      */
-    public function setTwoWay(bool $twoWay): TransferAvailability
+    public function setRoundTrip(bool $roundTrip): TransferAvailability
     {
-        $this->twoWay = $twoWay;
+        $this->roundTrip = $roundTrip;
         return $this;
     }
 
