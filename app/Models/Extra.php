@@ -9,10 +9,12 @@ use Cknow\Money\Casts\MoneyIntegerCast;
 use Cknow\Money\Casts\MoneyStringCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Translatable\HasTranslations;
+use function Clue\StreamFilter\fun;
 
 class Extra extends Model implements HasMedia
 {
@@ -45,10 +47,23 @@ class Extra extends Model implements HasMedia
         }
         return $image;
     }
+    public function getPrimaryImageUrlAttribute()
+    {
+        $image = $this->getMedia('extraImages', function (Media $media) {
+            return isset($media->custom_properties[self::IMAGE_PRIMARY_PROPERTY]);
+        })->first();
 
+        if (!$image) {
+            return $this->getFirstMediaUrl('extraImages');
+        }
+
+        return $image->getFullUrl();
+
+    }
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('extraImages');
+        $this->addMediaCollection('extraImages')
+            ->useFallbackUrl('	https://app.ez-booker.com/modules/img/default_image.jpg');
     }
 
     public function registerMediaConversions(Media $media = null): void
@@ -59,6 +74,17 @@ class Extra extends Model implements HasMedia
             ->sharpen(10);
     }
 
+    public static function getExtrasByPartnerIdWithPrice(int $partnerId,array $with = []):Collection
+    {
+        return self::whereHas('partner',function($q)use($partnerId){
+            $q->where('id',$partnerId);
+        })->with(array_merge(['partner'],$with))->get();
+    }
+
+    public function partner()
+    {
+        return $this->belongsToMany(Partner::class)->withPivot(['price']);
+    }
 
     public function getPrice($partnerId){
 

@@ -6,7 +6,10 @@
     <select   {{$attributes}} wire:model="{{$model}}"
         {{$attributes->class(['select-sm p-1'=>!empty($sm)])->merge(['class'=>' select select-bordered'])}}
     >
-        <option value="">Please select a {{\Str::lower($label)}}</option>
+        @if($showEmptyValue)
+            <option value="">Please select a {{\Str::lower($label)}}</option>
+        @endif
+
         @foreach($items as $id => $text)
             <option value="{{$id}}">{{$text}}</option>
         @endforeach

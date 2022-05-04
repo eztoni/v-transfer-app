@@ -6,6 +6,78 @@
 
                     <x-slot name="title">
                         <i class="fas fa-search"></i> Search
+
+                        <span class="ml-auto">
+                            <label for="internal-modal" class="btn btn-sm btn-outline">Pull data</label>
+                        </span>
+
+                        <x-ez-modal id="internal-modal" lg>
+
+                            <div class="flex gap-4 justify-between flex-wrap">
+                                <x-form.ez-text-input sm label="Reservation ID"></x-form.ez-text-input>
+                                <x-form.ez-text-input sm label="Room number"></x-form.ez-text-input>
+                                <x-form.ez-text-input sm label="Guest name"></x-form.ez-text-input>
+                                <x-form.ez-text-input sm label="Guest last name"></x-form.ez-text-input>
+
+                            </div>
+                            <hr class="my-4">
+                            <table class="table table-compact w-full">
+                                <thead>
+                                <tr>
+                                    <th>#ResId</th>
+                                    <th>Name</th>
+                                    <th>Lastname</th>
+                                    <th>Room no</th>
+                                    <th>Object</th>
+                                    <th>From</th>
+                                    <th>to</th>
+                                    <th>Pull</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th>1</th>
+                                    <td>Joanna </td>
+                                    <td>Ganderton</td>
+                                    <td>311</td>
+                                    <td>Lacroma</td>
+                                    <td>12.07.2022</td>
+                                    <td>18.07.2022</td>
+                                    <td><button class="btn btn-xs"><i class="fas fa-download"></i></td>
+                                </tr><tr>
+                                    <th>1</th>
+                                    <td>Joanna </td>
+                                    <td>Ganderton</td>
+                                    <td>311</td>
+                                    <td>Lacroma</td>
+                                    <td>12.07.2022</td>
+                                    <td>18.07.2022</td>
+                                    <td><button class="btn btn-xs"><i class="fas fa-download"></i></td>
+                                </tr><tr>
+                                    <th>1</th>
+                                    <td>Joanna </td>
+                                    <td>Ganderton</td>
+                                    <td>311</td>
+                                    <td>Lacroma</td>
+                                    <td>12.07.2022</td>
+                                    <td>18.07.2022</td>
+                                    <td><button class="btn btn-xs"><i class="fas fa-download"></i></td>
+                                </tr><tr>
+                                    <th>1</th>
+                                    <td>Joanna </td>
+                                    <td>Ganderton</td>
+                                    <td>311</td>
+                                    <td>Lacroma</td>
+                                    <td>12.07.2022</td>
+                                    <td>18.07.2022</td>
+                                    <td><button class="btn btn-xs"><i class="fas fa-download"></i></td>
+                                </tr>
+
+
+                                </tbody>
+                            </table>
+                        </x-ez-modal>
+
                     </x-slot>
 
                     <x-slot name="body" class="">
@@ -22,6 +94,9 @@
                                             @endforeach
 
                                         </select>
+                                        @error('stepOneFields.startingPointId')
+                                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                                        @enderror
                                     @else
                                         <div class="alert alert-warning">No Pickup points for that destination</div>
                                     @endif
@@ -50,6 +125,9 @@
 
                                         </select>
                                     </div>
+                                        @error('stepOneFields.pickupAddress')
+                                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                                        @enderror
                                 @endif
                             </div>
                             @if(!empty($this->stepOneFields['startingPointId']))
@@ -63,11 +141,13 @@
                                                 <option value="{{$point->id}}">{{$point->name}}</option>
                                             @endforeach
                                         </select>
+                                        @error('stepOneFields.endingPointId')
+                                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                                        @enderror
                                     @else
                                         <div class="alert alert-warning">No Dropoff points for that pickup point!</div>
 
                                     @endif
-
                                     @if($this->stepOneFields['startingPointId'] && $this->stepOneFields['endingPointId']  )
                                         <div class="form-control pt-2" wire:ignore>
                                             <label class="label-text ">Dropoff address</label>
@@ -90,7 +170,11 @@
                                                 @endforeach
 
                                             </select>
+
                                         </div>
+                                        @error('stepOneFields.dropoffAddress')
+                                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                                        @enderror
                                     @endif
                                 </div>
                             @endif
@@ -119,6 +203,9 @@
                                                    class=" input input-bordered input-sm mt-2"
                                                    placeholder="Date to:">
 
+                                            @error('stepOneFields.date')
+                                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                                            @enderror
                                         </div>
                                         <div class="form-control ">
                                             <label class="label">
@@ -136,7 +223,9 @@
                                                    wire:model="stepOneFields.time"
                                                    class="ml-2 input input-bordered input-sm mt-2"
                                                    placeholder="Time to:">
-
+                                            @error('stepOneFields.time')
+                                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                                            @enderror
                                         </div>
 
                                         @if($roundTrip)
@@ -156,7 +245,9 @@
                                                        wire:model="stepOneFields.returnDate"
                                                        class="ml-2 input input-bordered input-sm mt-2"
                                                        placeholder="Date from:">
-
+                                                @error('stepOneFields.returnDate')
+                                                <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                                                @enderror
                                             </div>
                                             <div class="form-control ">
                                                 <label class="label">
@@ -175,7 +266,9 @@
                                                        wire:model="stepOneFields.returnTime"
                                                        class="ml-2 input input-bordered input-sm mt-2"
                                                        placeholder="Time from:">
-
+                                                @error('stepOneFields.returnTime')
+                                                <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                                                @enderror
                                             </div>
                                         @endif
                                         <div @class([   'form-control',
@@ -197,7 +290,7 @@
                                 <div class="divider my-1    "></div>
 
                                 <div class="">
-                                    <div class="flex flex-wrap gap-2">
+                                    <div class="flex flex-wrap justify-between gap-2">
 
 
                                         <div class="form-control  ">
@@ -206,7 +299,9 @@
                                             </label>
                                             <input class="my-input input-sm w-full" placeholder=""
                                                    wire:model="stepOneFields.adults">
-
+                                            @error('stepOneFields.adults')
+                                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                                            @enderror
                                         </div>
 
 
@@ -216,7 +311,9 @@
                                             </label>
                                             <input class="my-input input-sm w-full" placeholder=""
                                                    wire:model="stepOneFields.children">
-
+                                            @error('stepOneFields.children')
+                                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                                            @enderror
                                         </div>
                                         <div class="form-control  ">
                                             <label class="label">
@@ -224,7 +321,9 @@
                                             </label>
                                             <input class="my-input input-sm w-full" placeholder=""
                                                    wire:model="stepOneFields.infants">
-
+                                            @error('stepOneFields.infants')
+                                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                                            @enderror
                                         </div>
                                         <div class="form-control  ">
                                             <label class="label">
@@ -232,7 +331,9 @@
                                             </label>
                                             <input class="my-input input-sm " placeholder=""
                                                    wire:model="stepOneFields.luggage">
-
+                                            @error('stepOneFields.luggage')
+                                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                                            @enderror
                                         </div>
                                     </div>
 
@@ -305,41 +406,176 @@
                             <div class="grid grid-cols-3 gap-4">
 
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Flight number {{$roundTrip?'#1':''}}"
-                                                          value="31782563"></x-form.ez-text-input>
+                                    <x-form.ez-text-input model="stepTwoFields.arrivalFlightNumber" sm label="Flight number {{$roundTrip?'#1':''}}"
+                                                          ></x-form.ez-text-input>
                                 </div>
 
                                 @if($roundTrip)
                                     <div class="col-span-1">
-                                        <x-form.ez-text-input sm label="Flight number #2"
+                                        <x-form.ez-text-input sm label="Flight number #2" model="stepTwoFields.departureFlightNumber"
                                                               value="1872351"></x-form.ez-text-input>
                                     </div>
                                 @endif
 
 
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Remark"></x-form.ez-text-input>
+                                    <x-form.ez-text-input sm model="stepTwoFields.remark" label="Remark"></x-form.ez-text-input>
                                 </div>
                             </div>
 
                         </x-slot>
                     </x-ez-card>
-                    @if($stepOneFields['children']>1 || $stepOneFields['infants']>1)
+
+                    <x-ez-card class="mb-4">
+                        <x-slot name="title">
+                            <div class="flex justify-between w-full">
+                                <span>                              Lead traveller details
+
+                                </span>
+
+                            </div>
+
+                        </x-slot>
+                        <x-slot name="body">
+                            <div class="grid grid-cols-3 gap-4">
+
+                                <div class="col-span-1">
+                                    <x-form.ez-text-input sm label="Title" model="stepTwoFields.leadTraveller.title"
+
+                                    ></x-form.ez-text-input>
+                                </div>
+                                <div class="col-span-1">
+                                    <x-form.ez-text-input sm label="First name"
+                                                         model="stepTwoFields.leadTraveller.firstName"
+                                    ></x-form.ez-text-input>
+                                </div>
+                                <div class="col-span-1">
+                                    <x-form.ez-text-input sm label="Last name"
+                                                          model="stepTwoFields.leadTraveller.lastName"
+                                    ></x-form.ez-text-input>
+
+                                </div>
+
+                                <div class="col-span-1">
+                                    <x-form.ez-text-input sm label="Reservation number"
+                                                          model="stepTwoFields.leadTraveller.reservationNumber"
+                                    ></x-form.ez-text-input>
+                                </div>
+                                <div class="col-span-1">
+                                    <x-form.ez-text-input sm label="Email"
+                                                         model="stepTwoFields.leadTraveller.email"
+                                    ></x-form.ez-text-input>
+                                </div>
+                                <div class="col-span-1">
+                                    <x-form.ez-text-input sm label="Phone"
+                                                          model="stepTwoFields.leadTraveller.phone"
+                                    ></x-form.ez-text-input>
+
+                                </div>
+
+
+                            </div>
+
+                        </x-slot>
+                    </x-ez-card>
+
+
+                    <div >
+                        <label
+                            class="label cursor-pointer ml-auto justify-end mr-2   mb-1  ">
+                                            <span class="label-text mr-2">
+                                              <i class="fas fa-plus-circle"></i>Activate extras</span>
+                            <input type="checkbox" wire:model="activateExtras" class="checkbox">
+                        </label>
+                    </div>
+                    @if($this->activateExtras)
+                        <x-ez-card class="mb-4">
+                            <x-slot name="title">Extras</x-slot>
+                            <x-slot name="body">
+                                @if($this->extras->isNotEmpty())
+
+                                    <table class="table w-full">
+                                        <!-- head -->
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                Select
+                                            </th>
+                                            <th>Extra</th>
+                                            <th>Price</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+
+
+                                    @foreach($this->extras as $extra)
+                                        <tr>
+                                            <th>
+                                                <label>
+                                                    <input type="checkbox" wire:model="stepTwoFields.extras.{{$extra->id}}" class="checkbox">
+                                                </label>
+                                            </th>
+                                            <td>
+                                                <div class="flex items-center space-x-3">
+                                                    <div class="avatar">
+                                                        <div class="mask mask-squircle w-12 h-12">
+                                                            <img src="{{$extra->primaryImageUrl}}" />
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="font-bold"> {{$extra->name}}</div>
+                                                        <div class="text-sm opacity-50">{{Str::limit($extra->description,70)}}</div>
+                                                    </div>
+                                                </div>
+
+
+                                            </td>
+
+                                            <td>{{Cknow\Money\Money::EUR($extra->partner->first()->pivot->price)}}</td>
+
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                        </table>
+                                @else
+                                    <x-input-alert type="warning">No extras for selected partner</x-input-alert>
+
+                                @endif
+
+                            </x-slot>
+                        </x-ez-card>
+
+                    @endif
+
+
+                    <div >
+                        <label
+                            class="label cursor-pointer ml-auto justify-end mr-2   mb-1  ">
+                                            <span class="label-text mr-2">
+                                              <i class="fas fa-child"></i>Activate child seats</span>
+                            <input type="checkbox" wire:model="activateChildSeats" class="checkbox">
+                        </label>
+                    </div>
+
+                @if($this->activateChildSeats && ($stepOneFields['children']>1 || $stepOneFields['infants']>1))
                         <x-ez-card class="mb-4">
                             <x-slot name="title">Child seats</x-slot>
                             <x-slot name="body">
-                                <div class="grid grid-cols-4 gap-4">
-                                    @foreach($seats as $seat)
+
+                                    @forelse($this->stepTwoFields['seats'] as $seat)
+                                    <div class="grid grid-cols-4 gap-4">
                                         <div class="col-span-2">
-                                            <x-form.ez-select model="" :label="'Seat #'.$loop->index +1 .':'"
-                                                              :items="['Booster (10-15 kg)','Egg (0-5 kg)','Classic(5-10 kg)']"
+                                            <x-form.ez-select :showEmptyValue="false" :model="'stepTwoFields.seats.'.$loop->index" :label="'Seat #'.$loop->index +1 .':'"
+                                                              :items="\App\Models\Transfer::CHILD_SEATS"
                                                               sm="true"></x-form.ez-select>
-                                        </div>
+                                        </div>                                </div>
 
+                                @empty
+                                    <x-input-alert type="info">No Child seats added. Add one by pressing + icon!</x-input-alert>
 
-                                    @endforeach
+                                    @endforelse
 
-                                </div>
                                 <div class="flex justify-end gap-4">
 
                                     <button class="btn btn-outline  btn-sm btn-circle" wire:click="addSeat"><i
@@ -352,73 +588,17 @@
                         </x-ez-card>
 
                     @endif
-                    <x-ez-card class="mb-4">
-                        <x-slot name="title">
-                            <div class="flex justify-between w-full">
-                                <span>                              Lead traveller details
-
-                                </span>
-                                <div>
-                                    <x-ez-modal>
-                                        <x-slot name="button" class="btn-sm">Pull traveller</x-slot>
-
-                                        <x-form.ez-text-input sm label="Reservation id"
-                                                              value="3127863"></x-form.ez-text-input>
-                                        <x-slot name="footer">
-                                            <label for="ez-modal" wire:click="pullTraveller"
-                                                   class="btn btn-sm btn-success">
-                                                Pull data
-                                            </label>
-                                        </x-slot>
-
-                                    </x-ez-modal>
-                                </div>
-                            </div>
-
-                        </x-slot>
-                        <x-slot name="body">
-                            <div class="grid grid-cols-3 gap-4">
-
-                                <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Title"
-                                                          wire:model="stepTwoFields.leadTraveller.title"
-                                    ></x-form.ez-text-input>
-                                </div>
-                                <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="First name"
-                                                          wire:model="stepTwoFields.leadTraveller.firstName"
-                                    ></x-form.ez-text-input>
-                                </div>
-                                <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Last name"
-                                                          wire:model="stepTwoFields.leadTraveller.lastName"
-                                    ></x-form.ez-text-input>
-
-                                </div>
-
-                                <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Reservation number"
-                                                          wire:model="stepTwoFields.leadTraveller.reservationNumber"
-                                    ></x-form.ez-text-input>
-                                </div>
-                                <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Email"
-                                                          wire:model="stepTwoFields.leadTraveller.email"
-                                    ></x-form.ez-text-input>
-                                </div>
-                                <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Phone"
-                                                          wire:model="stepTwoFields.leadTraveller.phone"
-                                    ></x-form.ez-text-input>
-
-                                </div>
+                    <div >
+                        <label
+                            class="label cursor-pointer ml-auto justify-end mr-2   mb-1  ">
+                                            <span class="label-text mr-2">
+                                              <i class="fas fa-users"></i> Define other travellers</span>
+                            <input type="checkbox" wire:model="activateOtherTravellersInput" class="checkbox">
+                        </label>
+                    </div>
 
 
-                            </div>
-
-                        </x-slot>
-                    </x-ez-card>
-                    @if($this->totalPassengers >1)
+                    @if($activateOtherTravellersInput && $this->totalPassengers >1)
                         <x-ez-card>
                             <x-slot name="title">Other traveller details</x-slot>
                             <x-slot name="body">
@@ -426,22 +606,22 @@
                                     @foreach($this->stepTwoFields['otherTravellers'] as $i => $traveler)
                                         <div class="col-span-1">
                                             <x-form.ez-text-input sm label="Title"
-                                                                  wire:model="stepTwoFields.otherTravellers.{{$i}}.title"></x-form.ez-text-input>
+                                                                  model="stepTwoFields.otherTravellers.{{$i}}.title"></x-form.ez-text-input>
                                         </div>
                                         <div class="col-span-1">
                                             <x-form.ez-text-input sm label="First name"
-                                                                  wire:model="stepTwoFields.otherTravellers.{{$i}}.firstName"
+                                                                  model="stepTwoFields.otherTravellers.{{$i}}.firstName"
                                             ></x-form.ez-text-input>
                                         </div>
                                         <div class="col-span-1">
                                             <x-form.ez-text-input sm label="Last name"
-                                                                  wire:model="stepTwoFields.otherTravellers.{{$i}}.lastName"
+                                                                  model="stepTwoFields.otherTravellers.{{$i}}.lastName"
                                             ></x-form.ez-text-input>
                                         </div>
 
                                         <div class="col-span-1">
                                             <x-form.ez-text-input sm label="Comment"
-                                                                  wire:model="stepTwoFields.otherTravellers.{{$i}}.comment"
+                                                                 model="stepTwoFields.otherTravellers.{{$i}}.comment"
                                             ></x-form.ez-text-input>
                                         </div>
 

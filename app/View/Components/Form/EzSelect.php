@@ -15,6 +15,7 @@ class EzSelect extends Component
     public  $labelClasses ;
     public  $labelTextClasses;
     public array $items;
+    public bool $showEmptyValue = true;
 
     public  $sm;
 
@@ -27,6 +28,7 @@ class EzSelect extends Component
         $labelClasses = null,
         $labelTextClasses = null,
         $sm = false,
+        $showEmptyValue = true,
     )
     {
         $this->label = $label;
@@ -37,6 +39,7 @@ class EzSelect extends Component
         $this->parentDivClasses = $parentDivClasses;
         $this->labelClasses = $labelClasses;
         $this->labelTextClasses = $labelTextClasses;
+        $this->showEmptyValue = $showEmptyValue;
     }
 
     public function render()

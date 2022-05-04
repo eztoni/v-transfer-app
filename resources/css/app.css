@@ -141,3 +141,8 @@ Toast
     width: 65%;
 }
 }
+
+.alert.alert-warning{
+    background-color: #eca5184a;
+    border: 1px solid #eca518;
+}

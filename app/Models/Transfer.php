@@ -16,6 +16,13 @@ class Transfer extends Model implements HasMedia
     use HasTranslations;
     use HasFactory;
 
+
+    public const CHILD_SEATS = [
+      0=>'Booster ( 10-15 kg )',
+      1=>'Egg ( 0-5 kg )',
+      2=>'Classic ( 5-10 kg )',
+    ];
+
     const MAX_IMAGES = 5;
     const IMAGE_PRIMARY_PROPERTY = 'primary';
 
