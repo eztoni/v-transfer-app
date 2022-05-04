@@ -63,6 +63,15 @@ class TransferAvailability
 
             $partners = Partner::findMany($partnerIds);
 
+
+            //If we cant find partners (for example they change destination ) we reject the partners
+            $routeWithTransfersPerPartner->transfers= $routeWithTransfersPerPartner->transfers->reject(function ($item) use ($partners){
+                if(!$partners->where('id', $item->pivot->partner_id)->first()){
+                    return true;
+                }
+                return false;
+            });
+
             $routeWithTransfersPerPartner->transfers = $routeWithTransfersPerPartner->transfers->map(function ($item) use ($partners) {
                 $item->partner = $partners->where('id', $item->pivot->partner_id)->first();
                 return $item;

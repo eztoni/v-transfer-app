@@ -167,7 +167,7 @@ class InternalReservation extends Component
     public $resSaved = false;
 
     public bool $roundTrip = false;
-    public int $step = 2;
+    public int $step = 1;
     public $selectedTransfer = 1;
     public $selectedPartner = 1;
     public $activateOtherTravellersInput = false;
