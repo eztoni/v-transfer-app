@@ -24,6 +24,17 @@ class TransferAvailability
     private int $children = 0;
     private int $infants = 0;
 
+
+    public function __construct(int $adults, Route $route, int $children =0 , int $infants=0,  int $luggage = 0)
+    {
+        $this->route = $route;
+        $this->luggage = $luggage;
+        $this->adults = $adults;
+        $this->children = $children;
+        $this->infants = $infants;
+    }
+
+
     private function getTotalNumOfPeople(): int
     {
         return $this->seniors + $this->adults + $this->children + $this->infants;
@@ -43,7 +54,8 @@ class TransferAvailability
                 ->whereHas('transfers.vehicle', function ($q) {
                     $q->where('max_luggage', '>=', $this->luggage)
                         ->where('max_occ', '>=', $this->getTotalNumOfPeople());
-                })->first();
+                })
+                ->first();
 
 
         if ($routeWithTransfersPerPartner) {
@@ -55,7 +67,12 @@ class TransferAvailability
                 $item->partner = $partners->where('id', $item->pivot->partner_id)->first();
                 return $item;
             });
+
+            $routeWithTransfersPerPartner->transfers = $routeWithTransfersPerPartner->transfers->sortBy('pivot.partner_id');
+
         }
+
+
 
         return $routeWithTransfersPerPartner->transfers ?? collect([]);
     }
