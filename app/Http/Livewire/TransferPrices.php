@@ -6,6 +6,10 @@ use App\Models\Partner;
 use App\Models\Route;
 use App\Models\Transfer;
 use Carbon\Carbon;
+use Cknow\Money\Casts\MoneyDecimalCast;
+use Cknow\Money\Casts\MoneyIntegerCast;
+use Cknow\Money\Casts\MoneyStringCast;
+use Cknow\Money\Money;
 use Livewire\Component;
 use function Symfony\Component\String\b;
 
@@ -41,9 +45,9 @@ class TransferPrices extends Component
             $routes = $this->transfer->routes;
 
             foreach($routes as $r){
-                $this->routePrice[$r->id] = $r->pivot->price;
+                $this->routePrice[$r->id] = Money::EUR($r->pivot->price)->format('fr_FR', null, \NumberFormatter::DECIMAL);
                 $this->routeRoundTrip[$r->id] = $r->pivot->round_trip;
-                $this->routePriceRoundTrip[$r->id] = $r->pivot->price_round_trip;
+                $this->routePriceRoundTrip[$r->id] = Money::EUR($r->pivot->price_round_trip)->format('fr_FR', null, \NumberFormatter::DECIMAL);
             }
         }
 
@@ -70,8 +74,11 @@ class TransferPrices extends Component
     }
 
     protected $rules = [
-        'routePrice.*' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/|min:1',
-        'routePriceRoundTrip.*' => 'numeric|regex:/^\d*(\.\d{1,2})?$/|min:1',
+        //^\d+\,\d{2,2}$ MORA BIT sa divje decimale i zarez
+        //^(\d+(?:[^\.]\d{2})?)$ mora bit sa zarezom ne morjau bit decimale
+
+        'routePrice.*' => 'required|regex:/^\d+\,\d{2,2}$/|min:1',
+        'routePriceRoundTrip.*' => 'regex:/^\d+\,\d{2,2}$/|min:1',
     ];
 
 
@@ -111,6 +118,8 @@ class TransferPrices extends Component
             return;
         }
 
+        $money = Money::parse(str_replace(',','.',$this->routePrice[$routeId]),'EUR');
+
         \DB::table('route_transfer')->updateOrInsert(
             [
                 'route_id'=>$routeId,
@@ -118,7 +127,7 @@ class TransferPrices extends Component
                 'partner_id'=>$this->partnerId,
             ],
             [
-                'price' =>  $this->routePrice[$routeId]
+                'price' =>  $money->getAmount()
             ]
         );
 
@@ -136,6 +145,8 @@ class TransferPrices extends Component
             return;
         }
 
+        $money = Money::parse(str_replace(',','.',$this->routePriceRoundTrip[$routeId]),'EUR');
+
         \DB::table('route_transfer')->updateOrInsert(
             [
                 'route_id'=>$routeId,
@@ -143,7 +154,7 @@ class TransferPrices extends Component
                 'partner_id'=>$this->partnerId,
             ],
             [
-                'price_round_trip' =>  $this->routePriceRoundTrip[$routeId]
+                'price_round_trip' =>  $money->getAmount()
             ]
         );
 
