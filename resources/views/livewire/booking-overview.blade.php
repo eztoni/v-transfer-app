@@ -31,7 +31,7 @@
         </x-slot>
     </x-ez-card>
 
-    @foreach($this->reservation as $reservation)
+    @foreach($this->reservations as $reservation)
 
         <x-ez-card class="mb-4">
 

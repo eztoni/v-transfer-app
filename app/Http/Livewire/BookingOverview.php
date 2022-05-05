@@ -15,7 +15,7 @@ class BookingOverview extends Component
     public $dateRange;
 
 
-    public function getReservationProperty(){
+    public function getReservationsProperty(){
         return Reservation::with(['leadTraveller','pickupLocation'])->get();
     }
 
