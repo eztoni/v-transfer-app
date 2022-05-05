@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Services\Helpers\EzMoney;
 use App\Services\Swap\HnbService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Queue\Events\JobProcessed;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Queue;
@@ -32,6 +34,10 @@ class  AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        App::bind('EzMoney',function() {
+            return new EzMoney();
+        });
+
         Builder::macro('search',function($field,$string){
             return $string ? $this->where($field,'like', '%'.$string.'%'): $this;
         });

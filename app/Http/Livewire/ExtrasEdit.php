@@ -6,6 +6,7 @@ use App\Models\Extra;
 use App\Models\Language;
 use App\Models\Partner;
 use App\Models\Transfer;
+use App\Services\Helpers\EzMoney;
 use Cknow\Money\Casts\MoneyIntegerCast;
 use Cknow\Money\Money;
 use Livewire\Component;
@@ -36,7 +37,7 @@ class ExtrasEdit extends Component
     {
         $ruleArray = [
             'extraName.en' => 'required|min:3',
-            'extraPrice' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/',
+            'extraPrice' => 'required|regex:'.EzMoney::MONEY_REGEX,
         ];
         foreach ($this->companyLanguages as $lang) {
             if ($lang !== 'en') {
@@ -90,7 +91,7 @@ class ExtrasEdit extends Component
     private function setModelPrices(){
 
         if($this->extraId > 0){
-            $this->extraPrice = Money::EUR($this->extra->getPrice($this->partnerId))->format(null, null, \NumberFormatter::DECIMAL); // 1,99;
+            $this->extraPrice = \EzMoney::format($this->extra->getPrice($this->partnerId)); // 1,99;
         }
 
     }
@@ -99,10 +100,7 @@ class ExtrasEdit extends Component
 
         $this->validate();
 
-        $currencies = new ISOCurrencies();
-        $moneyParser = new DecimalMoneyParser($currencies);
-        $money = $moneyParser->parse($this->extraPrice,new Currency('EUR'));
-        $price = $money->getAmount();
+
 
 
         \DB::table('extra_partner')->updateOrInsert(
@@ -111,7 +109,7 @@ class ExtrasEdit extends Component
                 'partner_id'=>$this->partnerId,
             ],
             [
-                'price' => $price
+                'price' => \EzMoney::parseForDb($this->extraPrice)
             ]
         );
 

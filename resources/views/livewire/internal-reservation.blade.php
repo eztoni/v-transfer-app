@@ -692,11 +692,11 @@
 
                                 @endif
                                 <p>Passengers: <b>{{$this->totalPassengers}}</b></p>
-                                <p>Ticket type: <b>{{$this->roundTrip ? 'Two way' : 'One way'}}</b></p>
+                                <p>Ticket type: <b>{{$this->roundTrip ? 'Round trip' : 'One way'}}</b></p>
                             </div>
                             <div class="divider my-1    "></div>
 
-                            @if($this->totalPrice)
+                            @if($this->step === 2 && $this->totalPrice)
                                 <div class="alert alert-info alert-sm ">
                                     <div class="text-right ml-auto text-white gap-2 pr-2">
                                         Total price: <b> {{$this->totalPrice}} EUR</b>
