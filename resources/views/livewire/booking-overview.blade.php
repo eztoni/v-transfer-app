@@ -48,8 +48,8 @@
                 <div class="flex flex-col w-full">
                     <div class="flex gap-4 md:flex-row flex-col basis-2/3">
                         <span class="font-extrabold text-info">Lead:</span>
-                        <span><i class="text-xs fas fa-user"></i> {{$reservation->leadTraveller[0]->full_name}} ({{$reservation->leadTraveller[0]->email}})</span>
-                        <span><i class="text-xs fas fa-phone"></i> {{$reservation->leadTraveller[0]->phone}}</span>
+                        <span><i class="text-xs fas fa-user"></i> {{$reservation->leadTraveller?->full_name}}  {{$reservation->leadTraveller?->email}}</span>
+                        <span><i class="text-xs fas fa-phone"></i> {{$reservation->leadTraveller?->phone}}</span>
                     </div>
                     <div class="m-0 divider"></div>
                     <div class="flex gap-4 md:flex-row flex-col basis-2/3">

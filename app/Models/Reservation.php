@@ -22,8 +22,15 @@ class Reservation extends Model
         return $this->belongsToMany( Traveller::class)->withPivot(['lead','comment']);
     }
 
+
+
     public function leadTraveller(){
-        return $this->belongsToMany( Traveller::class)->withPivot(['lead','comment'])->where('lead','=',1);
+        return $this->belongsToMany( Traveller::class,'reservation_traveller')->withPivot(['lead','comment'])->where('lead','=',1);
+    }
+
+    public function getLeadTravellerAttribute()
+    {
+        return $this->leadTraveller()->first();
     }
 
     public function pickupLocation(){

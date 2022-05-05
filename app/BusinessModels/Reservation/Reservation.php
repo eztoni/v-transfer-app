@@ -21,13 +21,13 @@ class Reservation
     public function saveReservation():int
     {
 
-        if($this->roundTrip){
-            $this->saveRoundTrip();
-        }
+
 
         $this->model->save();
         $this->model->travellers()->save($this->leadTraveller);
-
+        if($this->roundTrip){
+            $this->saveRoundTrip();
+        }
         return $this->model->id;
     }
 
@@ -39,6 +39,7 @@ class Reservation
         $roundTrip->time = $this->returnTime;
 
         $roundTrip->save();
+        $roundTrip->travellers()->save($this->leadTraveller);
     }
 
 
