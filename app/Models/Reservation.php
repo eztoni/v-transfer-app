@@ -22,10 +22,12 @@ class Reservation extends Model
         return $this->belongsToMany( Traveller::class)->withPivot(['lead','comment']);
     }
 
-
+    public function otherTravellers(){
+        return $this->belongsToMany( Traveller::class)->withPivot(['lead','comment'])->where('lead','=',false);
+    }
 
     public function leadTraveller(){
-        return $this->belongsToMany( Traveller::class,'reservation_traveller')->withPivot(['lead','comment'])->where('lead','=',1);
+        return $this->belongsToMany( Traveller::class,'reservation_traveller')->withPivot(['lead','comment'])->where('lead','=',true);
     }
 
     public function getLeadTravellerAttribute()

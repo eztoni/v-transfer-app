@@ -31,19 +31,16 @@ class ReservationView extends Component
     public function mount($id)
     {
         $this->reservationId = $id;
-        $this->reservation = Reservation::findOrFail($id);
+        $this->reservation = Reservation::with(['pickupLocation','otherTravellers','leadTraveller'])->findOrFail($id);
 
-        if($this->reservation){
-            $this->reservation->load('travellers');
-            $this->reservation->load('pickupLocation');
-        }
+
     }
 
     //MODAL
     public function openOtherTravellerModal($travellerId){
         $this->otherTravellerModal = true;
         $this->otherTraveller = Traveller::findOrFail($travellerId);
-        $this->otherTravellerComment = $this->otherTraveller->reservations->first()->pivot->comment;
+        $this->otherTravellerComment = $this->reservation?->otherTravellers->where('id',$this->otherTraveller->id)->first()?->pivot->comment;
     }
 
     public function closeOtherTravellerModal(){
@@ -82,7 +79,7 @@ class ReservationView extends Component
     }
 
     public function getOtherTravellersProperty(){
-        return $this->reservation->travellers->where('pivot.lead',false);
+        return $this->reservation->otherTravellers;
     }
 
     public function getPickupLocationStringProperty(){

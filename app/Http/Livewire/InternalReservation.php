@@ -131,7 +131,7 @@ class InternalReservation extends Component
         ];
 
          if($this->activateOtherTravellersInput){
-             $rules['stepTwoFields.otherTravellers']= 'array|min:'.$this->getTotalPassengersProperty();
+             $rules['stepTwoFields.otherTravellers']= 'array|min:'.$this->getTotalPassengersProperty()-1;
              $rules['stepTwoFields.otherTravellers.*.firstName']= 'required|string';
              $rules['stepTwoFields.otherTravellers.*.lastName']= 'required|string';
          }
@@ -226,6 +226,16 @@ class InternalReservation extends Component
 
         $businessModel->addLeadTraveller($traveller);
 
+        foreach ($this->stepTwoFields['otherTravellers'] as $tr){
+            $traveller = new Traveller();
+
+            $traveller->first_name = $tr['firstName'];
+            $traveller->last_name =$tr['lastName'];
+            $traveller->title = $tr['title'];
+
+            $businessModel->addOtherTraveller($traveller,$tr['comment']);
+        }
+
         if ($this->roundTrip) {
             $businessModel->roundTrip(
                 Carbon::make($this->stepOneFields['returnDate']),
@@ -251,7 +261,6 @@ class InternalReservation extends Component
 
         $this->initiateFields();
 
-        $this->setOtherTravellers();
     }
 
     private function initiateFields()

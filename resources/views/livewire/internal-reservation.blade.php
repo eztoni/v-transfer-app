@@ -37,40 +37,52 @@
                                 <tbody>
                                 <tr>
                                     <th>1</th>
-                                    <td>Joanna </td>
+                                    <td>Joanna</td>
                                     <td>Ganderton</td>
                                     <td>311</td>
                                     <td>Lacroma</td>
                                     <td>12.07.2022</td>
                                     <td>18.07.2022</td>
-                                    <td><button class="btn btn-xs"><i class="fas fa-download"></i></td>
-                                </tr><tr>
+                                    <td>
+                                        <button class="btn btn-xs"><i class="fas fa-download"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th>1</th>
-                                    <td>Joanna </td>
+                                    <td>Joanna</td>
                                     <td>Ganderton</td>
                                     <td>311</td>
                                     <td>Lacroma</td>
                                     <td>12.07.2022</td>
                                     <td>18.07.2022</td>
-                                    <td><button class="btn btn-xs"><i class="fas fa-download"></i></td>
-                                </tr><tr>
+                                    <td>
+                                        <button class="btn btn-xs"><i class="fas fa-download"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th>1</th>
-                                    <td>Joanna </td>
+                                    <td>Joanna</td>
                                     <td>Ganderton</td>
                                     <td>311</td>
                                     <td>Lacroma</td>
                                     <td>12.07.2022</td>
                                     <td>18.07.2022</td>
-                                    <td><button class="btn btn-xs"><i class="fas fa-download"></i></td>
-                                </tr><tr>
+                                    <td>
+                                        <button class="btn btn-xs"><i class="fas fa-download"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th>1</th>
-                                    <td>Joanna </td>
+                                    <td>Joanna</td>
                                     <td>Ganderton</td>
                                     <td>311</td>
                                     <td>Lacroma</td>
                                     <td>12.07.2022</td>
                                     <td>18.07.2022</td>
-                                    <td><button class="btn btn-xs"><i class="fas fa-download"></i></td>
+                                    <td>
+                                        <button class="btn btn-xs"><i class="fas fa-download"></i></button>
+
+                                    </td>
                                 </tr>
 
 
@@ -95,7 +107,7 @@
 
                                         </select>
                                         @error('stepOneFields.startingPointId')
-                                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
                                         @enderror
                                     @else
                                         <div class="alert alert-warning">No Pickup points for that destination</div>
@@ -125,9 +137,9 @@
 
                                         </select>
                                     </div>
-                                        @error('stepOneFields.pickupAddress')
-                                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                        @enderror
+                                    @error('stepOneFields.pickupAddress')
+                                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                                    @enderror
                                 @endif
                             </div>
                             @if(!empty($this->stepOneFields['startingPointId']))
@@ -406,20 +418,23 @@
                             <div class="grid grid-cols-3 gap-4">
 
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input model="stepTwoFields.arrivalFlightNumber" sm label="Flight number {{$roundTrip?'#1':''}}"
-                                                          ></x-form.ez-text-input>
+                                    <x-form.ez-text-input model="stepTwoFields.arrivalFlightNumber" sm
+                                                          label="Flight number {{$roundTrip?'#1':''}}"
+                                    ></x-form.ez-text-input>
                                 </div>
 
                                 @if($roundTrip)
                                     <div class="col-span-1">
-                                        <x-form.ez-text-input sm label="Flight number #2" model="stepTwoFields.departureFlightNumber"
+                                        <x-form.ez-text-input sm label="Flight number #2"
+                                                              model="stepTwoFields.departureFlightNumber"
                                                               value="1872351"></x-form.ez-text-input>
                                     </div>
                                 @endif
 
 
                                 <div class="col-span-1">
-                                    <x-form.ez-text-input sm model="stepTwoFields.remark" label="Remark"></x-form.ez-text-input>
+                                    <x-form.ez-text-input sm model="stepTwoFields.remark"
+                                                          label="Remark"></x-form.ez-text-input>
                                 </div>
                             </div>
 
@@ -446,7 +461,7 @@
                                 </div>
                                 <div class="col-span-1">
                                     <x-form.ez-text-input sm label="First name"
-                                                         model="stepTwoFields.leadTraveller.firstName"
+                                                          model="stepTwoFields.leadTraveller.firstName"
                                     ></x-form.ez-text-input>
                                 </div>
                                 <div class="col-span-1">
@@ -463,7 +478,7 @@
                                 </div>
                                 <div class="col-span-1">
                                     <x-form.ez-text-input sm label="Email"
-                                                         model="stepTwoFields.leadTraveller.email"
+                                                          model="stepTwoFields.leadTraveller.email"
                                     ></x-form.ez-text-input>
                                 </div>
                                 <div class="col-span-1">
@@ -480,7 +495,7 @@
                     </x-ez-card>
 
 
-                    <div >
+                    <div>
                         <label
                             class="label cursor-pointer ml-auto justify-end mr-2   mb-1  ">
                                             <span class="label-text mr-2">
@@ -508,36 +523,38 @@
                                         <tbody>
 
 
-
-                                    @foreach($this->extras as $extra)
-                                        <tr>
-                                            <th>
-                                                <label>
-                                                    <input type="checkbox" wire:model="stepTwoFields.extras.{{$extra->id}}" class="checkbox">
-                                                </label>
-                                            </th>
-                                            <td>
-                                                <div class="flex items-center space-x-3">
-                                                    <div class="avatar">
-                                                        <div class="mask mask-squircle w-12 h-12">
-                                                            <img src="{{$extra->primaryImageUrl}}" />
+                                        @foreach($this->extras as $extra)
+                                            <tr>
+                                                <th>
+                                                    <label>
+                                                        <input type="checkbox"
+                                                               wire:model="stepTwoFields.extras.{{$extra->id}}"
+                                                               class="checkbox">
+                                                    </label>
+                                                </th>
+                                                <td>
+                                                    <div class="flex items-center space-x-3">
+                                                        <div class="avatar">
+                                                            <div class="mask mask-squircle w-12 h-12">
+                                                                <img src="{{$extra->primaryImageUrl}}"/>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div class="font-bold"> {{$extra->name}}</div>
+                                                            <div
+                                                                class="text-sm opacity-50">{{Str::limit($extra->description,70)}}</div>
                                                         </div>
                                                     </div>
-                                                    <div>
-                                                        <div class="font-bold"> {{$extra->name}}</div>
-                                                        <div class="text-sm opacity-50">{{Str::limit($extra->description,70)}}</div>
-                                                    </div>
-                                                </div>
 
 
-                                            </td>
+                                                </td>
 
-                                            <td>{{Cknow\Money\Money::EUR($extra->partner->first()->pivot->price)}}</td>
+                                                <td>{{Cknow\Money\Money::EUR($extra->partner->first()->pivot->price)}}</td>
 
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                        </table>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
                                 @else
                                     <x-input-alert type="warning">No extras for selected partner</x-input-alert>
 
@@ -548,33 +565,38 @@
 
                     @endif
 
+                    @if(($stepOneFields['children']>1 || $stepOneFields['infants']>1))
 
-                    <div >
-                        <label
-                            class="label cursor-pointer ml-auto justify-end mr-2   mb-1  ">
+                        <div>
+                            <label
+                                class="label cursor-pointer ml-auto justify-end mr-2   mb-1  ">
                                             <span class="label-text mr-2">
                                               <i class="fas fa-child"></i>Activate child seats</span>
-                            <input type="checkbox" wire:model="activateChildSeats" class="checkbox">
-                        </label>
-                    </div>
+                                <input type="checkbox" wire:model="activateChildSeats" class="checkbox">
+                            </label>
+                        </div>
 
-                @if($this->activateChildSeats && ($stepOneFields['children']>1 || $stepOneFields['infants']>1))
+                    @if($this->activateChildSeats )
                         <x-ez-card class="mb-4">
                             <x-slot name="title">Child seats</x-slot>
                             <x-slot name="body">
 
-                                    @forelse($this->stepTwoFields['seats'] as $seat)
+                                @forelse($this->stepTwoFields['seats'] as $seat)
                                     <div class="grid grid-cols-4 gap-4">
                                         <div class="col-span-2">
-                                            <x-form.ez-select :showEmptyValue="false" :model="'stepTwoFields.seats.'.$loop->index" :label="'Seat #'.$loop->index +1 .':'"
+                                            <x-form.ez-select :showEmptyValue="false"
+                                                              :model="'stepTwoFields.seats.'.$loop->index"
+                                                              :label="'Seat #'.$loop->index +1 .':'"
                                                               :items="\App\Models\Transfer::CHILD_SEATS"
                                                               sm="true"></x-form.ez-select>
-                                        </div>                                </div>
+                                        </div>
+                                    </div>
 
                                 @empty
-                                    <x-input-alert type="info">No Child seats added. Add one by pressing + icon!</x-input-alert>
+                                    <x-input-alert type="info">No Child seats added. Add one by pressing + icon!
+                                    </x-input-alert>
 
-                                    @endforelse
+                                @endforelse
 
                                 <div class="flex justify-end gap-4">
 
@@ -588,7 +610,12 @@
                         </x-ez-card>
 
                     @endif
-                    <div >
+                    @endif
+
+                    @if($this->totalPassengers >1)
+
+
+                    <div>
                         <label
                             class="label cursor-pointer ml-auto justify-end mr-2   mb-1  ">
                                             <span class="label-text mr-2">
@@ -598,7 +625,7 @@
                     </div>
 
 
-                    @if($activateOtherTravellersInput && $this->totalPassengers >1)
+                    @if($activateOtherTravellersInput )
                         <x-ez-card>
                             <x-slot name="title">Other traveller details</x-slot>
                             <x-slot name="body">
@@ -621,7 +648,7 @@
 
                                         <div class="col-span-1">
                                             <x-form.ez-text-input sm label="Comment"
-                                                                 model="stepTwoFields.otherTravellers.{{$i}}.comment"
+                                                                  model="stepTwoFields.otherTravellers.{{$i}}.comment"
                                             ></x-form.ez-text-input>
                                         </div>
 
@@ -633,6 +660,7 @@
                             </x-slot>
                         </x-ez-card>
 
+                    @endif
                     @endif
                 </div>
 
@@ -652,7 +680,8 @@
                                     <p><span>From:</span> <b>{{$this->selectedStartingPoint->name}}</b></p>
 
                                     @if($this->stepOneFields['pickupAddress'])
-                                        <p><span>Address:</span> <b class="text-right">{{$this->stepOneFields['pickupAddress']}}</b></p>
+                                        <p><span>Address:</span> <b
+                                                class="text-right">{{$this->stepOneFields['pickupAddress']}}</b></p>
                                     @endif
                                     <div class="divider my-1    "></div>
 
@@ -662,7 +691,8 @@
                                     <p>To: <b>{{$this->selectedEndingPoint->name}}</b></p>
 
                                     @if($this->stepOneFields['dropoffAddress'])
-                                        <p><span>Address:</span> <b class="text-right">{{$this->stepOneFields['dropoffAddress']}}</b></p>
+                                        <p><span>Address:</span> <b
+                                                class="text-right">{{$this->stepOneFields['dropoffAddress']}}</b></p>
                                     @endif
                                     <div class="divider my-1    "></div>
 
@@ -713,6 +743,11 @@
                                 <button class="btn btn-large btn-accent rounded-box" wire:click="saveReservation"><span
                                         class="mr-4">Complete reservation</span>
                                     <i class="fas fa-arrow-right float-right"></i></button>
+                                @error('*')
+                                <x-input-alert type="warning">
+                                    {{$message}}
+                                </x-input-alert>
+                                @enderror
                             </x-slot>
                         </x-ez-card>
                     @endif
