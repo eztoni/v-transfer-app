@@ -101,7 +101,7 @@
         <x-slot name="title" class="flex justify-between">
             <div>
                 <span>Transfer #54353413823</span>
-                <span class="badge badge-success">Two Way</span>
+                <span class="badge badge-success">Round Trip</span>
             </div>
 
             <a href="{{route('reservation-view',$reservation->id)}}"><button class="btn btn-sm btn-primary">View </button></a>

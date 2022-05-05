@@ -2,15 +2,18 @@
 
 namespace App\Http\Livewire;
 
+use App\Facades\EzMoney;
 use App\Models\Partner;
 use App\Models\Route;
 use App\Models\Transfer;
 use Carbon\Carbon;
-use Cknow\Money\Casts\MoneyDecimalCast;
-use Cknow\Money\Casts\MoneyIntegerCast;
-use Cknow\Money\Casts\MoneyStringCast;
+
 use Cknow\Money\Money;
 use Livewire\Component;
+use Money\Currencies\ISOCurrencies;
+use Money\Currency;
+use Money\Parser\DecimalMoneyParser;
+use Money\Parser\IntlLocalizedDecimalParser;
 use function Symfony\Component\String\b;
 
 class TransferPrices extends Component
@@ -27,6 +30,8 @@ class TransferPrices extends Component
 
     public function mount(): void
     {
+
+
         $first = Transfer::first();
         $this->transferId = $first->id ?? null;
         $this->partnerId = Partner::first()->id;
@@ -38,16 +43,17 @@ class TransferPrices extends Component
     private function setModelPrices(): void
     {
         if( !empty($this->transferId) && !empty($this->partnerId)){
-            $this->transfer = Transfer::with(['routes'=>function ($q){
+            $transfer = Transfer::with(['routes'=>function ($q){
                 $q->where('partner_id',$this->partnerId);
             }])->find($this->transferId);
 
-            $routes = $this->transfer->routes;
+            $routes = $transfer->routes;
 
             foreach($routes as $r){
-                $this->routePrice[$r->id] = Money::EUR($r->pivot->price)->format('fr_FR', null, \NumberFormatter::DECIMAL);
+
+                $this->routePrice[$r->id] = EzMoney::format($r->pivot->price);
                 $this->routeRoundTrip[$r->id] = $r->pivot->round_trip;
-                $this->routePriceRoundTrip[$r->id] = Money::EUR($r->pivot->price_round_trip)->format('fr_FR', null, \NumberFormatter::DECIMAL);
+                $this->routePriceRoundTrip[$r->id] =EzMoney::format($r->pivot->price_round_trip);
             }
         }
 
@@ -73,13 +79,11 @@ class TransferPrices extends Component
         $this->setModelPrices();
     }
 
-    protected $rules = [
-        //^\d+\,\d{2,2}$ MORA BIT sa divje decimale i zarez
-        //^(\d+(?:[^\.]\d{2})?)$ mora bit sa zarezom ne morjau bit decimale
+    protected $rules = array(
 
-        'routePrice.*' => 'required|regex:/^\d+\,\d{2,2}$/|min:1',
-        'routePriceRoundTrip.*' => 'regex:/^\d+\,\d{2,2}$/|min:1',
-    ];
+        'routePrice.*' => 'required|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX.'|min:1',
+        'routePriceRoundTrip.*' => 'regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX.'|min:1',
+    );
 
 
     public function getTransferRoutesProperty(){
@@ -107,7 +111,7 @@ class TransferPrices extends Component
             ]
         );
 
-        $this->showToast('Updated', 'Two Way Data');
+        $this->showToast('Updated', 'Round Trip Data');
     }
 
     public function saveRoutePrice($routeId){
@@ -118,7 +122,6 @@ class TransferPrices extends Component
             return;
         }
 
-        $money = Money::parse(str_replace(',','.',$this->routePrice[$routeId]),'EUR');
 
         \DB::table('route_transfer')->updateOrInsert(
             [
@@ -127,7 +130,7 @@ class TransferPrices extends Component
                 'partner_id'=>$this->partnerId,
             ],
             [
-                'price' =>  $money->getAmount()
+                'price' =>  EzMoney::parseForDb($this->routePrice[$routeId])
             ]
         );
 

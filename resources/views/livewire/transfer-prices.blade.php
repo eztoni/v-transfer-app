@@ -65,8 +65,8 @@
                                 <th>Route name</th>
                                 <th>From</th>
                                 <th>To</th>
-                                <th>Two Way</th>
-                                <th>Two Way Price (EUR)</th>
+                                <th class="text-center">Round Trip</th>
+                                <th>Round Trip Price (EUR)</th>
                                 <th class="text-right pr-8">Price (EUR)</th>
                             </tr>
                             </thead>
@@ -77,7 +77,7 @@
                                     <td>{{$r->name}}</td>
                                     <td>{{$r->startingPoint->name}}</td>
                                     <td>{{$r->endingPoint->name}}</td>
-                                    <td><input wire:click="saveRoundTrip({{$r->id}})" wire:model="routeRoundTrip.{{$r->id}}" @if(!empty($routeRoundTrip[$r->id])) checked @endif type="checkbox" class="toggle toggle-primary"></td>
+                                    <td class="text-center"><input wire:click="saveRoundTrip({{$r->id}})" wire:model="routeRoundTrip.{{$r->id}}" @if(!empty($routeRoundTrip[$r->id])) checked @endif type="checkbox" class="checkbox checkbox-primary"></td>
                                     <td class="text-right">
                                         <div class="form-control">
                                             <div class="input-group justify">

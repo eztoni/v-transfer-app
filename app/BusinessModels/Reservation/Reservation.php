@@ -10,7 +10,7 @@ class Reservation
 
     private \App\Models\Reservation $model;
     private bool $roundTrip = false;
-
+    private Traveller $leadTraveller;
 
     public function __construct(\App\Models\Reservation $model)
     {
@@ -18,7 +18,8 @@ class Reservation
     }
 
 
-    public function saveReservation(){
+    public function saveReservation():int
+    {
 
         if($this->roundTrip){
             $this->saveRoundTrip();
@@ -26,6 +27,8 @@ class Reservation
 
         $this->model->save();
         $this->model->travellers()->save($this->leadTraveller);
+
+        return $this->model->id;
     }
 
 

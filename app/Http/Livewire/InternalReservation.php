@@ -191,6 +191,10 @@ class InternalReservation extends Component
 
         $traveller->first_name = $this->stepTwoFields['leadTraveller']['firstName'];
         $traveller->last_name = $this->stepTwoFields['leadTraveller']['lastName'];
+        $traveller->email = $this->stepTwoFields['leadTraveller']['email'];
+        $traveller->title = $this->stepTwoFields['leadTraveller']['title'];
+        $traveller->reservation_number = $this->stepTwoFields['leadTraveller']['reservationNumber'];
+        $traveller->phone = $this->stepTwoFields['leadTraveller']['phone'];
 
         $route = $this->getSelectedRouteProperty();
 
@@ -219,7 +223,9 @@ class InternalReservation extends Component
         $reservation->round_trip = $this->roundTrip;
 
         $businessModel = new \App\BusinessModels\Reservation\Reservation($reservation);
+
         $businessModel->addLeadTraveller($traveller);
+
         if ($this->roundTrip) {
             $businessModel->roundTrip(
                 Carbon::make($this->stepOneFields['returnDate']),
@@ -228,9 +234,9 @@ class InternalReservation extends Component
         }
 
 
-        $businessModel->saveReservation();
+       $id= $businessModel->saveReservation();
         $this->showToast('Reservation saved');
-        Redirect::route('reservation-view');
+        Redirect::route('reservation-view',['id'=>$id]);
     }
 
 
