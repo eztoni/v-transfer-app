@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Livewire\Component;
 use function Clue\StreamFilter\fun;
+use function PHPUnit\Framework\arrayHasKey;
 
 class InternalReservation extends Component
 {
@@ -94,10 +95,10 @@ class InternalReservation extends Component
             'stepOneFields.pickupAddress' => 'required|string|min:3',
             'stepOneFields.date' => 'required|date|after_or_equal:' . Carbon::now()->format('d.m.Y') . '|date_format:d.m.Y',
             'stepOneFields.time' => 'required|date_format:H:i',
-            'stepOneFields.adults' => 'required|numeric|integer|min:1',
-            'stepOneFields.children' => 'numeric|integer',
-            'stepOneFields.infants' => 'numeric|integer',
-            'stepOneFields.luggage' => 'numeric|integer',
+            'stepOneFields.adults' => 'required|integer|integer|min:1|max:50',
+            'stepOneFields.children' => 'numeric|integer|max:50',
+            'stepOneFields.infants' => 'numeric|integer|max:50',
+            'stepOneFields.luggage' => 'numeric|integer|max:50',
 
         ];
         if ($this->roundTrip) {
@@ -275,27 +276,27 @@ class InternalReservation extends Component
 
     public function updated($property)
     {
-        if (in_array($property, [
-            'stepOneFields.startingPointId',
-            'stepOneFields.endingPointId',
-        ])) {
-            $this->resetAdresses();
-        }
 
-        if (in_array($property, [
-            'stepOneFields.adults',
-            'stepOneFields.children',
-            'stepOneFields.infants',
-        ])) {
-            if (!\Arr::get($this->stepOneFields, explode('.', $property)[1])) {
-                \Arr::set($this->stepOneFields, explode('.', $property)[1], 0);
+            if (in_array($property, [
+                'stepOneFields.startingPointId',
+                'stepOneFields.endingPointId',
+            ])) {
+                $this->resetAdresses();
             }
-            $this->setOtherTravellers();
-        }
+
+            if (in_array($property, [
+                'stepOneFields.adults',
+                'stepOneFields.children',
+                'stepOneFields.infants',
+            ])) {
+                if (!\Arr::get($this->stepOneFields, explode('.', $property)[1])) {
+                    \Arr::set($this->stepOneFields, explode('.', $property)[1], 0);
+                }
+                $this->setOtherTravellers();
+            }
 
 
         $this->validateOnly($property, array_merge( $this->stepOneRules(),$this->stepTwoRules()), [], $this->fieldNames);
-
     }
 
     public function resetAdresses()
@@ -426,6 +427,15 @@ class InternalReservation extends Component
         $route = $this->getSelectedRouteProperty();
 
         if (!$route) {
+            return collect([]);
+        }
+
+        if(\Arr::hasAny($this->getErrorBag()->messages(),[
+            'stepOneFields.adults',
+            'stepOneFields.children',
+            'stepOneFields.infants',
+            'stepOneFields.luggage',
+            ])){
             return collect([]);
         }
 

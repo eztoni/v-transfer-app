@@ -34,7 +34,7 @@ class TransferPrices extends Component
 
         $first = Transfer::first();
         $this->transferId = $first->id ?? null;
-        $this->partnerId = Partner::first()->id;
+        $this->partnerId = Partner::first()?->id;
         $this->setModelPrices();
 
     }
