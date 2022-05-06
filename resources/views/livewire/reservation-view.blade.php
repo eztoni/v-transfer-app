@@ -105,22 +105,25 @@
 
                     <div class="divider mt-0 mb-0"></div>
 
-                    <p class="text-xl font-extrabold">Other Travellers</p>
-                    <div class="flex flex-wrap md:flex-col gap-4 flex-col">
 
-                        @foreach($this->otherTravellers as $otherTraveller)
-                            <div class="flex flex-wrap md:flex-row flex-col">
-                                <p class="text-info">Passanger #{{$loop->iteration}}:</p>
-                                <p>Title: {{$otherTraveller->title}}</p>
-                                <p>First Name: {{$otherTraveller->first_name}}</p>
-                                <p>Last Name: {{$otherTraveller->last_name}}</p>
-                                <p>Comment: {{$otherTraveller->reservations->first()->pivot->comment}}</p>
-                                <button wire:click="openOtherTravellerModal({{$otherTraveller->id}})" class="btn md:btn-circle btn-sm btn-success">
-                                    <i class="fas fa-pen"></i>
-                                </button>
-                            </div>
-                        @endforeach
-                    </div>
+                    @if($this->otherTravellers->isNotEmpty())
+                        <p class="text-xl font-extrabold">Other Travellers</p>
+                        <div class="flex flex-wrap md:flex-col gap-4 flex-col">
+
+                            @foreach($this->otherTravellers as $otherTraveller)
+                                <div class="flex flex-wrap md:flex-row flex-col">
+                                    <p class="text-info">Passanger #{{$loop->iteration}}:</p>
+                                    <p>Title: {{$otherTraveller->title}}</p>
+                                    <p>First Name: {{$otherTraveller->first_name}}</p>
+                                    <p>Last Name: {{$otherTraveller->last_name}}</p>
+                                    <p>Comment: {{$otherTraveller->reservations->first()->pivot->comment}}</p>
+                                    <button wire:click="openOtherTravellerModal({{$otherTraveller->id}})" class="btn md:btn-circle btn-sm btn-success">
+                                        <i class="fas fa-pen"></i>
+                                    </button>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
 
 
 
