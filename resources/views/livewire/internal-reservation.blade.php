@@ -369,39 +369,59 @@
                         <x-ez-card class="">
                             <x-slot name="title">Transfers</x-slot>
                             <x-slot name="body">
+
+                                @php
+
+                                    $lastTransfer = null;
+
+                                @endphp
                                 @foreach($this->availableTransfers as $transfer)
-                                    <div class="card  bg-gray-200 ">
-                                        <div class="card-body p-2">
 
-                                            <div class="flex gap-4">
-                                                <div class="basis-1/5">
-                                                    <img class="h-24 w-full object-cover rounded-xl"
-                                                         src="{{$transfer->primaryImageUrl}}"/>
-                                                </div>
-                                                <div class="basis-4/5">
-                                                    <h2 class="card-title mb-2">{{$transfer->name}}</h2>
-                                                    <div class="flex gap-4 mb-2">
-                                                        <span class=" ">Type: Van</span>
-                                                        <span class=" ">Max. Occ: {{$transfer->vehicle->max_occ}}</span>
-                                                        <span
-                                                            class=" ">Max. Luggage:{{$transfer->vehicle->max_luggage}}</span>
+                                    @if(!$lastTransfer)
+                                        <div class="border-2 p-1 gap-2 flex flex-col rounded-box ">
+                                            @endif
 
+                                            @if($lastTransfer && $lastTransfer->partner->id !== $transfer->partner->id)
+                                        </div>
+                                        <div class="border-2 gap-2 p-1 flex flex-col rounded-box ">
+                                            @endif
+
+                                            @php
+                                                $lastTransfer = $transfer;
+                                            @endphp
+                                            <div class="card  bg-gray-200  ">
+                                                <div class="card-body p-2">
+
+                                                    <div class="flex gap-4">
+                                                        <div class="basis-1/5">
+                                                            <img class="h-24 w-full object-cover rounded-xl"
+                                                                 src="{{$transfer->primaryImageUrl}}"/>
+                                                        </div>
+                                                        <div class="basis-4/5">
+                                                            <h2 class="card-title mb-2">{{$transfer->name}}</h2>
+                                                            <div class="flex gap-4 mb-2">
+                                                                <span class=" ">Type: Van</span>
+                                                                <span
+                                                                    class=" ">Max. Occ: {{$transfer->vehicle->max_occ}}</span>
+                                                                <span
+                                                                    class=" ">Max. Luggage:{{$transfer->vehicle->max_luggage}}</span>
+
+                                                            </div>
+                                                            <span class="  ">Price: <b> {{Cknow\Money\Money::EUR($transfer->pivot->price)}} EUR</b></span>
+                                                            <div class="badge badge-info top-2 right-2 absolute">
+                                                                {{$transfer->partner->name}}
+                                                            </div>
+                                                            <button
+                                                                class="btn btn-sm btn-primary absolute bottom-2 rounded-xl right-2"
+                                                                wire:click="selectTransfer({{$transfer->id}},{{$transfer->partner->id}})">
+                                                                Select
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                    <span class="  ">Price: <b> {{Cknow\Money\Money::EUR($transfer->pivot->price)}} EUR</b></span>
-                                                    <div class="badge badge-info top-2 right-2 absolute">
-                                                        {{$transfer->partner->name}}
-                                                    </div>
-                                                    <button
-                                                        class="btn btn-sm btn-primary absolute bottom-2 rounded-xl right-2"
-                                                        wire:click="selectTransfer({{$transfer->id}},{{$transfer->partner->id}})">
-                                                        Select
-                                                    </button>
                                                 </div>
                                             </div>
+                                            @endforeach
                                         </div>
-                                    </div>
-                                @endforeach
-
 
                             </x-slot>
                         </x-ez-card>
@@ -576,91 +596,91 @@
                             </label>
                         </div>
 
-                    @if($this->activateChildSeats )
-                        <x-ez-card class="mb-4">
-                            <x-slot name="title">Child seats</x-slot>
-                            <x-slot name="body">
+                        @if($this->activateChildSeats )
+                            <x-ez-card class="mb-4">
+                                <x-slot name="title">Child seats</x-slot>
+                                <x-slot name="body">
 
-                                @forelse($this->stepTwoFields['seats'] as $seat)
-                                    <div class="grid grid-cols-4 gap-4">
-                                        <div class="col-span-2">
-                                            <x-form.ez-select :showEmptyValue="false"
-                                                              :model="'stepTwoFields.seats.'.$loop->index"
-                                                              :label="'Seat #'.$loop->index +1 .':'"
-                                                              :items="\App\Models\Transfer::CHILD_SEATS"
-                                                              sm="true"></x-form.ez-select>
+                                    @forelse($this->stepTwoFields['seats'] as $seat)
+                                        <div class="grid grid-cols-4 gap-4">
+                                            <div class="col-span-2">
+                                                <x-form.ez-select :showEmptyValue="false"
+                                                                  :model="'stepTwoFields.seats.'.$loop->index"
+                                                                  :label="'Seat #'.$loop->index +1 .':'"
+                                                                  :items="\App\Models\Transfer::CHILD_SEATS"
+                                                                  sm="true"></x-form.ez-select>
+                                            </div>
                                         </div>
+
+                                    @empty
+                                        <x-input-alert type="info">No Child seats added. Add one by pressing + icon!
+                                        </x-input-alert>
+
+                                    @endforelse
+
+                                    <div class="flex justify-end gap-4">
+
+                                        <button class="btn btn-outline  btn-sm btn-circle" wire:click="addSeat"><i
+                                                class="fas fa-plus"></i></button>
+                                        <button class="btn btn-outline  btn-sm btn-circle" wire:click="removeSeat"><i
+                                                class="fas fa-minus"></i></button>
                                     </div>
 
-                                @empty
-                                    <x-input-alert type="info">No Child seats added. Add one by pressing + icon!
-                                    </x-input-alert>
+                                </x-slot>
+                            </x-ez-card>
 
-                                @endforelse
-
-                                <div class="flex justify-end gap-4">
-
-                                    <button class="btn btn-outline  btn-sm btn-circle" wire:click="addSeat"><i
-                                            class="fas fa-plus"></i></button>
-                                    <button class="btn btn-outline  btn-sm btn-circle" wire:click="removeSeat"><i
-                                            class="fas fa-minus"></i></button>
-                                </div>
-
-                            </x-slot>
-                        </x-ez-card>
-
-                    @endif
+                        @endif
                     @endif
 
                     @if($this->totalPassengers >1)
 
 
-                    <div>
-                        <label
-                            class="label cursor-pointer ml-auto justify-end mr-2   mb-1  ">
+                        <div>
+                            <label
+                                class="label cursor-pointer ml-auto justify-end mr-2   mb-1  ">
                                             <span class="label-text mr-2">
                                               <i class="fas fa-users"></i> Define other travellers</span>
-                            <input type="checkbox" wire:model="activateOtherTravellersInput" class="checkbox">
-                        </label>
-                    </div>
+                                <input type="checkbox" wire:model="activateOtherTravellersInput" class="checkbox">
+                            </label>
+                        </div>
 
 
-                    @if($activateOtherTravellersInput )
-                        <x-ez-card>
-                            <x-slot name="title">Other traveller details</x-slot>
-                            <x-slot name="body">
-                                <div class="grid grid-cols-4 gap-4">
-                                    @foreach($this->stepTwoFields['otherTravellers'] as $i => $traveler)
-                                        <div class="col-span-1">
-                                            <x-form.ez-text-input sm label="Title"
-                                                                  model="stepTwoFields.otherTravellers.{{$i}}.title"></x-form.ez-text-input>
-                                        </div>
-                                        <div class="col-span-1">
-                                            <x-form.ez-text-input sm label="First name"
-                                                                  model="stepTwoFields.otherTravellers.{{$i}}.firstName"
-                                            ></x-form.ez-text-input>
-                                        </div>
-                                        <div class="col-span-1">
-                                            <x-form.ez-text-input sm label="Last name"
-                                                                  model="stepTwoFields.otherTravellers.{{$i}}.lastName"
-                                            ></x-form.ez-text-input>
-                                        </div>
+                        @if($activateOtherTravellersInput )
+                            <x-ez-card>
+                                <x-slot name="title">Other traveller details</x-slot>
+                                <x-slot name="body">
+                                    <div class="grid grid-cols-4 gap-4">
+                                        @foreach($this->stepTwoFields['otherTravellers'] as $i => $traveler)
+                                            <div class="col-span-1">
+                                                <x-form.ez-text-input sm label="Title"
+                                                                      model="stepTwoFields.otherTravellers.{{$i}}.title"></x-form.ez-text-input>
+                                            </div>
+                                            <div class="col-span-1">
+                                                <x-form.ez-text-input sm label="First name"
+                                                                      model="stepTwoFields.otherTravellers.{{$i}}.firstName"
+                                                ></x-form.ez-text-input>
+                                            </div>
+                                            <div class="col-span-1">
+                                                <x-form.ez-text-input sm label="Last name"
+                                                                      model="stepTwoFields.otherTravellers.{{$i}}.lastName"
+                                                ></x-form.ez-text-input>
+                                            </div>
 
-                                        <div class="col-span-1">
-                                            <x-form.ez-text-input sm label="Comment"
-                                                                  model="stepTwoFields.otherTravellers.{{$i}}.comment"
-                                            ></x-form.ez-text-input>
-                                        </div>
+                                            <div class="col-span-1">
+                                                <x-form.ez-text-input sm label="Comment"
+                                                                      model="stepTwoFields.otherTravellers.{{$i}}.comment"
+                                                ></x-form.ez-text-input>
+                                            </div>
 
-                                    @endforeach
+                                        @endforeach
 
-                                </div>
+                                    </div>
 
 
-                            </x-slot>
-                        </x-ez-card>
+                                </x-slot>
+                            </x-ez-card>
 
-                    @endif
+                        @endif
                     @endif
                 </div>
 
