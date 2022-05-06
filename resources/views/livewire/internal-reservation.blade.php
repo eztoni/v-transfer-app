@@ -407,7 +407,7 @@
                                                                     class=" ">Max. Luggage:{{$transfer->vehicle->max_luggage}}</span>
 
                                                             </div>
-                                                            <span class="  ">Price: <b> {{Cknow\Money\Money::EUR($transfer->pivot->price)}} EUR</b></span>
+                                                            <span class="  ">Price: <b> {{\App\Facades\EzMoney::format($transfer->pivot->price)}} EUR</b></span>
                                                             <div class="badge badge-info top-2 right-2 absolute">
                                                                 {{$transfer->partner->name}}
                                                             </div>
@@ -749,7 +749,7 @@
                             @if($this->step === 2 && $this->totalPrice)
                                 <div class="alert alert-info alert-sm ">
                                     <div class="text-right ml-auto text-white gap-2 pr-2">
-                                        Total price: <b> {{$this->totalPrice}} EUR</b>
+                                        Total price: <b> {{ \App\Facades\EzMoney::format($this->totalPrice->getAmount()) }} EUR</b>
                                     </div>
                                 </div>
                             @endif
