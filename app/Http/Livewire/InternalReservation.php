@@ -226,15 +226,18 @@ class InternalReservation extends Component
 
         $businessModel->addLeadTraveller($traveller);
 
-        foreach ($this->stepTwoFields['otherTravellers'] as $tr){
-            $traveller = new Traveller();
+        if($this->activateOtherTravellersInput){
+            foreach ($this->stepTwoFields['otherTravellers'] as $tr){
+                $traveller = new Traveller();
 
-            $traveller->first_name = $tr['firstName'];
-            $traveller->last_name =$tr['lastName'];
-            $traveller->title = $tr['title'];
+                $traveller->first_name = $tr['firstName'];
+                $traveller->last_name =$tr['lastName'];
+                $traveller->title = $tr['title'];
 
-            $businessModel->addOtherTraveller($traveller,$tr['comment']);
+                $businessModel->addOtherTraveller($traveller,$tr['comment']);
+            }
         }
+
 
         if ($this->roundTrip) {
             $businessModel->roundTrip(

@@ -49,7 +49,7 @@ class Reservation
 
 
         foreach ($this->otherTravellers as $k => $traveller ){
-            $roundTrip->travellers()->save($traveller,['comment',$this->travellerComments[$k],'lead'=>false]);
+            $roundTrip->travellers()->save($traveller,['comment'=>$this->travellerComments[$k],'lead'=>false]);
         }
 
 
