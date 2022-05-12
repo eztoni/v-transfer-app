@@ -45,6 +45,7 @@ class PointsOverview extends Component
         return [
             'point.name'=>'required|max:255|min:2',
             'point.description'=>'nullable|min:3',
+            'point.reception_email' => 'exclude_unless:point.type,'.\App\Models\Point::TYPE_ACCOMMODATION.'|required|email',
             'point.address'=>'required|min:3',
             'point.type'=>[
                 'required',
