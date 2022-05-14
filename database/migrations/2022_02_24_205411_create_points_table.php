@@ -14,6 +14,7 @@ class CreatePointsTable extends Migration
             $table->foreignIdFor(\App\Models\Destination::class)->constrained();
             $table->text('name');
             $table->text('description')->nullable();
+            $table->string('reception_email')->nullable();
             $table->string('address')->nullable();
             $table->double('latitude')->nullable();
             $table->double('longitude')->nullable();

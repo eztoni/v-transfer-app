@@ -121,6 +121,20 @@
                     <x-input-alert type='warning'>{{$message}}</x-input-alert>
                     @enderror
                 </div>
+
+                @if($this->point->type == \App\Models\Point::TYPE_ACCOMMODATION)
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Reception Email:</span>
+                        </label>
+                        <input wire:model="point.reception_email" class="input input-bordered"
+                               placeholder="Address">
+                        @error('point.reception_email')
+                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                        @enderror
+                    </div>
+                @endif
+
                 <div class="form-control">
                     <label class="label">
                         <span class="label-text">PMS code:</span>

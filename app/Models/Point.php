@@ -30,6 +30,7 @@ class Point extends Model
         'description',
         'address',
         'latitude',
+        'reception_email',
         'longitude',
         'type',
         'pms_code',
