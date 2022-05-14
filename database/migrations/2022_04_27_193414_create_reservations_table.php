@@ -10,11 +10,20 @@ class CreateReservationsTable extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(\App\Models\Destination::class,);
 
             $table->foreignIdFor(\App\Models\Point::class,'pickup_location');
             $table->foreignIdFor(\App\Models\Point::class,'dropoff_location');
 
             $table->string('pickup_address');
+            $table->string('flight_number')->nullable();
+            $table->text('remark')->nullable();
+            $table->enum('confirmation_language',array_keys(\App\Models\Reservation::CONFIRMATION_LANGUAGES))->default('en');
+
+            $table->foreignIdFor(\App\Models\Reservation::class,'round_trip_id')->nullable();
+
+
+
             $table->string('dropoff_address');
 
             $table->integer('adults');
@@ -27,9 +36,13 @@ class CreateReservationsTable extends Migration
 
             $table->foreignIdFor(\App\Models\Partner::class);
 
-            $table->text('route');
+            $table->json('route');
 
-            $table->text('transfer');
+            $table->json('extras')->nullable();
+
+            $table->json('child_seats')->nullable();
+
+            $table->json('transfer');
 
             $table->integer('price');
 

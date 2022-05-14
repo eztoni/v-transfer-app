@@ -37,8 +37,8 @@ class InternalReservation extends Component
 //    USE FOR TEST
 //    public $stepOneFields = [
 //        "destinationId" => 1,
-//        "startingPointId" => "11",
-//        "endingPointId" => "20",
+//        "startingPointId" => "4",
+//        "endingPointId" => "15",
 //        "dropoffAddress" => "
 //        Lake Mittie 999 Boyle Ridge Apt. 418\n
 //        North Maximillia, HI 24454-0370
@@ -73,15 +73,15 @@ class InternalReservation extends Component
         'stepTwoFields.arrivalFlightNumber' => 'arrival flight number',
         'stepTwoFields.departureFlightNumber' => 'departure flight number',
         'stepTwoFields.remark' => 'remark',
-        'stepTwoFields.leadTraveller.title'=>' title',
-        'stepTwoFields.leadTraveller.firstName'=>' first name',
-        'stepTwoFields.leadTraveller.lastName'=>' last name',
-        'stepTwoFields.leadTraveller.reservationNumber'=>' reservation number',
-        'stepTwoFields.leadTraveller.email'=>' email',
-        'stepTwoFields.leadTraveller.phone'=>' phone',
-        'stepTwoFields.otherTravellers'=>'other travellers',
-        'stepTwoFields.otherTravellers.*.firstName'=>'first name',
-        'stepTwoFields.otherTravellers.*.lastName'=>'last naem',
+        'stepTwoFields.leadTraveller.title' => ' title',
+        'stepTwoFields.leadTraveller.firstName' => ' first name',
+        'stepTwoFields.leadTraveller.lastName' => ' last name',
+        'stepTwoFields.leadTraveller.reservationNumber' => ' reservation number',
+        'stepTwoFields.leadTraveller.email' => ' email',
+        'stepTwoFields.leadTraveller.phone' => ' phone',
+        'stepTwoFields.otherTravellers' => 'other travellers',
+        'stepTwoFields.otherTravellers.*.firstName' => 'first name',
+        'stepTwoFields.otherTravellers.*.lastName' => 'last naem',
 
     ];
 
@@ -96,9 +96,9 @@ class InternalReservation extends Component
             'stepOneFields.date' => 'required|date|after_or_equal:' . Carbon::now()->format('d.m.Y') . '|date_format:d.m.Y',
             'stepOneFields.time' => 'required|date_format:H:i',
             'stepOneFields.adults' => 'required|integer|integer|min:1|max:50',
-            'stepOneFields.children' => 'numeric|integer|max:50',
-            'stepOneFields.infants' => 'numeric|integer|max:50',
-            'stepOneFields.luggage' => 'numeric|integer|max:50',
+            'stepOneFields.children' => 'required|numeric|integer|max:50',
+            'stepOneFields.infants' => 'required|numeric|integer|max:50',
+            'stepOneFields.luggage' => 'required|numeric|integer|max:50',
 
         ];
         if ($this->roundTrip) {
@@ -116,26 +116,25 @@ class InternalReservation extends Component
     }
 
 
-
     private function stepTwoRules()
     {
-         $rules = [
+        $rules = [
             'stepTwoFields.arrivalFlightNumber' => 'nullable|string',
             'stepTwoFields.departureFlightNumber' => 'nullable|string',
             'stepTwoFields.remark' => 'nullable|string',
-            'stepTwoFields.leadTraveller.title'=>'nullable|string',
-            'stepTwoFields.leadTraveller.firstName'=>'required|string',
-            'stepTwoFields.leadTraveller.lastName'=>'required|string',
-            'stepTwoFields.leadTraveller.reservationNumber'=>'nullable|string',
-            'stepTwoFields.leadTraveller.email'=>'nullable|string|email',
-            'stepTwoFields.leadTraveller.phone'=>'required|string',
+            'stepTwoFields.leadTraveller.title' => 'nullable|string',
+            'stepTwoFields.leadTraveller.firstName' => 'required|string',
+            'stepTwoFields.leadTraveller.lastName' => 'required|string',
+            'stepTwoFields.leadTraveller.reservationNumber' => 'nullable|string',
+            'stepTwoFields.leadTraveller.email' => 'nullable|string|email',
+            'stepTwoFields.leadTraveller.phone' => 'required|string',
         ];
 
-         if($this->activateOtherTravellersInput){
-             $rules['stepTwoFields.otherTravellers']= 'array|min:'.$this->getTotalPassengersProperty()-1;
-             $rules['stepTwoFields.otherTravellers.*.firstName']= 'required|string';
-             $rules['stepTwoFields.otherTravellers.*.lastName']= 'required|string';
-         }
+        if ($this->activateOtherTravellersInput) {
+            $rules['stepTwoFields.otherTravellers'] = 'array|min:' . $this->getTotalPassengersProperty() - 1;
+            $rules['stepTwoFields.otherTravellers.*.firstName'] = 'required|string';
+            $rules['stepTwoFields.otherTravellers.*.lastName'] = 'required|string';
+        }
 
         return $rules;
     }
@@ -153,6 +152,7 @@ class InternalReservation extends Component
             'email' => null,
             'phone' => null,
         ],
+        'confirmationLanguage' => 'en',
         'seats' => [
 
         ],
@@ -175,17 +175,32 @@ class InternalReservation extends Component
     public $activateChildSeats = false;
     public $activateExtras = false;
 
-    public function getExtrasProperty(){
-        return Extra::getExtrasByPartnerIdWithPrice($this->selectedPartner);
+    public function getExtrasProperty()
+    {
+        return Extra::getExtrasByPartnerIdWithPrice($this->selectedPartner, ['media']);
     }
 
+    public function getSelectedExtrasProperty()
+    {
+        return Extra::with(['partner' => function ($q) {
+            $q->where('id', $this->selectedPartner);
+        }])->findMany(collect($this->stepTwoFields['extras'])->reject(function ($item) {
+            return $item === false;
+        })->keys()->toArray());
+
+    }
+
+    public function goBack()
+    {
+        $this->stepTwoFields['extras'] = [];
+        $this->activateExtras = false;
+        $this->step = 1;
+    }
 
     public function saveReservation()
     {
 
-        $this->validate($this->stepTwoRules(),[],$this->fieldNames);
-
-        $reservation = new \App\Models\Reservation();
+        $this->validate($this->stepTwoRules(), [], $this->fieldNames);
 
 
         $traveller = new Traveller();
@@ -197,60 +212,65 @@ class InternalReservation extends Component
         $traveller->reservation_number = $this->stepTwoFields['leadTraveller']['reservationNumber'];
         $traveller->phone = $this->stepTwoFields['leadTraveller']['phone'];
 
-        $route = $this->getSelectedRouteProperty();
+        $route = $this->selectedRoute;
 
-        $priceHandler = (new \App\Services\TransferPrices())
-            ->setPartnerId($this->selectedPartner)
-            ->setTransferId($this->selectedTransfer)
-            ->setRouteId($route ? $route->id : null);
+        $priceHandler = new \App\Services\TransferPrices($this->selectedTransfer, $this->selectedPartner, $route ? $route->id : null);
 
 
-        $reservation->date = Carbon::make($this->stepOneFields['date']);
-        $reservation->time = Carbon::make($this->stepOneFields['time']);
-        $reservation->pickup_location = Point::find($this->stepOneFields['startingPointId'])->id;
-        $reservation->pickup_address = $this->stepOneFields['pickupAddress'];
-        $reservation->dropoff_location = Point::find($this->stepOneFields['endingPointId'])->id;
-        $reservation->dropoff_address = $this->stepOneFields['dropoffAddress'];
-        $reservation->adults = $this->stepOneFields['adults'];
-        $reservation->children = $this->stepOneFields['children'];
-        $reservation->infants = $this->stepOneFields['infants'];
+        $businessModel = new \App\BusinessModels\Reservation\Reservation(new \App\Models\Reservation());
 
-        $reservation->luggage = $this->stepOneFields['luggage'];
-        $reservation->route = json_encode((array)$priceHandler->getRouteData());
-        $reservation->transfer = Transfer::findOrFail($this->selectedTransfer)->toJson();
-        $reservation->partner_id = Partner::findOrFail($this->selectedPartner)->id;
-        $reservation->price = $priceHandler->getPrice()->getAmount();
+        $businessModel->setRequiredAttributes(
+            auth()->user()->destination_id,
+            Carbon::make($this->stepOneFields['date']),
+            Carbon::make($this->stepOneFields['time']),
+            Point::find($this->stepOneFields['startingPointId'])->id,
+            $this->stepOneFields['pickupAddress'],
+            Point::find($this->stepOneFields['endingPointId'])->id,
+            $this->stepOneFields['dropoffAddress'],
+            $this->stepOneFields['adults'],
+            $this->stepOneFields['children'],
+            $this->stepOneFields['infants'],
+            Partner::findOrFail($this->selectedPartner)->id,
+            $priceHandler->getPrice(),
+            $this->stepTwoFields['seats'],
+            $this->stepTwoFields['arrivalFlightNumber'],
+            $this->stepTwoFields['remark'],
+            $this->stepTwoFields['confirmationLanguage'],
 
-        $reservation->round_trip = $this->roundTrip;
+            (array)$priceHandler->getRouteData(),
+            $this->selectedExtras,
+            Transfer::findOrFail($this->selectedTransfer),
+            $this->stepOneFields['luggage'],
 
-        $businessModel = new \App\BusinessModels\Reservation\Reservation($reservation);
+        );
 
         $businessModel->addLeadTraveller($traveller);
 
-        if($this->activateOtherTravellersInput){
-            foreach ($this->stepTwoFields['otherTravellers'] as $tr){
+        if ($this->activateOtherTravellersInput) {
+            foreach ($this->stepTwoFields['otherTravellers'] as $tr) {
                 $traveller = new Traveller();
 
                 $traveller->first_name = $tr['firstName'];
-                $traveller->last_name =$tr['lastName'];
+                $traveller->last_name = $tr['lastName'];
                 $traveller->title = $tr['title'];
 
-                $businessModel->addOtherTraveller($traveller,$tr['comment']);
+                $businessModel->addOtherTraveller($traveller, $tr['comment']);
             }
         }
-
 
         if ($this->roundTrip) {
             $businessModel->roundTrip(
                 Carbon::make($this->stepOneFields['returnDate']),
-                Carbon::make($this->stepOneFields['returnTime'])
+                Carbon::make($this->stepOneFields['returnTime']),
+                $this->stepTwoFields['departureFlightNumber'],
             );
         }
 
 
-       $id= $businessModel->saveReservation();
+        $id = $businessModel->saveReservation();
+
         $this->showToast('Reservation saved');
-        Redirect::route('reservation-view',['id'=>$id]);
+        Redirect::route('reservation-view', ['id' => $id]);
     }
 
 
@@ -277,26 +297,26 @@ class InternalReservation extends Component
     public function updated($property)
     {
 
-            if (in_array($property, [
-                'stepOneFields.startingPointId',
-                'stepOneFields.endingPointId',
-            ])) {
-                $this->resetAdresses();
+        if (in_array($property, [
+            'stepOneFields.startingPointId',
+            'stepOneFields.endingPointId',
+        ])) {
+            $this->resetAdresses();
+        }
+
+        if (in_array($property, [
+            'stepOneFields.adults',
+            'stepOneFields.children',
+            'stepOneFields.infants',
+        ])) {
+            if (!\Arr::get($this->stepOneFields, explode('.', $property)[1])) {
+                \Arr::set($this->stepOneFields, explode('.', $property)[1], 0);
             }
-
-            if (in_array($property, [
-                'stepOneFields.adults',
-                'stepOneFields.children',
-                'stepOneFields.infants',
-            ])) {
-                if (!\Arr::get($this->stepOneFields, explode('.', $property)[1])) {
-                    \Arr::set($this->stepOneFields, explode('.', $property)[1], 0);
-                }
-                $this->setOtherTravellers();
-            }
+            $this->setOtherTravellers();
+        }
 
 
-        $this->validateOnly($property, array_merge( $this->stepOneRules(),$this->stepTwoRules()), [], $this->fieldNames);
+        $this->validateOnly($property, array_merge($this->stepOneRules(), $this->stepTwoRules()), [], $this->fieldNames);
     }
 
     public function resetAdresses()
@@ -340,6 +360,11 @@ class InternalReservation extends Component
     public function getDestinationsWithRoutesProperty()
     {
         return Destination::whereHas('routes')->get();
+    }
+
+    public function getConfirmationLanguagesArrayProperty()
+    {
+        return Reservation::CONFIRMATION_LANGUAGES;
     }
 
     public function getStartingPointsProperty()
@@ -405,14 +430,16 @@ class InternalReservation extends Component
 
     public function getTotalPriceProperty()
     {
-        $route = $this->getSelectedRouteProperty();
+        $route = $this->selectedRoute;
+        $priceCalculator = new \App\Services\TransferPrices($this->selectedTransfer, $this->selectedPartner, $route ? $route->id : null);
 
-        return (new \App\Services\TransferPrices())
-            ->setPartnerId($this->selectedPartner)
-            ->setTransferId($this->selectedTransfer)
-            ->setRouteId($route ? $route->id : null)
-            ->getPrice();
+        $priceCalculator->setExtraIds(collect($this->stepTwoFields['extras'])->reject(function ($item) {
+            return $item === false;
+        })->keys()->toArray());
+
+        return $priceCalculator->getPrice();
     }
+
 
     public function getSelectedRouteProperty()
     {
@@ -424,18 +451,9 @@ class InternalReservation extends Component
     public function getAvailableTransfersProperty()
     {
 
-        $route = $this->getSelectedRouteProperty();
+        $route = $this->selectedRoute;
 
         if (!$route) {
-            return collect([]);
-        }
-
-        if(\Arr::hasAny($this->getErrorBag()->messages(),[
-            'stepOneFields.adults',
-            'stepOneFields.children',
-            'stepOneFields.infants',
-            'stepOneFields.luggage',
-            ])){
             return collect([]);
         }
 
@@ -462,8 +480,6 @@ class InternalReservation extends Component
         'email' => '',
         'phone' => '',
     ];
-
-
 
 
     public function addSeat()

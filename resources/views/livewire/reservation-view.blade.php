@@ -20,12 +20,11 @@
     </x-ez-card>
 
     <div class="tabs mb-2">
-        <a class="tab tab-lifted" :class="{ 'tab-active': tab === 'reservation' }" x-on:click.prevent="tab = 'reservation'" href="#">Reservation</a>
-        <a class="tab tab-lifted" :class="{ 'tab-active': tab === 'invoice' }" x-on:click.prevent="tab = 'invoice'" href="#">Invoices</a>
-        <a class="tab tab-lifted" :class="{ 'tab-active': tab === 'payments' }" x-on:click.prevent="tab = 'payments'" href="#">Payments</a>
-        <a class="tab tab-lifted" :class="{ 'tab-active': tab === 'log' }" x-on:click.prevent="tab = 'log'" href="#">Log</a>
+        {{--        <a class="tab tab-lifted" :class="{ 'tab-active': tab === 'reservation' }" x-on:click.prevent="tab = 'reservation'" href="#">Reservation</a>--}}
+        {{--        <a class="tab tab-lifted" :class="{ 'tab-active': tab === 'invoice' }" x-on:click.prevent="tab = 'invoice'" href="#">Invoices</a>--}}
+        {{--        <a class="tab tab-lifted" :class="{ 'tab-active': tab === 'payments' }" x-on:click.prevent="tab = 'payments'" href="#">Payments</a>--}}
+        {{--        <a class="tab tab-lifted" :class="{ 'tab-active': tab === 'log' }" x-on:click.prevent="tab = 'log'" href="#">Log</a>--}}
     </div>
-
 
 
     <!-- TAB RESERVATION -->
@@ -36,21 +35,36 @@
 
                 <x-slot name="title" class="mb-0 flex justify-between">
                     <div>
-                        <span class="text-md">Transfer</span>
+                        <span class="text-md">Transfer details</span>
                     </div>
-                    <a href="{{route('reservation-view',1)}}"><button class="btn btn-sm btn-primary">View</button></a>
                 </x-slot>
 
                 <x-slot name="body">
                     <div class="divider mt-0 mb-0"></div>
+                    <table class="table table-compact w-full">
 
+                        <tbody>
+                        <tr>
+                            <td class="font-bold">Transfer:</td>
+                            <td>{{\Arr::first($this->reservation->transfer['name'])}}</td>
+
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Transfer:</td>
+                            <td>{{\Arr::first($this->reservation->vehicle)}}</td>
+
+                        </tr>
+
+
+                        </tbody>
+                    </table>
                     <div class="flex flex-col w-full">
                         <span>Seller :  <span class="text-info">Valamar Rivijera</span> </span>
                         <span>Type :  <span class="badge badge-success">One Way</span> </span>
                         <span>Total :  <b>{{$this->reservation->getPrice()}}</b> </span>
                         <span>Status :  <span class="badge badge-success">Confirmed</span> </span>
                         <span>Payment Status :  <span class="badge badge-success">Paid in full</span> </span>
-                        <span>Created :  <span>{{$this->reservation->created_at}}</span> </span>
+                        <span>Created :  <span>{{$this->reservation->created_at->format('d.m.Y H:i')}}</span> </span>
                     </div>
                 </x-slot>
             </x-ez-card>
@@ -68,7 +82,8 @@
                     <div class="divider mt-0 mb-0"></div>
 
                     <div class="flex flex-col w-full">
-                        <span>Name :  <span class="text-info font-bold">{{$this->leadTraveller->full_name}}</span> </span>
+                        <span>Name :  <span
+                                class="text-info font-bold">{{$this->leadTraveller->full_name}}</span> </span>
                         <span>Email :  <a href="mailto: joeboy@jondoe.com">{{$this->leadTraveller->email}}</a></span>
                         <span>Phone :  <a href="tel:123-456-7890">{{$this->leadTraveller->phone}}</a> </span>
                     </div>
@@ -90,6 +105,7 @@
                     <div class="divider mt-0 mb-0"></div>
 
                     <div class="flex md:flex-row gap-4 flex-col w-full">
+
                         <div class="basis-2/3 flex flex-col ">
                             <span>Passangers :  <b>{{$this->reservation->num_passangers}}</b> </span>
                             <span>Luggage :  <b>{{$this->reservation->luggage}}</b> </span>
@@ -98,8 +114,8 @@
                         </div>
 
                         <div class="flex flex-grow flex-col gap-2">
-                            <button class="btn btn-sm btn-primary"><i class="fas fa-download mr-2"></i> Ticket</button>
-                            <button class="btn btn-sm btn-warning"><i class="fas fa-times mr-2"></i> Cancel Booking</button>
+                            <button class="btn btn-sm btn-warning"><i class="fas fa-times mr-2"></i> Cancel Booking
+                            </button>
                         </div>
                     </div>
 
@@ -108,23 +124,42 @@
 
                     @if($this->otherTravellers->isNotEmpty())
                         <p class="text-xl font-extrabold">Other Travellers</p>
-                        <div class="flex flex-wrap md:flex-col gap-4 flex-col">
 
+                        <table class="table table-compact w-full">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Title:</th>
+                                <th>First Name:</th>
+                                <th>Last Name:</th>
+                                <th>Comment</th>
+                                <th>Edit</th>
+                            </tr>
+                            </thead>
+                            <tbody>
                             @foreach($this->otherTravellers as $otherTraveller)
-                                <div class="flex flex-wrap md:flex-row flex-col">
-                                    <p class="text-info">Passanger #{{$loop->iteration}}:</p>
-                                    <p>Title: {{$otherTraveller->title}}</p>
-                                    <p>First Name: {{$otherTraveller->first_name}}</p>
-                                    <p>Last Name: {{$otherTraveller->last_name}}</p>
-                                    <p>Comment: {{$otherTraveller->reservations->first()->pivot->comment}}</p>
-                                    <button wire:click="openOtherTravellerModal({{$otherTraveller->id}})" class="btn md:btn-circle btn-sm btn-success">
-                                        <i class="fas fa-pen"></i>
-                                    </button>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
+                                <tr>
 
+                                    <td class="text-info">{{$loop->iteration}}:</td>
+                                    <td>{{$otherTraveller->title}}</td>
+                                    <td> {{$otherTraveller->first_name}}</td>
+                                    <td> {{$otherTraveller->last_name}}</td>
+                                    <td> {{$otherTraveller->reservations->first()->pivot->comment}}</td>
+                                    <td>
+                                        <button wire:click="openOtherTravellerModal({{$otherTraveller->id}})"
+                                                class="btn md:btn-circle btn-sm btn-success">
+                                            <i class="fas fa-pen"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+
+                            </tbody>
+                        </table>
+
+
+
+                    @endif
 
 
                 </x-slot>
@@ -134,12 +169,12 @@
     <!-- END OF TAB RESERVATION -->
 
     <!-- TAB INVOICE -->
-    <div x-show="tab === 'invoice'" class="grid grid-cols-3 gap-4">
+{{--    <div x-show="tab === 'invoice'" class="grid grid-cols-3 gap-4">--}}
 
-       Invoices
+{{--       Invoices--}}
 
-    </div>
-    <!-- END OF TAB INVOICE -->
+{{--    </div>--}}
+<!-- END OF TAB INVOICE -->
 
 
     <div class="modal {{ $otherTravellerModal ? 'modal-open fadeIn' : '' }}">
@@ -200,15 +235,14 @@
             </div>
 
 
-
             <div class="mt-4 flex justify-between">
                 <button wire:click="closeOtherTravellerModal()" class="btn btn-sm ">Close</button>
                 <button wire:click="saveOtherTravellerData()"
-                        class="btn btn-sm ">Update</button>
+                        class="btn btn-sm ">Update
+                </button>
             </div>
         </div>
     </div>
-
 
 
     <script>

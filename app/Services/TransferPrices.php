@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Pivots\ExtraPartner;
 use Cknow\Money\Money;
 use Illuminate\Support\Facades\DB;
 
@@ -11,6 +12,19 @@ class TransferPrices
     private $transferId;
     private $partnerId;
     private $routeId;
+    private $extraIds = [];
+
+    /**
+     * @param $transferId
+     * @param $partnerId
+     * @param $routeId
+     */
+    public function __construct($transferId, $partnerId, $routeId )
+    {
+        $this->transferId = $transferId;
+        $this->partnerId = $partnerId;
+        $this->routeId = $routeId;
+    }
 
 
     public function getPrice():mixed
@@ -21,14 +35,21 @@ class TransferPrices
 
         $price =  $this->getRouteData();
 
+        $extrasPrices = ExtraPartner::where('partner_id',$this->partnerId)->whereIn('extra_id',$this->extraIds)->get();
+
         if(!$price){
             return null;
         }
-
-
-        return Money::EUR(
+        $price = Money::EUR(
             $price->price
         );
+        foreach ($extrasPrices as $exPrice){
+            $price =  $price->add(Money::EUR(
+                $exPrice->price
+            )->getMoney());
+        }
+
+        return $price;
     }
 
     public function getRouteData(){
@@ -69,7 +90,15 @@ class TransferPrices
         return $this;
     }
 
-
+    /**
+     * @param array $extraIds
+     * @return TransferPrices
+     */
+    public function setExtraIds(array $extraIds = []): TransferPrices
+    {
+        $this->extraIds = $extraIds;
+        return $this;
+    }
 
 
 }
