@@ -3,39 +3,33 @@
 namespace App\Models;
 
 use App\Casts\ModelCast;
+use App\Scopes\DestinationScope;
 use Database\Seeders\TransferExtrasPriceSeeder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Money\Money;
 
 class Reservation extends Model
 {
-    protected $casts = ['transfer'=>'array','route'=>'array','date'=>'date'];
+    protected $casts = [ 'date' => 'date','time'=>'datetime'];
 
     public const  CONFIRMATION_LANGUAGES = [
-        'en'=>'English',
-        'hr'=>'Hrvatski',
-        'de'=>'German',
-        'fr'=>'French',
+        'en' => 'English',
+        'hr' => 'Hrvatski',
+        'de' => 'German',
+        'fr' => 'French',
     ];
 
 
-    public function createNewTwoWayReservation($dateFrom, $timeFrom)
+
+    public function getIsRoundTripAttribute()
     {
-
+    return !empty($this->round_trip_id);
     }
 
-
-
-    public function travellers(){
-        return $this->belongsToMany( Traveller::class)->withPivot(['lead','comment']);
-    }
-
-    public function otherTravellers(){
-        return $this->belongsToMany( Traveller::class)->withPivot(['lead','comment'])->where('lead','=',false);
-    }
-
-    public function leadTraveller(){
-        return $this->belongsToMany( Traveller::class,'reservation_traveller')->withPivot(['lead','comment'])->where('lead','=',true);
+    public function getNumPassangersAttribute()
+    {
+        return (int)$this->adults + (int)$this->children + (int)$this->infants;
     }
 
     public function getLeadTravellerAttribute()
@@ -43,16 +37,89 @@ class Reservation extends Model
         return $this->leadTraveller()->first();
     }
 
-    public function pickupLocation(){
-        return $this->hasOne(Point::class,'id','pickup_location');
-    }
-
-    public function getNumPassangersAttribute(){
-        return (Int)$this->adults + (Int)$this->children + (Int)$this->infants;
-    }
-
-    public function getPrice(){
+    public function getPrice()
+    {
         return \Cknow\Money\Money::EUR($this->price);
     }
 
+    public function leadTraveller()
+    {
+        return $this->belongsToMany(Traveller::class, 'reservation_traveller')->withPivot(['lead', 'comment'])->where('lead', '=', true);
+    }
+
+    public function travellers()
+    {
+        return $this->belongsToMany(Traveller::class)->withPivot(['lead', 'comment']);
+    }
+
+    public function otherTravellers()
+    {
+        return $this->belongsToMany(Traveller::class)->withPivot(['lead', 'comment'])->where('lead', '=', false);
+    }
+
+    public function transfer()
+    {
+        return $this->belongsTo(Transfer::class);
+    }
+
+    public function partner()
+    {
+        return $this->belongsTo(Partner::class);
+    }
+
+    public function extras()
+    {
+        return $this->belongsToMany(Extra::class);
+    }
+
+
+    public function pickupLocation()
+    {
+        return $this->hasOne(Point::class, 'id', 'pickup_location');
+    }
+
+    public function dropoffLocation()
+    {
+        return $this->hasOne(Point::class, 'id', 'dropoff_location');
+    }
+
+    public function returnReservation()
+    {
+        return $this->hasOne(Reservation::class, 'id', 'round_trip_id')->where('is_main',false);
+    }
+
+    public function createdBy()
+    {
+        return $this->hasOne(User::class, 'id', 'created_by');
+    }
+    public function updatedBy()
+    {
+        return $this->hasOne(User::class, 'id', 'updated_by');
+    }
+
+
+
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new DestinationScope());
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (!$model->isDirty('created_by') && auth()->user()) {
+                $model->created_by = auth()->user()->id;
+            }
+
+        });
+
+        static::updating(function ($model) {
+            if (!$model->isDirty('updated_by') && auth()->user()) {
+                $model->updated_by = auth()->user()->id;
+            }
+        });
+    }
 }

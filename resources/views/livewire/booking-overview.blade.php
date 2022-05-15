@@ -41,7 +41,7 @@
                     <span class="badge badge-success">One Way</span>
                 </div>
 
-                <a href="{{route('reservation-view',$reservation->id)}}"><button class="btn btn-sm btn-primary">View</button></a>
+                <a href="{{route('reservation-details',$reservation->id)}}"><button class="btn btn-sm btn-primary">View</button></a>
             </x-slot>
 
             <x-slot name="body">

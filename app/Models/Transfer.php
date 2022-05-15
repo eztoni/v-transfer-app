@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\DestinationScope;
 use App\Scopes\OwnerScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -62,8 +63,9 @@ class Transfer extends Model implements HasMedia
 
     protected static function booted()
     {
-        static::addGlobalScope(new OwnerScope());
+        static::addGlobalScope(new DestinationScope());
     }
+
     public function destination()
     {
         return $this->belongsTo(Destination::class);

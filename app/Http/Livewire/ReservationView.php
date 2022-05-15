@@ -13,7 +13,7 @@ class ReservationView extends Component
 {
 
     public $reservationId;
-    public $reservation;
+    public Reservation $reservation;
     public $otherTravellerModal;
     public $otherTraveller;
     public $otherTravellerComment;
@@ -28,12 +28,10 @@ class ReservationView extends Component
         ];
     }
 
-    public function mount($id)
+    public function mount(Reservation $reservation)
     {
-        $this->reservationId = $id;
-        $this->reservation = Reservation::with(['pickupLocation','otherTravellers','leadTraveller'])->findOrFail($id);
-
-
+        $this->reservation = $reservation;
+        $this->reservation->loadMissing(['pickupLocation','otherTravellers','leadTraveller','transfer','partner']);
     }
 
     //MODAL

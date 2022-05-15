@@ -218,7 +218,6 @@ class InternalReservation extends Component
 
 
         $businessModel = new \App\BusinessModels\Reservation\Reservation(new \App\Models\Reservation());
-
         $businessModel->setRequiredAttributes(
             auth()->user()->destination_id,
             Carbon::make($this->stepOneFields['date']),
@@ -232,14 +231,14 @@ class InternalReservation extends Component
             $this->stepOneFields['infants'],
             Partner::findOrFail($this->selectedPartner)->id,
             $priceHandler->getPrice(),
-            $this->stepTwoFields['seats'],
-            $this->stepTwoFields['arrivalFlightNumber'],
-            $this->stepTwoFields['remark'],
             $this->stepTwoFields['confirmationLanguage'],
-
-            (array)$priceHandler->getRouteData(),
             $this->selectedExtras,
             Transfer::findOrFail($this->selectedTransfer),
+            $this->stepTwoFields['remark']??'',
+
+            $this->stepTwoFields['arrivalFlightNumber']??'',
+
+            $this->stepTwoFields['seats'],
             $this->stepOneFields['luggage'],
 
         );
@@ -259,10 +258,10 @@ class InternalReservation extends Component
         }
 
         if ($this->roundTrip) {
-            $businessModel->roundTrip(
+            $businessModel->setRoundTrip(
                 Carbon::make($this->stepOneFields['returnDate']),
                 Carbon::make($this->stepOneFields['returnTime']),
-                $this->stepTwoFields['departureFlightNumber'],
+                $this->stepTwoFields['departureFlightNumber']??'',
             );
         }
 
@@ -270,7 +269,7 @@ class InternalReservation extends Component
         $id = $businessModel->saveReservation();
 
         $this->showToast('Reservation saved');
-        Redirect::route('reservation-view', ['id' => $id]);
+        Redirect::route('reservation-details',  $id);
     }
 
 

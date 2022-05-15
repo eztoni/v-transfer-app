@@ -1,41 +1,57 @@
-<div x-data="reservationSettings">
-    <x-ez-card class="mb-4">
+<div>
+    <div class="flex gap-2 pt-4 ">
+        <x-ez-card class=" w-1/2 shadow-none">
+            <x-slot name="title">
+                From: {{$reservation->pickupLocation->name}}
 
-        <x-slot name="title">
-            <div class="flex flex-col">
-                <div class="text-sm breadcrumbs">
-                    <ul>
-                        <li><a href="{{route('bookings')}}">Bookings</a></li>
-                        <li class="text-info">RES #{{$this->reservation->id}}</li>
-                    </ul>
-                </div>
+            </x-slot>
+
+            <x-slot name="body">
                 <div>
-                    <p class="title font-extrabold">RES #{{$this->reservation->id}}</p>
+                    <p><strong>Pickup Address: </strong>{{$reservation->pickup_address}} </p>
+                    <p><strong>Pickup Date: </strong>{{$reservation->date->format('d.m.Y')}} </p>
+                    <p><strong>Pickup Time:</strong> {{$reservation->time->format('H:i')}} </p>
                 </div>
-            </div>
-        </x-slot>
+            </x-slot>
+        </x-ez-card>
+        @if($reservation->returnReservation)
+            <i class="fas fa-exchange-alt self-center text-xl"></i>
+        @else
+            <i class="fas fa-long-arrow-alt-right self-center text-xl"></i>
+        @endif
 
-        <x-slot name="body">
-        </x-slot>
-    </x-ez-card>
+        <x-ez-card class="w-1/2 shadow-none">
 
-    <div class="tabs mb-2">
-        {{--        <a class="tab tab-lifted" :class="{ 'tab-active': tab === 'reservation' }" x-on:click.prevent="tab = 'reservation'" href="#">Reservation</a>--}}
-        {{--        <a class="tab tab-lifted" :class="{ 'tab-active': tab === 'invoice' }" x-on:click.prevent="tab = 'invoice'" href="#">Invoices</a>--}}
-        {{--        <a class="tab tab-lifted" :class="{ 'tab-active': tab === 'payments' }" x-on:click.prevent="tab = 'payments'" href="#">Payments</a>--}}
-        {{--        <a class="tab tab-lifted" :class="{ 'tab-active': tab === 'log' }" x-on:click.prevent="tab = 'log'" href="#">Log</a>--}}
+            <x-slot name="title">
+                From: {{$reservation->dropoffLocation->name}}
+            </x-slot>
+            <x-slot name="body">
+                <div>
+                    <p><strong>Dropoff Address: </strong>{{$reservation->dropoff_address}} </p>
+                    @if($reservation->returnReservation)
+                        <p><strong>Round Trip Pickup
+                                Date: </strong>{{$reservation->returnReservation->date->format('d.m.Y')}} </p>
+                        <p><strong>Round Trip Pickup
+                                Time:</strong> {{$reservation->returnReservation->time->format('H:i')}} </p>
+
+                    @endif
+                </div>
+            </x-slot>
+
+        </x-ez-card>
     </div>
+    <div class="divider "></div>
 
 
     <!-- TAB RESERVATION -->
-    <div x-show="tab === 'reservation'" class="grid md:grid-cols-3 grid-cols-1 gap-4">
+    <div class="grid md:grid-cols-3 grid-cols-1 gap-2 mt-2">
 
         <div class="">
-            <x-ez-card class="mb-4">
+            <x-ez-card class="mb-4 shadow-none">
 
                 <x-slot name="title" class="mb-0 flex justify-between">
                     <div>
-                        <span class="text-md">Transfer details</span>
+                        <span class="text-md">Vehicle details</span>
                     </div>
                 </x-slot>
 
@@ -44,59 +60,72 @@
                     <table class="table table-compact w-full">
 
                         <tbody>
+
                         <tr>
-                            <td class="font-bold">Transfer:</td>
-                            <td>{{\Arr::first($this->reservation->transfer['name'])}}</td>
+                            <td class="font-bold">Vehicle:</td>
+                            <td>{{$this->reservation->transfer->vehicle->name}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Vehicle type:</td>
+                            <td>{{$this->reservation->transfer->vehicle->type}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Max occupancy:</td>
+                            <td>{{$this->reservation->transfer->vehicle->max_occ}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Max luggage:</td>
+                            <td>{{$this->reservation->transfer->vehicle->max_luggage}}</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </x-slot>
+            </x-ez-card>
+
+            <x-ez-card class="mb-4  shadow-none">
+
+                <x-slot name="title" class="mb-0 flex justify-between">
+                    <div>
+                        <span class="text-md">Partner details</span>
+
+                    </div>
+                </x-slot>
+
+                <x-slot name="body">
+                    <div class="divider mt-0 mb-0"></div>
+
+                    <table class="table table-compact w-full">
+
+                        <tbody>
+                        <tr>
+                            <td class="font-bold">Name:</td>
+                            <td>{{$this->reservation->partner->name}}</td>
 
                         </tr>
                         <tr>
-                            <td class="font-bold">Transfer:</td>
-                            <td>{{\Arr::first($this->reservation->vehicle)}}</td>
-
+                            <td class="font-bold">Phone:</td>
+                            <td>{{$this->reservation->partner->phone}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Email:</td>
+                            <td>{{$this->reservation->partner->email}}</td>
                         </tr>
 
 
                         </tbody>
                     </table>
-                    <div class="flex flex-col w-full">
-                        <span>Seller :  <span class="text-info">Valamar Rivijera</span> </span>
-                        <span>Type :  <span class="badge badge-success">One Way</span> </span>
-                        <span>Total :  <b>{{$this->reservation->getPrice()}}</b> </span>
-                        <span>Status :  <span class="badge badge-success">Confirmed</span> </span>
-                        <span>Payment Status :  <span class="badge badge-success">Paid in full</span> </span>
-                        <span>Created :  <span>{{$this->reservation->created_at->format('d.m.Y H:i')}}</span> </span>
-                    </div>
-                </x-slot>
-            </x-ez-card>
-
-            <x-ez-card class="mb-4">
-
-                <x-slot name="title" class="mb-0 flex justify-between">
-                    <div>
-                        <span class="text-md">Lead Traveler</span>
-
-                    </div>
-                </x-slot>
-
-                <x-slot name="body">
-                    <div class="divider mt-0 mb-0"></div>
-
-                    <div class="flex flex-col w-full">
-                        <span>Name :  <span
-                                class="text-info font-bold">{{$this->leadTraveller->full_name}}</span> </span>
-                        <span>Email :  <a href="mailto: joeboy@jondoe.com">{{$this->leadTraveller->email}}</a></span>
-                        <span>Phone :  <a href="tel:123-456-7890">{{$this->leadTraveller->phone}}</a> </span>
-                    </div>
                 </x-slot>
             </x-ez-card>
         </div>
 
-        <div class="md:col-span-2">
-            <x-ez-card class="mb-4">
+        <div class="md:col-span-1">
+            <x-ez-card class="mb-4 shadow-none">
 
                 <x-slot name="title" class="mb-0 flex justify-between">
                     <div>
-                        <span class="text-md">Reservation infromation</span>
+                        <span class="text-md">Transfer information</span>
 
                     </div>
                 </x-slot>
@@ -104,25 +133,41 @@
                 <x-slot name="body">
                     <div class="divider mt-0 mb-0"></div>
 
-                    <div class="flex md:flex-row gap-4 flex-col w-full">
+                    <table class="table table-compact w-full">
 
-                        <div class="basis-2/3 flex flex-col ">
-                            <span>Passangers :  <b>{{$this->reservation->num_passangers}}</b> </span>
-                            <span>Luggage :  <b>{{$this->reservation->luggage}}</b> </span>
-                            <span>Pickup :  <b>{{$this->pickupLocationString}}</b>  </span>
-                            <span>Dropoff :  <b>Šibenik - <b>28.5.2022</b> @ <b>12:45</b></b>  </span>
-                        </div>
+                        <tbody>
 
-                        <div class="flex flex-grow flex-col gap-2">
-                            <button class="btn btn-sm btn-warning"><i class="fas fa-times mr-2"></i> Cancel Booking
-                            </button>
-                        </div>
-                    </div>
+                        <tr>
+                            <td class="font-bold">Transfer:</td>
+                            <td>{{$this->reservation->transfer->name}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Adults:</td>
+                            <td>{{$this->reservation->adults}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Children:</td>
+                            <td>{{$this->reservation->children}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Infants:</td>
+                            <td>{{$this->reservation->infants}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Luggage:</td>
+                            <td>{{$this->reservation->luggage}}</td>
+                        </tr>
 
-                    <div class="divider mt-0 mb-0"></div>
+
+                        </tbody>
+                    </table>
+
+
 
 
                     @if($this->otherTravellers->isNotEmpty())
+                        <div class="divider mt-0 mb-0"></div>
+
                         <p class="text-xl font-extrabold">Other Travellers</p>
 
                         <table class="table table-compact w-full">
@@ -165,17 +210,111 @@
                 </x-slot>
             </x-ez-card>
         </div>
+
+
     </div>
-    <!-- END OF TAB RESERVATION -->
 
-    <!-- TAB INVOICE -->
-{{--    <div x-show="tab === 'invoice'" class="grid grid-cols-3 gap-4">--}}
+    <x-ez-card class="mb-4 shadow-none">
 
-{{--       Invoices--}}
+        <x-slot name="title" class="mb-0 flex justify-between">
+            <div>
+                <span class="text-md">Main traveller</span>
 
-{{--    </div>--}}
-<!-- END OF TAB INVOICE -->
+            </div>
+        </x-slot>
 
+        <x-slot name="body">
+            <div class="divider mt-0 mb-0"></div>
+
+
+            <table class="table table-compact w-full">
+
+                <tbody>
+
+                <tr>
+                    <td class="font-bold">Transfer:</td>
+                    <td>{{$this->reservation->transfer->name}}</td>
+                </tr>
+                <tr>
+                    <td class="font-bold">Adults:</td>
+                    <td>{{$this->reservation->adults}}</td>
+                </tr>
+                <tr>
+                    <td class="font-bold">Children:</td>
+                    <td>{{$this->reservation->children}}</td>
+                </tr>
+                <tr>
+                    <td class="font-bold">Infants:</td>
+                    <td>{{$this->reservation->infants}}</td>
+                </tr>
+                <tr>
+                    <td class="font-bold">Luggage:</td>
+                    <td>{{$this->reservation->luggage}}</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+
+
+
+
+        </x-slot>
+    </x-ez-card>
+    @if($this->otherTravellers->isNotEmpty())
+
+    <x-ez-card class="mb-4 shadow-none">
+
+        <x-slot name="title" class="mb-0 flex justify-between">
+            <div>
+                <span class="text-md">Other travellers</span>
+
+            </div>
+        </x-slot>
+
+        <x-slot name="body">
+            <div class="divider mt-0 mb-0"></div>
+
+
+                <div class="divider mt-0 mb-0"></div>
+
+
+                <table class="table table-compact w-full">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title:</th>
+                        <th>First Name:</th>
+                        <th>Last Name:</th>
+                        <th>Comment</th>
+                        <th>Edit</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($this->otherTravellers as $otherTraveller)
+                        <tr>
+
+                            <td class="text-info">{{$loop->iteration}}:</td>
+                            <td>{{$otherTraveller->title}}</td>
+                            <td> {{$otherTraveller->first_name}}</td>
+                            <td> {{$otherTraveller->last_name}}</td>
+                            <td> {{$otherTraveller->reservations->first()->pivot->comment}}</td>
+                            <td>
+                                <button wire:click="openOtherTravellerModal({{$otherTraveller->id}})"
+                                        class="btn md:btn-circle btn-sm btn-success">
+                                    <i class="fas fa-pen"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    </tbody>
+                </table>
+        </x-slot>
+    </x-ez-card>
+    @endif
 
     <div class="modal {{ $otherTravellerModal ? 'modal-open fadeIn' : '' }}">
         <div class="modal-box max-h-screen overflow-y-auto">
@@ -244,16 +383,5 @@
         </div>
     </div>
 
-
-    <script>
-        function reservationSettings() {
-            return {
-                tab: 'reservation',
-                init() {
-
-                }
-            }
-        }
-    </script>
 
 </div>

@@ -16,7 +16,9 @@ class BookingOverview extends Component
 
 
     public function getReservationsProperty(){
-        return Reservation::with(['leadTraveller','pickupLocation'])->get();
+        return Reservation::with(['leadTraveller','pickupLocation'])
+            ->where('is_main',true)
+            ->get();
     }
 
 
