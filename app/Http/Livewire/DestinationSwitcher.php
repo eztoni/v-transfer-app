@@ -14,7 +14,7 @@ class DestinationSwitcher extends Component
 {
 
     public function changeOwner($destinationId){
-        if(!Auth::user()->hasAnyRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN]))
+        if(!Auth::user()->hasAnyRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN,User::ROLE_USER]))
             return;
 
         $user = Auth::user();
@@ -26,7 +26,14 @@ class DestinationSwitcher extends Component
 
     public function render()
     {
+
         $destinations = Destination::all();
+
+
+        if(Auth::user()->hasAnyRole([User::ROLE_USER]))
+            $destinations = Auth::user()->availableDestinations()->get();
+
+
         $userDestinationName = 'Destinations';
         if($destinations->isNotEmpty())
             $userDestinationName = $destinations->where('id','=',Auth::user()->destination_id)->first()->name;

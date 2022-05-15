@@ -124,6 +124,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Destination::class);
     }
 
+    public function availableDestinations()
+    {
+        return $this->belongsToMany(Destination::class);
+    }
+
     public function company()
     {
         return $this->belongsTo(Company::class);
