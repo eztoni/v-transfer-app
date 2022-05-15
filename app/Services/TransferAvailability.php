@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Partner;
 use App\Models\Route;
 use App\Models\Transfer;
+use App\Services\Helpers\ReservationPartnerOrderCache;
 use Carbon\Carbon;
 
 class TransferAvailability
@@ -80,8 +81,13 @@ class TransferAvailability
             $routeWithTransfersPerPartner->transfers = $routeWithTransfersPerPartner->transfers->sortBy('pivot.partner_id');
 
         }
+        $partnerOrder = new ReservationPartnerOrderCache($this->route->destination_id);
+        $order =$partnerOrder->getPartnerOrder();
 
 
+        $routeWithTransfersPerPartner->transfers = $routeWithTransfersPerPartner->transfers->sortByDesc(function ($item) use($order){
+            return in_array($item->pivot->partner_id,$order)? array_search($item->pivot->partner_id,$order)  : 999;
+        });
 
         return $routeWithTransfersPerPartner->transfers ?? collect([]);
     }

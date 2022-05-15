@@ -24,6 +24,7 @@ use App\Http\Livewire\VehicleEdit;
 use App\Http\Livewire\VehicleOverview;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\ValidationException;
 
 /*
 |--------------------------------------------------------------------------

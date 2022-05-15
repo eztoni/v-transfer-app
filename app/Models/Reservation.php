@@ -2,21 +2,29 @@
 
 namespace App\Models;
 
+use App\Casts\ModelCast;
 use Database\Seeders\TransferExtrasPriceSeeder;
 use Illuminate\Database\Eloquent\Model;
 use Money\Money;
 
 class Reservation extends Model
 {
+    protected $casts = ['transfer'=>'array','route'=>'array','date'=>'date'];
+
+    public const  CONFIRMATION_LANGUAGES = [
+        'en'=>'English',
+        'hr'=>'Hrvatski',
+        'de'=>'German',
+        'fr'=>'French',
+    ];
+
 
     public function createNewTwoWayReservation($dateFrom, $timeFrom)
     {
 
     }
-    public function createNewReservation()
-    {
 
-    }
+
 
     public function travellers(){
         return $this->belongsToMany( Traveller::class)->withPivot(['lead','comment']);

@@ -16,6 +16,8 @@ class Transfer extends Model implements HasMedia
     use HasTranslations;
     use HasFactory;
 
+    protected $with = ['vehicle'];
+
 
     public const CHILD_SEATS = [
       0=>'Booster ( 10-15 kg )',
