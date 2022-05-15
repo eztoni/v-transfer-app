@@ -117,7 +117,7 @@
 
                                     <div class="form-control pt-2" wire:ignore>
                                         <label class="label-text ">Pickup address</label>
-                                        <select id="pickupSelect"    x-init=" $(' #pickupSelect').select2(
+                                        <select id="pickupSelect" x-init=" $(' #pickupSelect').select2(
                                         {
                                         closeOnSelect: true,
                                         tags: true,
@@ -143,13 +143,13 @@
 
                                                 <option
                                                     @if($this->stepOneFields['pickupAddress'] === $pickupAddressPoint->name. ' ' . $pickupAddressPoint->address)
-                                                        selected
+                                                    selected
 
-                                                        @php
-                                                            $itemSelected = true;
-                                                        @endphp
+                                                    @php
+                                                        $itemSelected = true;
+                                                    @endphp
 
-                                                        @endif
+                                                    @endif
                                                     value="{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}">{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}</option>
 
                                             @endforeach
@@ -158,7 +158,7 @@
                                                 <option
                                                     value="{{$this->stepOneFields['pickupAddress']}}" selected>
                                                     {{$this->stepOneFields['pickupAddress']}}</option>
-                                                @endif
+                                            @endif
                                         </select>
                                     </div>
                                     @error('stepOneFields.pickupAddress')
@@ -448,9 +448,10 @@
                 <div
                     class="border-2  gap-2 mb-2 bg-gradient-to-b from-primary to-white pb-2 flex flex-col rounded-box relative shadow-lg">
                     <div class="w-full flex justify-between text-neutral-content px-4 pt-1 text-lg font-bold "
-                       >
-                      <span>  {{$transfer->partner->id}}</span>
-                        <a class="font-medium link" href="tel:{{$transfer->partner->phone}}">{{$transfer->partner->phone}}</a>
+                    >
+                        <span>  {{$transfer->partner->id}}</span>
+                        <a class="font-medium link"
+                           href="tel:{{$transfer->partner->phone}}">{{$transfer->partner->phone}}</a>
                     </div>
 
                     @endif
@@ -476,7 +477,12 @@
                                             class=" ">Max. Luggage:{{$transfer->vehicle->max_luggage}}</span>
 
                                     </div>
-                                    <span class="  ">Price: <b> {{\App\Facades\EzMoney::format($transfer->pivot->price)}} EUR</b></span>
+
+                                    <span class="  ">Price: <b>
+                                     {{\App\Facades\EzMoney::format($this->roundTrip
+                                            ?$transfer->pivot->price_round_trip
+                                            :$transfer->pivot->price)}}
+                                            EUR</b></span>
 
                                     <button
                                         class="btn btn-sm btn-primary absolute bottom-2 rounded-xl right-2"
@@ -500,9 +506,13 @@
             <div>
                 <x-ez-card class="mb-4">
 
-                    <x-slot name="body"> <div class="flex justify-end">
-                            <button class="btn btn-outline btn-sm" wire:click="goBack"><i class="fas fa-angle-left mr-2"></i> Back</button>
-                        </div></x-slot>
+                    <x-slot name="body">
+                        <div class="flex justify-end">
+                            <button class="btn btn-outline btn-sm" wire:click="goBack"><i
+                                    class="fas fa-angle-left mr-2"></i> Back
+                            </button>
+                        </div>
+                    </x-slot>
                 </x-ez-card>
                 <x-ez-card class="mb-4">
                     <x-slot name="title">Transfer details</x-slot>
@@ -772,120 +782,123 @@
         <div x-data="{open: false}" x-show="open" x-transition
              x-init="setTimeout(() => { open = true })">
             <div class="col-span-1 sticky" style="top: 5vh">
-                <div >
-                <x-ez-card >
-                    <x-slot name="title">Reservation details</x-slot>
-                    <x-slot name="body">
-
-                        <div class="divider my-1    "></div>
-                        <div class="res-details">
-                            @if($this->selectedStartingPoint)
-                                <p><span>From:</span> <b>{{$this->selectedStartingPoint->name}}</b></p>
-
-                                @if($this->stepOneFields['pickupAddress'])
-                                    <p><span>Address:</span> <b
-                                            class="text-right">{{$this->stepOneFields['pickupAddress']}}</b></p>
-                                @endif
-                                <div class="divider my-1    "></div>
-
-                            @endif
-                            @if($this->selectedEndingPoint)
-
-                                <p>To: <b>{{$this->selectedEndingPoint->name}}</b></p>
-
-                                @if($this->stepOneFields['dropoffAddress'])
-                                    <p><span>Address:</span> <b
-                                            class="text-right">{{$this->stepOneFields['dropoffAddress']}}</b></p>
-                                @endif
-                                <div class="divider my-1    "></div>
-
-                            @endif
-                            @if(!empty($this->stepOneFields['date']))
-                                <p>Date to:
-                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['date'])->format('d.m.Y')}}</b>
-                                </p>
-
-                            @endif
-                            @if(!empty($this->stepOneFields['time']))
-                                <p>Time to:
-                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['time'])->format('H:i')}}</b>
-                                </p>
-
-                            @endif
-                            @if(!empty($this->stepOneFields['returnDate']))
-                                <p>Time from:
-                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['returnDate'])->format('d.m.Y')}}</b>
-                                </p>
-
-                            @endif
-                            @if(!empty($this->stepOneFields['returnTime']))
-                                <p>Time from:
-                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['returnTime'])->format('H:i')}}</b>
-                                </p>
-
-                            @endif
-                            <p>Passengers: <b>{{$this->totalPassengers}}</b></p>
-                            <p>Ticket type: <b>{{$this->roundTrip ? 'Round trip' : 'One way'}}</b></p>
-
-
-                            @if($this->selectedExtras->isNotEmpty())
-                                <div class="divider my-1"></div>
-
-
-                                <p class="font-bold">Extras:</p>
-
-                                @foreach($this->selectedExtras as $extra)
-                                    <p>{{$extra->name}}:
-                                        <b>{{\Cknow\Money\Money::EUR($extra->partner->first()?->pivot->price)}}</b>
-                                    </p>
-                                @endforeach
-
-
-                            @endif
-                            @if($this->stepTwoFields['seats'])
-                                <div class="divider my-1"></div>
-                                <p class="font-bold">Seats:</p>
-
-                                @foreach($this->stepTwoFields['seats'] as $seat)
-                                    <p>{{\App\Models\Transfer::CHILD_SEATS[$seat]}}
-                                    </p>
-                                @endforeach
-
-
-                            @endif
-
-                        </div>
-                        <div class="divider my-1    "></div>
-
-                        @if($this->step === 2 && $this->totalPrice)
-                            <div class="alert alert-info alert-sm ">
-                                <div class="text-right ml-auto text-white gap-2 pr-2">
-                                    Total price:
-                                    <b> {{ \App\Facades\EzMoney::format($this->totalPrice->getAmount()) }}
-                                        EUR</b>
-                                </div>
-                            </div>
-                        @endif
-
-                    </x-slot>
-                </x-ez-card>
-
-                @if($step === 2 && $resSaved == false)
-                    <x-ez-card class="mt-4">
+                <div>
+                    <x-ez-card>
+                        <x-slot name="title">Reservation details</x-slot>
                         <x-slot name="body">
-                            <x-form.ez-select label="Confirmation language" :items="$this->confirmationLanguagesArray" model="stepTwoFields.confirmationLanguage" :show-empty-value="false"  sm="true"></x-form.ez-select>
 
-                            <button class="btn btn-large btn-accent rounded-box" wire:click="saveReservation"><span
-                                    class="mr-4">Complete reservation</span>
-                                <i class="fas fa-arrow-right float-right"></i></button>
-                            @error('*')
-                            <x-input-alert type="warning">
-                                {{$message}}
-                            </x-input-alert>
-                            @enderror
+                            <div class="divider my-1    "></div>
+                            <div class="res-details">
+                                @if($this->selectedStartingPoint)
+                                    <p><span>From:</span> <b>{{$this->selectedStartingPoint->name}}</b></p>
+
+                                    @if($this->stepOneFields['pickupAddress'])
+                                        <p><span>Address:</span> <b
+                                                class="text-right">{{$this->stepOneFields['pickupAddress']}}</b></p>
+                                    @endif
+                                    <div class="divider my-1    "></div>
+
+                                @endif
+                                @if($this->selectedEndingPoint)
+
+                                    <p>To: <b>{{$this->selectedEndingPoint->name}}</b></p>
+
+                                    @if($this->stepOneFields['dropoffAddress'])
+                                        <p><span>Address:</span> <b
+                                                class="text-right">{{$this->stepOneFields['dropoffAddress']}}</b></p>
+                                    @endif
+                                    <div class="divider my-1    "></div>
+
+                                @endif
+                                @if(!empty($this->stepOneFields['date']))
+                                    <p>Date to:
+                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['date'])->format('d.m.Y')}}</b>
+                                    </p>
+
+                                @endif
+                                @if(!empty($this->stepOneFields['time']))
+                                    <p>Time to:
+                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['time'])->format('H:i')}}</b>
+                                    </p>
+
+                                @endif
+                                @if(!empty($this->stepOneFields['returnDate']))
+                                    <p>Time from:
+                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['returnDate'])->format('d.m.Y')}}</b>
+                                    </p>
+
+                                @endif
+                                @if(!empty($this->stepOneFields['returnTime']))
+                                    <p>Time from:
+                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['returnTime'])->format('H:i')}}</b>
+                                    </p>
+
+                                @endif
+                                <p>Passengers: <b>{{$this->totalPassengers}}</b></p>
+                                <p>Ticket type: <b>{{$this->roundTrip ? 'Round trip' : 'One way'}}</b></p>
+
+
+                                @if($this->selectedExtras->isNotEmpty())
+                                    <div class="divider my-1"></div>
+
+
+                                    <p class="font-bold">Extras:</p>
+
+                                    @foreach($this->selectedExtras as $extra)
+                                        <p>{{$extra->name}}:
+                                            <b>{{\Cknow\Money\Money::EUR($extra->partner->first()?->pivot->price)}}</b>
+                                        </p>
+                                    @endforeach
+
+
+                                @endif
+                                @if($this->stepTwoFields['seats'])
+                                    <div class="divider my-1"></div>
+                                    <p class="font-bold">Seats:</p>
+
+                                    @foreach($this->stepTwoFields['seats'] as $seat)
+                                        <p>{{\App\Models\Transfer::CHILD_SEATS[$seat]}}
+                                        </p>
+                                    @endforeach
+
+
+                                @endif
+
+                            </div>
+                            <div class="divider my-1    "></div>
+
+                            @if($this->step === 2 && $this->totalPrice)
+                                <div class="alert alert-info alert-sm ">
+                                    <div class="text-right ml-auto text-white gap-2 pr-2">
+                                        Total price:
+                                        <b> {{ \App\Facades\EzMoney::format($this->totalPrice->getAmount()) }}
+                                            EUR</b>
+                                    </div>
+                                </div>
+                            @endif
+
                         </x-slot>
                     </x-ez-card>
-                @endif
+
+                    @if($step === 2 && $resSaved == false)
+                        <x-ez-card class="mt-4">
+                            <x-slot name="body">
+                                <x-form.ez-select label="Confirmation language"
+                                                  :items="$this->confirmationLanguagesArray"
+                                                  model="stepTwoFields.confirmationLanguage" :show-empty-value="false"
+                                                  sm="true"></x-form.ez-select>
+
+                                <button class="btn btn-large btn-accent rounded-box" wire:click="saveReservation"><span
+                                        class="mr-4">Complete reservation</span>
+                                    <i class="fas fa-arrow-right float-right"></i></button>
+                                @error('*')
+                                <x-input-alert type="warning">
+                                    {{$message}}
+                                </x-input-alert>
+                                @enderror
+                            </x-slot>
+                        </x-ez-card>
+                    @endif
                 </div>
 
             </div>

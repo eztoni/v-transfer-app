@@ -11,7 +11,12 @@ use Money\Money;
 
 class Reservation extends Model
 {
-    protected $casts = [ 'date' => 'date','time'=>'datetime'];
+    protected $casts = [
+        'child_seats' => 'array',
+        'price_breakdown' => 'array',
+        'date' => 'date',
+        'time' => 'datetime',
+    ];
 
     public const  CONFIRMATION_LANGUAGES = [
         'en' => 'English',
@@ -21,10 +26,9 @@ class Reservation extends Model
     ];
 
 
-
     public function getIsRoundTripAttribute()
     {
-    return !empty($this->round_trip_id);
+        return !empty($this->round_trip_id);
     }
 
     public function getNumPassangersAttribute()
@@ -85,19 +89,18 @@ class Reservation extends Model
 
     public function returnReservation()
     {
-        return $this->hasOne(Reservation::class, 'id', 'round_trip_id')->where('is_main',false);
+        return $this->hasOne(Reservation::class, 'id', 'round_trip_id')->where('is_main', false);
     }
 
     public function createdBy()
     {
         return $this->hasOne(User::class, 'id', 'created_by');
     }
+
     public function updatedBy()
     {
         return $this->hasOne(User::class, 'id', 'updated_by');
     }
-
-
 
 
     protected static function booted()

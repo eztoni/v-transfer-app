@@ -20,7 +20,7 @@ class TransferExtrasPriceSeeder extends Seeder
                     [
                         'extra_id' => $extra->id,
                         'partner_id' => $partner->id,
-                        'price' => rand(1000, 100000)
+                        'price' => rand(1000, 100000),
                     ]
                 );
             foreach (Transfer::whereOwnerId(1)->get() as $transfer) {
@@ -30,7 +30,9 @@ class TransferExtrasPriceSeeder extends Seeder
                             'route_id' => $route->id,
                             'transfer_id' => $transfer->id,
                             'partner_id' => $partner->id,
-                            'price' => rand(1000, 100000)
+                            'price' => rand(1000, 100000),
+                            'price_round_trip' => rand(1000, 100000),
+
                         ]
                     );
 

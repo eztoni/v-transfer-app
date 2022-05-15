@@ -13,50 +13,77 @@ class TransferPrices
     private $partnerId;
     private $routeId;
     private $extraIds = [];
+    private $roundTrip;
+
+    private $breakdownArray;
+
+    private $price;
 
     /**
      * @param $transferId
      * @param $partnerId
      * @param $routeId
      */
-    public function __construct($transferId, $partnerId, $routeId )
+    public function __construct($transferId, $partnerId, $roundTrip, $routeId,$extraIds)
     {
         $this->transferId = $transferId;
         $this->partnerId = $partnerId;
         $this->routeId = $routeId;
+        $this->roundTrip = $roundTrip;
+        $this->extraIds = $extraIds;
+        $this->calculatePrice();
     }
 
 
-    public function getPrice():mixed
+    public function getPrice(): mixed
     {
-        if(empty($this->transferId) || empty($this->partnerId) || empty($this->routeId)){
+        return $this->price;
+    }
+
+    public function getPriceBreakdown()
+    {
+        return $this->breakdownArray;
+    }
+
+    private function calculatePrice()
+    {
+        if (empty($this->transferId) || empty($this->partnerId) || empty($this->routeId)) {
             return null;
         }
 
-        $price =  $this->getRouteData();
+        $routeData = $this->getRouteData();
 
-        $extrasPrices = ExtraPartner::where('partner_id',$this->partnerId)->whereIn('extra_id',$this->extraIds)->get();
 
-        if(!$price){
+        if (!$routeData) {
             return null;
         }
         $price = Money::EUR(
-            $price->price
+            $this->roundTrip ? $routeData->price : $routeData->price_round_trip
         );
-        foreach ($extrasPrices as $exPrice){
-            $price =  $price->add(Money::EUR(
+        $this->breakdownArray[]= ['name'=>'Transfer price','amount'=>$price];
+
+        $extrasPrices = ExtraPartner::where('partner_id', $this->partnerId)
+            ->with('extra')
+            ->whereIn('extra_id', $this->extraIds)
+            ->get();
+        foreach ($extrasPrices as $exPrice) {
+            $money = Money::EUR(
                 $exPrice->price
-            )->getMoney());
+            );
+            $this->breakdownArray[]= ['name'=>'Extra: '.$exPrice->extra->name,'amount'=>$price];
+
+            $price = $price->add($money->getMoney());
         }
 
-        return $price;
+        $this->price = $price;
     }
 
-    public function getRouteData(){
+    public function getRouteData()
+    {
         return DB::table('route_transfer')
-            ->where('route_id',$this->routeId)
-            ->where('partner_id',$this->partnerId)
-            ->where('transfer_id',$this->transferId)
+            ->where('route_id', $this->routeId)
+            ->where('partner_id', $this->partnerId)
+            ->where('transfer_id', $this->transferId)
             ->first();
     }
 
@@ -90,15 +117,7 @@ class TransferPrices
         return $this;
     }
 
-    /**
-     * @param array $extraIds
-     * @return TransferPrices
-     */
-    public function setExtraIds(array $extraIds = []): TransferPrices
-    {
-        $this->extraIds = $extraIds;
-        return $this;
-    }
+
 
 
 }

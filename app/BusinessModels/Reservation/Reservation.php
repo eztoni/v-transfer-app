@@ -27,7 +27,7 @@ class Reservation
 
     private $returnDate;
     private $returnTime;
-    private $returnFlightNumber;    
+    private $returnFlightNumber;
 
 
     public function __construct(\App\Models\Reservation $model)
@@ -51,6 +51,7 @@ class Reservation
         string     $confirmationLanguage,
         Collection $extras,
         Transfer   $transfer,
+        array $priceBreakdown,
         string     $remark='',
         string     $flightNumber ='',
         array      $childSeats = [],
@@ -70,10 +71,11 @@ class Reservation
         $this->model->infants = $infants;
         $this->model->partner_id = $partnerId;
         $this->model->price = $price->getAmount();
-        $this->model->child_seats = json_encode($childSeats);
+        $this->model->child_seats =$childSeats;
         $this->model->flight_number = $flightNumber;
         $this->model->remark = $remark;
         $this->model->transfer_id = $transfer->id;
+        $this->model->price_breakdown =  $priceBreakdown;
         $this->extras = $extras;
         $this->model->luggage = $luggage;
         $this->model->confirmation_language = $confirmationLanguage;
@@ -96,7 +98,9 @@ class Reservation
                 'infants' => 'required|integer',
                 'partner_id' => 'required|integer',
                 'price' => 'required|integer',
-                'child_seats' => 'json',
+                'child_seats' => 'array',
+                'price_breakdown' => 'array',
+                'price_breakdown.*' => 'required_array_keys:name,amount',
                 'flight_number' => 'string',
                 'remark' => 'string',
                 'luggage' => 'required',

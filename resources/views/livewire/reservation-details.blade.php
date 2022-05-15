@@ -34,7 +34,7 @@
                x-on:click.prevent="tab = 'round-trip-reservation'" href="#"><strong>Round Trip Reservation</strong></a>
         @endif
     </div>
-    <div class="bg-base-100 p-2 border-b border-l border-r rounded-b-box" style="border-color: #136baa;
+    <div class="bg-base-100 p-2 border-b border-l border-r rounded-b-box mb-20" style="border-color: #136baa;
 ">
         <div x-show="tab === 'reservation'">
             <livewire:reservation-view :reservation="$reservation"/>
@@ -46,7 +46,6 @@
             </div>
         @endif
     </div>
-
 
     <script>
         function reservationSettings() {

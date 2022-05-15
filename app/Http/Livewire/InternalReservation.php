@@ -34,28 +34,7 @@ class InternalReservation extends Component
         'infants' => 0,
         'luggage' => 1,
     ];
-//    USE FOR TEST
-//    public $stepOneFields = [
-//        "destinationId" => 1,
-//        "startingPointId" => "4",
-//        "endingPointId" => "15",
-//        "dropoffAddress" => "
-//        Lake Mittie 999 Boyle Ridge Apt. 418\n
-//        North Maximillia, HI 24454-0370
-//        ",
-//        "pickupAddress" => "
-//        Nathanmouth 843 Jaskolski Crest\n
-//        Gibsonfurt, AL 79408-5409
-//        ",
-//        "date" => "04.05.2022",
-//        "time" => "21:00",
-//        "returnDate" => "05.05.2022",
-//        "returnTime" => "16:00",
-//        "adults" => "3",
-//        "children" => "2",
-//        "infants" => 0,
-//        "luggage" => 1,
-//    ];
+
     public $fieldNames = [
         'stepOneFields.destinationId' => 'destination',
         'stepOneFields.startingPointId' => 'pickup location',
@@ -214,8 +193,13 @@ class InternalReservation extends Component
 
         $route = $this->selectedRoute;
 
-        $priceHandler = new \App\Services\TransferPrices($this->selectedTransfer, $this->selectedPartner, $route ? $route->id : null);
-
+        $priceHandler = new \App\Services\TransferPrices($this->selectedTransfer,
+            $this->selectedPartner,
+            $this->roundTrip,
+            $route ? $route->id : null,
+            collect($this->stepTwoFields['extras'])->reject(function ($item) {
+            return $item === false;
+        })->keys()->toArray());
 
         $businessModel = new \App\BusinessModels\Reservation\Reservation(new \App\Models\Reservation());
         $businessModel->setRequiredAttributes(
@@ -234,10 +218,9 @@ class InternalReservation extends Component
             $this->stepTwoFields['confirmationLanguage'],
             $this->selectedExtras,
             Transfer::findOrFail($this->selectedTransfer),
-            $this->stepTwoFields['remark']??'',
-
-            $this->stepTwoFields['arrivalFlightNumber']??'',
-
+            $priceHandler->getPriceBreakdown(),
+            $this->stepTwoFields['remark'] ?? '',
+            $this->stepTwoFields['arrivalFlightNumber'] ?? '',
             $this->stepTwoFields['seats'],
             $this->stepOneFields['luggage'],
 
@@ -261,7 +244,7 @@ class InternalReservation extends Component
             $businessModel->setRoundTrip(
                 Carbon::make($this->stepOneFields['returnDate']),
                 Carbon::make($this->stepOneFields['returnTime']),
-                $this->stepTwoFields['departureFlightNumber']??'',
+                $this->stepTwoFields['departureFlightNumber'] ?? '',
             );
         }
 
@@ -269,7 +252,7 @@ class InternalReservation extends Component
         $id = $businessModel->saveReservation();
 
         $this->showToast('Reservation saved');
-        Redirect::route('reservation-details',  $id);
+        Redirect::route('reservation-details', $id);
     }
 
 
@@ -430,11 +413,11 @@ class InternalReservation extends Component
     public function getTotalPriceProperty()
     {
         $route = $this->selectedRoute;
-        $priceCalculator = new \App\Services\TransferPrices($this->selectedTransfer, $this->selectedPartner, $route ? $route->id : null);
-
-        $priceCalculator->setExtraIds(collect($this->stepTwoFields['extras'])->reject(function ($item) {
+        $priceCalculator = new \App\Services\TransferPrices($this->selectedTransfer, $this->selectedPartner, $this->roundTrip, $route ? $route->id : null, collect($this->stepTwoFields['extras'])->reject(function ($item) {
             return $item === false;
         })->keys()->toArray());
+
+
 
         return $priceCalculator->getPrice();
     }
@@ -483,7 +466,7 @@ class InternalReservation extends Component
 
     public function addSeat()
     {
-        $this->stepTwoFields['seats'][] = 0;
+        $this->stepTwoFields['seats'][] = "0";
     }
 
     public function pullTraveller()

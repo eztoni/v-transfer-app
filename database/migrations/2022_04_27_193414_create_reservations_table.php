@@ -41,6 +41,7 @@ class CreateReservationsTable extends Migration
             $table->integer('luggage');
 
             $table->json('child_seats')->nullable();
+            $table->json('price_breakdown');
 
 
 
