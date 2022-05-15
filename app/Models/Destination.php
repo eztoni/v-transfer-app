@@ -33,6 +33,10 @@ class Destination extends Model
             ->logOnlyDirty();
     }
 
+    public function users(){
+        return $this->belongsToMany(User::class);
+    }
+
     public function points(){
         return $this->hasMany(Point::class);
     }

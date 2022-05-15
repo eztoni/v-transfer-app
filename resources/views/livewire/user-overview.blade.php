@@ -58,7 +58,7 @@
 
             </table>
 
-            <div class="modal {{ $userModal ? 'modal-open fadeIn' : '' }}">
+            <div x-data="{}" class="modal {{ $userModal ? 'modal-open fadeIn' : '' }}">
                 <div class="modal-box max-h-screen overflow-y-auto">
                     {{ !empty($this->user->exists) ? 'Updating':'Adding' }} User
                     <hr class="my-4">
@@ -133,6 +133,25 @@
                             @enderror
                         </div>
 
+                        @if($this->user)
+                            <div class="form-control" wire:ignore>
+
+                                <label class="label">
+                                    <span class="label-text">Available Destinations:</span>
+                                </label>
+                                <select class="input input-bordered" multiple id="select2">
+
+                                    @foreach($destinations as $dest)
+                                        <option value="{{$dest->id}}"> {{ Str::ucfirst($dest->name) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
+
+                        @error('selectedDestinations')
+                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                        @enderror
+
                         @if(!$this->user->exists)
                             <div class="form-control">
                                 <label class="label">
@@ -181,5 +200,41 @@
         </x-slot>
     </x-ez-card>
 
+    <script>
+        document.addEventListener('livewire:load', function () {
+            // Run a callback when an event ("foo") is emitted from this component
+            @this.on('fillSelect2', () => {
+
+                $("#select2").val('')
+                $('#select2').select2(
+                    {
+                        closeOnSelect: true,
+                    }
+                ).on('change', function (e) {
+                    @this.set('selectedDestinations', $('#select2').select2("val"))
+                })
+
+
+                for (const element of @this.userDestinations) {
+                    $("#select2").select2("trigger", "select", {
+                        data: { id: element }
+                    });
+                }
+
+            })
+
+
+            @this.on('restartSelect2', () => {
+                $("#select2").val('')
+                $('#select2').select2(
+                    {
+                        closeOnSelect: true,
+                    }
+                ).on('change', function (e) {
+                    @this.set('selectedDestinations', $('#select2').select2("val"))
+                })
+            })
+        });
+    </script>
 
 </div>

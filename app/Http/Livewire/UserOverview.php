@@ -2,10 +2,13 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Destination;
 use App\Models\Owner;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use function PHPUnit\Framework\isEmpty;
+
 
 class UserOverview extends Component
 {
@@ -13,7 +16,9 @@ class UserOverview extends Component
     public $user;
     public $userModal;
     public $userRole = '';
-    public $editData = [];
+    public $selectedDestinations = [];
+    public $userDestinations = [];
+
 
 
     protected function rules()
@@ -27,7 +32,8 @@ class UserOverview extends Component
             'user.oib' => 'digits:13|integer|unique:users,oib,'.$this->user->id,
             'user.set_password'=>'nullable|min:6',
             'user.set_password_confirmation'=>'nullable|same:user.set_password',
-            'userRole'=>'required|in:admin,user'
+            'userRole'=>'required|in:admin,user',
+            'selectedDestinations' => 'required'
         ];
     }
 
@@ -53,18 +59,35 @@ class UserOverview extends Component
     public function addUser(){
         $this->openUserModal();
         $this->user = new User();
+        $this->userDestinations = [];
+        $this->restartSelect2();
     }
 
     public function updateUser($userId){
 
         $this->openUserModal();
-        $this->user = User::find($userId);
+        $this->user = User::findOrFail($userId);
         $this->userRole = $this->user->getRoleNames()->first();
+        $this->userDestinations = $this->user->availableDestinations->pluck('id')->toArray();
 
+        if($this->userDestinations){
+            $this->fillSelect2();
+        }
+    }
+
+    public function restartSelect2()
+    {
+        $this->emit('restartSelect2');
+    }
+
+    public function fillSelect2()
+    {
+        $this->emit('fillSelect2');
     }
 
     public function saveUserData(){
-        $this->validate();
+
+        //$this->validate();
 
         if(!Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN))
             return;
@@ -87,8 +110,10 @@ class UserOverview extends Component
         }
 
         $this->user->company_id = Auth::user()->company_id;
+        $this->user->destination_id = $this->selectedDestinations[0];
         $this->user->save();
         $this->user->assignRole($this->userRole);
+        $this->user->availableDestinations()->sync($this->selectedDestinations);
         $this->user->forgetCachedPermissions();
 
         $this->showToast('User Saved','','success');
@@ -99,6 +124,7 @@ class UserOverview extends Component
 
     public function render()
     {
+
         $currentUser = Auth::user();
         $users = User::with('roles')->where('company_id','=',Auth::user()->company_id)->get();
         $users = $users->reject(function ($user, $key) {
@@ -106,7 +132,8 @@ class UserOverview extends Component
         });
         $roles = \Spatie\Permission\Models\Role::where('name','!=','super-admin')->get();
         $owners = Owner::all();
+        $destinations = Destination::all();
 
-        return view('livewire.user-overview',compact('users','currentUser','roles','owners'));
+        return view('livewire.user-overview',compact('users','currentUser','roles','owners','destinations'));
     }
 }
