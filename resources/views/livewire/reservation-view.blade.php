@@ -1,6 +1,6 @@
 <div>
     <div class="flex gap-2 pt-4 ">
-        <x-ez-card class=" w-1/2 shadow-none border-secondary">
+        <x-ez-card class=" w-1/2 shadow-none border-secondary relative">
             <x-slot name="title">
                 From: {{$reservation->pickupLocation->name}}
 
@@ -12,6 +12,8 @@
                     <p><strong>Pickup Date: </strong>{{$reservation->date->format('d.m.Y')}} </p>
                     <p><strong>Pickup Time:</strong> {{$reservation->time->format('H:i')}} </p>
                 </div>
+
+
             </x-slot>
         </x-ez-card>
         @if($reservation->returnReservation)
@@ -290,7 +292,7 @@
                                 <th>First Name:</th>
                                 <th>Last Name:</th>
                                 <th>Comment</th>
-                                <th>Edit</th>
+                                <th class="text-center">Edit</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -302,9 +304,9 @@
                                     <td> {{$otherTraveller->first_name}}</td>
                                     <td> {{$otherTraveller->last_name}}</td>
                                     <td> {{$otherTraveller->reservations->first()->pivot->comment}}</td>
-                                    <td>
+                                    <td class="text-center">
                                         <button wire:click="openOtherTravellerModal({{$otherTraveller->id}})"
-                                                class="btn md:btn-circle btn-sm btn-success">
+                                                class="btn  btn-sm btn-outline">
                                             <i class="fas fa-pen"></i>
                                         </button>
                                     </td>
@@ -380,7 +382,7 @@
                         <tr>
                             <th>#</th>
                             <th>Name:</th>
-                            <th>Amount:</th>
+                            <th class="text-right">Amount:</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -388,13 +390,13 @@
                             <tr>
                                 <td class="text-info">{{$loop->index+1}}</td>
                                 <td>{{Arr::get($pbItem,'name')}}</td>
-                                <td> {{Arr::get($pbItem,'amount.formatted')}}</td>
+                                <td class="text-right"> {{Arr::get($pbItem,'amount.formatted')}}</td>
                             </tr>
                         @endforeach
                         <tr>
                             <td class="text-info"></td>
                             <td class="font-bold text-lg">TOTAL:</td>
-                            <td  class="font-bold text-lg"> {{\Cknow\Money\Money::EUR($reservation->price)}}</td>
+                            <td  class="font-bold text-lg text-right"> {{\Cknow\Money\Money::EUR($reservation->price)}}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -403,6 +405,10 @@
 
         </div>
     </div>
+
+
+
+
 
 
     <div class="modal {{ $otherTravellerModal ? 'modal-open fadeIn' : '' }}">
