@@ -57,7 +57,7 @@ class TransferAvailability
             })
             ->get()
             ->sortByDesc(function ($item) use ($order) {
-                return in_array($item->partner_id, $order) ? array_search($item->partner_id, $order) : 999;
+                return in_array($item->partner_id, $order) ? array_search($item->partner_id, $order) : 10000 + (int) $item?->partner_id;
             });
 
         return $availableTransfers ?? collect([]);
