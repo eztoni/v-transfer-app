@@ -888,6 +888,11 @@
                                                   model="stepTwoFields.confirmationLanguage" :show-empty-value="false"
                                                   sm="true"></x-form.ez-select>
 
+                                <x-form.ez-select label="Send Email"
+                                                  :items="$this->sendEmailArray"
+                                                  model="stepTwoFields.sendMail" :show-empty-value="false"
+                                                  sm="true"></x-form.ez-select>
+
                                 <button class="btn btn-large btn-accent rounded-box" wire:click="saveReservation"><span
                                         class="mr-4">Complete reservation</span>
                                     <i class="fas fa-arrow-right float-right"></i></button>

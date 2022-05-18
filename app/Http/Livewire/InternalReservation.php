@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Mail\ConfirmationMail;
 use App\Models\Destination;
 use App\Models\Extra;
 use App\Models\Partner;
@@ -12,6 +13,7 @@ use App\Models\Transfer;
 use App\Models\Traveller;
 use App\Services\TransferAvailability;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Livewire\Component;
 use function Clue\StreamFilter\fun;
@@ -132,6 +134,7 @@ class InternalReservation extends Component
             'phone' => null,
         ],
         'confirmationLanguage' => 'en',
+        'sendMail' => 1,
         'seats' => [
 
         ],
@@ -153,6 +156,11 @@ class InternalReservation extends Component
     public $activateOtherTravellersInput = false;
     public $activateChildSeats = false;
     public $activateExtras = false;
+    public $emailList = array();
+    public $sendEmailArray = [
+        0 => 'No',
+        1 => 'Yes',
+    ];
 
     public function getExtrasProperty()
     {
@@ -251,6 +259,22 @@ class InternalReservation extends Component
 
         $id = $businessModel->saveReservation();
 
+        if($this->stepTwoFields['sendMail'] == 1){
+
+            $travellerMail = $this->stepTwoFields['leadTraveller']['email'];
+            $this->emailList = \Arr::add($this->emailList, 'travellerMail', $travellerMail);
+
+            $partnerMail = Partner::findOrFail($this->selectedPartner)->email;
+            $this->emailList = \Arr::add($this->emailList, 'partnerMail', $partnerMail);
+
+            $accommodationMail = Point::find($this->stepOneFields['endingPointId'])->reception_email;
+            if($accommodationMail){
+                $this->emailList = \Arr::add($this->emailList, 'accommodationMail', $accommodationMail);
+            }
+
+            $this->sendConfirmationMail($this->emailList,$id);
+        }
+
         $this->showToast('Reservation saved');
         Redirect::route('reservation-details', $id);
     }
@@ -267,6 +291,10 @@ class InternalReservation extends Component
 
         $this->initiateFields();
 
+    }
+
+    public function sendConfirmationMail($userEmails = array(),$resId){
+        Mail::to($userEmails)->send(new ConfirmationMail($resId));
     }
 
     private function initiateFields()
