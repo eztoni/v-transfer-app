@@ -54,6 +54,11 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         Route::get('/reports', Dashboard::class)->name('reports');
 
 
+        Route::get('/mail', function () {
+            return new App\Mail\ConfirmationMail(1);
+        });
+
+
         //Age Groups
         Route::get('/age-groups', AgeGroupOverview::class)->name('age-groups');
         Route::get('/age-group-categories/{ageGroup}', AgeGroupCategories::class)->name('age-group-categories');
