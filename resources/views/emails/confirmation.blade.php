@@ -244,7 +244,6 @@
                                                         </tr>
                                                         <!-- DEVIDER -->
 
-
                                                         <tr>
                                                             <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                                                 <div style="font-family:Roboto, Helvetica, sans-serif;font-size:16px;font-weight:300;text-align:left;color:#616161;">
@@ -288,11 +287,51 @@
 
                                                                     <p style="font-size: 14px">Luggage: {{$reservation->luggage}}</p>
 
-
                                                                 </div>
                                                             </td>
                                                         </tr>
 
+                                                        <!-- DEVIDER -->
+                                                        <tr>
+                                                            <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                                <p style="border-top:solid 1px #E0E0E0;font-size:1px;margin:0px auto;width:100%;">
+                                                                </p>
+                                                                <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" style="border-top:solid 1px #E0E0E0;font-size:1px;margin:0px auto;width:550px;" role="presentation" width="550px" ><tr><td style="height:0;line-height:0;"> &nbsp;
+                                        </td></tr></table><![endif]-->
+                                                            </td>
+                                                        </tr>
+                                                        <!-- DEVIDER -->
+
+                                                        <tr>
+                                                            <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                                <div style="font-family:Roboto, Helvetica, sans-serif;font-size:16px;font-weight:300;text-align:left;color:#616161;">
+                                                                    <h3 style="font-weight: bold; margin-top: 0; margin-bottom: 1%"> <span style="color: #3498DB; text-decoration: none">
+                                                                          Transfer price breakdown</span>
+                                                                    </h3>
+
+                                                                    @foreach($reservation->price_breakdown as $pbItem)
+                                                                        <p style="font-size: 14px">{{$loop->index+1}}. {{Arr::get($pbItem,'name')}} :  {{Arr::get($pbItem,'amount.formatted')}}</p>
+                                                                    @endforeach
+
+                                                                    <p style="font-size: 18px"><b>Total Price : </b> <b>{{\Cknow\Money\Money::EUR($reservation->price)}}</b> </p>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- DEVIDER -->
+                                                        <tr>
+                                                            <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                                <p style="border-top:solid 1px #E0E0E0;font-size:1px;margin:0px auto;width:100%;">
+                                                                </p>
+                                                                <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" style="border-top:solid 1px #E0E0E0;font-size:1px;margin:0px auto;width:550px;" role="presentation" width="550px" ><tr><td style="height:0;line-height:0;"> &nbsp;
+                                        </td></tr></table><![endif]-->
+                                                            </td>
+                                                        </tr>
+                                                        <!-- DEVIDER -->
+
+
+
+                                                        <!-- IMPORTANT NOTES -->
                                                         <tr>
                                                             <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                                                 <div style="font-family:Roboto, Helvetica, sans-serif;font-size:14px;font-weight:400;line-height:24px;text-align:left;">
@@ -340,7 +379,6 @@
                                                             </td>
                                                         </tr>
 
-
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -350,9 +388,6 @@
                                     </table>
                                 </div>
                             </tr>
-
-
-
 
                             </tbody>
                         </table>
@@ -365,6 +400,9 @@
     </div>
 
     <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" bgcolor="#C1272D" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+
+
+    <!-- VALAMAR TRANSFER SERVICE FOOTER -->
     <div style="background:#d5dde4;background-color:#d5dde4;margin:0px auto;max-width:600px;">
         <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#d5dde4;background-color:#d5dde4;width:100%;">
             <tbody>
@@ -392,6 +430,8 @@
         </table>
     </div>
     <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+
+    <!-- FOOTER BELOW MAIL -->
     <div style="margin:0px auto;max-width:600px;">
         <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
             <tbody>
