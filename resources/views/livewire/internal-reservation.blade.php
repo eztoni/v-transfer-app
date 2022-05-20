@@ -88,6 +88,8 @@
 
                                 </tbody>
                             </table>
+                            <label for="internal-modal" class="pull-right mt-4 btn btn-sm btn-outline">Close</label>
+
                         </x-ez-modal>
 
                     </x-slot>
