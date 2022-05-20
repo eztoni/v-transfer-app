@@ -57,6 +57,7 @@ class TransferPrices
         if (!$routeData) {
             return null;
         }
+
         $price = Money::EUR(
             $this->roundTrip ? $routeData->price : $routeData->price_round_trip
         );
@@ -66,11 +67,12 @@ class TransferPrices
             ->with('extra')
             ->whereIn('extra_id', $this->extraIds)
             ->get();
+
         foreach ($extrasPrices as $exPrice) {
             $money = Money::EUR(
                 $exPrice->price
             );
-            $this->breakdownArray[]= ['name'=>'Extra: '.$exPrice->extra->name,'amount'=>$price];
+            $this->breakdownArray[]= ['name'=>'Extra: '.$exPrice->extra->name,'amount'=>$money];
 
             $price = $price->add($money->getMoney());
         }

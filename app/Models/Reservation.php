@@ -14,8 +14,8 @@ class Reservation extends Model
     protected $casts = [
         'child_seats' => 'array',
         'price_breakdown' => 'array',
-        'date' => 'date',
-        'time' => 'datetime',
+        'date' => 'date:d.m.Y',
+        'time' => 'datetime:H:i',
     ];
 
     public const  CONFIRMATION_LANGUAGES = [

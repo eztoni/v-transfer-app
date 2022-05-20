@@ -28,6 +28,10 @@ class ReservationView extends Component
         ];
     }
 
+    protected $listeners = [
+        'updateCompleted' => 'render'
+    ];
+
     public function mount(Reservation $reservation)
     {
         $this->reservation = $reservation;

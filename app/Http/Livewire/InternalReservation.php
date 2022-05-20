@@ -209,7 +209,7 @@ class InternalReservation extends Component
             return $item === false;
         })->keys()->toArray());
 
-        $businessModel = new \App\BusinessModels\Reservation\Reservation(new \App\Models\Reservation());
+        $businessModel = new \App\BusinessModels\Reservation\Actions\CreateReservation(new \App\Models\Reservation());
         $businessModel->setRequiredAttributes(
             auth()->user()->destination_id,
             Carbon::make($this->stepOneFields['date']),
@@ -445,11 +445,9 @@ class InternalReservation extends Component
     public function getTotalPriceProperty()
     {
         $route = $this->selectedRoute;
-        $priceCalculator = new \App\Services\TransferPrices($this->selectedTransfer, $this->selectedPartner, $this->roundTrip, $route ? $route->id : null, collect($this->stepTwoFields['extras'])->reject(function ($item) {
+        $priceCalculator = new \App\Services\TransferPrices($this->selectedTransfer, $this->selectedPartner, $this->roundTrip, $route?->id, collect($this->stepTwoFields['extras'])->reject(function ($item) {
             return $item === false;
         })->keys()->toArray());
-
-
 
         return $priceCalculator->getPrice();
     }

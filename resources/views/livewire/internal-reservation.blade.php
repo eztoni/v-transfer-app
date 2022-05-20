@@ -434,11 +434,11 @@
                             $lastTransfer = null;
 
                         @endphp
-                        @foreach($this->availableTransfers as $transfer)
+                        @foreach($this->availableTransfers as $item)
 
 
 
-                            @if(!$lastTransfer ||($lastTransfer && $lastTransfer->partner->id !== $transfer->partner->id))
+                            @if(!$lastTransfer ||($lastTransfer && $lastTransfer->partner->id !== $item->partner->id))
 
                                 @if($lastTransfer)
                     </div>
@@ -449,15 +449,15 @@
                     class="border-2  gap-2 mb-2 bg-gradient-to-b from-primary to-white pb-2 flex flex-col rounded-box relative shadow-lg">
                     <div class="w-full flex justify-between text-neutral-content px-4 pt-1 text-lg font-bold "
                     >
-                        <span>  {{$transfer->partner->id}}</span>
+                        <span>  {{$item->partner->name}}</span>
                         <a class="font-medium link"
-                           href="tel:{{$transfer->partner->phone}}">{{$transfer->partner->phone}}</a>
+                           href="tel:{{$item->partner->phone}}">{{$item->partner->phone}}</a>
                     </div>
 
                     @endif
 
                     @php
-                        $lastTransfer = $transfer;
+                        $lastTransfer = $item;
                     @endphp
                     <div class="card rounded-none bg-base-100  ">
                         <div class="card-body p-2">
@@ -465,28 +465,28 @@
                             <div class="flex gap-4">
                                 <div class="basis-1/5">
                                     <img class="h-24 w-full object-cover rounded-xl"
-                                         src="{{$transfer->primaryImageUrl}}"/>
+                                         src="{{$item->transfer->primaryImageUrl}}"/>
                                 </div>
                                 <div class="basis-4/5">
-                                    <h2 class="card-title mb-2">{{$transfer->name}}</h2>
+                                    <h2 class="card-title mb-2">{{$item->transfer->name}}</h2>
                                     <div class="flex gap-4 mb-2">
                                         <span class=" ">Type: Van</span>
                                         <span
-                                            class=" ">Max. Occ: {{$transfer->vehicle->max_occ}}</span>
+                                            class=" ">Max. Occ: {{$item->transfer->vehicle->max_occ}}</span>
                                         <span
-                                            class=" ">Max. Luggage:{{$transfer->vehicle->max_luggage}}</span>
+                                            class=" ">Max. Luggage:{{$item->transfer->vehicle->max_luggage}}</span>
 
                                     </div>
 
                                     <span class="  ">Price: <b>
                                      {{\App\Facades\EzMoney::format($this->roundTrip
-                                            ?$transfer->pivot->price_round_trip
-                                            :$transfer->pivot->price)}}
+                                            ?$item->price_round_trip
+                                            :$item->price)}}
                                             EUR</b></span>
 
                                     <button
                                         class="btn btn-sm btn-primary absolute bottom-2 rounded-xl right-2"
-                                        wire:click="selectTransfer({{$transfer->id}},{{$transfer->partner->id}})">
+                                        wire:click="selectTransfer({{$item->transfer_id}},{{$item->partner_id}})">
                                         Select
                                     </button>
                                 </div>

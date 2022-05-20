@@ -1,5 +1,15 @@
 <div x-data="reservationSettings">
 
+
+        @if($this->editReservation)
+            <x-ez-modal isOpen>
+            <livewire:edit-transfer-reservation :reservation="$this->editReservation"/>
+
+        </x-ez-modal>
+        @endif
+
+
+
     <x-ez-card class=" flex-grow mb-2">
 
 
@@ -27,11 +37,22 @@
     <div class="divider"></div>
     <div class="tabs ">
         <a class="tab tab-lifted tab-lg flex-grow" :class="{ 'tab-active': tab === 'reservation' }"
-           x-on:click.prevent="tab = 'reservation'" href="#"><strong>Reservation</strong></a>
+           x-on:click.prevent="tab = 'reservation'" href="#"><strong>Reservation</strong>
+            <button x-show="tab === 'reservation'" class="btn btn-outline float-right btn-sm absolute right-2"
+                wire:click="openUpdateModal({{$reservation->id}})"
+            ><i class="fas fa-pen"></i></button>
+        </a>
         @if($reservation->is_round_trip)
 
             <a class="tab tab-lifted tab-lg flex-grow" :class="{ 'tab-active': tab === 'round-trip-reservation' }"
-               x-on:click.prevent="tab = 'round-trip-reservation'" href="#"><strong>Round Trip Reservation</strong></a>
+               x-on:click.prevent="tab = 'round-trip-reservation'" href="#"><strong>Round Trip Reservation</strong>
+
+                <button x-show="tab === 'round-trip-reservation'"
+                        class="btn btn-outline float-right btn-sm absolute right-2"
+                        wire:click="openUpdateModal({{$reservation->returnReservation->id}})"
+                ><i class="fas fa-pen"></i></button>
+
+            </a>
         @endif
     </div>
     <div class="bg-base-100 p-2 border-b border-l border-r rounded-b-box mb-20" style="border-color: #136baa;
@@ -46,6 +67,8 @@
             </div>
         @endif
     </div>
+
+
 
     <script>
         function reservationSettings() {
