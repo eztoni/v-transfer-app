@@ -449,7 +449,7 @@
                     class="border-2  gap-2 mb-2 bg-gradient-to-b from-primary to-white pb-2 flex flex-col rounded-box relative shadow-lg">
                     <div class="w-full flex justify-between text-neutral-content px-4 pt-1 text-lg font-bold "
                     >
-                        <span>  {{$item->partner->id}}</span>
+                        <span>  {{$item->partner->name}}</span>
                         <a class="font-medium link"
                            href="tel:{{$item->partner->phone}}">{{$item->partner->phone}}</a>
                     </div>
