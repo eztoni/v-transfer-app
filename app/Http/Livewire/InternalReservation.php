@@ -261,9 +261,13 @@ class InternalReservation extends Component
 
         if($this->stepTwoFields['sendMail'] == 1){
 
-            $travellerMail = $this->stepTwoFields['leadTraveller']['email'];
-            $this->emailList = \Arr::add($this->emailList, 'travellerMail', $travellerMail);
 
+            $travellerMail = $this->stepTwoFields['leadTraveller']['email'];
+            if($travellerMail){
+            $this->emailList = \Arr::add($this->emailList, 'travellerMail', $travellerMail);
+            }
+
+            /*
             $partnerMail = Partner::findOrFail($this->selectedPartner)->email;
             $this->emailList = \Arr::add($this->emailList, 'partnerMail', $partnerMail);
 
@@ -271,8 +275,10 @@ class InternalReservation extends Component
             if($accommodationMail){
                 $this->emailList = \Arr::add($this->emailList, 'accommodationMail', $accommodationMail);
             }
+            */
 
             $this->sendConfirmationMail($this->emailList,$id);
+
         }
 
         $this->showToast('Reservation saved');

@@ -102,7 +102,7 @@
                                         <tbody>
                                         <tr>
                                             <td style="width:128px;">
-                                                <img height="auto" src="https://www.valamar.com/CmsMedia/V3/img/logos/logo_valamar_color.svg" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="128" />
+                                                <img height="auto" src="{{asset('storage/static_images/valamar_horizontal.png')}}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="128" />
                                             </td>
                                         </tr>
                                         </tbody>
