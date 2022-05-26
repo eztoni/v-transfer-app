@@ -5,11 +5,20 @@ namespace App\Http\Livewire;
 use App\BusinessModels\Reservation\Actions\UpdateReservation;
 use App\Models\Reservation;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
+use App\Mail\ModificationMail;
 
 class EditTransferReservation extends Component
 {
     public Reservation $reservation;
+    public $sendModifyMail = 1;
+    public $emailList = array();
+    public $sendEmailArray = [
+        0 => 'No',
+        1 => 'Yes',
+    ];
 
 
     protected function rules()
@@ -53,13 +62,30 @@ class EditTransferReservation extends Component
         $this->emit('updateCancelled');
     }
 
+    public function sendModificationMail($userEmails = array(),$resId){
+        Mail::to($userEmails)->send(new ModificationMail($resId));
+    }
+
     public function save()
     {
-        $this->validate($this->rules(),[],$this->fieldNames);
 
+        $this->reservation->date = $this->reservation->date->format('Y-m-d');
+        $this->validate($this->rules(),[],$this->fieldNames);
         $updater = new UpdateReservation($this->reservation);
 
         $updater->updateReservation();
+
+        if($this->sendModifyMail == 1){
+
+
+            $travellerMail = $this->reservation->leadTraveller?->email;
+            if($travellerMail){
+                $this->emailList = \Arr::add($this->emailList, 'travellerMail', $travellerMail);
+            }
+
+            $this->sendModificationMail($this->emailList,$this->reservation->id);
+
+        }
 
 
         $this->emit('updateCompleted');

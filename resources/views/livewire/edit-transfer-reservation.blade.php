@@ -79,8 +79,14 @@
         @enderror
     </div>
 
-    <div class=" my-4">
 
+    <x-form.ez-select label="Send Modify Email"
+                      :items="$this->sendEmailArray"
+                      model="sendModifyMail" :show-empty-value="false"
+                      sm="true"></x-form.ez-select>
+
+
+    <div class=" my-4">
 
         <button class="btn btn-success text-white float-right" wire:click="save">
             Save

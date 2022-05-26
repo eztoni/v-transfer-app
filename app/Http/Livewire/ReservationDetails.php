@@ -15,11 +15,8 @@ class ReservationDetails extends Component
 
     protected $listeners = [
         'updateCancelled' => 'closeUpdateModal',
-        'updateCompleted' => 'closeUpdateModal'
+        'updateCompleted' => 'updateCompletedCloseModal'
     ];
-
-
-
 
     public function mount()
     {
@@ -33,6 +30,13 @@ class ReservationDetails extends Component
         $this->editReservation = Reservation::findOrFail($id);
         $this->openEditModal = true;
     }
+
+    public function updateCompletedCloseModal(){
+        $this->editReservation = null;
+        $this->openEditModal = false;
+        $this->showToast('Reservation updated');
+    }
+
     public function closeUpdateModal()
     {
         $this->editReservation = null;
