@@ -124,8 +124,6 @@
                                         closeOnSelect: true,
                                         tags: true,
                                         placeholder: 'Select or type pickup address',
-
-
                                         }
                                         ).on('change', function (e) {
                                         @this.

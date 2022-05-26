@@ -78,7 +78,10 @@ class Extra extends Model implements HasMedia
     {
         return self::whereHas('partner',function($q)use($partnerId){
             $q->where('id',$partnerId);
-        })->with(array_merge(['partner'],$with))->get();
+        })->with(array_merge(['partner'=>function($q) use($partnerId){
+            $q->where('id',$partnerId);
+        }],$with))->get();
+
     }
 
     public function partner()

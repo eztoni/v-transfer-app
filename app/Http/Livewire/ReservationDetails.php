@@ -9,13 +9,15 @@ class ReservationDetails extends Component
 {
 
     public Reservation $reservation;
-    public bool $openEditModal = false;
 
     public Reservation|null $editReservation = null;
+    public Reservation|null $cancelReservation = null;
 
     protected $listeners = [
         'updateCancelled' => 'closeUpdateModal',
-        'updateCompleted' => 'updateCompletedCloseModal'
+        'updateCompleted' => 'updateCompleted',
+        'cancelCancelled' => 'closeCancelModal',
+        'cancelCompleted' => 'closeCancelModal'
     ];
 
     public function mount()
@@ -24,23 +26,28 @@ class ReservationDetails extends Component
             $this->redirect(route('reservation-details', $this->reservation->round_trip_id));
         }
     }
+    public function openCancelModal($id)
+    {
+        $this->cancelReservation = Reservation::findOrFail($id);
+    }
+    public function closeCancelModal()
+    {
+        $this->cancelReservation = null;
+    }
 
     public function openUpdateModal($id)
     {
         $this->editReservation = Reservation::findOrFail($id);
-        $this->openEditModal = true;
     }
 
-    public function updateCompletedCloseModal(){
-        $this->editReservation = null;
-        $this->openEditModal = false;
+    public function updateCompleted(){
+        $this->closeUpdateModal();
         $this->showToast('Reservation updated');
     }
 
     public function closeUpdateModal()
     {
         $this->editReservation = null;
-        $this->openEditModal = false;
     }
 
     public function render()

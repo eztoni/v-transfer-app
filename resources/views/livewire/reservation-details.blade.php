@@ -8,6 +8,11 @@
         </x-ez-modal>
         @endif
 
+        @if($this->cancelReservation)
+            <x-ez-modal isOpen>
+                <livewire:cancel-transfer-reservation :reservation="$this->cancelReservation"/>
+            </x-ez-modal>
+        @endif
 
 
     <x-ez-card class=" flex-grow mb-2">
@@ -37,18 +42,30 @@
     <div class="divider"></div>
     <div class="tabs ">
         <a class="tab tab-lifted tab-lg flex-grow" :class="{ 'tab-active': tab === 'reservation' }"
-           x-on:click.prevent="tab = 'reservation'" href="#"><strong>Reservation</strong>
-            <button x-show="tab === 'reservation'" class="btn btn-outline float-right btn-sm absolute right-2"
+           x-on:click.prevent="tab = 'reservation'" href="#">
+            <button x-show="tab === 'reservation'"
+                    class="btn btn-outline btn-error  btn-sm absolute left-2"
+                    wire:click="openCancelModal({{$reservation->id}})"
+            ><i class="fas fa-times"></i></button>
+            <strong>Reservation</strong>
+            <button x-show="tab === 'reservation'" class="btn btn-outline  float-right btn-sm absolute right-2"
                 wire:click="openUpdateModal({{$reservation->id}})"
             ><i class="fas fa-pen"></i></button>
         </a>
         @if($reservation->is_round_trip)
 
             <a class="tab tab-lifted tab-lg flex-grow" :class="{ 'tab-active': tab === 'round-trip-reservation' }"
-               x-on:click.prevent="tab = 'round-trip-reservation'" href="#"><strong>Round Trip Reservation</strong>
+               x-on:click.prevent="tab = 'round-trip-reservation'" href="#">
 
                 <button x-show="tab === 'round-trip-reservation'"
-                        class="btn btn-outline float-right btn-sm absolute right-2"
+                        class="btn btn-outline btn-error btn-sm absolute left-2"
+                        wire:click="openCancelModal({{$reservation->returnReservation->id}})"
+                ><i class="fas fa-times"></i></button>
+
+                <strong>Round Trip Reservation</strong>
+
+                <button x-show="tab === 'round-trip-reservation'"
+                        class="btn btn-outline  btn-sm absolute right-2"
                         wire:click="openUpdateModal({{$reservation->returnReservation->id}})"
                 ><i class="fas fa-pen"></i></button>
 

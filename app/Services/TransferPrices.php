@@ -59,7 +59,7 @@ class TransferPrices
         }
 
         $price = Money::EUR(
-            $this->roundTrip ? $routeData->price : $routeData->price_round_trip
+            $this->roundTrip ? $routeData->price_round_trip : $routeData->price
         );
         $this->breakdownArray[]= ['name'=>'Transfer price','amount'=>$price];
 
