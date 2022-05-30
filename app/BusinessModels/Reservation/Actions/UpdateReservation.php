@@ -2,6 +2,8 @@
 
 namespace App\BusinessModels\Reservation\Actions;
 
+use App\Events\ReservationUpdatedEvent;
+
 class UpdateReservation extends \App\BusinessModels\Reservation\Reservation
 {
     public function updateReservation()
@@ -10,7 +12,7 @@ class UpdateReservation extends \App\BusinessModels\Reservation\Reservation
 
         $this->model->save();
 
-        //TODO: Dispatch update event
+        ReservationUpdatedEvent::dispatch($this->model);
 
     }
 }

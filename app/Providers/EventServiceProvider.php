@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\ReservationCancelledEvent;
+use App\Events\ReservationCreatedEvent;
+use App\Events\ReservationUpdatedEvent;
+use App\Listeners\SendCancelMailListener;
+use App\Listeners\SendConfirmationMailListener;
+use App\Listeners\SendUpdateMailListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -18,11 +24,15 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        'Illuminate\Mail\Events\MessageSending' => [
-            'App\Listeners\LogSendingMessage',
+
+        ReservationCreatedEvent::class => [
+            SendConfirmationMailListener::class,
         ],
-        'Illuminate\Mail\Events\MessageSent' => [
-            'App\Listeners\LogSentMessage',
+        ReservationUpdatedEvent::class => [
+            SendUpdateMailListener::class,
+        ],
+        ReservationCancelledEvent::class => [
+            SendCancelMailListener::class,
         ],
     ];
 

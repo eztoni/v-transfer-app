@@ -43,12 +43,14 @@ class CreateReservationsTable extends Migration
             $table->json('child_seats')->nullable();
             $table->json('price_breakdown');
 
+            $table->enum('status',\App\Models\Reservation::STATUS_ARRAY)->default(\App\Models\Reservation::STATUS_CONFIRMED);
 
 
             $table->enum('confirmation_language',array_keys(\App\Models\Reservation::CONFIRMATION_LANGUAGES))->default('en');
 
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
+
 
             $table->timestamps();
         });

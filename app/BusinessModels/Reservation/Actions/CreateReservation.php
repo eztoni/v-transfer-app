@@ -3,6 +3,7 @@
 namespace App\BusinessModels\Reservation\Actions;
 
 use App\BusinessModels\Reservation\Reservation;
+use App\Events\ReservationCreatedEvent;
 use App\Models\Transfer;
 use App\Models\Traveller;
 use App\Services\Helpers\ReservationPartnerOrderCache;
@@ -74,6 +75,9 @@ class CreateReservation extends Reservation
             if ($this->roundTrip) {
                 $this->saveRoundTrip();
             }
+
+            ReservationCreatedEvent::dispatch($this->model);
+
         });
 
         //Cache the order
@@ -103,6 +107,7 @@ class CreateReservation extends Reservation
             $roundTrip->travellers()->save($traveller, ['comment' => $this->travellerComments[$k], 'lead' => false]);
         }
 
+        ReservationCreatedEvent::dispatch($roundTrip);
 
         $this->model->round_trip_id = $roundTrip->id;
         $this->model->save();

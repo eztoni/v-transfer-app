@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        #It will create the companies aswell
         \App\Models\Point::factory(40)->create();
         \App\Models\Partner::factory(4)->create();
         \App\Models\Route::factory(6)->create();
@@ -24,6 +23,7 @@ class DatabaseSeeder extends Seeder
             VehicleSeeder::class,
             ExtrasSeeder::class,
             TransferExtrasPriceSeeder::class,
+            PartnerDestinationSeeder::class,
         ]);
         (new  SeedImagesToModels())(Transfer::all(),'transferImages');
 

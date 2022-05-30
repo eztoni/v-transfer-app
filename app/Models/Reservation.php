@@ -11,6 +11,16 @@ use Money\Money;
 
 class Reservation extends Model
 {
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_CONFIRMED = 'confirmed';
+    public const STATUS_CANCELLED = 'cancelled';
+
+    const  STATUS_ARRAY = [
+        self::STATUS_PENDING,
+        self::STATUS_CONFIRMED,
+        self::STATUS_CANCELLED,
+    ];
+
     protected $casts = [
         'child_seats' => 'array',
         'price_breakdown' => 'array',
@@ -25,6 +35,17 @@ class Reservation extends Model
         'fr' => 'French',
     ];
 
+    public function isCancelled(){
+        return $this->status === self::STATUS_CANCELLED;
+    }
+
+    public function isPending(){
+        return $this->status === self::STATUS_PENDING;
+    }
+
+    public function isConfirmed(){
+        return $this->status === self::CONFIRMATION_LANGUAGES;
+    }
 
     public function getIsRoundTripAttribute()
     {
@@ -116,7 +137,6 @@ class Reservation extends Model
             if (!$model->isDirty('created_by') && auth()->user()) {
                 $model->created_by = auth()->user()->id;
             }
-
         });
 
         static::updating(function ($model) {

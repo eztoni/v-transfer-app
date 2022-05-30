@@ -51,6 +51,7 @@ class TransferAvailability
         $availableTransfers = RouteTransfer::query()
             ->where('route_id', $this->route->id)
             ->with(['transfer', 'partner'])
+            ->whereHas('partner')
             ->whereHas('transfer.vehicle', function ($q) {
                 $q->where('max_luggage', '>=', $this->luggage)
                     ->where('max_occ', '>=', $this->getTotalNumOfPeople());

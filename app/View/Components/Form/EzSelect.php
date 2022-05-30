@@ -16,7 +16,6 @@ class EzSelect extends Component
     public  $labelTextClasses;
     public array $items;
     public bool $showEmptyValue = true;
-
     public  $sm;
 
     public function __construct(
@@ -40,6 +39,7 @@ class EzSelect extends Component
         $this->labelClasses = $labelClasses;
         $this->labelTextClasses = $labelTextClasses;
         $this->showEmptyValue = $showEmptyValue;
+
     }
 
     public function render()

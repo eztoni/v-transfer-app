@@ -41,38 +41,50 @@
 
     <div class="divider"></div>
     <div class="tabs ">
-        <a class="tab tab-lifted tab-lg flex-grow" :class="{ 'tab-active': tab === 'reservation' }"
+        <a class="tab tab-lifted  tab-lg flex-grow"
+
+           :class="{ 'tab-active': tab === 'reservation' }"
            x-on:click.prevent="tab = 'reservation'" href="#">
-            <button x-show="tab === 'reservation'"
-                    class="btn btn-outline btn-error  btn-sm absolute left-2"
-                    wire:click="openCancelModal({{$reservation->id}})"
-            ><i class="fas fa-times"></i></button>
+            @if(!$reservation->isCancelled())
+                <button x-show="tab === 'reservation'"
+                        class="btn btn-outline btn-error  btn-sm absolute left-2"
+                        wire:click="openCancelModal({{$reservation->id}})"
+                ><i class="fas fa-times"></i></button>
+            @endif
+
             <strong>Reservation</strong>
+                @if(!$reservation->isCancelled())
+
             <button x-show="tab === 'reservation'" class="btn btn-outline  float-right btn-sm absolute right-2"
                 wire:click="openUpdateModal({{$reservation->id}})"
             ><i class="fas fa-pen"></i></button>
+                @endif
+
         </a>
         @if($reservation->is_round_trip)
 
             <a class="tab tab-lifted tab-lg flex-grow" :class="{ 'tab-active': tab === 'round-trip-reservation' }"
                x-on:click.prevent="tab = 'round-trip-reservation'" href="#">
-
-                <button x-show="tab === 'round-trip-reservation'"
-                        class="btn btn-outline btn-error btn-sm absolute left-2"
-                        wire:click="openCancelModal({{$reservation->returnReservation->id}})"
-                ><i class="fas fa-times"></i></button>
+                @if(!$reservation->returnReservation->isCancelled())
+                    <button x-show="tab === 'round-trip-reservation'"
+                            class="btn btn-outline btn-error btn-sm absolute left-2"
+                            wire:click="openCancelModal({{$reservation->returnReservation->id}})"
+                    ><i class="fas fa-times"></i></button>
+                @endif
 
                 <strong>Round Trip Reservation</strong>
+                    @if(!$reservation->isCancelled())
 
                 <button x-show="tab === 'round-trip-reservation'"
                         class="btn btn-outline  btn-sm absolute right-2"
                         wire:click="openUpdateModal({{$reservation->returnReservation->id}})"
                 ><i class="fas fa-pen"></i></button>
+                    @endif
 
             </a>
         @endif
     </div>
-    <div class="bg-base-100 p-2 border-b border-l border-r rounded-b-box mb-20" style="border-color: #136baa;
+    <div class="bg-base-100 p-2 border-b border-l border-r rounded-b-box mb-20 " style="border-color: #136baa;
 ">
         <div x-show="tab === 'reservation'">
             <livewire:reservation-view :reservation="$reservation"/>
