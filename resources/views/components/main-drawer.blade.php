@@ -25,7 +25,7 @@
                 <a class="btn btn-circle  btn-ghost "
                    @if(\Auth::user()->hasAnyRole(App\Models\User::ROLE_SUPER_ADMIN
 
-,App\Models\User::ROLE_ADMIN))
+                    ,App\Models\User::ROLE_ADMIN))
                    href="{{route('admin.company-dashboard')}}"
                     @endif
                 >
