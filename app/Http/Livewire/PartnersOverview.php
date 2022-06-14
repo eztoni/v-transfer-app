@@ -5,6 +5,8 @@ namespace App\Http\Livewire;
 use App\Models\Destination;
 use App\Models\Partner;
 use App\Models\User;
+use App\Scopes\CompanyScope;
+use App\Scopes\DestinationScope;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -20,6 +22,8 @@ class PartnersOverview extends Component
     public $softDeleteModal;
     public $deleteId = '';
     public $selectedDestinations = [];
+    public $partnerDestinations = [];
+
 
 
     protected function rules()
@@ -27,6 +31,7 @@ class PartnersOverview extends Component
         return [
             'partner.name'=>'required|max:255|min:2',
             'partner.email'=>'required|email',
+            'selectedDestinations'=>'required',
             'partner.phone'=>'required|max:255',
         ];
     }
@@ -37,6 +42,47 @@ class PartnersOverview extends Component
 
     public function openPartnerModal(){
         $this->partnerModal = true;
+    }
+
+    public function closePartnerModal(){
+        $this->partnerModal = false;
+    }
+
+    public function mount(){
+        $this->partner = new Partner();
+    }
+
+    public function restartSelect2()
+    {
+        $this->emit('restartSelect2');
+    }
+
+    public function fillSelect2()
+    {
+        $this->emit('fillSelect2');
+    }
+
+    public function updatedPartnerDestinationId(){
+        $this->partner->starting_point_id = null;
+        $this->partner->ending_point_id = null;
+    }
+
+    public function addPartner(){
+        $this->openPartnerModal();
+        $this->partner = new Partner();
+        $this->partnerDestinations = [];
+        $this->restartSelect2();
+    }
+
+    public function updatePartner($partnerId){
+
+        $this->openPartnerModal();
+        $this->partner = Partner::findOrFail($partnerId);
+        $this->partnerDestinations = $this->partner->destinations->pluck('id')->toArray();
+
+        if($this->partnerDestinations){
+            $this->fillSelect2();
+        }
     }
 
     public function getPartnerDestinationsProperty()
@@ -50,25 +96,10 @@ class PartnersOverview extends Component
 
     public function getDestinationPartnersProperty()
     {
-        return Partner::with('destinations')->where('id', '=', 2)->first()->destinations;
-    }
+        if($this->partner){
+            return Partner::with('destinations')->where('id', '=', 2)->first()->destinations;
+        }
 
-    public function closePartnerModal(){
-        $this->partnerModal = false;
-    }
-
-    public function mount(){
-        $this->partner = new Partner();
-    }
-
-    public function updatedPartnerDestinationId(){
-        $this->partner->starting_point_id = null;
-        $this->partner->ending_point_id = null;
-    }
-
-    public function addPartner(){
-        $this->openPartnerModal();
-        $this->partner = new Partner();
     }
 
     public function savePartnerData(){
@@ -79,6 +110,7 @@ class PartnersOverview extends Component
         $this->partner->owner_id = Auth::user()->owner_id;
         $this->validate();
         $this->partner->save();
+        $this->partner->destinations()->sync($this->selectedDestinations);
         $this->showToast('Saved','Partner Saved','success');
         $this->closePartnerModal();
 
@@ -105,7 +137,7 @@ class PartnersOverview extends Component
     public function render()
     {
         $destinations = Destination::all();
-        $partners = Partner::search('name',$this->search)->paginate(10);
+        $partners = Partner::withoutGlobalScope(DestinationScope::class)->search('name',$this->search)->paginate(10);
         return view('livewire.partners-overview',compact('partners','destinations'));
     }
 }

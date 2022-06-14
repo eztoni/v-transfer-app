@@ -87,7 +87,7 @@ class UserOverview extends Component
 
     public function saveUserData(){
 
-        //$this->validate();
+        $this->validate();
 
         if(!Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN))
             return;
