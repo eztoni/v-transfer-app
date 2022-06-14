@@ -77,29 +77,12 @@ class PartnersOverview extends Component
     public function updatePartner($partnerId){
 
         $this->openPartnerModal();
-        $this->partner = Partner::findOrFail($partnerId);
-        $this->partnerDestinations = $this->partner->destinations->pluck('id')->toArray();
+        $this->partner = Partner::find($partnerId);
+        $this->partnerDestinations = $this->partner->destinations()->pluck('id')->toArray();
 
         if($this->partnerDestinations){
             $this->fillSelect2();
         }
-    }
-
-    public function getPartnerDestinationsProperty()
-    {
-        $partners = Partner::with('destinations')->where('id', '=', 2)->first();
-        if(empty($partners)){
-            return collect();
-        }
-        return $partners->destinations;
-    }
-
-    public function getDestinationPartnersProperty()
-    {
-        if($this->partner){
-            return Partner::with('destinations')->where('id', '=', 2)->first()->destinations;
-        }
-
     }
 
     public function savePartnerData(){
