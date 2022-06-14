@@ -78,7 +78,7 @@ class PartnersOverview extends Component
 
         $this->openPartnerModal();
         $this->partner = Partner::find($partnerId);
-        $this->partnerDestinations = $this->partner->destinations()->pluck('id')->toArray();
+        $this->partnerDestinations = $this->partner?->destinations()?->pluck('id')->toArray();
 
         if($this->partnerDestinations){
             $this->fillSelect2();
@@ -120,7 +120,7 @@ class PartnersOverview extends Component
     public function render()
     {
         $destinations = Destination::all();
-        $partners = Partner::withoutGlobalScope(DestinationScope::class)->search('name',$this->search)->paginate(10);
+        $partners = Partner::withoutGlobalScope(DestinationScope::class)->with('destinations')->search('name',$this->search)->paginate(10);
         return view('livewire.partners-overview',compact('partners','destinations'));
     }
 }
