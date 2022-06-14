@@ -130,9 +130,11 @@ class DestinationReport extends Component
                     $priceHRK = \Cknow\Money\Money::
                     fromMoney($converter
                         ->convert($priceEur->getMoney(), new Currency('HRK')));
+                    if($i->isConfirmed()){
+                        $this->totalEur = $this->totalEur->add($priceEur->getMoney());
+                        $this->totalHRK = $this->totalHRK->add($priceHRK->getMoney());
+                    }
 
-                    $this->totalEur = $this->totalEur->add($priceEur->getMoney());
-                    $this->totalHRK = $this->totalHRK->add($priceHRK->getMoney());
 
                     return [
                         'id' => $i->id,

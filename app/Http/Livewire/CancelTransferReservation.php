@@ -11,7 +11,7 @@ class CancelTransferReservation extends Component
 {
     public Reservation $reservation;
 
-    public bool $cancelRoundTrip = false;
+    public bool $cancelRoundTrip = true;
 
     public function close()
     {

@@ -44,7 +44,7 @@ class Reservation extends Model
     }
 
     public function isConfirmed(){
-        return $this->status === self::CONFIRMATION_LANGUAGES;
+        return $this->status === self::STATUS_CONFIRMED;
     }
 
     public function getIsRoundTripAttribute()
