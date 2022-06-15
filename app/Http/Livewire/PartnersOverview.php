@@ -77,7 +77,7 @@ class PartnersOverview extends Component
     public function updatePartner($partnerId){
 
         $this->openPartnerModal();
-        $this->partner = Partner::find($partnerId);
+        $this->partner = Partner::withoutGlobalScope(DestinationScope::class)->find($partnerId);
         $this->partnerDestinations = $this->partner?->destinations()?->pluck('id')->toArray();
 
         if($this->partnerDestinations){
