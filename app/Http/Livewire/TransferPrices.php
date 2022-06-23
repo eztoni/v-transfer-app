@@ -98,6 +98,8 @@ class TransferPrices extends Component
     }
 
     public function saveRoundTrip($routeId){
+
+
         $saved = $this->routeRoundTrip[$routeId];
 
         \DB::table('route_transfer')->updateOrInsert(
@@ -140,11 +142,14 @@ class TransferPrices extends Component
 
     public function saveRoutePriceRoundTrip($routeId){
 
-        //$this->validate('routePriceRoundTrip.'.$routeId);
-
-
         if(empty($this->routePriceRoundTrip[$routeId])){
-            $this->addError('routePriceRoundTrip.'.$routeId, 'The email field is invalid.');
+            $this->addError('routePriceRoundTrip.'.$routeId, 'The round trip price field is empty.');
+            return;
+        }
+
+        if(preg_match(\App\Services\Helpers\EzMoney::MONEY_REGEX,$this->routePriceRoundTrip[$routeId]) <= 0){
+            $this->addError('routePriceRoundTrip.'.$routeId, 'The round trip price field is invalid.');
+            $this->showToast('Not Saved', 'Round Trip Price Invalid Value','error');
             return;
         }
 
@@ -161,7 +166,7 @@ class TransferPrices extends Component
             ]
         );
 
-        $this->showToast('Saved', 'Route Price Saved');
+        $this->showToast('Saved', 'Round Trip Price Saved');
 
     }
 
