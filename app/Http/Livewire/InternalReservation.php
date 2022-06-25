@@ -34,7 +34,7 @@ class InternalReservation extends Component
         'adults' => 1,
         'children' => 0,
         'infants' => 0,
-        'luggage' => 1,
+        'luggage' => 0,
     ];
 
     public $fieldNames = [
@@ -184,6 +184,14 @@ class InternalReservation extends Component
         $this->step = 1;
     }
 
+    public function updatedActivateExtras(){
+        $this->stepTwoFields['extras'] = [];
+    }
+
+    public function updatedActivateOtherTravellers(){
+
+    }
+
     public function saveReservation()
     {
 
@@ -310,6 +318,8 @@ class InternalReservation extends Component
     }
 
 
+
+
     public function updated($property)
     {
 
@@ -320,15 +330,24 @@ class InternalReservation extends Component
             $this->resetAdresses();
         }
 
+        // Since I used availability as a computed property, it throws an error if we pass '' for some params
+        // So if user deletes these params, we set them to 0.
         if (in_array($property, [
             'stepOneFields.adults',
             'stepOneFields.children',
             'stepOneFields.infants',
+            'stepOneFields.luggage',
         ])) {
-            if (!\Arr::get($this->stepOneFields, explode('.', $property)[1])) {
+            $value= \Arr::get($this->stepOneFields, explode('.', $property)[1]);
+            if (!is_numeric($value) ) {
                 \Arr::set($this->stepOneFields, explode('.', $property)[1], 0);
             }
-            $this->setOtherTravellers();
+
+            // If these parameters change, reset other travellers, except luggage
+            if($property !== 'stepOneFields.luggage'){
+                $this->setOtherTravellers();
+            }
+
         }
 
 
@@ -447,9 +466,12 @@ class InternalReservation extends Component
     public function getTotalPriceProperty()
     {
         $route = $this->selectedRoute;
-        $priceCalculator = new \App\Services\TransferPrices($this->selectedTransfer, $this->selectedPartner, $this->roundTrip, $route?->id, collect($this->stepTwoFields['extras'])->reject(function ($item) {
+
+        $extras = collect($this->stepTwoFields['extras'])->reject(function ($item) {
             return $item === false;
-        })->keys()->toArray());
+        } )->keys()->toArray();
+
+        $priceCalculator = new \App\Services\TransferPrices($this->selectedTransfer, $this->selectedPartner, $this->roundTrip, $route?->id,$extras);
 
         return $priceCalculator->getPrice();
     }
@@ -467,19 +489,24 @@ class InternalReservation extends Component
 
         $route = $this->selectedRoute;
 
+
         if (!$route) {
             return collect([]);
         }
 
+        try {
+            return (new TransferAvailability(
+                $this->stepOneFields['adults'],
+                $route,
+                $this->stepOneFields['children'],
+                $this->stepOneFields['infants'],
+                $this->stepOneFields['luggage'],
+            ))
+                ->getAvailablePartnerTransfers();
 
-        return (new TransferAvailability(
-            $this->stepOneFields['adults'],
-            $route,
-            $this->stepOneFields['children'],
-            $this->stepOneFields['infants'],
-            $this->stepOneFields['luggage'],
-        ))
-            ->getAvailablePartnerTransfers();
+        }catch (\Exception $e){
+            return collect([]);
+        }
 
     }
 

@@ -1,13 +1,9 @@
-
-
 .badge-success{
     color:white !Important
 }
 
-
-@media only screen and (min-width: 600px)  {
-
-    .drawer-side{
+@media only screen and (min-width: 1025px)  {
+    .main-drawer{
         position: sticky!important;
     }
 }

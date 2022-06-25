@@ -68,12 +68,12 @@ class TransferOverview extends Component
 
         if(empty($this->vehicleId)){
             $this->addError('vehicleId','Please choose a vehicle.');
-            return;
+            return false;
         }
 
         if($vehicles->isEmpty()){
             $this->addError('vehicleId','Vehicle already taken.');
-            return;
+            return false;
         }
 
         $destination = Destination::findOrFail($this->destinationId);

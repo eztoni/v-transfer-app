@@ -1,4 +1,4 @@
-<div class="drawer-side  lg:p-2"><label for="main-menu" class="drawer-overlay z-10"></label>
+<div class="drawer-side main-drawer  lg:p-2"><label for="main-menu" class="drawer-overlay z-10"></label>
 
     <aside
         style="max-width: 260px;"

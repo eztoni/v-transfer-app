@@ -348,7 +348,7 @@
                                             <label class="label">
                                                 <span class="label-text">Adult:</span>
                                             </label>
-                                            <input class="my-input input-sm w-full" placeholder=""
+                                            <input x-data @focusin="$el.value = 0" class="my-input input-sm w-full" placeholder=""
                                                    wire:model="stepOneFields.adults">
                                             @error('stepOneFields.adults')
                                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
@@ -360,7 +360,7 @@
                                             <label class="label">
                                                 <span class="label-text">Child(3-17):</span>
                                             </label>
-                                            <input class="my-input input-sm w-full" placeholder=""
+                                            <input x-data @focusin="$el.value = 0" class="my-input input-sm w-full" placeholder=""
                                                    wire:model="stepOneFields.children">
                                             @error('stepOneFields.children')
                                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
@@ -370,7 +370,7 @@
                                             <label class="label">
                                                 <span class="label-text">Infant(0-2):</span>
                                             </label>
-                                            <input class="my-input input-sm w-full" placeholder=""
+                                            <input x-data @focusin="$el.value = 0" class="my-input input-sm w-full" placeholder=""
                                                    wire:model="stepOneFields.infants">
                                             @error('stepOneFields.infants')
                                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
