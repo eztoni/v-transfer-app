@@ -1,4 +1,4 @@
-<div x-data="">
+<div>
 
     <x-ez-card>
         <x-slot name="title" class="flex justify-between">
@@ -32,11 +32,10 @@
                         <td >{{ $p->email }}</td>
                         <td >{{ Str::headline($p->destinations->implode('name', ',')) }}</td>
                         <td class="text-center">
-                            <a href="{{route('admin.partner-edit',$p)}}"><button class="btn btn-circle btn-sm btn-success">
+                            <button wire:click="updatePartner({{$p->id}})"class="btn btn-circle btn-sm btn-success">
                                 <i class="fas fa-pen"></i>
-                            </button></a>
+                            </button>
                         </td>
-
                     </tr>
 
                 @empty
@@ -120,6 +119,22 @@
                         </div>
                     </div>
 
+                    <div class="form-control" wire:ignore>
+
+                        <label class="label">
+                            <span class="label-text">Destinations:</span>
+                        </label>
+
+                        <select class="input input-bordered" multiple id="select2">
+                            @foreach($destinations as $dest)
+                                <option value="{{$dest->id}}"> {{ Str::ucfirst($dest->name) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @error('selectedDestinations')
+                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                    @enderror
+
                     <div class="mt-4 flex justify-between">
                         <button wire:click="closePartnerModal()" class="btn btn-sm ">Close</button>
                         <button wire:click="savePartnerData()"
@@ -132,5 +147,45 @@
 
     </x-ez-card>
 
+
+    <script>
+        document.addEventListener('livewire:load', function () {
+            // Run a callback when an event ("foo") is emitted from this component
+            @this.on('fillSelect2', () => {
+
+                $("#select2").val('')
+                $('#select2').select2(
+                    {
+                        closeOnSelect: true,
+                    }
+                ).on('change', function (e) {
+                    @this.set('selectedDestinations', $('#select2').select2("val"))
+                })
+
+
+                for (const element of @this.partnerDestinations) {
+                    $("#select2").select2("trigger", "select", {
+                        data: { id: element }
+                    });
+                }
+
+            })
+
+
+            @this.on('restartSelect2', () => {
+                $("#select2").val('')
+                $('#select2').select2(
+                    {
+                        closeOnSelect: true,
+                    }
+                ).on('change', function (e) {
+                    @this.set('selectedDestinations', $('#select2').select2("val"))
+                })
+            })
+        });
+    </script>
+
 </div>
+
+
 

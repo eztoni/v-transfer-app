@@ -25,7 +25,6 @@ class TransferOverview extends Component
 
     protected $rules = [
         'transferName' => 'required|max:255',
-        'destinationId' => 'required|numeric|exists:App\Models\Destination,id',
     ];
 
     public function updated($propertyName)
@@ -41,9 +40,6 @@ class TransferOverview extends Component
         $this->transferModal = false;
     }
 
-
-
-
     public function addTransfer(){
         $this->openTransferModal();
         $this->transfer = new Transfer();
@@ -51,10 +47,11 @@ class TransferOverview extends Component
 
     public function getVehiclesProperty()
     {
-        if($this->transfer)
-            return Vehicle::whereNull('transfer_id')->when($this->transfer->exists,function ($q){
-                $q->orWhere('transfer_id',$this->transfer->vehicle->id);
+        if($this->transfer) {
+            return Vehicle::whereNull('transfer_id')->when($this->transfer->exists, function ($q) {
+                $q->orWhere('transfer_id', $this->transfer->vehicle->id);
             })->get();
+        }
 
         return collect();
     }
@@ -76,8 +73,8 @@ class TransferOverview extends Component
             return false;
         }
 
-        $destination = Destination::findOrFail($this->destinationId);
-        $this->transfer->destination_id = $destination->id;
+        $destination_id = Auth::user()->destination_id;
+        $this->transfer->destination_id = $destination_id;
 
         $this->transfer->name = $this->transferName;
 
