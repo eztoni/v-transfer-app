@@ -133,6 +133,17 @@
                         <x-input-alert type='warning'>{{$message}}</x-input-alert>
                         @enderror
                     </div>
+
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">PMS Class:</span>
+                        </label>
+                        <input wire:model="point.pms_class" class="input input-bordered"
+                               placeholder="PMS Class">
+                        @error('point.pms_class')
+                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
+                        @enderror
+                    </div>
                 @endif
 
                 <div class="form-control">

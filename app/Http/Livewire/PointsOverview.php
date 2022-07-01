@@ -52,6 +52,7 @@ class PointsOverview extends Component
                 Rule::in(Point::TYPE_ARRAY),
             ],
             'point.pms_code'=>'nullable',
+            'point.pms_class'=>'nullable',
         ];
     }
     public function updated($propertyName)

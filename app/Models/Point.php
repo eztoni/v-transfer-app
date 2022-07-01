@@ -34,6 +34,7 @@ class Point extends Model
         'longitude',
         'type',
         'pms_code',
+        'pms_class',
         'active',
     ];
 
