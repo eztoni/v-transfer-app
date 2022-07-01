@@ -92,6 +92,7 @@ class TransferOverview extends Component
     {
         $transfers = Transfer::with('destination')->search('name',$this->search)->paginate(10);
 
+
         return view('livewire.transfer-overview',compact('transfers'));
     }
 }
