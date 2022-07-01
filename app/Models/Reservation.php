@@ -35,6 +35,12 @@ class Reservation extends Model
         'fr' => 'French',
     ];
 
+    public const TRAVELLER_TITLES = [
+        'mr' => 'Mr',
+        'mrs' => 'Mrs',
+        'ms' => 'Ms',
+    ];
+
     public function isCancelled(){
         return $this->status === self::STATUS_CANCELLED;
     }
