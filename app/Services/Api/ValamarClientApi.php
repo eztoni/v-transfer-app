@@ -111,11 +111,15 @@ class ValamarClientApi{
     {
         if(!empty($this->responseBody)){
             foreach($this->responseBody as $reservation){
+
                 #Format CheckIn and Checkout
                 $reservation['checkIn'] = substr(trim($reservation['checkIn']),0,10);
                 $reservation['checkOut'] = substr(trim($reservation['checkOut']),0,10);
                 #Set Associative Array - Reservation Code - key based
-                $this->reservationsList[$reservation['reservationPhobsCode']] = $reservation;
+                if(!empty($reservation['reservationPhobsCode'])){
+                    $this->reservationsList[$reservation['reservationPhobsCode']] = $reservation;
+                }
+                
             }
         }
     }
