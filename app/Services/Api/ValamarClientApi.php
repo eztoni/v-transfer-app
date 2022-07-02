@@ -178,7 +178,7 @@ class ValamarClientApi{
     {
         $this->authHeaders = array(
             'Cache-Control' => 'no-cache',
-            'Ocp-Apim-Subscription-Key' => env('VALAMAR_CLIENT_API_KEY')
+            'Ocp-Apim-Subscription-Key' => config('valamar.valamar_client_api_key')
         );
     }
 
@@ -188,7 +188,7 @@ class ValamarClientApi{
      */
     private function setCallURL($method) : void
     {
-       $this->callURL = env('VALAMAR_CLIENT_API_URL')."/".$method;
+       $this->callURL = config('valamar.valamar_client_api_key')."/".$method;
     }
 
     /**
