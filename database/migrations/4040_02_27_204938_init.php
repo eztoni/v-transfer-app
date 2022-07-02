@@ -141,6 +141,10 @@ class Init extends Migration
         $user->save();
         $user->assignRole(User::ROLE_ADMIN);
 
+
+        Storage::disk('public')->deleteDirectory('/images');
+
+
     }
 
     public function down()

@@ -13,10 +13,10 @@
 
 
         <button class="btn btn-success text-white float-right" wire:click="cancelReservation">
-            Save
+            Yes
         </button>
         <button class="btn btn-outline  float-right mx-2" wire:click="close">
-            Cancel
+            No
         </button>
 
     </div>

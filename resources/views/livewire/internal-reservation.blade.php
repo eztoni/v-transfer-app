@@ -348,7 +348,7 @@
                                             <label class="label">
                                                 <span class="label-text">Adult:</span>
                                             </label>
-                                            <input x-data @focusin="$el.value = 0" class="my-input input-sm w-full" placeholder=""
+                                            <input x-data @focusin="$el.value = ''" class="my-input input-sm w-full" placeholder=""
                                                    wire:model="stepOneFields.adults">
                                             @error('stepOneFields.adults')
                                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
@@ -360,7 +360,7 @@
                                             <label class="label">
                                                 <span class="label-text">Child(3-17):</span>
                                             </label>
-                                            <input x-data @focusin="$el.value = 0" class="my-input input-sm w-full" placeholder=""
+                                            <input x-data @focusin="$el.value = ''" class="my-input input-sm w-full" placeholder=""
                                                    wire:model="stepOneFields.children">
                                             @error('stepOneFields.children')
                                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
@@ -370,7 +370,7 @@
                                             <label class="label">
                                                 <span class="label-text">Infant(0-2):</span>
                                             </label>
-                                            <input x-data @focusin="$el.value = 0" class="my-input input-sm w-full" placeholder=""
+                                            <input x-data @focusin="$el.value = ''" class="my-input input-sm w-full" placeholder=""
                                                    wire:model="stepOneFields.infants">
                                             @error('stepOneFields.infants')
                                             <x-input-alert type='warning'>{{$message}}</x-input-alert>
@@ -460,7 +460,7 @@
                         $lastTransfer = $item;
                     @endphp
                     <div class="card rounded-none bg-base-100  ">
-                        <div class="card-body p-2">
+                        <div class="card-body p-2 {{$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id) ?'shadow-inner bg-blue-100':''}}">
 
                             <div class="flex gap-4">
                                 <div class="basis-1/5">
@@ -485,9 +485,9 @@
                                             EUR</b></span>
 
                                     <button
-                                        class="btn btn-sm btn-primary absolute bottom-2 rounded-xl right-2"
+                                        class="btn btn-sm {{$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id) ?'btn-success':'btn-primary'}}  absolute bottom-2 rounded-xl right-2"
                                         wire:click="selectTransfer({{$item->transfer_id}},{{$item->partner_id}})">
-                                        Select
+                                        {{$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id) ?'Selected':'Select'}}
                                     </button>
                                 </div>
                             </div>
@@ -888,6 +888,26 @@
 
                         </x-slot>
                     </x-ez-card>
+
+                    @if($step === 1)
+                        <x-ez-card class="mt-4">
+                            <x-slot name="body">
+
+
+                                <button class="btn btn-large btn-accent rounded-box" wire:click="nextStep"><span
+                                            class="mr-4">Next step</span>
+                                    <i class="fas fa-arrow-right float-right"></i></button>
+
+                                @error('*')
+                                <x-input-alert type="warning">
+                                    {{$message}}
+                                </x-input-alert>
+                                @enderror
+                            </x-slot>
+                        </x-ez-card>
+                    @endif
+
+
 
                     @if($step === 2 && $resSaved == false)
                         <x-ez-card class="mt-4">

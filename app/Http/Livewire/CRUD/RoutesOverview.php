@@ -14,6 +14,7 @@ class RoutesOverview extends EzComponent
 {
 
     public $userDestinationId = '';
+
     public array $fieldRuleNames=[
         'model.name' => 'name',
         'model.destination_id' => 'destination',

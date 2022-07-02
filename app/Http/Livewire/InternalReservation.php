@@ -15,6 +15,7 @@ use App\Services\TransferAvailability;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use function Clue\StreamFilter\fun;
 use function PHPUnit\Framework\arrayHasKey;
@@ -151,8 +152,8 @@ class InternalReservation extends Component
 
     public bool $roundTrip = false;
     public int $step = 1;
-    public $selectedTransfer = 1;
-    public $selectedPartner = 1;
+    public $selectedTransfer = null;
+    public $selectedPartner = null;
     public $activateOtherTravellersInput = false;
     public $activateChildSeats = false;
     public $activateExtras = false;
@@ -329,6 +330,11 @@ class InternalReservation extends Component
         ])) {
             $this->resetAdresses();
         }
+
+        if (array_key_exists(Str::replace('stepOneFields.','' ,$property), $this->stepOneFields)) {
+            $this->isTransferAvailableAfterDataChange();
+        }
+
 
         // Since I used availability as a computed property, it throws an error if we pass '' for some params
         // So if user deletes these params, we set them to 0.
@@ -548,24 +554,41 @@ class InternalReservation extends Component
 
     public function selectTransfer($transferId, $partnerId)
     {
-
-        $this->validate($this->stepOneRules(), [], $this->fieldNames);
-
-        //Simple validation
         $transfer = Transfer::findOrFail($transferId);
         $partner = Partner::findOrFail($partnerId);
 
-
         $this->selectedTransfer = $transfer->id;
         $this->selectedPartner = $partner->id;
+    }
+
+    public function nextStep(){
+        $this->validate($this->stepOneRules(), [], $this->fieldNames);
+
+        if(!$this->selectedPartner || !$this->selectedTransfer){
+            $this->addError('transferNotSelected','Please select a transfer!');
+            return false;
+        }
+
 
         $this->step = 2;
+    }
+
+    public function isTransferPartnerPairSelected($pId,$tId)
+    {
+        return $this->selectedTransfer === $tId && $this->selectedPartner === $pId;
     }
 
 
     public function render()
     {
         return view('livewire.internal-reservation');
+    }
+
+    private function isTransferAvailableAfterDataChange()
+    {
+        if($this->availableTransfers->where('partner_id',$this->selectedPartner)->where('transfer_id',$this->selectedTransfer)->isEmpty()){
+            $this->selectedTransfer = $this->selectedPartner = null;
+        }
     }
 
 
