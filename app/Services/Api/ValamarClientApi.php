@@ -1,0 +1,334 @@
+<?php
+
+namespace App\Services\Api;
+use Illuminate\Support\Facades\Http;
+
+class ValamarClientApi{
+
+    private string $request;
+    private array $authHeaders;
+    private string $callURL;
+    private array $responseBody;
+    private string $apiDateFormat = 'Y-m-d';
+    private int $reservationSearchTimeout = 20;
+    private array $propertiesList;
+    private array $reservationsList;
+
+    private string $firstName;
+    private string $lastName;
+    private \DateTime $checkIn;
+    private \DateTime $checkOut;
+    private string $propertyPMSCode;
+    private string $reservationCode;
+
+    private array $reservationListFilters;
+    private bool $reservationListFilterSet = false;
+
+    public function __construct()
+    {
+        $this->setAuthHeaders();
+    }
+
+    /**
+     * Fetch Current Properties list from Valamar
+     * This will include the Property PMS code, Class and Property Name
+     * @return array
+     */
+    public function getPropertiesList() : array
+    {
+
+        $this->propertiesList = array();
+
+        $this->setCallURL('properties');
+
+        $this->validateResponse(
+            Http::withHeaders($this->authHeaders)->get($this->callURL))
+            ->validatePropertyList();
+
+        return $this->propertiesList;
+    }
+
+    /**
+     * Opera Property Name, PMS code and PMS class are mandatory
+     * In case any of these are missing, the data is non valid
+     * This function removes all the entries from the response that are missing any of the parameters
+     * @return void
+     */
+    private function validatePropertyList() : void
+    {
+        if(!empty($this->responseBody)){
+            foreach($this->responseBody as $k => $prop){
+                $entry_valid = true;
+
+                if(empty($prop['propertyOperaCode'])){
+                    $entry_valid = false;
+                }elseif (empty($prop['name'])){
+                    $entry_valid = false;
+                }elseif(empty($prop['class'])){
+                    $entry_valid = false;
+                }
+
+                if($entry_valid){
+                  $this->propertiesList[] = $prop;
+                }
+            }
+        }
+    }
+    /**
+     * Get reservation details based on the passed parameters
+     * In case Reservation Number is passed, the other request filters are going to be omitted
+     * @return array
+     */
+    public function getReservationList() : array
+    {
+
+        #Return Empty Result set in case no filters are set - optimize by avoiding the call
+        $this->reservationsList = array();
+
+        $this->configureReservationListFilters();
+
+        if($this->isReservationListFilterDefined()) {
+
+            $this->setCallURL('reservations');
+
+            $this->validateResponse(
+                Http::withHeaders($this->authHeaders)
+                        ->timeout($this->reservationSearchTimeout)
+                        ->get($this->callURL,$this->reservationListFilters))
+            ->validateReservationList();
+        }
+
+        return $this->reservationsList;
+
+    }
+
+    /**
+     * Function used to validate and format the reservation output
+     * @return void
+     */
+    private function validateReservationList() : void
+    {
+        if(!empty($this->responseBody)){
+            foreach($this->responseBody as $reservation){
+                #Format CheckIn and Checkout
+                $reservation['checkIn'] = substr(trim($reservation['checkIn']),0,10);
+                $reservation['checkOut'] = substr(trim($reservation['checkOut']),0,10);
+                #Set Associative Array - Reservation Code - key based
+                $this->reservationsList[$reservation['reservationPhobsCode']] = $reservation;
+            }
+        }
+    }
+
+    /**
+     * Function used to configure and adapt the logic of the reservation Search Filter
+     * @return void
+     */
+    private function configureReservationListFilters() : void
+    {
+        $this->reservationListFilters = array();
+        #Case Reservation Code is present - everything else is omitted
+        if(!empty($this->getReservationCodeFilter())){
+            $this->reservationListFilters['ReservationCode'] = $this->getReservationCodeFilter();
+        }else{
+            #CheckIn Filter
+            if(!empty($this->getCheckInFilter())){
+                $this->reservationListFilters['CheckIn'] = $this->getCheckInFilter();
+            }
+
+            #CheckOut Filter
+            if(!empty($this->getCheckOutFilter())){
+                $this->reservationListFilters['CheckOut'] = $this->getCheckOutFilter();
+            }
+
+            #First Name Filter
+            if(!empty($this->getFirstNameFilter())){
+                $this->reservationListFilters['FirstName'] = $this->getFirstNameFilter();
+            }
+
+            #Last Name Filter
+            if(!empty($this->getLastNameFilter())){
+                $this->reservationListFilters['LastName'] = $this->getLastNameFilter();
+            }
+
+            #PMS Property Code
+            if(!empty($this->getPropertyPMSCodeFilter())){
+                $this->reservationListFilters['PropertyPmsCode'] = $this->getPropertyPMSCodeFilter();
+            }
+
+        }
+
+        #Filter Toggle
+        if(!empty($this->reservationListFilters)){
+            $this->reservationListFilterSet = true;
+        }
+    }
+
+    /**
+     * @return bool Returns true or false depending if filter is set or not
+     */
+    public function isReservationListFilterDefined() : bool
+    {
+        return $this->reservationListFilterSet;
+    }
+    /**
+     * Setting authentication Headers for the Call
+     * @return void
+     */
+    private function setAuthHeaders()
+    {
+        $this->authHeaders = array(
+            'Cache-Control' => 'no-cache',
+            'Ocp-Apim-Subscription-Key' => env('VALAMAR_CLIENT_API_KEY')
+        );
+    }
+
+    /**
+     * @param $method String - allowed methods properties|reservations
+     * @return void
+     */
+    private function setCallURL($method) : void
+    {
+       $this->callURL = env('VALAMAR_CLIENT_API_URL')."/".$method;
+    }
+
+    /**
+     * @param \Illuminate\Http\Client\Response $response The Curl Response
+     * @return ValamarClientApi
+     * @throws \Illuminate\Http\Client\RequestException Throw Exception with the appropriate error
+     */
+    private function validateResponse(\Illuminate\Http\Client\Response $response) : ValamarClientApi
+    {
+
+        if(!$response->successful()){
+
+            if($response->serverError()){
+                $response->throw($response->serverError());
+            }else{
+                $response->throw($response->clientError());
+            }
+
+        }else{
+            $this->responseBody = $response->json();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Function used to set the check in filter
+     * @param string $checkIn Date in the format of Y-m-d ( 2022-12-20 )
+     * @return void
+     */
+    public function setCheckInFilter(string $checkIn) : ValamarClientApi
+    {
+        $this->checkIn =  \DateTime::createFromFormat('Y-m-d',substr(trim($checkIn),0,10));
+        return $this;
+    }
+
+    /**
+     * Function used to set the check out filter
+     * @param string $checkOut Date in the format of Y-m-d ( 2022-12-20 )
+     * @return void
+     */
+    public function setCheckOutFilter(string $checkOut) : ValamarClientApi
+    {
+        $this->checkOut =  \DateTime::createFromFormat('Y-m-d',substr(trim($checkOut),0,10));
+        return $this;
+    }
+
+    /**
+     * @return bool|string Returns the set checkout date or false if not set
+     */
+    private function getCheckOutFilter(): bool|string
+    {
+        return !empty($this->checkOut) ? $this->checkOut->format($this->apiDateFormat) : false;
+    }
+
+    /**
+     * @return bool|string Returns the set checkin date or false if not set
+     */
+    private function getCheckInFilter(): bool|string
+    {
+        return !empty($this->checkIn) ? $this->checkIn->format($this->apiDateFormat) : false;
+    }
+
+    /**
+     * @param $reservationCode The reservation number to query by
+     * If reservationCode parameter is set, other reservation filters are omited
+     * Lowercased by Valamar documentation
+     * @return void
+     */
+    public function setReservationCodeFilter($reservationCode) : ValamarClientApi
+    {
+        $this->reservationCode = trim(strtolower($reservationCode));
+        return $this;
+    }
+
+    /**
+     * @return bool|string Returning false if reservation number filter is not set, otherwise returning the reservation number
+     */
+    private function getReservationCodeFilter() : bool|string
+    {
+        return !empty($this->reservationCode) ?  strtolower($this->reservationCode) : false;
+    }
+
+
+    /**
+     * @param $pmsCode Property Opera PMS Code
+     * @return void
+     */
+    public function setPropertyPMSCodeFilter($pmsCode) : ValamarClientApi
+    {
+        $this->propertyPMSCode = trim($pmsCode);
+        return $this;
+    }
+
+    /**
+     * If propertyPMSCode is sent as a parameter, PMS Code is returned, false otherwise
+     * @return bool|string
+     */
+    public function getPropertyPMSCodeFilter() : bool|string
+    {
+        return !empty($this->propertyPMSCode) ? $this->propertyPMSCode : false;
+    }
+
+
+    /**
+     * Function used to set the first name filter
+     * @param $firstName Guest first name to search the booking by
+     * @return $this
+     */
+    public function setFirstNameFilter($firstName) : ValamarClientApi
+    {
+        $this->firstName = trim($firstName);
+        return $this;
+    }
+
+
+    /**
+     * @return bool|string First Name filter if set, false otherwise
+     */
+    private function getFirstNameFilter() : bool|string
+    {
+        return !empty($this->firstName) ?  $this->firstName : false;
+    }
+    /**
+     * Function used to set the first name filter
+     * @param $firstName Guest first name to search the booking by
+     * @return $this
+     */
+    public function setLastNameFilter($lastName) : ValamarClientApi
+    {
+        $this->lastName = trim($lastName);
+        return $this;
+    }
+
+
+    /**
+     * @return bool|string Last Name filter if set, false otherwise
+     */
+    private function getLastNameFilter() : bool|string
+    {
+        return !empty($this->lastName) ?  $this->lastName : false;
+    }
+}
