@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\Api;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class ValamarClientApi{
@@ -16,8 +17,8 @@ class ValamarClientApi{
 
     private string $firstName;
     private string $lastName;
-    private \DateTime $checkIn;
-    private \DateTime $checkOut;
+    private Carbon $checkIn;
+    private Carbon $checkOut;
     private string $propertyPMSCode;
     private string $reservationCode;
 
@@ -221,7 +222,7 @@ class ValamarClientApi{
      */
     public function setCheckInFilter(string $checkIn) : ValamarClientApi
     {
-        $this->checkIn =  \DateTime::createFromFormat('Y-m-d',substr(trim($checkIn),0,10));
+        $this->checkIn =  Carbon::parse(substr(trim($checkIn),0,10));
         return $this;
     }
 
@@ -232,16 +233,8 @@ class ValamarClientApi{
      */
     public function setCheckOutFilter(string $checkOut) : ValamarClientApi
     {
-        $this->checkOut =  \DateTime::createFromFormat('Y-m-d',substr(trim($checkOut),0,10));
+        $this->checkOut =  Carbon::parse(substr(trim($checkOut),0,10));
         return $this;
-    }
-
-    /**
-     * @return bool|string Returns the set checkout date or false if not set
-     */
-    private function getCheckOutFilter(): bool|string
-    {
-        return !empty($this->checkOut) ? $this->checkOut->format($this->apiDateFormat) : false;
     }
 
     /**
@@ -250,6 +243,14 @@ class ValamarClientApi{
     private function getCheckInFilter(): bool|string
     {
         return !empty($this->checkIn) ? $this->checkIn->format($this->apiDateFormat) : false;
+    }
+
+    /**
+     * @return bool|string Returns the set checkout date or false if not set
+     */
+    private function getCheckOutFilter(): bool|string
+    {
+        return !empty($this->checkOut) ? $this->checkOut->format($this->apiDateFormat) : false;
     }
 
     /**
