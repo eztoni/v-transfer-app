@@ -49,7 +49,7 @@
         <x-ez-card class="w-1/2 shadow-none border-secondary">
 
             <x-slot name="title">
-                From: {{$reservation->dropoffLocation->name}}
+                To: {{$reservation->dropoffLocation->name}}
             </x-slot>
             <x-slot name="body">
                 <div>

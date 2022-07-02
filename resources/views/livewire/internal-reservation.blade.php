@@ -567,9 +567,13 @@
                         <div class="grid grid-cols-3 gap-4">
 
                             <div class="col-span-1">
-                                <x-form.ez-text-input sm label="Title" model="stepTwoFields.leadTraveller.title"
-
-                                ></x-form.ez-text-input>
+                                <x-form.ez-select
+                                    :show-empty-value="true"
+                                    model="stepTwoFields.leadTraveller.title"
+                                    label="Title"
+                                    :items="\App\Models\Reservation::TRAVELLER_TITLES"
+                                    sm="true"
+                                ></x-form.ez-select>
                             </div>
                             <div class="col-span-1">
                                 <x-form.ez-text-input sm label="First name"
@@ -744,8 +748,13 @@
                                 <div class="grid grid-cols-4 gap-4">
                                     @foreach($this->stepTwoFields['otherTravellers'] as $i => $traveler)
                                         <div class="col-span-1">
-                                            <x-form.ez-text-input sm label="Title"
-                                                                  model="stepTwoFields.otherTravellers.{{$i}}.title"></x-form.ez-text-input>
+                                            <x-form.ez-select
+                                                :show-empty-value="true"
+                                                model="stepTwoFields.otherTravellers.{{$i}}.title"
+                                                label="Title"
+                                                :items="\App\Models\Reservation::TRAVELLER_TITLES"
+                                                sm="true"
+                                            ></x-form.ez-select>
                                         </div>
                                         <div class="col-span-1">
                                             <x-form.ez-text-input sm label="First name"
