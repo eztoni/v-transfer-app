@@ -115,11 +115,15 @@ class ValamarClientApi{
                 #Format CheckIn and Checkout
                 $reservation['checkIn'] = substr(trim($reservation['checkIn']),0,10);
                 $reservation['checkOut'] = substr(trim($reservation['checkOut']),0,10);
+                #Generate Key for Phone Number
+                if(empty($reservation['reservationHolderData']['mobile'])){
+                    $reservation['reservationHolderData']['mobile'] = "";
+                }
                 #Set Associative Array - Reservation Code - key based
                 if(!empty($reservation['reservationPhobsCode'])){
                     $this->reservationsList[$reservation['reservationPhobsCode']] = $reservation;
                 }
-                
+
             }
         }
     }
