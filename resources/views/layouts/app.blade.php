@@ -30,9 +30,9 @@
     <input id="main-menu" type="checkbox" @change="$refs['right-drawer'].checked = false" class="drawer-toggle">
 
     <x-main-drawer></x-main-drawer>
-    <main class=" block p-2 overflow-x-hidden   text-base-content  drawer-content">
+    <main class=" block p-2 overflow-x-hidden   text-base-content  drawer-content ">
         @include('components.navbar')
-        {{ $slot }}
+            {{ $slot }}
     </main>
 
 
