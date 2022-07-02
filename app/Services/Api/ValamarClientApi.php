@@ -189,7 +189,7 @@ class ValamarClientApi{
      */
     private function setCallURL($method) : void
     {
-       $this->callURL = config('valamar.valamar_client_api_key')."/".$method;
+       $this->callURL = config('valamar.valamar_client_api_url')."/".$method;
     }
 
     /**
