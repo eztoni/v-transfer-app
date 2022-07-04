@@ -3,6 +3,7 @@
 namespace App\View\Components;
 
 use App\Models\User;
+use Illuminate\Support\Arr;
 use Illuminate\View\Component;
 
 class MainDrawer extends Component
@@ -115,5 +116,10 @@ class MainDrawer extends Component
 
         ];
         return view('components.main-drawer',compact('menuItems'));
+    }
+    public function isSubActive(array $subItems){
+        return  !empty(Arr::where($subItems,function ($value,$key){
+            return $value['active'];
+        }));
     }
 }

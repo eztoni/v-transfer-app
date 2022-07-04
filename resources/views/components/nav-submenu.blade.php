@@ -1,23 +1,22 @@
 @props(['active'=>'','text'=>'','items'=>[]])
 
 
-<div {{ $attributes->class(['collapse drawer-submenu collapse-arrow ',' active text-neutral-content bg-primary '=>$active]) }} >
-
-    <input type="checkbox" {{$active?'checked':''}} class="{{$active?'active-submenu':''}}">
-    <div class="collapse-title   font-medium">
+<div x-data="{active : {{ $active?'true':'false'}} }" :class="active?'bg-gray-100':''" {{ $attributes->class(['  border-b ds-collapse ds-drawer-submenu ds-collapse-arrow ']) }} >
+    <input  x-model="active" type="checkbox"  {{$active?'checked':''}}>
+    <div class="ds-collapse-title   font-medium">
         {{ $slot  }}
-        <span class="pl-2"> {{ $text }}</span>
+        <span class="pl-2 text-sm"> {{ $text }}</span>
     </div>
-    <div class="collapse-content text-base-content">
+    <div class="ds-collapse-content">
         @foreach($items as $item)
             @if($item['show'])
-            <a href="{{$item['href']}}" class="{{$item['active']?'active text-neutral-content':''}}">
-                <div class="sub-nav-item {{$item['active']?'shadow-lg active  bg-primary  ':'bg-base-100'}}">
+                <a href="{{$item['href']}}" class=" {{$item['active']?'active text-neutral-content':''}}">
+                    <div class="ds-sub-nav-item border-t  {{$item['active']?' shadow-inner   bg-primary-500  ':''}}">
 
-                    {{$item['text']}}
+                        {{$item['text']}}
 
-                </div>
-            </a>
+                    </div>
+                </a>
             @endif
         @endforeach
 

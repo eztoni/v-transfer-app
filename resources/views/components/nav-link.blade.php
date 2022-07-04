@@ -1,17 +1,13 @@
 @props(['active'=>'','href'=>''])
-
 @php
     $classes = ($active ?? false)
-                ? 'shadow-lg rounded-lg border-primary bg-primary text-base-content'
+                ? 'shadow-inner  border-primary bg-primary-500 text-neutral-content'
                 : '';
-
 @endphp
 
-
 <li {{ $attributes->merge(['class' => $classes]) }}>
-
-
-    <a href="{{$href}}" class="{{$active ? 'active':''}}"   >
+    <a href="{{$href}}" class="border-b {{$active ? 'active     bg-primary-500  ':''}}">
         {{ $icon ?? '' }}
-       <span class="pl-2"> {{ $slot }}</span>
-    </a></li>
+        <span class="pl-2"> {{ $slot }}</span>
+    </a>
+</li>
