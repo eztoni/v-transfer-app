@@ -112,7 +112,7 @@
                                         <x-input-alert type='warning'>{{$message}}</x-input-alert>
                                         @enderror
                                     @else
-                                        <div class="alert alert-warning">No Pickup points for that destination</div>
+                                        <div class="ds-alert ds-alert-warning">No Pickup points for that destination</div>
                                     @endif
                                 @endif
                                 @if($this->stepOneFields['startingPointId'] && $this->stepOneFields['endingPointId'] )
@@ -181,7 +181,7 @@
                                         <x-input-alert type='warning'>{{$message}}</x-input-alert>
                                         @enderror
                                     @else
-                                        <div class="alert alert-warning">No Dropoff points for that pickup point!</div>
+                                        <div class="ds-alert ds-alert-warning">No Dropoff points for that pickup point!</div>
 
                                     @endif
                                     @if($this->stepOneFields['startingPointId'] && $this->stepOneFields['endingPointId']  )

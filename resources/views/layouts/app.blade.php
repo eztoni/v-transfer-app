@@ -19,15 +19,12 @@
 
     <script src="https://use.fontawesome.com/c4773b38c8.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+
     @livewireStyles
-    @powerGridStyles
-
-
     <script
         src="https://maps.googleapis.com/maps/api/js?key={{ Config::get('ez.google_maps_api_key') }}&libraries=places"
         async defer></script>
     <script src="{{ mix('js/imports.js') }}"></script>
-
     <wireui:scripts />
     <script defer src="{{ mix('js/app.js') }}" ></script>
 </head>
@@ -52,6 +49,5 @@
 @stack('modals')
 @stack('scripts-bottom')
 @livewireScripts
-@powerGridScripts
 </body>
 </html>

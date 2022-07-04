@@ -1,7 +1,5 @@
 <div>
 
-
-
     @if ($destinationId)
         <x-ez-card>
 
@@ -53,7 +51,7 @@
     @else
         <x-ez-card>
             <x-slot name="body">
-                Select a destination to add Pickup&Dropoff Points!
+                Select a destination to add Pickup & Dropoff Points!
             </x-slot>
         </x-ez-card>
     @endif

@@ -46,6 +46,11 @@ abstract class EzComponent extends \Livewire\Component
         return view('livewire.CRUD.ez-crud', compact('models'));
     }
 
+    public function mount()
+    {
+        $this->model = app($this->modelClass);
+    }
+
     public function getModelPropertyBasedOnDottedString($model, $dottedString)
     {
         $value = $model;
@@ -124,8 +129,8 @@ abstract class EzComponent extends \Livewire\Component
 
 
         $this->notification()->success(
-            'Profile saved',
-            'Your profile was successfull saved'
+            'Saved',
+            "$this->modelName  was successfull saved"
         );
         $this->closeCrudModal();
     }
