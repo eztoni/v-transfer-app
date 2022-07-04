@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
 
 abstract class EzComponent extends \Livewire\Component
 {
-
+    use WithPagination;
     const FIELD_TYPE_TEXT = 1;
     const FIELD_TYPE_SELECT = 2;
 
@@ -196,7 +197,7 @@ abstract class EzComponent extends \Livewire\Component
 
     protected function tableModelsQuery()
     {
-        return $this->modelClass::with($this->withArray())->paginate(10);
+        return $this->modelClass::with($this->withArray())->paginate(15);
     }
 
 

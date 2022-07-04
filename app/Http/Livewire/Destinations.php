@@ -7,9 +7,11 @@ use App\Models\Partner;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Destinations extends Component
 {
+    use WithPagination;
 
     public $search = '';
     public $destination;
