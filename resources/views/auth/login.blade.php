@@ -33,7 +33,7 @@
 
             <div class="flex flex-col items-center w-full mt-18  md:my-60">
 
-                <h1 class="font-bold text-4xl text-center  my-8">Sign in for <span class="text-primary">Valamar</span>
+                <h1 class="font-bold text-4xl text-center  my-8">Sign in for <span class="text-primary-500">Valamar</span>
                 </h1>
 
                 <form method="POST" action="{{ route('login') }}" class="w-9/12 max-w-screen-sm">
@@ -68,7 +68,7 @@
                         @endif
 
 
-                        <x-button type="submit" primary class="btn flex-shrink-0 btn-primary hove:shadow-xl" lg>
+                        <x-button type="submit" primary  lg>
                             {{ __('Log in') }}
 
                         </x-button>

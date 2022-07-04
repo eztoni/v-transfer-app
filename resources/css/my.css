@@ -1,8 +1,8 @@
 .my-select{
-    @apply select  select-bordered py-0
+    @apply ds-select  ds-select-bordered py-0
 }
 .my-input{
-    @apply input input-bordered
+    @apply ds-input ds-input-bordered
 }
 .select2-container--default .select2-selection--single .select2-selection__rendered {
     color: #333333;

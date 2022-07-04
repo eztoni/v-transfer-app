@@ -24,12 +24,12 @@ module.exports = {
                 green: colors.emerald,
                 yellow: colors.amber,
                 purple: colors.violet,
-                primary: colors.sky,
+                primary: colors.blue,
                 secondary: colors.slate,
                 positive: colors.emerald,
                 negative: colors.red,
                 warning: colors.amber,
-                info: colors.blue
+                info: colors.sky
             }
         },
     },

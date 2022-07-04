@@ -76,7 +76,7 @@ Toast
 }
 
 .tab.tab-active{
-    @apply border-primary
+    @apply border-primary-500
 }
 
 .steps .step:after {

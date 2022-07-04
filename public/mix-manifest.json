@@ -9,5 +9,6 @@
     "/js/mapInput.js": "/js/mapInput.js",
     "/packages/fullcalendar/calendar.js": "/packages/fullcalendar/calendar.js",
     "/packages/fullcalendar/hr.js": "/packages/fullcalendar/hr.js",
-    "/packages/dropzone/dropzone.js": "/packages/dropzone/dropzone.js"
+    "/packages/dropzone/dropzone.js": "/packages/dropzone/dropzone.js",
+    "/css/app.css": "/css/app.css"
 }
