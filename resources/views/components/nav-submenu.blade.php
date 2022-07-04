@@ -5,7 +5,7 @@
     <input  x-model="active" type="checkbox"  {{$active?'checked':''}}>
     <div class="ds-collapse-title   font-medium">
         {{ $slot  }}
-        <span class="pl-2 text-sm"> {{ $text }}</span>
+        <span class="pl-2 "> {{ $text }}</span>
     </div>
     <div class="ds-collapse-content">
         @foreach($items as $item)

@@ -16,7 +16,7 @@
                 @if ($this->points->isNotEmpty())
 
 
-                    <table class="table table-compact">
+                    <table class="ds-table ds-table-compact">
                         <!-- head -->
                         <thead>
                         <tr>

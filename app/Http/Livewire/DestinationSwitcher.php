@@ -13,7 +13,7 @@ use Livewire\Component;
 class DestinationSwitcher extends Component
 {
 
-    public function changeOwner($destinationId){
+    public function changeDestination($destinationId){
         if(!Auth::user()->hasAnyRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN,User::ROLE_USER]))
             return;
 

@@ -8,7 +8,7 @@
             </div>
         </x-slot>
         <x-slot name="body">
-            <table class="table table-compact w-full">
+            <table class="ds-table ds-table-compact w-full">
                 <thead>
                 <tr>
                     <th>#ID</th>

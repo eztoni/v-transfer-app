@@ -10,7 +10,7 @@
         <x-slot name="body">
 
 
-            <table class="table table-compact w-full" wire:loading.delay.class="opacity-50">
+            <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
                 <thead>
                 <tr>
                     @foreach($this->tableColumns() as $column => $text)

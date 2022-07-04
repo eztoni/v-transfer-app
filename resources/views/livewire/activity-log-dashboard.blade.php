@@ -7,7 +7,7 @@
         <x-slot name="body">
 
             <input type="text" wire:model="search" class="input input-primary my-2" placeholder="Find Activity">
-            <table class="table table-compact w-full" wire:loading.delay.class="opacity-50">
+            <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
                 <thead>
                 <tr>
                     <th>#Id</th>

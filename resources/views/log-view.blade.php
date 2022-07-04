@@ -6,7 +6,7 @@
         <h2 class="card-title">
             EZ Log View
         </h2>
-        <table class="table  w-full">
+        <table class="ds-table  w-full">
             <thead>
             <tr>
                 <th></th>

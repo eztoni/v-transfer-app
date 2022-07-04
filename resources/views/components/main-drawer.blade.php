@@ -42,12 +42,12 @@
         <div>
             <ul class="ds-menu flex flex-col   ">
                 @foreach($menuItems as $item)
-                    @if(!key_exists('items',$item) && $item['show'])
+                    @if(!array_key_exists('items',$item) && $item['show'])
                         <x-nav-link :href="$item['href']" :active="$item['active']">
                             <x-slot name="icon">
                                 <i class="{{$item['icon']}}"></i>
                             </x-slot>
-                            <span class="text-sm"> {{$item['text']}}</span>
+                            <span > {{$item['text']}}</span>
                         </x-nav-link>
                     @elseif($item['show'])
 
