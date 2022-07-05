@@ -22,16 +22,13 @@ class CreateReservationsTable extends Migration
 
             $table->integer('price');
 
-
             $table->string('pickup_address');
             $table->string('dropoff_address');
-
 
             $table->string('flight_number')->nullable();
             $table->text('remark')->nullable();
 
-            $table->date('date');
-            $table->time('time');
+            $table->dateTime('dateTime');
 
 
             $table->integer('adults');

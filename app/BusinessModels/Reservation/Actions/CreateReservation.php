@@ -15,8 +15,7 @@ class CreateReservation extends Reservation
 {
     public function setRequiredAttributes(
         int        $destionationId,
-        Carbon     $date,
-        Carbon     $time,
+        Carbon     $dateTime,
         int        $pickupLocation,
         string     $pickupAddress,
         int        $dropoffLocation,
@@ -38,8 +37,7 @@ class CreateReservation extends Reservation
     ): void
     {
         $this->model->destination_id = $destionationId;
-        $this->model->date = $date;
-        $this->model->time = $time->format('H:i');
+        $this->model->dateTime = $dateTime;
         $this->model->pickup_location = $pickupLocation;
         $this->model->pickup_address = $pickupAddress;
         $this->model->dropoff_location = $dropoffLocation;
@@ -94,8 +92,7 @@ class CreateReservation extends Reservation
         $roundTrip->pickup_address = $this->model->dropoff_address;
         $roundTrip->dropoff_location = $this->model->pickup_location;
         $roundTrip->dropoff_address = $this->model->pickup_address;
-        $roundTrip->date = $this->returnDate;
-        $roundTrip->time = $this->returnTime;
+        $roundTrip->dateTime = $this->returnDate;
         $roundTrip->flight_number = $this->returnFlightNumber;
         $roundTrip->is_main = false;
 
@@ -116,11 +113,10 @@ class CreateReservation extends Reservation
     }
 
 
-    public function setRoundTrip(Carbon $returnDate,Carbon $returnTime,string $flightNumber = '')
+    public function setRoundTrip(Carbon $returnDateTime,string $flightNumber = '')
     {
         $this->roundTrip = true;
-        $this->returnDate = $returnDate;
-        $this->returnTime = $returnTime;
+        $this->returnDate = $returnDateTime;
         $this->returnFlightNumber = $flightNumber;
     }
 
