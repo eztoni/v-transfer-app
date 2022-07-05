@@ -95,6 +95,7 @@ class PointsOverview extends Component
 
     //------------ Soft Delete ------------------
     public function openSoftDeleteModal($id){
+        $this->point = Point::find($id);
         $this->deleteId = $id;
         $this->softDeleteModal = true;
     }

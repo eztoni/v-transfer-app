@@ -1,240 +1,115 @@
-<div >
-    <x-ez-card>
-        <x-slot name="title">
-
-            <div class="flex justify-between">
-                <h2>Users</h2>
-                <button wire:click="addUser" class="btn btn-sm ">Add User</button>
-            </div>
-        </x-slot>
-        <x-slot name="body">
-            <table class="ds-table ds-table-compact w-full">
-                <thead>
+<x-card title="User Overview">
+    <x-slot name="action" >
+        <x-button wire:click="addUser" positive>Add User</x-button>
+    </x-slot>
+    <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
+        <thead>
+        <tr>
+            <th>#ID</th>
+            <th>Name</th>
+            <th>E-mail</th>
+            <th>Role</th>
+            <th class="text-center">Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        @forelse ($users as $user_data)
+            @if($currentUser->id != $user->id)
                 <tr>
-                    <th>#ID</th>
-                    <th>Name</th>
-                    <th>E-mail</th>
-                    <th>Role</th>
-                    <th class="text-right">Edit</th>
-                </tr>
-                </thead>
-                <tbody>
-                @forelse ($users as $user_data)
-                    @if($currentUser->id != $user->id)
-                    <tr>
-                        <th>{{ $user_data->id }}</th>
-                        <td>{{ $user_data->name }}</td>
-                        <td>{{ $user_data->email }}</td>
-                        <td >@foreach($user_data->getRoleNames() as $roleName) <span class="badge"> {{$roleName}}</span> @endforeach</td>
-                        <td class="text-right">
-                            @if($user_data->hasRole('super-admin'))
-                                <button disabled class="btn btn-primary btn-sm disabled">Update</button>
-                            @else
-                                <button wire:click="updateUser({{$user_data->id}})" class="btn btn-sm btn-success">
-                                    Update
-                                </button>
-                            @endif
+                    <th>{{ $user_data->id }}</th>
+                    <td>{{ $user_data->name }}</td>
+                    <td>{{ $user_data->email }}</td>
+                    <td>@foreach($user_data->getRoleNames() as $roleName) <span class="badge"> {{$roleName}}</span> @endforeach</td>
+                    @if($user_data->hasRole('super-admin'))
+                        <td class="text-center">
+                            <x-button.circle disabled primary icon="pencil">
+                            </x-button.circle>
                         </td>
-
-                    </tr>
-                    @endif
-                @empty
-                    <tr>
-                        <td colspan="999">
-                            <div class="ds-alert ds-alert-warning">
-                                <div class="flex-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         class="w-6 h-6 mx-2 stroke-current">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                                    </svg>
-                                    <label>No active users</label>
-                                </div>
-                            </div>
-                        </TD>
-                    </tr>
-                @endforelse
-                </tbody>
-
-            </table>
-
-            <div x-data="{}" class="modal {{ $userModal ? 'modal-open fadeIn' : '' }}">
-                <div class="modal-box max-h-screen overflow-y-auto">
-                    {{ !empty($this->user->exists) ? 'Updating':'Adding' }} User
-                    <hr class="my-4">
-
-                    <div class="form-control">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Name :</span>
-                            </label>
-                            <input wire:model="user.name" class="input input-bordered"
-                                   placeholder="Name">
-                            @error('user.name')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
+                    @else
+                        <td class="text-center">
+                            <x-button.circle primary wire:click="updateUser({{$user_data->id}})" icon="pencil">
+                            </x-button.circle>
+                        </td>
+                   @endif
+                </tr>
+            @endif
+        @empty
+            <tr>
+                <td colspan="999">
+                    <div class="ds-alert ds-alert-warning">
+                        <div class="flex-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 class="w-6 h-6 mx-2 stroke-current">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                            </svg>
+                            <label>No defined vehicles</label>
                         </div>
-
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Owner:</span>
-                            </label>
-
-                            <select class="select select-bordered" wire:model="user.owner_id">
-                                <option  value="{{ null }}">Select Owner</option>
-                                @foreach($owners as $owner)
-                                    <option value="{{$owner->id}}">{{$owner->name}}</option>
-                                @endforeach
-                            </select>
-                            @error('user.owner_id') <x-input-alert type='warning'>{{ $message }}</x-input-alert>@enderror
-                        </div>
-
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Email:</span>
-                            </label>
-                            <input wire:model="user.email" class="input input-bordered"
-                                   placeholder="Email">
-                            @error('user.email')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
-
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">OIB:</span>
-                            </label>
-                            <input wire:model="user.oib" class="input input-bordered"
-                                   placeholder="OIB">
-                            @error('user.oib')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
-
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">City:</span>
-                            </label>
-                            <input wire:model="user.city" class="input input-bordered"
-                                   placeholder="City">
-                            @error('user.city')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
-
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Zip:</span>
-                            </label>
-                            <input wire:model="user.zip" class="input input-bordered"
-                                   placeholder="Zip">
-                            @error('user.zip')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
-
-                        @if($this->user)
-                            <div class="form-control" wire:ignore>
-
-                                <label class="label">
-                                    <span class="label-text">Available Destinations:</span>
-                                </label>
-                                <select class="input input-bordered" multiple id="select2">
-
-                                    @foreach($destinations as $dest)
-                                        <option value="{{$dest->id}}"> {{ Str::ucfirst($dest->name) }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        @endif
-
-                        @error('selectedDestinations')
-                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                        @enderror
-
-                        @if(!$this->user->exists)
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text">Password:</span>
-                                </label>
-                                <input autocomplete="off"  wire:model="user.set_password" class="input input-bordered" placeholder="Password" type="password">
-                                @error('user.set_password') <x-input-alert type='warning'>{{ $message }}</x-input-alert>@enderror
-                            </div>
-
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text">Password Confirmation:</span>
-                                </label>
-                                <input  autocomplete="off" wire:model="user.set_password_confirmation" class="input input-bordered" placeholder="Password Confirmation" type="password">
-                                @error('user.set_password_confirmation') <x-input-alert type='warning'>{{ $message }}</x-input-alert>@enderror
-                            </div>
-                        @endif
-
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Role:</span>
-                            </label>
-
-                            <select class="select select-bordered" wire:model="userRole">
-                                <option  value="{{ null }}">Select Role</option>
-                                @foreach($roles as $role)
-                                    <option  value="{{$role->name}}">{{\Illuminate\Support\Str::headline($role->name)}}</option>
-                                @endforeach
-                            </select>
-                            @error('userRole') <x-input-alert type='warning'>{{ $message }}</x-input-alert>@enderror
-                        </div>
-
-
-
-
                     </div>
+                </TD>
+            </tr>
+        @endforelse
+        </tbody>
+    </table>
 
-                    <div class="mt-4 flex justify-between">
-                        <button wire:click="closeUserModal()" class="btn btn-sm ">Close</button>
-                        <button wire:click="saveUserData()"
-                                class="btn btn-sm ">{{  !empty($this->user->exists) ? 'Update':'Add' }}</button>
-                    </div>
+
+    <x-modal.card wire:model="userModal" title="{{  !empty($this->user->exists) ? 'Updating':'Adding' }} vehicle">
+        <div class="">
+
+            <x-input label="Name:" wire:model="user.name"/>
+
+            <x-native-select
+                placeholder="Select an owner"
+                wire:model="user.owner_id"
+                label="Owner:"
+                option-key-value
+                :options="$owners"
+            />
+
+            <x-input label="Email:" wire:model="user.email"/>
+            <x-input label="OIB:" wire:model="user.oib"/>
+            <x-input label="City:" wire:model="user.city"/>
+            <x-input label="Zip:" wire:model="user.zip"/>
+
+            @if($this->user)
+                <x-select
+                    label="Available Destinations:"
+                    placeholder="Select destinations"
+                    multiselect
+                    option-label="name"
+                    option-value="id"
+                    :options="$destinations->map(fn ($m) => ['id'=>$m->id,'name'=>$m->name])->toArray()"
+                    wire:model.defer="selectedDestinations"
+                >
+                </x-select>
+            @endif
+
+            @if($this->user->id > 0)
+                <x-input label="Password:" wire:model="user.set_password"/>
+                <x-input label="Password Confirmation:" wire:model="user.set_password_confirmation"/>
+            @endif
+
+            <x-native-select
+                placeholder="Select a role"
+                wire:model="userRole"
+                label="Role:"
+                :options="$roles->mapWithKeys(function ($i) {
+            return [$i->id => $i->name];
+        })->toArray()"
+            />
+
+            <x-slot name="footer">
+                <div class="mt-4 flex justify-between">
+                    <x-button wire:click="closeUserModal()" >Close</x-button>
+                    <x-button wire:click="saveUserData()" positive
+                    >{{  !empty($this->user->exists) ? 'Update':'Add' }}</x-button>
                 </div>
-            </div>
+            </x-slot>
+        </div>
 
-        </x-slot>
-    </x-ez-card>
-
-    <script>
-        document.addEventListener('livewire:load', function () {
-            // Run a callback when an event ("foo") is emitted from this component
-            @this.on('fillSelect2', () => {
-
-                $("#select2").val('')
-                $('#select2').select2(
-                    {
-                        closeOnSelect: true,
-                    }
-                ).on('change', function (e) {
-                    @this.set('selectedDestinations', $('#select2').select2("val"))
-                })
+    </x-modal.card>
 
 
-                for (const element of @this.userDestinations) {
-                    $("#select2").select2("trigger", "select", {
-                        data: { id: element }
-                    });
-                }
 
-            })
+</x-card>
 
-
-            @this.on('restartSelect2', () => {
-                $("#select2").val('')
-                $('#select2').select2(
-                    {
-                        closeOnSelect: true,
-                    }
-                ).on('change', function (e) {
-                    @this.set('selectedDestinations', $('#select2').select2("val"))
-                })
-            })
-        });
-    </script>
-
-</div>

@@ -25,7 +25,7 @@ class UserOverview extends Component
     {
         return [
             'user.name' => 'required|min:3',
-            'user.email' => 'required|email',
+            'user.email' => 'required|email|unique:users,email,'.$this->user->id,
             'user.owner_id' => 'required',
             'user.city' => 'min:3',
             'user.zip' => 'min:3',
@@ -59,6 +59,7 @@ class UserOverview extends Component
     public function addUser(){
         $this->openUserModal();
         $this->user = new User();
+        $this->selectedDestinations = [];
         $this->userDestinations = [];
         $this->restartSelect2();
     }
@@ -69,6 +70,7 @@ class UserOverview extends Component
         $this->user = User::findOrFail($userId);
         $this->userRole = $this->user->getRoleNames()->first();
         $this->userDestinations = $this->user->availableDestinations->pluck('id')->toArray();
+        $this->selectedDestinations = $this->user->availableDestinations->pluck('id')->toArray();
 
         if($this->userDestinations){
             $this->fillSelect2();
@@ -131,7 +133,9 @@ class UserOverview extends Component
             return $user->hasRole(User::ROLE_SUPER_ADMIN);
         });
         $roles = \Spatie\Permission\Models\Role::where('name','!=','super-admin')->get();
-        $owners = Owner::all();
+        $owners = Owner::all()->mapWithKeys(function ($i) {
+            return [$i->id => $i->name];
+        })->toArray();
         $destinations = Destination::all();
 
         return view('livewire.user-overview',compact('users','currentUser','roles','owners','destinations'));

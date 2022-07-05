@@ -1,170 +1,108 @@
-<div>
+<x-card title="{{$destination->name}} - Pickup & Dropoff Points">
+    <x-slot name="action" >
+        <x-button wire:click="addPoint" positive>Add Point</x-button>
+    </x-slot>
 
-    @if ($destinationId)
-        <x-ez-card>
+    <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
+        <thead>
+        <tr>
+            <th>#ID</th>
+            <th>Name</th>
+            <th class="text-center">Update</th>
+            <th class="text-center">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        @forelse ($this->points as $p)
+            <tr>
+                <td>{{ $p->id }}</td>
+                <td>{{ $p->name }}</td>
+                <td class="text-center">
+                    <x-button.circle primary wire:click="updatePoint({{$p->id}})" icon="pencil">
+                    </x-button.circle>
+                </td>
+                <td class="text-center">
+                    <x-button
+                        wire:click="openSoftDeleteModal({{$p->id}})"
+                        rounded
+                        rose icon="trash"
+                        target="_blank"
+                    />
+                </td>
 
-            <x-slot name="title" class="flex justify-between">
-                {{$destination->name}} - Pickup & Dropoff Points
-
-                <button wire:click="addPoint" class="btn btn-sm ">Add Point</button>
-            </x-slot>
-
-            <x-slot name="body">
-
-                @if ($this->points->isNotEmpty())
-
-
-                    <table class="ds-table ds-table-compact">
-                        <!-- head -->
-                        <thead>
-                        <tr>
-                            <th>#ID</th>
-                            <th>Name</th>
-                            <th>Update</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($this->points as $p)
-                            <tr>
-                                <td>{{ $p->id }}</td>
-                                <td>{{ $p->name }}</td>
-                                <td>
-                                    <button wire:click="updatePoint({{$p->id}})" class="btn btn-circle btn-sm btn-success">
-                                        <i class="fas fa-pen"></i>
-                                    </button>
-                                </td>
-
-                            </tr>
-                        @endforeach
-
-                        </tbody>
-                    </table>
-
-                @else
-                    No Pickup&Dropoff Points for {{$destination->name}}, add new points!
-                @endif
-
-
-            </x-slot>
-
-        </x-ez-card>
-    @else
-        <x-ez-card>
-            <x-slot name="body">
-                Select a destination to add Pickup & Dropoff Points!
-            </x-slot>
-        </x-ez-card>
-    @endif
-
-    <div class="modal {{ $softDeleteModal ? 'modal-open fadeIn' : '' }}">
-        <div class="modal-box max-h-screen overflow-y-auto">
-            <b>Confirm deletion?</b>
-            <p>This action will delete the point.</p>
-            <hr class="my-4">
-
-            <div class="mt-4 flex justify-between">
-                <button wire:click="closeSoftDeleteModal()" class="btn btn-sm ">Close</button>
-                <button wire:click="softDelete()" class="btn btn-sm ">Delete</button>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="modal {{ $pointModal ? 'modal-open fadeIn' : '' }}">
-        <div class="modal-box max-h-[45rem] overflow-y-auto">
-            Adding new point
-            <hr class="my-4">
-
-            <div class="form-control">
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text">Name :</span>
-                    </label>
-                    <input wire:model="point.name" class="input input-bordered"
-                           placeholder="Name">
-                    @error('point.name')
-                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                    @enderror
-                </div>
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text">Description:</span>
-                    </label>
-                    <textarea rows="2" wire:model="point.description" class="textarea textarea-bordered"
-                              placeholder="ex. Near pile gate"></textarea>
-                    @error('point.description')
-                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                    @enderror
-                </div>
-                <div class="form-control" >
-                    <label>Address</label>
-                    <input wire:model="point.address" class="input input-bordered"
-                           placeholder="Address">
-                    @error('point.address')
-                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                    @enderror
-                </div>
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text">Type:</span>
-                    </label>
-                    <select wire:model="point.type" class="select select-bordered">
-                        <option value="">Select a point type</option>
-                        @foreach(\App\Models\Point::TYPE_ARRAY as $type)
-                            <option value="{{$type}}">{{Str::headline($type)}}</option>
-                        @endforeach
-                    </select>
-
-                    @error('point.point.type')
-                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                    @enderror
-                </div>
-
-                @if($this->point->type == \App\Models\Point::TYPE_ACCOMMODATION)
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">Reception Email:</span>
-                        </label>
-                        <input wire:model="point.reception_email" class="input input-bordered"
-                               placeholder="Address">
-                        @error('point.reception_email')
-                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                        @enderror
+            </tr>
+        @empty
+            <tr>
+                <td colspan="999">
+                    <div class="ds-alert ds-alert-warning">
+                        <div class="flex-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 class="w-6 h-6 mx-2 stroke-current">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                            </svg>
+                            <label>No defined vehicles</label>
+                        </div>
                     </div>
+                </TD>
+            </tr>
+        @endforelse
+        </tbody>
+    </table>
 
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">PMS Class:</span>
-                        </label>
-                        <input wire:model="point.pms_class" class="input input-bordered"
-                               placeholder="PMS Class">
-                        @error('point.pms_class')
-                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                        @enderror
-                    </div>
-                @endif
+    <x-modal.card wire:model="pointModal" title="{{  !empty($this->point->exists) ? 'Updating':'Adding' }} point">
+        <div class="">
 
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text">PMS code:</span>
-                    </label>
-                    <input wire:model="point.pms_code" class="input input-bordered"
-                    >
-                    @error('point.pms_code')
-                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                    @enderror
+            <x-input label="Name:" wire:model="point.name"/>
+            <x-input label="Description:" wire:model="point.description"/>
+            <x-input label="Address:" wire:model="point.address"/>
+
+            <x-native-select
+                placeholder="Type"
+                wire:model="point.type"
+                label="Type:"
+                :options="\App\Models\Point::TYPE_ARRAY"
+            />
+
+
+            @if($this->point->type == \App\Models\Point::TYPE_ACCOMMODATION)
+
+                <x-input label="Reception Email:" wire:model="point.reception_email"/>
+
+                <x-input label="PMS Class:" wire:model="point.pms_class"/>
+
+            @endif
+
+            <x-input label="PMS code:" wire:model="point.pms_code"/>
+
+            <x-slot name="footer">
+                <div class="mt-4 flex justify-between">
+                    <x-button wire:click="closePointModal()" >Close</x-button>
+                    <x-button wire:click="savePointData()" positive
+                    >{{  !empty($this->point->exists) ? 'Update':'Add' }}</x-button>
                 </div>
+            </x-slot>
 
 
-            </div>
-
-            <div class="mt-4 flex justify-between">
-                <button wire:click="closePointModal()" class="btn btn-sm ">Close</button>
-                <button wire:click="savePointData()"
-                        class="btn btn-sm ">{{  !empty($this->point->exists) ? 'Update':'Add' }}</button>
-            </div>
         </div>
-    </div>
 
-</div>
+    </x-modal.card>
+
+    <x-modal.card blur wire:model.defer="softDeleteModal" title="Delete Point - {{$this->point->name}}">
+
+        <p>You are about to delete <b>{{$this->point->name}}</b> are you sure you want to do that?</p>
+        <p class="text-rose-500">CAREFUL - This action will delete the point!</p>
+
+        <x-slot name="footer">
+            <div class="float-right">
+                <x-button wire:click="closeSoftDeleteModal()" label="Close" rose/>
+                <x-button wire:click="softDelete()" label="Delete" positive/>
+            </div>
+
+        </x-slot>
+
+    </x-modal.card>
+
+
+</x-card>
 
