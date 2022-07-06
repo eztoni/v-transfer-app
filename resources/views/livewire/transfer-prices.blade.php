@@ -19,7 +19,7 @@
                     option-label="name"
                     option-value="id"
                     :options="\App\Models\Partner::all()->map(fn ($m) => ['id'=>$m->id,'name'=>$m->name])->toArray() "
-                    wire:model="transferId"
+                    wire:model="partnerId"
                 />
         @endif
 
