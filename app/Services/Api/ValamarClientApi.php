@@ -259,6 +259,12 @@ class ValamarClientApi{
      */
     private function getCheckOutFilter(): bool|string
     {
+
+        ##Fallback if only check-in is provided - checkout is passed as the same date
+        if($this->getCheckInFilter() && empty($this->checkOut)){
+            $this->checkOut = $this->getCheckInFilter();
+        }
+
         return !empty($this->checkOut) ? $this->checkOut->format($this->apiDateFormat) : false;
     }
 
