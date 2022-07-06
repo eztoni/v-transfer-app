@@ -123,7 +123,7 @@
                                             <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkOut'))->format('d.m.Y')}}</th>
 
                                             <td>
-                                                <button wire:click="pullRes({{$k}})" class="btn btn-xs" ><i class="fas fa-download"></i></button>
+                                                <button wire:click="pullRes('{{$k}}')" class="btn btn-xs" ><i class="fas fa-download"></i></button>
                                             </td>
                                         </tr>
                                     @endforeach

@@ -83,7 +83,7 @@ class InternalReservation extends Component
         $this->stepTwoFields['leadTraveller']['email'] = Arr::get($data,'reservationHolderData.email');
         $this->stepTwoFields['leadTraveller']['phone'] = Arr::get($data,'reservationHolderData.mobile');
         $this->stepTwoFields['leadTraveller']['reservationNumber'] = $i;
-
+        $this->showToast('Data pulled');
         $this->closePullModal();
     }
 
