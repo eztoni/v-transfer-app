@@ -223,25 +223,26 @@ class ValamarClientApi{
         return $this;
     }
 
+
     /**
-     * Function used to set the check in filter
-     * @param string $checkIn Date in the format of Y-m-d ( 2022-12-20 )
-     * @return void
+     *  Function used to set the check in filter
+     * @param Carbon $checkIn
+     * @return $this
      */
-    public function setCheckInFilter(string $checkIn) : ValamarClientApi
+    public function setCheckInFilter(Carbon $checkIn) : ValamarClientApi
     {
-        $this->checkIn =  Carbon::parse(substr(trim($checkIn),0,10));
+        $this->checkIn =  $checkIn;
         return $this;
     }
 
     /**
-     * Function used to set the check out filter
-     * @param string $checkOut Date in the format of Y-m-d ( 2022-12-20 )
-     * @return void
+     *  Function used to set the check in filter
+     * @param Carbon $checkOut
+     * @return $this
      */
-    public function setCheckOutFilter(string $checkOut) : ValamarClientApi
+    public function setCheckOutFilter(Carbon $checkOut) : ValamarClientApi
     {
-        $this->checkOut =  Carbon::parse(substr(trim($checkOut),0,10));
+        $this->checkOut =  $checkOut;
         return $this;
     }
 

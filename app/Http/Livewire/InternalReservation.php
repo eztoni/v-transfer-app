@@ -13,6 +13,7 @@ use App\Models\Transfer;
 use App\Models\Traveller;
 use App\Services\TransferAvailability;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
@@ -22,6 +23,68 @@ use function PHPUnit\Framework\arrayHasKey;
 
 class InternalReservation extends Component
 {
+
+    public $apiData = [];
+
+    public $pullDataFields=[
+        'resId'=>null,
+        'fName'=>null,
+        'lName'=>null,
+        'dFrom'=>null,
+        'dTo' => null,
+        'property' => null,
+
+    ];
+    public  bool $pullModal = false;
+
+
+
+
+    public function pullData()
+    {
+        $api = new \App\Services\Api\ValamarClientApi();
+
+        $api->setReservationCodeFilter($this->pullDataFields['resId'])
+            ->setFirstNameFilter($this->pullDataFields['fName'])
+            ->setLastNameFilter($this->pullDataFields['lName'])
+        ->setPropertyPMSCodeFilter($this->pullDataFields['property']);
+
+
+        if ($this->pullDataFields['dFrom']) {
+            $api->setCheckInFilter(Carbon::createFromFormat('d.m.Y', $this->pullDataFields['dFrom']));
+        }
+        if ($this->pullDataFields['dTo']) {
+           $api->setCheckOutFilter(Carbon::createFromFormat('d.m.Y', $this->pullDataFields['dTo']));
+
+        }
+
+
+        $this->apiData = $api->getReservationList();
+    }
+
+    public function openPullModal()
+    {
+    $this->pullModal = true;
+    }
+   public function closePullModal()
+    {
+        $this->pullModal = false;
+
+    }
+
+    public function pullRes($i){
+
+        $data = Arr::get($this->apiData,$i);
+
+
+
+
+
+
+        $this->closePullModal();
+    }
+
+
     public $stepOneFields = [
         'destinationId' => null,
         'startingPointId' => null,
@@ -406,6 +469,14 @@ class InternalReservation extends Component
     public function getConfirmationLanguagesArrayProperty()
     {
         return Reservation::CONFIRMATION_LANGUAGES;
+    }
+
+    public function getPointsAccomodationProperty()
+    {
+        return Point::query()
+            ->where('type',Point::TYPE_ACCOMMODATION)
+            ->whereNotNull('pms_code')
+        ->get();
     }
 
     public function getStartingPointsProperty()

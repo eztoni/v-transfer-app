@@ -8,87 +8,139 @@
                         <i class="fas fa-search"></i> Search
 
                         <span class="ml-auto">
-                            <label for="internal-modal" class="btn btn-sm btn-outline">Pull data</label>
+                            <label wire:click="openPullModal" class="btn btn-sm btn-outline">Pull data</label>
                         </span>
 
-                        <x-ez-modal id="internal-modal" lg>
+                        <x-ez-modal :is-open="$this->pullModal" lg>
 
-                            <div class="flex gap-4 justify-between flex-wrap">
-                                <x-form.ez-text-input sm label="Reservation ID"></x-form.ez-text-input>
-                                <x-form.ez-text-input sm label="Room number"></x-form.ez-text-input>
-                                <x-form.ez-text-input sm label="Guest name"></x-form.ez-text-input>
-                                <x-form.ez-text-input sm label="Guest last name"></x-form.ez-text-input>
+                            <div class="flex gap-4  flex-wrap">
+                                <x-form.ez-text-input
+                                    wire:model.defer="pullDataFields.resId"
+                                    sm label="Reservation ID"
+                                ></x-form.ez-text-input>
+
+                                <x-form.ez-text-input
+                                    wire:model.defer="pullDataFields.fName"
+                                    sm label="Guest name"></x-form.ez-text-input>
+                                <x-form.ez-text-input
+                                    wire:model.defer="pullDataFields.lName"
+                                    sm label="Guest last name"></x-form.ez-text-input>
 
                             </div>
+                            <div class="flex gap-4   mt-2 flex-wrap">
+
+                            <div class=""><p class="text-sm">Check in:</p>
+                                    <input x-init="
+                                        flatpickr($el, {
+                                        disableMobile: 'true',
+                                        minDate:'today',
+                                        dateFormat:'d.m.Y',
+                                        defaultDate:'{{$pullDataFields['dFrom']}}'});
+                                        " readonly
+                                           wire:model.defer="pullDataFields.dFrom"
+                                           class=" input input-bordered input-sm mt-2"
+                                           placeholder="Date to:">
+                                </div>
+
+                                <div class=""><p class="text-sm">Check out:</p>
+
+                            <input x-init="
+                                        flatpickr($el, {
+                                        disableMobile: 'true',
+                                        minDate:'today',
+                                        dateFormat:'d.m.Y',
+                                        defaultDate:'{{$pullDataFields['dTo']}}'});
+                                        " readonly
+                                   wire:model.defer="pullDataFields.dTo"
+                                   class=" input input-bordered input-sm mt-2"
+                                   placeholder="Date to:">
+
+
+                            </div>
+
+                                <div class="">
+                                    <div class="form-control pt-2" wire:ignore>
+                                        <label class="label-text mb-1 ">Property</label>
+
+                                        <select id="propertySelect" x-init=" $('#propertySelect').select2(
+                                                {
+                                                    closeOnSelect: true,
+
+                                                      placeholder: 'Select or type dropoff address',
+                                                }
+                                            ).on('change', function (e) {
+                                                @this.
+                                                set('pullDataFields.property', $('#propertySelect').val())
+                                            })
+                                            ">
+                                            <option></option>
+
+                                            @foreach($this->pointsAccomodation as $point)
+                                                <option
+                                                    @if($this->pullDataFields['property'] === $point->pms_code)
+                                                    selected
+                                                    @endif
+                                                    value="{{$point->pms_code}}">{{$point->name}}</option>
+                                            @endforeach
+
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
                             <hr class="my-4">
-                            <table class="table table-compact w-full">
-                                <thead>
-                                <tr>
-                                    <th>#ResId</th>
-                                    <th>Name</th>
-                                    <th>Lastname</th>
-                                    <th>Room no</th>
-                                    <th>Object</th>
-                                    <th>From</th>
-                                    <th>to</th>
-                                    <th>Pull</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <th>1</th>
-                                    <td>Joanna</td>
-                                    <td>Ganderton</td>
-                                    <td>311</td>
-                                    <td>Lacroma</td>
-                                    <td>12.07.2022</td>
-                                    <td>18.07.2022</td>
-                                    <td>
-                                        <button class="btn btn-xs"><i class="fas fa-download"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>1</th>
-                                    <td>Joanna</td>
-                                    <td>Ganderton</td>
-                                    <td>311</td>
-                                    <td>Lacroma</td>
-                                    <td>12.07.2022</td>
-                                    <td>18.07.2022</td>
-                                    <td>
-                                        <button class="btn btn-xs"><i class="fas fa-download"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>1</th>
-                                    <td>Joanna</td>
-                                    <td>Ganderton</td>
-                                    <td>311</td>
-                                    <td>Lacroma</td>
-                                    <td>12.07.2022</td>
-                                    <td>18.07.2022</td>
-                                    <td>
-                                        <button class="btn btn-xs"><i class="fas fa-download"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>1</th>
-                                    <td>Joanna</td>
-                                    <td>Ganderton</td>
-                                    <td>311</td>
-                                    <td>Lacroma</td>
-                                    <td>12.07.2022</td>
-                                    <td>18.07.2022</td>
-                                    <td>
-                                        <button class="btn btn-xs"><i class="fas fa-download"></i></button>
+                            <div class="max-h-96 overflow-y-scroll">
+                                <table class="table table-compact w-full  ">
+                                    <thead>
+                                    <tr>
+                                        <th>#ResId</th>
+                                        <th>First Name</th>
+                                        <th>Lastname</th>
+                                        <th>Email</th>
+                                        <th>Adults</th>
+                                        <th>Children</th>
+                                        <th>Check in</th>
+                                        <th>Check out</th>
 
-                                    </td>
-                                </tr>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
 
+                                    @foreach($this->apiData as $k=> $r)
 
-                                </tbody>
-                            </table>
-                            <label for="internal-modal" class="pull-right mt-4 btn btn-sm btn-outline">Close</label>
+                                        <tr>
+                                            <th>{{$k}}</th>
+                                            <th>{{\Illuminate\Support\Str::title( \Illuminate\Support\Arr::get($r,'reservationHolderData.firstName')??'-')}}</th>
+                                            <th>{{\Illuminate\Support\Str::title(\Illuminate\Support\Arr::get($r,'reservationHolderData.lastName')??'-')}}</th>
+                                            <th>{{\Illuminate\Support\Arr::get($r,'reservationHolderData.email')??'-'}}</th>
+                                            <th>{{\Illuminate\Support\Arr::get($r,'adults')}}</th>
+                                            <th>{{\Illuminate\Support\Arr::get($r,'children')}}</th>
+                                            <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkIn'))->format('d.m.Y')}}</th>
+                                            <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkOut'))->format('d.m.Y')}}</th>
+
+                                            <td>
+                                                <button class="btn btn-xs" wire:click="pullRes({{$loop->index}})"><i class="fas fa-download"></i></button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="flex justify-between items-center">
+
+                                <div>
+                                    <label wire:click="pullData" class="pull-right mt-4 btn btn-primary btn-sm btn-outline mx-4">Search</label>
+
+                                    <label   wire:click="closePullModal" class="pull-right mt-4 btn btn-sm btn-outline">Close</label>
+
+                                </div>
+                                <div wire:loading.delay class="text-primary">
+                                    Loading data...
+                                </div>
+
+                            </div>
 
                         </x-ez-modal>
 
