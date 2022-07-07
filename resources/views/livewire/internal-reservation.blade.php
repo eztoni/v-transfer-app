@@ -89,11 +89,14 @@
                                 </div>
                             </div>
                             <hr class="my-4">
+                            @if($this->apiData)
+
+
                             <div class="max-h-96 overflow-y-scroll">
                                 <table class="table table-compact w-full  ">
                                     <thead>
                                     <tr>
-                                        <th>#ResId</th>
+                                        <th>#Res. Code</th>
                                         <th>First Name</th>
                                         <th>Lastname</th>
                                         <th>Email</th>
@@ -101,6 +104,7 @@
                                         <th>Children</th>
                                         <th>Check in</th>
                                         <th>Check out</th>
+                                        <th>Pull</th>
 
                                     </tr>
                                     </thead>
@@ -119,7 +123,7 @@
                                             <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkOut'))->format('d.m.Y')}}</th>
 
                                             <td>
-                                                <button class="btn btn-xs" wire:click="pullRes({{$loop->index}})"><i class="fas fa-download"></i></button>
+                                                <button wire:click="pullRes('{{$k}}')" class="btn btn-xs" ><i class="fas fa-download"></i></button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -127,7 +131,7 @@
                                     </tbody>
                                 </table>
                             </div>
-
+                            @endif
                             <div class="flex justify-between items-center">
 
                                 <div>
