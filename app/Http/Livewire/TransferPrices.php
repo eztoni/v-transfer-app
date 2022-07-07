@@ -81,8 +81,8 @@ class TransferPrices extends Component
 
     protected $rules = array(
 
-        'routePrice.*' => 'required|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX.'|min:1',
-        'routePriceRoundTrip.*' => 'regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX.'|min:1',
+        'routePrice.*' => 'required|min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
+        'routePriceRoundTrip.*' => 'min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
     );
 
 

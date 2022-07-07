@@ -1,10 +1,10 @@
-<div x-data="extraSettings">
+<div x-data="{open: false,selectedLanguage: 'en'}">
     <x-ez-card class="mb-5">
 
         <x-slot name="title">
             <div class="flex justify-between">
-                <span>Extra edit: {{$this->extra->name}}</span>
-                <a href="{{route('extras-overview')}}" class="btn btn-link btn-sm">Back to extras overview</a>
+                <span>Extra edit: <b>{{$this->extra->name}}</b></span>
+                <x-button href="{{route('extras-overview')}}"  primary label="Back to extras overview" />
 
             </div>
         </x-slot>
@@ -16,114 +16,70 @@
 
 
     <div class="mt-4">
-        <x-ez-card class="h-full mb-4">
-            <x-slot name="body">
-                        <div class="flex justify-between ">
-                            <p class="text-xl font-bold">
-                                Extra - Information
-                            </p>
-                            <div class="tabs">
-                                @foreach($this->companyLanguages as $languageIso)
-                                    <a @click="selectedLanguage='{{$languageIso}}'" class="tab    tab-bordered "
-                                       x-bind:class="selectedLanguage ==='{{$languageIso}}'?'tab-active':''">
-                                        {{Str::upper($languageIso)}}
-                                    </a>
-                                @endforeach
 
-                            </div>
-                        </div>
+        <x-card title="Extra - Information">
 
+            <x-slot name="action">
+                <div class="ds-tabs">
+                    @foreach($this->companyLanguages as $languageIso)
+                        <a @click="selectedLanguage='{{$languageIso}}'" class="ds-tab ds-tab-bordered "
+                           x-bind:class="selectedLanguage ==='{{$languageIso}}'?'ds-tab-active':''">
+                            {{Str::upper($languageIso)}}
+                        </a>
+                    @endforeach
 
-
-
-                        @foreach($this->companyLanguages as $languageIso)
-                            <div x-show="selectedLanguage ==='{{$languageIso}}'" x-transition:enter>
-
-                                <div class="form-control">
-                                    <label class="label">
-                                        <span class="label-text">Name ({{Str::upper($languageIso)}}):</span>
-                                    </label>
-                                    <input wire:model="extraName.{{$languageIso}}" class="my-input  "
-                                           placeholder="{{$languageIso=='en'?'ex. Dubrovnik Boat Tour':''}}">
-                                    @error('extraName.'.$languageIso)
-                                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                    @enderror
-                                </div>
-                                <div class="form-control">
-                                    <label class="label">
-                                        <span class="label-text">Description ({{Str::upper($languageIso)}}):</span>
-                                    </label>
-                                    <input wire:model="extraDescription.{{$languageIso}}" class="my-input  "
-                                           placeholder="{{$languageIso=='en'?'ex. Extra Description':''}}">
-                                    @error('extraDescription.'.$languageIso)
-                                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                    @enderror
-                                </div>
-                            </div>
-
-                        @endforeach
-                        <button class="btn btn-sm btn-success ml-auto mt-4 bottom-4 right-4"
-                                wire:click="saveExtra">Save Extra
-                        </button>
-
-
+                </div>
             </x-slot>
-        </x-ez-card>
 
-
-        <x-ez-card class="h-full mb-4">
-            <x-slot name="body">
-                <x-slot name="title" class="flex justify-between">
-                    <div class="">
-                        Extra - Price
+            @foreach($this->companyLanguages as $languageIso)
+                <div :key="{{$languageIso}}" class="mb-4" x-show="selectedLanguage ==='{{$languageIso}}'" x-transition:enter>
+                    <div class="form-control">
+                        <x-input label="Name ({{Str::upper($languageIso)}}):" wire:model="extraName.{{$languageIso}}"
+                        />
                     </div>
-                    <div class="">
-                        <label class="label">
-                            <span class="label-text">Partner:</span>
-                        </label>
-                        <select class="my-select select-sm" wire:model="partnerId">
-                            @foreach(\App\Models\Partner::all() as $partner)
-                                <option value="{{$partner->id}}">{{$partner->name}}</option>
-                            @endforeach
-                        </select>
+
+                    <div class="form-control">
+                        <x-input label="Description ({{Str::upper($languageIso)}}):" wire:model="extraDescription.{{$languageIso}}"
+                        />
+                    </div>
+                </div>
+            @endforeach
+
+            <x-errors />
+
+            <x-slot name="footer">
+                <div class="float-right">
+                    <x-button wire:click="saveExtra" spinner="saveVehicle" primary label="Save Extra" />
+                </div>
+            </x-slot>
+
+        </x-card>
+
+        <div class="mt-4">
+            <x-card title="Extra - Price">
+
+                <x-slot name="action">
+                    <x-native-select
+                        label="Partner:"
+                        option-label="name"
+                        option-value="id"
+                        :options="\App\Models\Partner::all()->map(fn ($m) => ['id'=>$m->id,'name'=>$m->name])->toArray() "
+                        wire:model="partnerId"
+                    />
+                </x-slot>
+
+                <x-input label="Extra Price" wire:model="extraPrice"></x-input>
+
+                <x-slot name="footer">
+                    <div class="float-right">
+                        <x-button wire:click="saveExtraPrice" spinner="saveVehicle" primary label="Save Price" />
                     </div>
                 </x-slot>
 
-                <div class="form-control">
-
-                    <label class="label">
-                        <span class="label-text">Price:</span>
-                    </label>
-                    <input wire:model="extraPrice" class="my-input">
-                    @error('extraPrice')
-                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                    @enderror
-                </div>
-
-                <button class="btn btn-sm btn-success ml-auto mt-4 bottom-4 right-4"
-                        wire:click="saveExtraPrice">Save Price
-                </button>
-
-
-            </x-slot>
-        </x-ez-card>
+            </x-card>
+        </div>
 
 
     </div>
-
-
-
-    <script>
-        function extraSettings() {
-            return {
-                selectedLanguage: 'en',
-                modal: false,
-                init() {
-
-                }
-            }
-        }
-    </script>
-
 
 </div>

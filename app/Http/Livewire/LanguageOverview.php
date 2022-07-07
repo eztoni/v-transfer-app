@@ -33,6 +33,12 @@ class LanguageOverview extends Component
         ];
     }
 
+    public function mount()
+    {
+        $this->language = new Language();
+    }
+
+
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
