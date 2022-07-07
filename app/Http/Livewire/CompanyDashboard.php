@@ -25,6 +25,7 @@ class CompanyDashboard extends Component
     {
         $company_id = Auth::user()->company_id;
         $this->company = Company::findOrFail($company_id);
+        $this->selectedLanguages = $this->company->languages->pluck('id')->toArray();
 
         $this->setImageUrl();
     }
@@ -87,7 +88,7 @@ class CompanyDashboard extends Component
         })->where('company_id', '=', $this->company->id)
             ->count();
 
-        $languages = Language::withoutGlobalScope(CompanyScope::class)->where('language_code', '!=', 'en')->get();
+        $languages = Language::withoutGlobalScope(CompanyScope::class)->get();
         return view('livewire.company-dashboard', compact('languages', 'usersCount'));
     }
 }
