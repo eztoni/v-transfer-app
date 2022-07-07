@@ -19,11 +19,11 @@ class Transfer extends Model implements HasMedia
 
     protected $with = ['vehicle'];
 
-
+    // First index must be 1 because wire ui has a bug
     public const CHILD_SEATS = [
-      0=>'Booster ( 10-15 kg )',
-      1=>'Egg ( 0-5 kg )',
-      2=>'Classic ( 5-10 kg )',
+      1=>'Booster ( 10-15 kg )',
+      2=>'Egg ( 0-5 kg )',
+      3=>'Classic ( 5-10 kg )',
     ];
 
     const MAX_IMAGES = 5;

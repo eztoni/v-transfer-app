@@ -37,6 +37,7 @@ class InternalReservation extends Component
         'luggage' => 0,
     ];
 
+
     public $fieldNames = [
         'stepOneFields.destinationId' => 'destination',
         'stepOneFields.startingPointId' => 'pickup location',
@@ -124,7 +125,7 @@ class InternalReservation extends Component
             'phone' => null,
         ],
         'confirmationLanguage' => 'en',
-        'sendMail' => 1,
+        'sendMail' => true,
         'seats' => [
 
         ],
@@ -147,10 +148,8 @@ class InternalReservation extends Component
     public $activateChildSeats = false;
     public $activateExtras = false;
     public $emailList = array();
-    public $sendEmailArray = [
-        0 => 'No',
-        1 => 'Yes',
-    ];
+
+
 
     public function getExtrasProperty()
     {
@@ -255,7 +254,7 @@ class InternalReservation extends Component
 
         $id = $businessModel->saveReservation();
 
-        if($this->stepTwoFields['sendMail'] == 1){
+        if($this->stepTwoFields['sendMail'] == true){
 
 
             $travellerMail = $this->stepTwoFields['leadTraveller']['email'];
@@ -517,7 +516,7 @@ class InternalReservation extends Component
 
     public function addSeat()
     {
-        $this->stepTwoFields['seats'][] = "0";
+        $this->stepTwoFields['seats'][] = false;
     }
 
     public function pullTraveller()

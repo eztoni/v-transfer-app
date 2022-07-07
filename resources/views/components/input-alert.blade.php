@@ -1,7 +1,7 @@
 @props(['type' => 'success','svg' => ''])
 
 
-<div class="alert alert-{{$type}} mt-1 p-2">
+<div class="ds-alert ds-alert-{{$type}} mt-1 p-2">
     <div class="flex-1">
         @switch($type)
             @case('error')

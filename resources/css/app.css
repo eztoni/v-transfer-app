@@ -142,7 +142,7 @@ Toast
 }
 }
 
-.alert.alert-warning{
+.ds-alert.ds-alert-warning{
     background-color: #eca5184a;
     border: 1px solid #eca518;
 }
