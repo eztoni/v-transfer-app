@@ -87,7 +87,7 @@ class ValamarClientApi{
         $this->reservationsList = array();
 
         $this->configureReservationListFilters();
-
+        
         if($this->isReservationListFilterDefined()) {
 
             $this->setCallURL('reservations');
@@ -262,7 +262,7 @@ class ValamarClientApi{
 
         ##Fallback if only check-in is provided - checkout is passed as the same date
         if($this->getCheckInFilter() && empty($this->checkOut)){
-            $this->checkOut = $this->getCheckInFilter();
+            $this->checkOut = Carbon::createFromFormat($this->apiDateFormat,$this->getCheckInFilter());
         }
 
         return !empty($this->checkOut) ? $this->checkOut->format($this->apiDateFormat) : false;
