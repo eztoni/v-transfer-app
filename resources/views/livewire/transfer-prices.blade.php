@@ -70,7 +70,8 @@
                         <td class="text-right">
                             <div class="form-control ">
                                 <div class="input-group justify-end">
-                                    <input wire:model="routePrice.{{$r->id}}" placeholder="Price" @keyup="dirty=false" class="@error('routePrice.'.$r->id) input-error @enderror input input-sm input-bordered">
+                                    <input wire:model="routePrice.{{$r->id}}" placeholder="Price" @keyup="dirty=false" class="@error('routePrice.'.$r->id) ds-disabled ds-input-error @enderror ds-input ds-input-sm ds-input-bordered">
+
                                     <x-button  wire:click="saveRoutePrice({{$r->id}})" label="Save" positive/>
                                 </div>
                             </div>
