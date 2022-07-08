@@ -4,7 +4,10 @@
             Destination Reports
         </x-slot>
 
+
         <x-slot name="body">
+         
+
             <div class="grid grid-cols-4 gap-2">
                 @role(\App\Models\User::ROLE_ADMIN.'|'.\App\Models\User::ROLE_SUPER_ADMIN)
                 <x-form.ez-select

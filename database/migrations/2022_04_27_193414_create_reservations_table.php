@@ -28,7 +28,7 @@ class CreateReservationsTable extends Migration
             $table->string('flight_number')->nullable();
             $table->text('remark')->nullable();
 
-            $table->dateTime('dateTime');
+            $table->dateTime('date_time');
 
 
             $table->integer('adults');

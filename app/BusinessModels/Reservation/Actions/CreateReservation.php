@@ -37,7 +37,7 @@ class CreateReservation extends Reservation
     ): void
     {
         $this->model->destination_id = $destionationId;
-        $this->model->dateTime = $dateTime;
+        $this->model->date_time = $dateTime;
         $this->model->pickup_location = $pickupLocation;
         $this->model->pickup_address = $pickupAddress;
         $this->model->dropoff_location = $dropoffLocation;
@@ -92,7 +92,7 @@ class CreateReservation extends Reservation
         $roundTrip->pickup_address = $this->model->dropoff_address;
         $roundTrip->dropoff_location = $this->model->pickup_location;
         $roundTrip->dropoff_address = $this->model->pickup_address;
-        $roundTrip->dateTime = $this->returnDate;
+        $roundTrip->date_time = $this->returnDate;
         $roundTrip->flight_number = $this->returnFlightNumber;
         $roundTrip->is_main = false;
 

@@ -144,6 +144,7 @@
                                     label="Date to:"
                                     wire:model="stepOneFields.dateTime"
                                     :min="now()"
+                                    time-format="24"
                                     display-format="DD.MM.YYYY HH:mm"
                                 />
 
@@ -152,6 +153,7 @@
                                         label="Date from:"
                                         wire:model="stepOneFields.returnDateTime"
                                         :min="now()"
+                                        time-format="24"
                                         display-format="DD.MM.YYYY HH:mm"
                                     />
                                 @endif
@@ -337,7 +339,6 @@
             </div>
             <div class="mb-2">
                 <x-card title="Lead traveller details">
-
                     <div class="grid grid-cols-3 gap-4">
 
                         <x-select
@@ -345,7 +346,8 @@
                             label="Title"
                             :options="\App\Models\Reservation::TRAVELLER_TITLES"
                             option-key-value
-                        ></x-select>
+                        />
+
                         <x-input label="First name"
                                  wire:model="stepTwoFields.leadTraveller.firstName"
                         ></x-input>

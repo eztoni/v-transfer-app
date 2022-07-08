@@ -28,7 +28,7 @@
     <wireui:scripts />
     <script defer src="{{ mix('js/app.js') }}" ></script>
 </head>
-<body class="font-sans antialiased " style="background-color: rgba(242,250,253,0.7)">
+<body class="font-sans antialiased " style="background-color: rgb(229 230 230 / 47%);">
 <div class="h-screen  ds-drawer  ds-drawer-mobile">
 
     <input id="main-menu" type="checkbox" @change="$refs['right-drawer'].checked = false" class=" ds-drawer-toggle">

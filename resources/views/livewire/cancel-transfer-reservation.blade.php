@@ -1,23 +1,11 @@
-<div>
-    <div class=" my-4">
-        <p class="text-lg"> Are you sure you want to cancel this reservation?</p>
-        <div class="divider"></div>
-{{--        @if($reservation->is_main)--}}
-{{--            <div class="form-control mb-4">--}}
-{{--                <label class="label cursor-pointer">--}}
-{{--                    <span class="label-text">Cancel Round Trip?</span>--}}
-{{--                    <input type="checkbox" class="checkbox" wire:model="cancelRoundTrip" />--}}
-{{--                </label>--}}
-{{--            </div>--}}
-{{--        @endif--}}
+<div class=" my-4">
+    <p class="text-lg"> Are you sure you want to cancel this reservation?</p>
+    <div class="ds-divider"></div>
 
 
-        <button class="btn btn-success text-white float-right" wire:click="cancelReservation">
-            Yes
-        </button>
-        <button class="btn btn-outline  float-right mx-2" wire:click="close">
-            No
-        </button>
 
-    </div>
+    <x-button label="Yes" class=" text-white float-right" wire:click="cancelReservation"/>
+
+    <x-button label="No" class="  float-right mx-2" wire:click="close"/>
+
 </div>

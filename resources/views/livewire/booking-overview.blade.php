@@ -57,7 +57,7 @@
                         <span class="font-extrabold text-info">Luggage:</span> <b>{{$reservation->luggage}}</b>
 
                         <span class="font-extrabold text-info">Pickup Location:</span>
-                        <span><b>{{$reservation->pickupLocation->name}} - <b>{{$reservation->date}}</b> @ <b>{{$reservation->time}}</b> - <b>Address: {{$reservation->pickup_address}}</b></b></span>
+                        <span><b>{{$reservation->pickupLocation->name}} - <b>{{$reservation->date_time->format('d.m.Y H:i')}}</b> - <b>Address: {{$reservation->pickup_address}}</b></b></span>
                     </div>
                 </div>
             </x-slot>

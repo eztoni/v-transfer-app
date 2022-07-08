@@ -253,9 +253,8 @@
 
                                                                     <p style="font-size: 14px"><b>Pickup Address :  </b> {{$reservation->pickup_address}}</p>
                                                                     <p style="font-size: 14px"><b>Dropoff Address : </b> {{$reservation->dropoff_address}}</p>
-                                                                    <p style="font-size: 14px"><b>Pickup Date : </b> {{$reservation->date->format('d.m.Y')}}</p>
-                                                                    <p style="font-size: 14px"><b>Pickup Time : </b> {{$reservation->time->format('H:i')}}</p>
-                                                                    @if($reservation->flight_number)
+                                                                    <p style="font-size: 14px"><b>Pickup Date : </b> {{$reservation->date_time->format('d.m.Y H:i')}}</p>
+                                                                        @if($reservation->flight_number)
                                                                         <p style="font-size: 14px"><b>Flight Number:</b>  {{$reservation->flight_number}}</p>
                                                                     @endif
 
@@ -267,8 +266,7 @@
                                                                         <small>Please note that this trip is <b>ROUND TRIP</b>. Information are below</small>
                                                                         <p style="font-size: 14px"><b>Round Trip Pickup: </b> {{$reservation->dropoff_address}}</p>
                                                                         <p style="font-size: 14px"><b>Round Trip Dropoff: </b> {{$reservation->pickup_address}}</p>
-                                                                        <p style="font-size: 14px"><b>Round Trip Date: </b> {{$reservation->returnReservation->date->format('d.m.Y')}}</p>
-                                                                        <p style="font-size: 14px"><b>Round Trip Pickup Time : </b>{{$reservation->returnReservation->time->format('H:i')}}</p>
+                                                                        <p style="font-size: 14px"><b>Round Trip Date: </b> {{$reservation->returnReservation->date_time->format('d.m.Y H:i')}}</p>
                                                                     @endif
 
                                                                     <br>
