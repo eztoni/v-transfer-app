@@ -355,6 +355,7 @@
                 @endif
 
 
+
                 <div
                     class="border-2  gap-2 mb-2 bg-gradient-to-b from-primary-500 to-white pb-2 flex flex-col rounded-lg relative shadow-md">
                     <div class="w-full flex justify-between text-neutral-content px-4 pt-1 text-lg font-bold "

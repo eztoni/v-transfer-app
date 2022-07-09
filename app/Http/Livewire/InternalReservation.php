@@ -554,7 +554,7 @@ class InternalReservation extends Component
 
         $route = $this->selectedRoute;
 
-
+        return collect([]);
         if (!$route) {
             return collect([]);
         }
@@ -572,6 +572,7 @@ class InternalReservation extends Component
         }catch (\Exception $e){
             return collect([]);
         }
+
 
     }
 
