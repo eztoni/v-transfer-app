@@ -51,7 +51,7 @@
         </div>
 
         <div  x-show="tableView" x-transition class="overflow-x-auto">
-            <table class="table  w-full">
+            <table class="ds-table  w-full">
                 <thead>
                 <tr>
                     <th class="w-64">Service Img</th>

@@ -22,7 +22,6 @@ class PartnersOverview extends Component
     public $softDeleteModal;
     public $deleteId = '';
     public $selectedDestinations = [];
-    public $partnerDestinations = [];
 
 
 
@@ -57,10 +56,6 @@ class PartnersOverview extends Component
         $this->emit('restartSelect2');
     }
 
-    public function fillSelect2()
-    {
-        $this->emit('fillSelect2');
-    }
 
     public function updatedPartnerDestinationId(){
         $this->partner->starting_point_id = null;
@@ -70,7 +65,7 @@ class PartnersOverview extends Component
     public function addPartner(){
         $this->openPartnerModal();
         $this->partner = new Partner();
-        $this->partnerDestinations = [];
+        $this->selectedDestinations = [];
         $this->restartSelect2();
     }
 
@@ -78,11 +73,9 @@ class PartnersOverview extends Component
 
         $this->openPartnerModal();
         $this->partner = Partner::withoutGlobalScope(DestinationScope::class)->find($partnerId);
-        $this->partnerDestinations = $this->partner?->destinations()?->pluck('id')->toArray();
+        $this->selectedDestinations = $this->partner?->destinations()?->pluck('id')->toArray();
 
-        if($this->partnerDestinations){
-            $this->fillSelect2();
-        }
+
     }
 
     public function savePartnerData(){

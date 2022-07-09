@@ -12,7 +12,7 @@ class BookingOverview extends Component
 
     public $destinationId;
     public $partnerId;
-    public $dateRange;
+    public $dateRange = [];
 
 
     public function getReservationsProperty(){

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-theme="valamar" x-data="{}" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html data-theme="light" x-data="{}" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
 
     <meta charset="utf-8">
@@ -10,38 +10,45 @@
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
     <!-- Styles -->
-
-
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="stylesheet" href="{{ mix('css/styles.css') }}">
+
+
     @stack('styles')
     @stack('scripts')
+
     <script src="https://use.fontawesome.com/c4773b38c8.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+
     @livewireStyles
-<!-- Scripts -->
-
-    <script src="{{ mix('js/app.js') }}" defer></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key={{ Config::get('ez.google_maps_api_key') }}&libraries=places"
+        async defer></script>
     <script src="{{ mix('js/imports.js') }}"></script>
+    <wireui:scripts />
+    <script defer src="{{ mix('js/app.js') }}" ></script>
 </head>
-<body class="font-sans antialiased bg-base-200">
-<div class="h-screen drawer drawer-mobile">
+<body class="font-sans antialiased " style="background-color: rgb(229 230 230 / 47%);">
+<div class="h-screen  ds-drawer  ds-drawer-mobile">
 
-    <input id="main-menu" type="checkbox" @change="$refs['right-drawer'].checked = false" class="drawer-toggle">
+    <input id="main-menu" type="checkbox" @change="$refs['right-drawer'].checked = false" class=" ds-drawer-toggle">
 
     <x-main-drawer></x-main-drawer>
-    <main class=" block p-2 overflow-x-hidden   text-base-content  drawer-content ">
+
+    <main class=" block p-2 overflow-x-hidden   text-base-content   ds-drawer-content ">
         @include('components.navbar')
+        <div >
             {{ $slot }}
+        </div>
     </main>
 
+    <x-notifications />
 
 </div>
+
 @include('components.right-drawer')
 @stack('modals')
 @stack('scripts-bottom')
 @livewireScripts
-
-
 </body>
 </html>

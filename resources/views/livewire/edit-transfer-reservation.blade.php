@@ -1,6 +1,6 @@
 <div>
 
-    <h1 class="text-xl font-bold">Editing reservation #{{$reservation->id}}</h1>
+
     <div class="divider"></div>
     <div class="form-control  ">
         <label class="label">

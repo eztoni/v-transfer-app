@@ -94,9 +94,8 @@ class InternalReservation extends Component
         'endingPointId' => null,
         'dropoffAddress' => null,
         'pickupAddress' => null,
-        'date' => null,
-        'time' => null,
-        'returnDate' => null,
+        'dateTime' => null,
+        'returnDateTime' => null,
         'returnTime' => null,
         'adults' => 1,
         'children' => 0,
@@ -104,15 +103,15 @@ class InternalReservation extends Component
         'luggage' => 0,
     ];
 
+
     public $fieldNames = [
         'stepOneFields.destinationId' => 'destination',
         'stepOneFields.startingPointId' => 'pickup location',
         'stepOneFields.endingPointId' => 'dropoff location',
         'stepOneFields.dropoffAddress' => 'dropoff address',
         'stepOneFields.pickupAddress' => 'pickup address',
-        'stepOneFields.date' => 'date',
-        'stepOneFields.time' => 'time',
-        'stepOneFields.returnDate' => 'round trip date',
+        'stepOneFields.dateTime' => 'date & time',
+        'stepOneFields.returnDateTime' => 'round trip date & time',
         'stepOneFields.returnTime' => 'round trip time',
         'stepOneFields.adults' => 'adults',
         'stepOneFields.children' => 'children',
@@ -141,24 +140,15 @@ class InternalReservation extends Component
             'stepOneFields.endingPointId' => 'required',
             'stepOneFields.dropoffAddress' => 'required|string|min:3',
             'stepOneFields.pickupAddress' => 'required|string|min:3',
-            'stepOneFields.date' => 'required|date|after_or_equal:' . Carbon::now()->format('d.m.Y') . '|date_format:d.m.Y',
-            'stepOneFields.time' => 'required|date_format:H:i',
-            'stepOneFields.adults' => 'required|integer|integer|min:1|max:50',
+            'stepOneFields.dateTime' => 'required|date|after_or_equal:' . Carbon::now()->format('d.m.Y'),
+            'stepOneFields.adults' => 'required|integer|min:1|max:50',
             'stepOneFields.children' => 'required|numeric|integer|max:50',
             'stepOneFields.infants' => 'required|numeric|integer|max:50',
             'stepOneFields.luggage' => 'required|numeric|integer|max:50',
 
         ];
         if ($this->roundTrip) {
-            $rules['stepOneFields.returnDate'] = 'date|date_format:d.m.Y|after_or_equal:stepOneFields.date';
-            $rules['stepOneFields.returnTime'] = 'date_format:H:i';
-
-            if ($this->stepOneFields['date'] && $this->stepOneFields['returnDate']) {
-
-                if (Carbon::make($this->stepOneFields['date'])->eq($this->stepOneFields['returnDate'])) {
-                    $rules['stepOneFields.returnTime'] .= '|after:stepOneFields.time';
-                }
-            }
+            $rules['stepOneFields.returnDateTime'] = 'date|after_or_equal:stepOneFields.dateTime';
         }
         return $rules;
     }
@@ -201,7 +191,7 @@ class InternalReservation extends Component
             'phone' => null,
         ],
         'confirmationLanguage' => 'en',
-        'sendMail' => 1,
+        'sendMail' => true,
         'seats' => [
 
         ],
@@ -224,10 +214,8 @@ class InternalReservation extends Component
     public $activateChildSeats = false;
     public $activateExtras = false;
     public $emailList = array();
-    public $sendEmailArray = [
-        0 => 'No',
-        1 => 'Yes',
-    ];
+
+
 
     public function getExtrasProperty()
     {
@@ -287,8 +275,7 @@ class InternalReservation extends Component
         $businessModel = new \App\BusinessModels\Reservation\Actions\CreateReservation(new \App\Models\Reservation());
         $businessModel->setRequiredAttributes(
             auth()->user()->destination_id,
-            Carbon::make($this->stepOneFields['date']),
-            Carbon::make($this->stepOneFields['time']),
+            Carbon::make($this->stepOneFields['dateTime']),
             Point::find($this->stepOneFields['startingPointId'])->id,
             $this->stepOneFields['pickupAddress'],
             Point::find($this->stepOneFields['endingPointId'])->id,
@@ -325,8 +312,7 @@ class InternalReservation extends Component
 
         if ($this->roundTrip) {
             $businessModel->setRoundTrip(
-                Carbon::make($this->stepOneFields['returnDate']),
-                Carbon::make($this->stepOneFields['returnTime']),
+                Carbon::make($this->stepOneFields['returnDateTime']),
                 $this->stepTwoFields['departureFlightNumber'] ?? '',
             );
         }
@@ -334,7 +320,7 @@ class InternalReservation extends Component
 
         $id = $businessModel->saveReservation();
 
-        if($this->stepTwoFields['sendMail'] == 1){
+        if($this->stepTwoFields['sendMail'] == true){
 
 
             $travellerMail = $this->stepTwoFields['leadTraveller']['email'];
@@ -380,8 +366,8 @@ class InternalReservation extends Component
 
     private function initiateFields()
     {
-        $this->stepOneFields['date'] = Carbon::now()->format('d.m.Y');
-        $this->stepOneFields['time'] = Carbon::now()->addHour()->setMinutes(0)->format('H:i');
+        $this->stepOneFields['dateTime'] = Carbon::now();
+        $this->stepOneFields['returnDateTime'] = Carbon::now();
     }
 
 
@@ -400,7 +386,6 @@ class InternalReservation extends Component
         if (array_key_exists(Str::replace('stepOneFields.','' ,$property), $this->stepOneFields)) {
             $this->isTransferAvailableAfterDataChange();
         }
-
 
         // Since I used availability as a computed property, it throws an error if we pass '' for some params
         // So if user deletes these params, we set them to 0.
@@ -605,7 +590,7 @@ class InternalReservation extends Component
 
     public function addSeat()
     {
-        $this->stepTwoFields['seats'][] = "0";
+        $this->stepTwoFields['seats'][] = false;
     }
 
     public function pullTraveller()

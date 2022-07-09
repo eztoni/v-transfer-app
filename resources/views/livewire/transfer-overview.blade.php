@@ -1,16 +1,11 @@
-<div>
-    <x-ez-card>
-        <x-slot name="title" class="flex justify-between">
-            Transfers
-
-            <button wire:click="addTransfer" class="btn btn-sm ">Add Transfer</button>
-
+    <x-card title="Transfers">
+        <x-slot name="action">
+            <x-button wire:click="addTransfer" positive>Add Transfer</x-button>
         </x-slot>
-        <x-slot name="body">
 
-            <input type="text" wire:model="search" class="input input-primary my-2" placeholder="Find Transfer">
+            <x-input type="text" wire:model="search" placeholder="Find Transfer"/>
 
-            <table class="table table-compact w-full" wire:loading.delay.class="opacity-50">
+            <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
                 <thead>
                 <tr>
                     <th>#Id</th>
@@ -29,14 +24,15 @@
                         <td >{{ $tr->destination->name }}</td>
                         <td>{{$tr->vehicle->name}}</td>
                         <td class="text-center">
-                            <a href="{{ route('transfer-edit',$tr) }}"><button class="btn btn-circle btn-sm btn-success">     <i class="fas fa-pen"></i></button></a>
+                            <x-button.circle icon="pencil" primary  href="{{ route('transfer-edit',$tr)}}">
+                            </x-button.circle>
                         </td>
                     </tr>
 
                 @empty
                     <tr>
                         <td colspan="999">
-                            <div class="alert alert-warning">
+                            <div class="ds-alert ds-alert-warning">
                                 <div class="flex-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          class="w-6 h-6 mx-2 stroke-current">
@@ -55,57 +51,30 @@
             {{$transfers->links()}}
 
 
-            <div class="modal {{ $transferModal ? 'modal-open fadeIn' : '' }}">
-                <div class="modal-box max-h-screen overflow-y-auto">
-                    <b>{{  !empty($this->transfer->exists) ? 'Updating':'Adding' }} transfer</b>
-                    <hr class="my-4">
+            <x-modal.card title="{{  !empty($this->transfer->exists) ? 'Updating':'Adding' }}" wire:model="transferModal">
 
-                    <div class="form-control">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Name:</span>
-                            </label>
-                            <input wire:model="transferName" class="input input-bordered"
-                                   placeholder="Name">
-                            @error('transferName')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
+                <x-input wire:model="transferName" label="Name:"></x-input>
 
+                <x-native-select
+                                 wire:model="vehicleId"
+                                 label="Vehicle:"
+                                 option-key-value
+                                 :options="$this->vehicles->pluck('name','id')"
+                />
+
+                <x-slot name="footer" >
+                    <div class="flex justify-between">
+
+                    <x-button wire:click="closeTransferModal()" >Close</x-button>
+                    <x-button wire:click="saveTransferData()"
+                           positive>{{  !empty($this->transfer->exists) ? 'Update':'Add' }}</x-button>
                     </div>
-
-                    <div class="form-control">
-
-                        <label class="label">
-                            <span class="label-text">Vehicle:</span>
-                        </label>
-                        <select wire:model="vehicleId" class="select select-bordered">
-                            <option value="">Select a vehicle</option>
-                            @if($this->vehicles->isNotEmpty())
-                                @foreach($this->vehicles as $ve)
-                                    <option value="{{$ve->id}}">{{$ve->name}}</option>
-                                @endforeach
-                            @endif
-
-                        </select>
-
-                        @error('vehicleId')
-                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                        @enderror
-                    </div>
+                </x-slot>
+            </x-modal.card>
 
 
-                    <div class="mt-4 flex justify-between">
-                        <button wire:click="closeTransferModal()" class="btn btn-sm ">Close</button>
-                        <button wire:click="saveTransferData()"
-                                class="btn btn-sm ">{{  !empty($this->transfer->exists) ? 'Update':'Add' }}</button>
-                    </div>
-                </div>
-            </div>
 
-        </x-slot>
 
-    </x-ez-card>
+    </x-card>
 
-</div>
 

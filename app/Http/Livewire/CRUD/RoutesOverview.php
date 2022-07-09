@@ -24,6 +24,7 @@ class RoutesOverview extends EzComponent
     ];
 
     public function mount(){
+        parent::mount();
         $this->userDestinationId = Auth::user()->destination_id;
     }
 
@@ -35,11 +36,11 @@ class RoutesOverview extends EzComponent
     public function tableColumns(): array
     {
         return [
-            'id' => '#id',
-            'name' => 'Name',
-            'destination.name' => 'Destination',
-            'startingPoint.name' => 'Starting point',
-            'endingPoint.name' => 'Ending point',
+            '#id' => 'id',
+            'Name' => 'name',
+            'Destination' => 'destination.name',
+            'Starting point' => 'startingPoint.name',
+            'Ending point' => 'endingPoint.name',
         ];
     }
 
@@ -77,14 +78,9 @@ class RoutesOverview extends EzComponent
         return true;
     }
 
-    public function formFields(): Collection
+    public function formBladeViewName(): string
     {
-        return collect([
-            (new EzTextInput('Name','model.name'))->withAttributes(['placeholder'=>'ex. Hotel to airport']),
-            new EzSelect('Starting point','model.starting_point_id',$this->startingPoints),
-            new EzSelect('Ending point ','model.ending_point_id',$this->endingPoints),
-            new EzTextInput('PMS code','model.pms_code'),
-        ]);
+        return 'routes-overview';
     }
 
     protected function rules(): array

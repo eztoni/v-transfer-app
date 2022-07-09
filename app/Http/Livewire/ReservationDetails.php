@@ -8,10 +8,15 @@ use Livewire\Component;
 class ReservationDetails extends Component
 {
 
-    public Reservation $reservation;
+    public Reservation|null $reservation;
 
     public Reservation|null $editReservation = null;
     public Reservation|null $cancelReservation = null;
+
+    public $rules = [
+        'editReservations'=>'nullable',
+        'cancelReservation'=>'nullable',
+    ];
 
     protected $listeners = [
         'updateCancelled' => 'closeUpdateModal',

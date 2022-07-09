@@ -1,15 +1,10 @@
-<div>
-    <x-ez-card>
-        <x-slot name="title" class="flex justify-between">
-            Vehicles
-
-            <button wire:click="addVehicle" class="btn btn-sm ">Add Vehicle</button>
-
+    <x-card title="Vehicles">
+        <x-slot name="action" >
+            <x-button wire:click="addVehicle" positive>Add Vehicle</x-button>
         </x-slot>
-        <x-slot name="body">
 
-            <input type="text" wire:model="search" class="input input-primary my-2" placeholder="Find Vehicle">
-            <table class="table table-compact w-full" wire:loading.delay.class="opacity-50">
+            <x-input  wire:model="search" placeholder="Find Vehicle" />
+            <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
                 <thead>
                 <tr>
                     <th>#Id</th>
@@ -27,16 +22,15 @@
                         <td >{{ $ve->type }}</td>
 
                         <td class="text-center">
-                            <a href="{{ route('vehicle-edit',$ve) }}" class="btn btn-circle btn-sm btn-success">
-                                <i class="fas fa-pen"></i>
-                            </a>
+                            <x-button.circle primary href="{{ route('vehicle-edit',$ve) }}" icon="pencil">
+                            </x-button.circle>
                         </td>
                     </tr>
 
                 @empty
                     <tr>
                         <td colspan="999">
-                            <div class="alert alert-warning">
+                            <div class="ds-alert ds-alert-warning">
                                 <div class="flex-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          class="w-6 h-6 mx-2 stroke-current">
@@ -55,75 +49,30 @@
             {{$vehicles->links()}}
 
 
-            <div class="modal {{ $vehicleModal ? 'modal-open fadeIn' : '' }}">
-                <div class="modal-box max-h-screen overflow-y-auto">
-                    <b>{{  !empty($this->vehicle->exists) ? 'Updating':'Adding' }} vehicle</b>
-                    <hr class="my-4">
+        <x-modal.card wire:model="vehicleModal" title="{{  !empty($this->vehicle->exists) ? 'Updating':'Adding' }} vehicle">
+            <div class="">
 
-                    <div class="form-control">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Name :</span>
-                            </label>
-                            <input wire:model="vehicleName" class="input input-bordered"
-                                   placeholder="Name">
-                            @error('vehicleName')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
+                <x-input label="Name:" wire:model="vehicleName"/>
+                <x-input label="Type:" wire:model="vehicle.type"/>
+                <x-input label="Max Occ:" wire:model="vehicle.max_occ"/>
+                <x-input label="Max Luggage:" wire:model="vehicle.max_luggage"/>
 
-                    </div>
-
-                    <div class="form-control">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Type : </span>
-                            </label>
-                            <input wire:model="vehicle.type" class="input input-bordered"
-                                   placeholder="Vehicle Type">
-                            @error('vehicle.type')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-control">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Max Occ : </span>
-                            </label>
-                            <input wire:model="vehicle.max_occ" class="input input-bordered"
-                                   placeholder="Max Occ.">
-                            @error('vehicle.max_occ')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-control">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Max Luggage : </span>
-                            </label>
-                            <input wire:model="vehicle.max_luggage" class="input input-bordered"
-                                   placeholder="Max Luggage">
-                            @error('vehicle.max_luggage')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
-                    </div>
-
+                <x-slot name="footer">
                     <div class="mt-4 flex justify-between">
-                        <button wire:click="closeVehicleModal()" class="btn btn-sm ">Close</button>
-                        <button wire:click="saveVehicleData()"
-                                class="btn btn-sm ">{{  !empty($this->vehicle->exists) ? 'Update':'Add' }}</button>
+                        <x-button wire:click="closeVehicleModal()" >Close</x-button>
+                        <x-button wire:click="saveVehicleData()" positive
+                              >{{  !empty($this->vehicle->exists) ? 'Update':'Add' }}</x-button>
                     </div>
-                </div>
+                </x-slot>
+
+
             </div>
 
-        </x-slot>
+        </x-modal.card>
 
-    </x-ez-card>
 
-</div>
+
+
+    </x-card>
+
 

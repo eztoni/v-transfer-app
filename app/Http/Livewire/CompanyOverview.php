@@ -28,6 +28,11 @@ class CompanyOverview extends Component
         'company.email' => 'required|email|max:255',
     ];
 
+    public function mount()
+    {
+        $this->company = new Company();
+    }
+
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);

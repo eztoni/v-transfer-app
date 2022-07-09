@@ -10,7 +10,7 @@
 /*
 Remove popping buttons on page load
  */
-.btn {
+.ds-btn {
     -webkit-animation: unset!important;
     animation:unset!important;
 }
@@ -75,15 +75,15 @@ Toast
 
 }
 
-.tab.tab-active{
-    @apply border-primary
+.ds-tab.ds-tab-active{
+    @apply border-primary-500
 }
 
-.steps .step:after {
+.ds-steps .ds-step:after {
     height: 1.6rem;
     width: 1.6rem;
 }
-.steps .step:before{
+.ds-steps .ds-step:before{
     height: 0.3rem;
 }
 /*FIX DROPZONE ERROR CUTOF */
@@ -93,7 +93,7 @@ Toast
 .dropzone .dz-preview.dz-image-preview{
     background: transparent!important;
 }
-.divider-horizontal {
+.ds-divider-horizontal {
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 1rem;
@@ -102,31 +102,31 @@ Toast
     width: 1rem;
 }
 
-.divider-horizontal {
+.ds-divider-horizontal {
     flex-direction: column;
 }
-.divider-horizontal:before {
+.ds-divider-horizontal:before {
     height: 100%;
     width: 0.125rem;
 }
 
-.divider:before {
+.ds-divider:before {
     background-color: hsl(var(--bc)/var(--tw-bg-opacity));
     --tw-bg-opacity: .1;
 }
-.divider-horizontal:after {
+.ds-divider-horizontal:after {
     height: 100%;
     width: 0.125rem;
 }
 
-.divider:after {
+.ds-divider:after {
     background-color: hsl(var(--bc)/var(--tw-bg-opacity));
     --tw-bg-opacity: .1;
 }
-.btn{
+.ds-btn{
     font-weight: 500!important;
 }
-.select-sm {
+.ds-select-sm {
 
     line-height: 1rem!important;
 }
@@ -142,7 +142,7 @@ Toast
 }
 }
 
-.alert.alert-warning{
+.ds-alert.ds-alert-warning{
     background-color: #eca5184a;
     border: 1px solid #eca518;
 }

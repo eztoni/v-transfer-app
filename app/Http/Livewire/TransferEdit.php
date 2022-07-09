@@ -50,6 +50,7 @@ class TransferEdit extends Component
         foreach ($this->companyLanguages as $lang) {
             $this->transferName[$lang] = $this->transfer->getTranslation('name', $lang, false);
         }
+
     }
 
 

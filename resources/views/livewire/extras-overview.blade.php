@@ -1,15 +1,12 @@
 <div>
-    <x-ez-card>
-        <x-slot name="title" class="flex justify-between">
-            Extras
-
-            <button wire:click="addExtra" class="btn btn-sm ">Add Extra</button>
-
+    <x-card title="Extras">
+        <x-slot name="action" >
+            <x-button wire:click="addExtra" positive>Add Extra</x-button>
         </x-slot>
-        <x-slot name="body">
 
-            <input type="text" wire:model="search" class="input input-primary my-2" placeholder="Find Extra">
-            <table class="table table-compact w-full" wire:loading.delay.class="opacity-50">
+
+            <x-input  wire:model="search"  placeholder="Find Extra"/>
+            <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
                 <thead>
                 <tr>
                     <th>#Id</th>
@@ -22,22 +19,19 @@
                 @forelse ($extras as $ex)
 
                     <tr>
-                        <td>{{ $ex->id }}</td>
-                        <td>{{ $ex->name }}</td>
-                        <td>{{ $ex->description }}</td>
+                        <th>{{ $ex->id }}</th>
+                        <th>{{ $ex->name }}</th>
+                        <th>{{ strlen($ex->description) > 25 ? substr($ex->description,0,25)."..." : $ex->description }}</th>
                         <td class="text-center">
-                            <a href="{{ route('extras-edit',$ex)}}">
-                                <button  class="btn btn-circle btn-sm btn-success">
-                                    <i class="fas fa-pen"></i>
-                                </button>
-                            </a>
+                            <x-button.circle icon="pencil" primary href="{{ route('extras-edit',$ex)}}">
+                            </x-button.circle>
                         </td>
                     </tr>
 
                 @empty
                     <tr>
                         <td colspan="999">
-                            <div class="alert alert-warning">
+                            <div class="ds-alert ds-alert-warning">
                                 <div class="flex-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          class="w-6 h-6 mx-2 stroke-current">
@@ -52,53 +46,29 @@
                 @endforelse
                 </tbody>
 
+
             </table>
             {{$extras->links()}}
 
 
-            <div class="modal {{ $extraModal ? 'modal-open fadeIn' : '' }}">
-                <div class="modal-box max-h-screen overflow-y-auto">
-                    <b>{{  !empty($this->extra->exists) ? 'Updating':'Adding' }} extra</b>
-                    <hr class="my-4">
+        <x-modal.card wire:model="extraModal" title="{{$extraModal ? 'modal-open fadeIn' : ''}}">
 
-                    <div class="form-control">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Name :</span>
-                            </label>
-                            <input wire:model="extraName.en" class="my-input  "
-                                   placeholder="ex. Drinks">
-                            @error('extraName.en')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
+            <x-input label="Name:" wire:model="extraName.en" placeholder="ex. Drinks"></x-input>
+            <x-input label="Description:" wire:model="extraDescription.en"></x-input>
 
-                    </div>
 
-                    <div class="form-control">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Description : </span>
-                            </label>
-                            <input wire:model="extraDescription.en" class="input input-bordered"
-                                   placeholder="Description">
-                            @error('extraDescription.en')
-                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                            @enderror
-                        </div>
-                    </div>
 
-                    <div class="mt-4 flex justify-between">
-                        <button wire:click="closeExtraModal()" class="btn btn-sm ">Close</button>
-                        <button wire:click="saveExtraData()"
-                                class="btn btn-sm ">{{  !empty($this->extra->exists) ? 'Update':'Add' }}</button>
-                    </div>
+
+
+            <x-slot name="footer" >
+                <div class="flex justify-between">
+                <x-button wire:click="closeExtraModal()" >Close</x-button>
+                <x-button wire:click="saveExtraData()" positive
+                       >{{  !empty($this->extra->exists) ? 'Update':'Add' }} </x-button>
                 </div>
-            </div>
-
-        </x-slot>
-
-    </x-ez-card>
-
+            </x-slot>
+        </x-modal.card>
+    </x-card>
 </div>
+
 

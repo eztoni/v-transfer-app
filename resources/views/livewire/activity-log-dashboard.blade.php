@@ -7,7 +7,7 @@
         <x-slot name="body">
 
             <input type="text" wire:model="search" class="input input-primary my-2" placeholder="Find Activity">
-            <table class="table table-compact w-full" wire:loading.delay.class="opacity-50">
+            <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
                 <thead>
                 <tr>
                     <th>#Id</th>
@@ -38,7 +38,7 @@
                 @empty
                     <tr>
                         <td colspan="999">
-                            <div class="alert alert-warning">
+                            <div class="ds-alert ds-alert-warning">
                                 <div class="flex-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          class="w-6 h-6 mx-2 stroke-current">

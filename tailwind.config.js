@@ -2,38 +2,53 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 const colors = require('tailwindcss/colors')
 module.exports = {
     mode: 'jit',
-    purge: [
+    content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './vendor/laravel/jetstream/**/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
+        './vendor/wireui/wireui/resources/**/*.blade.php',
+        './vendor/wireui/wireui/ts/**/*.ts',
+        './vendor/wireui/wireui/src/View/**/*.php'
     ],
+    presets: [
 
+        require('./vendor/wireui/wireui/tailwind.config.js')
+    ],
     theme: {
         extend: {
             fontFamily: {
                 sans: ['Open Sans', ...defaultTheme.fontFamily.sans],
-
             },
             colors: {
                 green: colors.emerald,
                 yellow: colors.amber,
                 purple: colors.violet,
+                primary: colors.blue,
+                secondary: colors.slate,
+                positive: colors.emerald,
+                negative: colors.red,
+                warning: colors.amber,
+                info: colors.sky
             }
         },
     },
 
-    plugins: [require('@tailwindcss/forms'), require('daisyui'), require('@tailwindcss/typography')],
+    plugins: [
+        require('daisyui'),
+        require('@tailwindcss/typography'),
+        require('@tailwindcss/aspect-ratio'),
+        require('@tailwindcss/forms')({
+            strategy: 'class',
+        }),
+    ],
     // config (optional)
     daisyui: {
-
+        prefix: "ds-",
         themes: [
             {
-                'valamar':{
-                    'primary' : '#136bac',
-                    'primary-focus' : '#214392',
-                    'primary-content' : '#ffffff',
-                    'secondary' : '#118acb',
+                'light':{
+                    ...require("daisyui/src/colors/themes")["[data-theme=light]"],
                     'secondary-focus' : '#214392',
                     'secondary-content' : '#ffffff',
                     'accent' : '#27bdbe',
@@ -52,29 +67,9 @@ module.exports = {
                     'error' : '#e33244',
 
                 }
-                },
-            'light',
+            },
 
-            'emerald', // first one will be the default theme
-            'dark',
-            'forest',
-            'synthwave',
-            'cupcake', // first one will be the default theme
-            'bumblebee', // first one will be the default theme
-            'corporate',
-            'retro',
-            'cyberpunk',
-            'valentine', // first one will be the default theme
-            'halloween', // first one will be the default theme
-            'garden',
-            'aqua',
-            'lofi',
-            'pastel', // first one will be the default theme
-            'fantasy', // first one will be the default theme
-            'wireframe',
-            'black',
-            'luxury',
-            'dracula',
+
 
         ],
     },

@@ -22,18 +22,18 @@
                 <div class="w-52 flex-shrink-0">
                     <img src="{{URL('/storage/static_images/valamar_horizontal.png')}}">
                 </div>
-                <!-- <p class="pt-3">Not a member?
+            <!-- <p class="pt-3">Not a member?
                     <b><a
                             class=" underline text-primary  hover:text-gray-900"
                             href="{{ route('register') }}">
                             {{ __('Sing Up Now') }}
-                        </a></b>
-                </p> -->
+                </a></b>
+        </p> -->
             </div>
 
             <div class="flex flex-col items-center w-full mt-18  md:my-60">
 
-                <h1 class="font-bold text-4xl text-center  my-8">Sign in for <span class="text-primary">Valamar</span>
+                <h1 class="font-bold text-4xl text-center  my-8">Sign in for <span class="text-primary-500">Valamar</span>
                 </h1>
 
                 <form method="POST" action="{{ route('login') }}" class="w-9/12 max-w-screen-sm">
@@ -41,14 +41,14 @@
 
                     <div>
                         <x-jet-label for="email" value="{{ __('Email') }}"/>
-                        <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email"
-                                     :value="old('email')" required autofocus/>
+                        <x-input lg id="email" class="block mt-1 w-full" type="email" name="email"
+                                 :value="old('email')" required autofocus/>
                     </div>
 
                     <div class="mt-4">
                         <x-jet-label for="password" value="{{ __('Password') }}"/>
-                        <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password"
-                                     required autocomplete="current-password"/>
+                        <x-input lg id="password" class="block mt-1 w-full" type="password" name="password"
+                                 required autocomplete="current-password"/>
                     </div>
 
                     <x-jet-validation-errors class="mb-4"/>
@@ -68,10 +68,10 @@
                         @endif
 
 
-                        <button type="submit" class="btn flex-shrink-0 btn-primary hove:shadow-xl">
+                        <x-button type="submit" primary  lg>
                             {{ __('Log in') }}
 
-                        </button>
+                        </x-button>
 
                     </div>
                 </form>

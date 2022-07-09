@@ -2,14 +2,8 @@
     <div class="grid grid-cols-3 gap-4">
         <div class="col-span-2 ">
             @if($step === 1)
-                <x-ez-card class="mb-4 ">
 
-                    <x-slot name="title">
-                        <i class="fas fa-search"></i> Search
-
-                        <span class="ml-auto">
-                            <label wire:click="openPullModal" class="btn btn-sm btn-outline">Pull data</label>
-                        </span>
+                <x-card>
 
                         <x-ez-modal :is-open="$this->pullModal" lg>
 
@@ -158,24 +152,26 @@
                                         <label class="label-text ">Pickup location</label>
                                         <select class="my-select select-sm" wire:model="stepOneFields.startingPointId">
                                             <option value="">Pickup location</option>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="ds-form-control ">
+                            @if(!empty($this->stepOneFields['destinationId']))
+                                @if($this->startingPoints->isNotEmpty())
 
-                                            @foreach($this->startingPoints as $point)
-                                                <option value="{{$point->id}}">{{$point->name}}</option>
-                                            @endforeach
-
-                                        </select>
-                                        @error('stepOneFields.startingPointId')
-                                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                        @enderror
-                                    @else
-                                        <div class="alert alert-warning">No Pickup points for that destination</div>
-                                    @endif
+                                    <x-select
+                                        label="Pickup location:"
+                                        wire:model="stepOneFields.startingPointId"
+                                        :options="$this->startingPoints->pluck('name','id')"
+                                        option-key-value
+                                    />
+                                @else
+                                    <div class="ds-alert ds-alert-warning">No Pickup points for that destination</div>
                                 @endif
-                                @if($this->stepOneFields['startingPointId'] && $this->stepOneFields['endingPointId'] )
+                            @endif
+                            @if($this->stepOneFields['startingPointId'] && $this->stepOneFields['endingPointId'] )
 
-                                    <div class="form-control pt-2" wire:ignore>
-                                        <label class="label-text ">Pickup address</label>
-                                        <select id="pickupSelect" x-init=" $(' #pickupSelect').select2(
+                                <div class="ds-form-control  pt-2" wire:ignore>
+                                    <label class="label-text text-sm">Pickup address</label>
+                                    <select id="pickupSelect" x-init=" $(' #pickupSelect').select2(
                                         {
                                         closeOnSelect: true,
                                         tags: true,
@@ -187,64 +183,61 @@
                                         })
 
                                         ">
-                                            <option></option>
+                                        <option></option>
 
-                                            @php
-                                                $itemSelected = false;
-                                            @endphp
+                                        @php
+                                            $itemSelected = false;
+                                        @endphp
 
-                                            @foreach($this->pickupAddressPoints as $pickupAddressPoint)
+                                        @foreach($this->pickupAddressPoints as $pickupAddressPoint)
 
 
 
-                                                <option
-                                                    @if($this->stepOneFields['pickupAddress'] === $pickupAddressPoint->name. ' ' . $pickupAddressPoint->address)
-                                                    selected
+                                            <option
+                                                @if($this->stepOneFields['pickupAddress'] === $pickupAddressPoint->name. ' ' . $pickupAddressPoint->address)
+                                                selected
 
-                                                    @php
-                                                        $itemSelected = true;
-                                                    @endphp
+                                                @php
+                                                    $itemSelected = true;
+                                                @endphp
 
-                                                    @endif
-                                                    value="{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}">{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}</option>
+                                                @endif
+                                                value="{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}">{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}</option>
 
-                                            @endforeach
+                                        @endforeach
 
-                                            @if($itemSelected === false)
-                                                <option
-                                                    value="{{$this->stepOneFields['pickupAddress']}}" selected>
-                                                    {{$this->stepOneFields['pickupAddress']}}</option>
-                                            @endif
-                                        </select>
+                                        @if($itemSelected === false)
+                                            <option
+                                                value="{{$this->stepOneFields['pickupAddress']}}" selected>
+                                                {{$this->stepOneFields['pickupAddress']}}</option>
+                                        @endif
+                                    </select>
+                                </div>
+
+                            @endif
+                        </div>
+                        @if(!empty($this->stepOneFields['startingPointId']))
+
+                            <div class="ds-form-control ">
+
+                                @if($this->endingPoints->isNotEmpty())
+                                    <x-select
+                                        label="Drop off location:"
+                                        wire:model="stepOneFields.endingPointId"
+                                        :options="$this->endingPoints->pluck('name','id')"
+                                        option-key-value
+
+                                    />
+                                @else
+                                    <div class="ds-alert ds-alert-warning">No Dropoff points for that pickup point!
                                     </div>
-                                    @error('stepOneFields.pickupAddress')
-                                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                    @enderror
+
                                 @endif
-                            </div>
-                            @if(!empty($this->stepOneFields['startingPointId']))
-                                <div class="form-control ">
-                                    <label class="label-text ">Dropoff location</label>
+                                @if($this->stepOneFields['startingPointId'] && $this->stepOneFields['endingPointId']  )
+                                    <div class="ds-form-control pt-2" wire:ignore>
+                                        <label class="label-text text-sm">Dropoff address</label>
 
-                                    @if($this->endingPoints->isNotEmpty())
-                                        <select class="my-select select-sm" wire:model="stepOneFields.endingPointId">
-                                            <option value="">Drop off location</option>
-                                            @foreach($this->endingPoints as $point)
-                                                <option value="{{$point->id}}">{{$point->name}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('stepOneFields.endingPointId')
-                                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                        @enderror
-                                    @else
-                                        <div class="alert alert-warning">No Dropoff points for that pickup point!</div>
-
-                                    @endif
-                                    @if($this->stepOneFields['startingPointId'] && $this->stepOneFields['endingPointId']  )
-                                        <div class="form-control pt-2" wire:ignore>
-                                            <label class="label-text ">Dropoff address</label>
-
-                                            <select id="dropoffSelect" x-init=" $('#dropoffSelect').select2(
+                                        <select id="dropoffSelect" x-init=" $('#dropoffSelect').select2(
                                                 {
                                                     closeOnSelect: true,
                                                     tags: true,
@@ -255,212 +248,111 @@
                                                 set('stepOneFields.dropoffAddress', $('#dropoffSelect').val())
                                             })
                                             ">
-                                                <option></option>
-                                                @php
-                                                    $itemSelected = false;
-                                                @endphp
-                                                @foreach($this->dropoffAddressPoints as $dropoffAddressPoint)
-                                                    <option
-                                                        @if($this->stepOneFields['dropoffAddress'] === $dropoffAddressPoint->name. ' ' . $dropoffAddressPoint->address)
-                                                        selected
+                                            <option></option>
+                                            @php
+                                                $itemSelected = false;
+                                            @endphp
+                                            @foreach($this->dropoffAddressPoints as $dropoffAddressPoint)
+                                                <option
+                                                    @if($this->stepOneFields['dropoffAddress'] === $dropoffAddressPoint->name. ' ' . $dropoffAddressPoint->address)
+                                                    selected
 
-                                                        @php
-                                                            $itemSelected = true;
-                                                        @endphp
+                                                    @php
+                                                        $itemSelected = true;
+                                                    @endphp
 
-                                                        @endif
-                                                        value="{{$dropoffAddressPoint->name . ' ' . $dropoffAddressPoint->address}}">{{$dropoffAddressPoint->name. ' ' . $dropoffAddressPoint->address}}</option>
-                                                @endforeach
-                                                @if($itemSelected === false)
-                                                    <option
-                                                        value="{{$this->stepOneFields['dropoffAddress']}}" selected>
-                                                        {{$this->stepOneFields['dropoffAddress']}}</option>
-                                                @endif
-                                            </select>
+                                                    @endif
+                                                    value="{{$dropoffAddressPoint->name . ' ' . $dropoffAddressPoint->address}}">{{$dropoffAddressPoint->name. ' ' . $dropoffAddressPoint->address}}</option>
+                                            @endforeach
+                                            @if($itemSelected === false)
+                                                <option
+                                                    value="{{$this->stepOneFields['dropoffAddress']}}" selected>
+                                                    {{$this->stepOneFields['dropoffAddress']}}</option>
+                                            @endif
+                                        </select>
 
-                                        </div>
-                                        @error('stepOneFields.dropoffAddress')
-                                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                        @enderror
-                                    @endif
-                                </div>
-                            @endif
-
-                        </div>
-                        @if(!empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
-                            <div x-data="{open: false}" x-show="open" x-transition
-                                 x-init="setTimeout(() => { open = true })">
-
-
-                                <div class="divider my-1    "></div>
-                                <div class="gap-2">
-                                    <div class="grid grid-cols-4  gap-2">
-                                        <div class="form-control  ">
-                                            <label class="label">
-                                                <span class="label-text">Date:</span>
-                                            </label>
-                                            <input x-init="
-                                        flatpickr($el, {
-                                        disableMobile: 'true',
-                                        minDate:'today',
-                                        dateFormat:'d.m.Y',
-                                        defaultDate:'{{$stepOneFields['date']}}'});
-                                        " readonly
-                                                   wire:model="stepOneFields.date"
-                                                   class=" input input-bordered input-sm mt-2"
-                                                   placeholder="Date to:">
-
-                                            @error('stepOneFields.date')
-                                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                            @enderror
-                                        </div>
-                                        <div class="form-control ">
-                                            <label class="label">
-                                                <span class="label-text">Time:</span>
-                                            </label>
-                                            <input x-init='
-                                        flatpickr($el, {
-                                        disableMobile: "true",
-                                        enableTime: true,
-                                        noCalendar: true,
-                                        dateFormat: "H:i",
-                                        time_24hr: true,
-                                        defaultDate:"{{$stepOneFields['time']}}"});
-                                        ' readonly
-                                                   wire:model="stepOneFields.time"
-                                                   class="ml-2 input input-bordered input-sm mt-2"
-                                                   placeholder="Time to:">
-                                            @error('stepOneFields.time')
-                                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                            @enderror
-                                        </div>
-
-                                        @if($roundTrip)
-
-
-                                            <div class="form-control  ">
-                                                <label class="label">
-                                                    <span class="label-text">Date:</span>
-                                                </label>
-                                                <input x-init="
-                                        flatpickr($el, {
-                                        disableMobile: 'true',
-                                        minDate:'today',
-                                        dateFormat:'d.m.Y',
-                                        defaultDate:'{{$stepOneFields['returnDate']}}'});
-                                        " readonly
-                                                       wire:model="stepOneFields.returnDate"
-                                                       class="ml-2 input input-bordered input-sm mt-2"
-                                                       placeholder="Date from:">
-                                                @error('stepOneFields.returnDate')
-                                                <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                                @enderror
-                                            </div>
-                                            <div class="form-control ">
-                                                <label class="label">
-                                                    <span class="label-text">Time:</span>
-                                                </label>
-                                                <input x-init='
-                                        flatpickr($el, {
-                                        disableMobile: "true",
-                                        enableTime: true,
-                                        noCalendar: true,
-                                        dateFormat: "H:i",
-                                        time_24hr: true,
-
-                                        defaultDate:"{{$stepOneFields['returnTime']}}"});
-                                        ' readonly
-                                                       wire:model="stepOneFields.returnTime"
-                                                       class="ml-2 input input-bordered input-sm mt-2"
-                                                       placeholder="Time from:">
-                                                @error('stepOneFields.returnTime')
-                                                <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                                @enderror
-                                            </div>
-                                        @endif
-                                        <div @class([   'form-control',
-                                                        'col-span-2'=>!$this->roundTrip,
-                                                        'col-span-4'=>$this->roundTrip])>
-                                            <label
-                                                class="label cursor-pointer ml-auto mr-2 {{!$roundTrip? 'mt-10':'mt-2'}}  mb-1  ">
-                                            <span class="label-text mr-2">
-                                              <i class="fas fa-exchange-alt mx-4"></i>Round trip</span>
-                                                <input type="checkbox" wire:model="roundTrip" class="checkbox">
-                                            </label>
-                                        </div>
                                     </div>
-
-
-                                </div>
-
-
-                                <div class="divider my-1    "></div>
-
-                                <div class="">
-                                    <div class="flex flex-wrap justify-between gap-2">
-
-
-                                        <div class="form-control  ">
-                                            <label class="label">
-                                                <span class="label-text">Adult:</span>
-                                            </label>
-                                            <input x-data @focusin="$el.value = ''" class="my-input input-sm w-full" placeholder=""
-                                                   wire:model="stepOneFields.adults">
-                                            @error('stepOneFields.adults')
-                                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                            @enderror
-                                        </div>
-
-
-                                        <div class="form-control  ">
-                                            <label class="label">
-                                                <span class="label-text">Child(3-17):</span>
-                                            </label>
-                                            <input x-data @focusin="$el.value = ''" class="my-input input-sm w-full" placeholder=""
-                                                   wire:model="stepOneFields.children">
-                                            @error('stepOneFields.children')
-                                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                            @enderror
-                                        </div>
-                                        <div class="form-control  ">
-                                            <label class="label">
-                                                <span class="label-text">Infant(0-2):</span>
-                                            </label>
-                                            <input x-data @focusin="$el.value = ''" class="my-input input-sm w-full" placeholder=""
-                                                   wire:model="stepOneFields.infants">
-                                            @error('stepOneFields.infants')
-                                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                            @enderror
-                                        </div>
-                                        <div class="form-control  ">
-                                            <label class="label">
-                                                <span class="label-text">Luggage</span>
-                                            </label>
-                                            <input class="my-input input-sm " placeholder=""
-                                                   wire:model="stepOneFields.luggage">
-                                            @error('stepOneFields.luggage')
-                                            <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-
-                                </div>
+                                @endif
                             </div>
                         @endif
-                    </x-slot>
-                </x-ez-card>
-
-            @endif
+                    </div>
 
 
+                    @if(!empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
+                        <div x-data="{open: false}" x-show="open" x-transition
+                             x-init="setTimeout(() => { open = true })">
 
-            @if($step === 1)
-                @if($this->availableTransfers->isEmpty()&& !empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
+
+                            <div class="ds-divider my-1 "></div>
+
+
+                            <div class="grid grid-cols-2  gap-2">
+                                <x-datetime-picker
+                                    label="Date to:"
+                                    wire:model="stepOneFields.dateTime"
+                                    :min="now()"
+                                    time-format="24"
+                                    display-format="DD.MM.YYYY HH:mm"
+                                />
+
+                                @if($roundTrip)
+                                    <x-datetime-picker
+                                        label="Date from:"
+                                        wire:model="stepOneFields.returnDateTime"
+                                        :min="now()"
+                                        time-format="24"
+                                        display-format="DD.MM.YYYY HH:mm"
+                                    />
+                                @endif
+                            </div>
+
+                            <div class="flex justify-end my-3">
+                                <x-checkbox lg class="justify-end ml-auto" left-label="Round trip"
+                                            wire:model="roundTrip"/>
+                            </div>
+
+
+                            <div class="ds-divider my-1 "></div>
+
+                            <div class="flex flex-wrap justify-between gap-2">
+
+                                <x-input label="Adults:"
+                                         x-data="{oldVal:''}"
+                                         @focusin="this.oldVal = $el.value;$el.value = ''"
+                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"
+                                         wire:model="stepOneFields.adults"
+                                />
+                                <x-input label="Child(3-17):"
+                                         x-data="{oldVal:''}"
+                                         @focusin="this.oldVal = $el.value;$el.value = ''"
+                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"
+                                         wire:model="stepOneFields.children"
+                                />
+                                <x-input label="Infant(0-2):"
+                                         x-data="{oldVal:''}"
+                                         @focusin="this.oldVal = $el.value;$el.value = ''"
+                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"
+                                         wire:model="stepOneFields.infants"
+                                />
+                                <x-input label="Luggage"
+                                         wire:model="stepOneFields.luggage"
+                                />
+
+                            </div>
+                        </div>
+                    @endif
+                </x-card>
+
+                @if($this->availableTransfers->isEmpty() &&
+                    !empty($stepOneFields['destinationId']) &&
+                    !empty($stepOneFields['startingPointId']) &&
+                    !empty($stepOneFields['endingPointId']))
+
+
                     <div x-data="{open: false}" x-show="open" x-transition
                          x-init="setTimeout(() => { open = true })">
 
-                        <div class="alert alert-info  shadow-lg ">
+                        <div class="ds-alert ds-alert-info  shadow-lg ">
                             <div>
                                 <i class="fas fa-search text-lg"></i>
                                 <div>
@@ -472,37 +364,36 @@
 
                     </div>
                 @endif
+
                 @if($this->availableTransfers->isNotEmpty() && !empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
                     <div x-data="{open: false}" x-show="open" x-transition
                          x-init="setTimeout(() => { open = true })">
 
-                        <x-ez-card class="mb-2">
-                            <x-slot name="body">
-                                <div class="card-title "><i class="fas fa-search text-lg"></i>
+                        <div class="ds-divider"></div>
+
+                        <div class="my-4">
+                            <x-card>
+                                <div class="ds-card-title "><i class="fas fa-search text-lg"></i>
                                     Search results:
                                 </div>
-                            </x-slot>
+                            </x-card>
+                        </div>
 
-                        </x-ez-card>
 
                         @php
-
                             $lastTransfer = null;
-
                         @endphp
                         @foreach($this->availableTransfers as $item)
 
-
-
+                            {{--  Check if last transfer has the same partner as current one --}}
                             @if(!$lastTransfer ||($lastTransfer && $lastTransfer->partner->id !== $item->partner->id))
-
                                 @if($lastTransfer)
                     </div>
                 @endif
 
 
                 <div
-                    class="border-2  gap-2 mb-2 bg-gradient-to-b from-primary to-white pb-2 flex flex-col rounded-box relative shadow-lg">
+                    class="border-2  gap-2 mb-2 bg-gradient-to-b from-primary-500 to-white pb-2 flex flex-col rounded-lg relative shadow-md">
                     <div class="w-full flex justify-between text-neutral-content px-4 pt-1 text-lg font-bold "
                     >
                         <span>  {{$item->partner->name}}</span>
@@ -515,8 +406,9 @@
                     @php
                         $lastTransfer = $item;
                     @endphp
-                    <div class="card rounded-none bg-base-100  ">
-                        <div class="card-body p-2 {{$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id) ?'shadow-inner bg-blue-100':''}}">
+                    <div class="ds-card rounded-none bg-base-100  ">
+                        <div
+                            class="ds-card-body p-2 {{$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id) ?'shadow-inner bg-blue-100':''}}">
 
                             <div class="flex gap-4">
                                 <div class="basis-1/5">
@@ -524,7 +416,7 @@
                                          src="{{$item->transfer->primaryImageUrl}}"/>
                                 </div>
                                 <div class="basis-4/5">
-                                    <h2 class="card-title mb-2">{{$item->transfer->name}}</h2>
+                                    <h2 class="ds-card-title mb-2">{{$item->transfer->name}}</h2>
                                     <div class="flex gap-4 mb-2">
                                         <span class=" ">Type: Van</span>
                                         <span
@@ -540,11 +432,12 @@
                                             :$item->price)}}
                                             EUR</b></span>
 
-                                    <button
-                                        class="btn btn-sm {{$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id) ?'btn-success':'btn-primary'}}  absolute bottom-2 rounded-xl right-2"
+                                    <x-button
+                                        :primary="$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id)"
+                                        class="absolute bottom-2 right-2"
                                         wire:click="selectTransfer({{$item->transfer_id}},{{$item->partner_id}})">
                                         {{$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id) ?'Selected':'Select'}}
-                                    </button>
+                                    </x-button>
                                 </div>
                             </div>
                         </div>
@@ -559,287 +452,230 @@
 
 
         @if($step === 2)
-            <div>
-                <x-ez-card class="mb-4">
+            <div class="mb-2">
+                <x-card>
+                    <div class="flex justify-end">
+                        <x-button wire:click="goBack" label="Back"/>
+                    </div>
+                </x-card>
+            </div>
 
-                    <x-slot name="body">
-                        <div class="flex justify-end">
-                            <button class="btn btn-outline btn-sm" wire:click="goBack"><i
-                                    class="fas fa-angle-left mr-2"></i> Back
-                            </button>
-                        </div>
-                    </x-slot>
-                </x-ez-card>
-                <x-ez-card class="mb-4">
-                    <x-slot name="title">Transfer details</x-slot>
-                    <x-slot name="body">
-                        <div class="grid grid-cols-3 gap-4">
+            <div class="ds-divider"></div>
+            <div class="mb-2">
 
+            <x-card title="Transfer details">
+                <div class="grid grid-cols-3 gap-4">
 
-                            <div class="col-span-1">
+                    <x-textarea
+                        label="Remark:"
+                        wire:model="stepTwoFields.remark"
+                    />
 
-                                <div class="form-control">
-                                    <label class="label">
-                                        <span class="label-text">Remark:</span>
-                                    </label>
-                                    <textarea rows="1" wire:model="stepTwoFields.remark"
-                                              class="textarea textarea-bordered"
-                                    ></textarea>
-                                    @error('stepTwoFields.remark')
-                                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                                    @enderror
-                                </div>
+                    <x-input wire:model="stepTwoFields.arrivalFlightNumber"
+                             label="Flight number {{$roundTrip?'#1':''}}"
+                    ></x-input>
 
-                            </div>
-                            <div class="col-span-1">
-                                <x-form.ez-text-input model="stepTwoFields.arrivalFlightNumber" sm
-                                                      label="Flight number {{$roundTrip?'#1':''}}"
-                                ></x-form.ez-text-input>
-                            </div>
-
-                            @if($roundTrip)
-                                <div class="col-span-1">
-                                    <x-form.ez-text-input sm label="Flight number #2"
-                                                          model="stepTwoFields.departureFlightNumber"
-                                                          value="1872351"></x-form.ez-text-input>
-                                </div>
-                            @endif
-                        </div>
-
-                    </x-slot>
-                </x-ez-card>
-
-                <x-ez-card class="mb-4">
-                    <x-slot name="title">
-                        <div class="flex justify-between w-full">
-                                <span>                              Lead traveller details
-
-                                </span>
-
-                        </div>
-
-                    </x-slot>
-                    <x-slot name="body">
-                        <div class="grid grid-cols-3 gap-4">
-
-                            <div class="col-span-1">
-                                <x-form.ez-select
-                                    :show-empty-value="true"
-                                    model="stepTwoFields.leadTraveller.title"
-                                    label="Title"
-                                    :items="\App\Models\Reservation::TRAVELLER_TITLES"
-                                    sm="true"
-                                ></x-form.ez-select>
-                            </div>
-                            <div class="col-span-1">
-                                <x-form.ez-text-input sm label="First name"
-                                                      model="stepTwoFields.leadTraveller.firstName"
-                                ></x-form.ez-text-input>
-                            </div>
-                            <div class="col-span-1">
-                                <x-form.ez-text-input sm label="Last name"
-                                                      model="stepTwoFields.leadTraveller.lastName"
-                                ></x-form.ez-text-input>
-
-                            </div>
-
-                            <div class="col-span-1">
-                                <x-form.ez-text-input sm label="Reservation number"
-                                                      model="stepTwoFields.leadTraveller.reservationNumber"
-                                ></x-form.ez-text-input>
-                            </div>
-                            <div class="col-span-1">
-                                <x-form.ez-text-input sm label="Email"
-                                                      model="stepTwoFields.leadTraveller.email"
-                                ></x-form.ez-text-input>
-                            </div>
-                            <div class="col-span-1">
-                                <x-form.ez-text-input sm label="Phone"
-                                                      model="stepTwoFields.leadTraveller.phone"
-                                ></x-form.ez-text-input>
-
-                            </div>
-
-
-                        </div>
-
-                    </x-slot>
-                </x-ez-card>
-
-
-                <div>
-                    <label
-                        class="label cursor-pointer ml-auto justify-end mr-2   mb-1  ">
-                                            <span class="label-text mr-2">
-                                              <i class="fas fa-plus-circle"></i>Activate extras</span>
-                        <input type="checkbox" wire:model="activateExtras" class="checkbox">
-                    </label>
+                    @if($roundTrip)
+                        <x-input label="Flight number #2"
+                                 wire:model="stepTwoFields.departureFlightNumber"
+                        ></x-input>
+                    @endif
                 </div>
-                @if($this->activateExtras)
-                    <x-ez-card class="mb-4">
-                        <x-slot name="title">Extras</x-slot>
-                        <x-slot name="body">
-                            @if($this->extras->isNotEmpty())
 
-                                <table class="table w-full">
-                                    <!-- head -->
-                                    <thead>
+            </x-card>
+            </div>
+            <div class="mb-2">
+                <x-card title="Lead traveller details">
+                    <div class="grid grid-cols-3 gap-4">
+
+                        <x-select
+                            wire:model="stepTwoFields.leadTraveller.title"
+                            label="Title"
+                            :options="\App\Models\Reservation::TRAVELLER_TITLES"
+                            option-key-value
+                        />
+
+                        <x-input label="First name"
+                                 wire:model="stepTwoFields.leadTraveller.firstName"
+                        ></x-input>
+                        <x-input label="Last name"
+                                 wire:model="stepTwoFields.leadTraveller.lastName"
+                        ></x-input>
+
+                        <x-input label="Reservation number"
+                                 wire:model="stepTwoFields.leadTraveller.reservationNumber"
+                        ></x-input>
+                        <x-input label="Email"
+                                 wire:model="stepTwoFields.leadTraveller.email"
+                        ></x-input>
+                        <x-input label="Phone"
+                                 wire:model="stepTwoFields.leadTraveller.phone"
+                        ></x-input>
+                    </div>
+                </x-card>
+
+            </div>
+
+
+            <div class="flex justify-end my-4">
+
+                <x-checkbox
+                lg
+                wire:model="activateExtras"
+                label="Add extras"
+                >
+                </x-checkbox>
+
+
+            </div>
+            @if($this->activateExtras)
+                <div class="mb-4">
+                <x-card class="mb-4" title="Extras">
+                        @if($this->extras->isNotEmpty())
+
+                            <table class="ds-table w-full">
+                                <!-- head -->
+                                <thead>
+                                <tr>
+                                    <th>
+                                        Select
+                                    </th>
+                                    <th>Extra</th>
+                                    <th>Price</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+
+                                @foreach($this->extras as $extra)
                                     <tr>
                                         <th>
-                                            Select
+                                                <x-checkbox
+                                                    lg
+                                                       wire:model="stepTwoFields.extras.{{$extra->id}}"
+                                                      />
                                         </th>
-                                        <th>Extra</th>
-                                        <th>Price</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-
-
-                                    @foreach($this->extras as $extra)
-                                        <tr>
-                                            <th>
-                                                <label>
-                                                    <input type="checkbox"
-                                                           wire:model="stepTwoFields.extras.{{$extra->id}}"
-                                                           class="checkbox">
-                                                </label>
-                                            </th>
-                                            <td>
-                                                <div class="flex items-center space-x-3">
-                                                    <div class="avatar">
-                                                        <div class="mask mask-squircle w-12 h-12">
-                                                            <img src="{{$extra->primaryImageUrl}}"/>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <div class="font-bold"> {{$extra->name}}</div>
-                                                        <div
-                                                            class="text-sm opacity-50">{{Str::limit($extra->description,70)}}</div>
+                                        <td>
+                                            <div class="flex items-center space-x-3">
+                                                <div class="ds-avatar">
+                                                    <div class="ds-mask ds-mask-squircle w-12 h-12">
+                                                        <img src="{{$extra->primaryImageUrl}}"/>
                                                     </div>
                                                 </div>
+                                                <div>
+                                                    <div class="font-bold"> {{$extra->name}}</div>
+                                                    <div
+                                                        class="text-sm opacity-50">{{Str::limit($extra->description,70)}}</div>
+                                                </div>
+                                            </div>
 
 
-                                            </td>
+                                        </td>
 
-                                            <td>{{Cknow\Money\Money::EUR($extra->partner->first()->pivot->price)}}</td>
+                                        <td>{{Cknow\Money\Money::EUR($extra->partner->first()->pivot->price)}}</td>
 
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            @else
-                                <x-input-alert type="warning">No extras for selected partner</x-input-alert>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        @else
+                            <x-input-alert type="warning">No extras for selected partner</x-input-alert>
+                        @endif
 
-                            @endif
+                </x-card>
+                </div>
+            @endif
 
-                        </x-slot>
-                    </x-ez-card>
+            @if(($stepOneFields['children']>1 || $stepOneFields['infants']>1))
 
-                @endif
+                <div class="flex justify-end my-4">
 
-                @if(($stepOneFields['children']>1 || $stepOneFields['infants']>1))
+                    <x-checkbox
+                        lg
+                        wire:model="activateChildSeats"
+                        label="Add child seats"
+                    >
+                    </x-checkbox>
 
-                    <div>
-                        <label
-                            class="label cursor-pointer ml-auto justify-end mr-2   mb-1  ">
-                                            <span class="label-text mr-2">
-                                              <i class="fas fa-child"></i>Activate child seats</span>
-                            <input type="checkbox" wire:model="activateChildSeats" class="checkbox">
-                        </label>
-                    </div>
 
-                    @if($this->activateChildSeats )
-                        <x-ez-card class="mb-4">
-                            <x-slot name="title">Child seats</x-slot>
-                            <x-slot name="body">
+                </div>
 
-                                @forelse($this->stepTwoFields['seats'] as $seat)
-                                    <div class="grid grid-cols-4 gap-4">
-                                        <div class="col-span-2">
-                                            <x-form.ez-select :showEmptyValue="false"
-                                                              :model="'stepTwoFields.seats.'.$loop->index"
-                                                              :label="'Seat #'.$loop->index +1 .':'"
-                                                              :items="\App\Models\Transfer::CHILD_SEATS"
-                                                              sm="true"></x-form.ez-select>
-                                        </div>
+                @if($this->activateChildSeats )
+                    <div class="mb-4">
+                        <x-card title="Child seats">
+                            <div class="grid grid-cols-4 gap-4">
+
+                                @foreach($this->stepTwoFields['seats'] as $seat)
+                                    <div class="col-span-2">
+                                        <x-select
+                                            label="Seat #{{($loop->index +1)}}:"
+                                            wire:model="stepTwoFields.seats.{{$loop->index}}"
+                                            :options="\App\Models\Transfer::CHILD_SEATS"
+                                            option-key-value
+                                        />
                                     </div>
 
-                                @empty
-                                    <x-input-alert type="info">No Child seats added. Add one by pressing + icon!
-                                    </x-input-alert>
+                                @endforeach
+                            </div>
+                            <x-slot name="footer">
+                                <div class="flex justify-end gap-4 mt-2">
+                                    <x-button.circle icon="minus" wire:click="removeSeat"></x-button.circle>
 
-                                @endforelse
-
-                                <div class="flex justify-end gap-4">
-
-                                    <button class="btn btn-outline  btn-sm btn-circle" wire:click="addSeat"><i
-                                            class="fas fa-plus"></i></button>
-                                    <button class="btn btn-outline  btn-sm btn-circle" wire:click="removeSeat"><i
-                                            class="fas fa-minus"></i></button>
+                                    <x-button.circle secondary icon="plus" wire:click="addSeat"></x-button.circle>
                                 </div>
-
                             </x-slot>
-                        </x-ez-card>
-
-                    @endif
-                @endif
-
-                @if($this->totalPassengers >1)
-
-
-                    <div>
-                        <label
-                            class="label cursor-pointer ml-auto justify-end mr-2   mb-1  ">
-                                            <span class="label-text mr-2">
-                                              <i class="fas fa-users"></i> Define other travellers</span>
-                            <input type="checkbox" wire:model="activateOtherTravellersInput" class="checkbox">
-                        </label>
+                        </x-card>
                     </div>
+                @endif
+            @endif
+
+            @if($this->totalPassengers >1)
 
 
-                    @if($activateOtherTravellersInput )
-                        <x-ez-card>
-                            <x-slot name="title">Other traveller details</x-slot>
-                            <x-slot name="body">
-                                <div class="grid grid-cols-4 gap-4">
-                                    @foreach($this->stepTwoFields['otherTravellers'] as $i => $traveler)
-                                        <div class="col-span-1">
-                                            <x-form.ez-select
-                                                :show-empty-value="true"
-                                                model="stepTwoFields.otherTravellers.{{$i}}.title"
-                                                label="Title"
-                                                :items="\App\Models\Reservation::TRAVELLER_TITLES"
-                                                sm="true"
-                                            ></x-form.ez-select>
-                                        </div>
-                                        <div class="col-span-1">
-                                            <x-form.ez-text-input sm label="First name"
-                                                                  model="stepTwoFields.otherTravellers.{{$i}}.firstName"
-                                            ></x-form.ez-text-input>
-                                        </div>
-                                        <div class="col-span-1">
-                                            <x-form.ez-text-input sm label="Last name"
-                                                                  model="stepTwoFields.otherTravellers.{{$i}}.lastName"
-                                            ></x-form.ez-text-input>
-                                        </div>
+                <div class="flex justify-end my-4">
 
-                                        <div class="col-span-1">
-                                            <x-form.ez-text-input sm label="Comment"
-                                                                  model="stepTwoFields.otherTravellers.{{$i}}.comment"
-                                            ></x-form.ez-text-input>
-                                        </div>
+                    <x-checkbox
+                        lg
+                        wire:model="activateOtherTravellersInput"
+                        label="Define other travellers"
+                    >
+                    </x-checkbox>
 
-                                    @endforeach
 
+                </div>
+
+
+                @if($activateOtherTravellersInput )
+                    <x-card title="Other traveller details">
+                        <div class="grid grid-cols-4 gap-4">
+                            @foreach($this->stepTwoFields['otherTravellers'] as $i => $traveler)
+                                <div class="col-span-4">
+                                    <p class="font-bold">Traveller #{{$i}}:</p>
                                 </div>
 
+                                <x-select
+                                    wire:model="stepTwoFields.otherTravellers.{{$i}}.title"
+                                    label="Title"
+                                    option-key-value
+                                    :options="\App\Models\Reservation::TRAVELLER_TITLES"
+                                ></x-select>
+                                <x-input label="First name"
+                                         wire:model="stepTwoFields.otherTravellers.{{$i}}.firstName"
+                                ></x-input>
+                                <x-input label="Last name"
+                                         wire:model="stepTwoFields.otherTravellers.{{$i}}.lastName"
+                                ></x-input>
 
-                            </x-slot>
-                        </x-ez-card>
+                                <x-input label="Comment"
+                                         wire:model="stepTwoFields.otherTravellers.{{$i}}.comment"
+                                ></x-input>
 
-                    @endif
+                            @endforeach
+
+                        </div>
+                    </x-card>
                 @endif
-            </div>
+            @endif
 
         @endif
     </div>
@@ -848,146 +684,146 @@
              x-init="setTimeout(() => { open = true })">
             <div class="col-span-1 sticky" style="top: 5vh">
                 <div>
-                    <x-ez-card>
-                        <x-slot name="title">Reservation details</x-slot>
-                        <x-slot name="body">
 
-                            <div class="divider my-1    "></div>
-                            <div class="res-details">
-                                @if($this->selectedStartingPoint)
-                                    <p><span>From:</span> <b>{{$this->selectedStartingPoint->name}}</b></p>
+                    <x-card title="Reservation details">
+                        <div class="res-details">
+                            @if($this->selectedStartingPoint)
+                                <p><span>From:</span> <b>{{$this->selectedStartingPoint->name}}</b></p>
 
-                                    @if($this->stepOneFields['pickupAddress'])
-                                        <p><span>Address:</span> <b
-                                                class="text-right">{{$this->stepOneFields['pickupAddress']}}</b></p>
-                                    @endif
-                                    <div class="divider my-1    "></div>
-
+                                @if($this->stepOneFields['pickupAddress'])
+                                    <p><span>Address:</span> <b
+                                            class="text-right">{{$this->stepOneFields['pickupAddress']}}</b></p>
                                 @endif
-                                @if($this->selectedEndingPoint)
+                                <div class="ds-divider my-1    "></div>
 
-                                    <p>To: <b>{{$this->selectedEndingPoint->name}}</b></p>
+                            @endif
+                            @if($this->selectedEndingPoint)
 
-                                    @if($this->stepOneFields['dropoffAddress'])
-                                        <p><span>Address:</span> <b
-                                                class="text-right">{{$this->stepOneFields['dropoffAddress']}}</b></p>
-                                    @endif
-                                    <div class="divider my-1    "></div>
+                                <p>To: <b>{{$this->selectedEndingPoint->name}}</b></p>
 
+                                @if($this->stepOneFields['dropoffAddress'])
+                                    <p><span>Address:</span> <b
+                                            class="text-right">{{$this->stepOneFields['dropoffAddress']}}</b></p>
                                 @endif
-                                @if(!empty($this->stepOneFields['date']))
-                                    <p>Date to:
-                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['date'])->format('d.m.Y')}}</b>
+                                <div class="ds-divider my-1    "></div>
+
+                            @endif
+                            @if(!empty($this->stepOneFields['date']))
+                                <p>Date to:
+                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['date'])->format('d.m.Y')}}</b>
+                                </p>
+
+                            @endif
+                            @if(!empty($this->stepOneFields['time']))
+                                <p>Time to:
+                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['time'])->format('H:i')}}</b>
+                                </p>
+
+                            @endif
+                            @if(!empty($this->stepOneFields['returnDate']))
+                                <p>Time from:
+                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['returnDate'])->format('d.m.Y')}}</b>
+                                </p>
+
+                            @endif
+                            @if(!empty($this->stepOneFields['returnTime']))
+                                <p>Time from:
+                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['returnTime'])->format('H:i')}}</b>
+                                </p>
+
+                            @endif
+                            <p>Passengers: <b>{{$this->totalPassengers}}</b></p>
+                            <p>Ticket type: <b>{{$this->roundTrip ? 'Round trip' : 'One way'}}</b></p>
+
+
+                            @if($this->selectedExtras->isNotEmpty())
+                                <div class="ds-divider my-1"></div>
+
+
+                                <p class="font-bold">Extras:</p>
+
+                                @foreach($this->selectedExtras as $extra)
+                                    <p>{{$extra->name}}:
+                                        <b>{{\Cknow\Money\Money::EUR($extra->partner->first()?->pivot->price)}}</b>
                                     </p>
+                                @endforeach
 
-                                @endif
-                                @if(!empty($this->stepOneFields['time']))
-                                    <p>Time to:
-                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['time'])->format('H:i')}}</b>
+
+                            @endif
+                            @if($this->stepTwoFields['seats'])
+                                <div class="ds-divider my-1"></div>
+                                <p class="font-bold">Seats:</p>
+
+                                @foreach($this->stepTwoFields['seats'] as $seat)
+                                    <p>{{\Illuminate\Support\Arr::get(\App\Models\Transfer::CHILD_SEATS,$seat)}}
                                     </p>
-
-                                @endif
-                                @if(!empty($this->stepOneFields['returnDate']))
-                                    <p>Time from:
-                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['returnDate'])->format('d.m.Y')}}</b>
-                                    </p>
-
-                                @endif
-                                @if(!empty($this->stepOneFields['returnTime']))
-                                    <p>Time from:
-                                        <b>{{\Carbon\Carbon::make($this->stepOneFields['returnTime'])->format('H:i')}}</b>
-                                    </p>
-
-                                @endif
-                                <p>Passengers: <b>{{$this->totalPassengers}}</b></p>
-                                <p>Ticket type: <b>{{$this->roundTrip ? 'Round trip' : 'One way'}}</b></p>
+                                @endforeach
 
 
-                                @if($this->selectedExtras->isNotEmpty())
-                                    <div class="divider my-1"></div>
-
-
-                                    <p class="font-bold">Extras:</p>
-
-                                    @foreach($this->selectedExtras as $extra)
-                                        <p>{{$extra->name}}:
-                                            <b>{{\Cknow\Money\Money::EUR($extra->partner->first()?->pivot->price)}}</b>
-                                        </p>
-                                    @endforeach
-
-
-                                @endif
-                                @if($this->stepTwoFields['seats'])
-                                    <div class="divider my-1"></div>
-                                    <p class="font-bold">Seats:</p>
-
-                                    @foreach($this->stepTwoFields['seats'] as $seat)
-                                        <p>{{\App\Models\Transfer::CHILD_SEATS[$seat]}}
-                                        </p>
-                                    @endforeach
-
-
-                                @endif
-
-                            </div>
-                            <div class="divider my-1    "></div>
-
-                            @if($this->step === 2 && $this->totalPrice)
-                                <div class="alert alert-info alert-sm ">
-                                    <div class="text-right ml-auto text-white gap-2 pr-2">
-                                        Total price:
-                                        <b> {{ \App\Facades\EzMoney::format($this->totalPrice->getAmount()) }}
-                                            EUR</b>
-                                    </div>
-                                </div>
                             @endif
 
-                        </x-slot>
-                    </x-ez-card>
+                        </div>
+
+                        @if($this->step === 2 && $this->totalPrice)
+
+                            <x-slot name="footer">
+                                <div class="text-right ml-auto gap-2 pr-2">
+                                    Total price:
+                                    <b> {{ \App\Facades\EzMoney::format($this->totalPrice->getAmount()) }}
+                                        EUR</b>
+                                </div>
+                            </x-slot>
+                        @endif
+                    </x-card>
+
 
                     @if($step === 1)
-                        <x-ez-card class="mt-4">
-                            <x-slot name="body">
+                        <div class="my-2 ">
+                            <x-card>
+                                <x-button lg wire:click="nextStep" class="float-right" right-icon="arrow-right" positive
+                                         class="w-full" label="Next step"></x-button>
+                            </x-card>
+                        </div>
+
+                        <x-errors/>
 
 
-                                <button class="btn btn-large btn-accent rounded-box" wire:click="nextStep"><span
-                                            class="mr-4">Next step</span>
-                                    <i class="fas fa-arrow-right float-right"></i></button>
 
-                                @error('*')
-                                <x-input-alert type="warning">
-                                    {{$message}}
-                                </x-input-alert>
-                                @enderror
-                            </x-slot>
-                        </x-ez-card>
                     @endif
 
 
 
                     @if($step === 2 && $resSaved == false)
-                        <x-ez-card class="mt-4">
-                            <x-slot name="body">
-                                <x-form.ez-select label="Confirmation language"
-                                                  :items="$this->confirmationLanguagesArray"
-                                                  model="stepTwoFields.confirmationLanguage" :show-empty-value="false"
-                                                  sm="true"></x-form.ez-select>
+                        <div class="my-2">
+                            <x-card>
 
-                                <x-form.ez-select label="Send Email"
-                                                  :items="$this->sendEmailArray"
-                                                  model="stepTwoFields.sendMail" :show-empty-value="false"
-                                                  sm="true"></x-form.ez-select>
+                                <x-select
+                                    label="Confirmation language"
+                                    wire:model="stepTwoFields.confirmationLanguage"
+                                    :options="$this->confirmationLanguagesArray"
+                                    option-key-value
+                                />
+                                <div class="my-4 flex justify-end">
 
-                                <button class="btn btn-large btn-accent rounded-box" wire:click="saveReservation"><span
-                                        class="mr-4">Complete reservation</span>
-                                    <i class="fas fa-arrow-right float-right"></i></button>
-                                @error('*')
-                                <x-input-alert type="warning">
-                                    {{$message}}
-                                </x-input-alert>
-                                @enderror
-                            </x-slot>
-                        </x-ez-card>
+                                <x-checkbox lg
+                                            label="Send Email"
+                                            wire:model="stepTwoFields.sendMail"
+                                />
+                                </div>
+
+                                <x-slot name="footer" class="mt-4">
+                                    <x-button wire:click="saveReservation" lg positive class="float-right w-full"
+                                              label="Complete reservation">
+                                    </x-button>
+                                </x-slot>
+
+
+                                <x-errors/>
+                            </x-card>
+                        </div>
+
+
+
                     @endif
                 </div>
 

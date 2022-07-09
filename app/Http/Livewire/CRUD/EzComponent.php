@@ -2,16 +2,16 @@
 
 namespace App\Http\Livewire\CRUD;
 
-use App\Models\Route;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
+use WireUi\Traits\Actions;
 
 abstract class EzComponent extends \Livewire\Component
 {
-
+    use WithPagination;
+    use Actions;
     const FIELD_TYPE_TEXT = 1;
     const FIELD_TYPE_SELECT = 2;
 
@@ -35,7 +35,7 @@ abstract class EzComponent extends \Livewire\Component
 
     public string $modelName;
     public string $pluralModelName;
-    public array $fieldRuleNames;
+    public array $fieldRuleNames =[];
 
 
     public function render()
@@ -44,6 +44,11 @@ abstract class EzComponent extends \Livewire\Component
         $models = $this->tableModelsQuery();
 
         return view('livewire.CRUD.ez-crud', compact('models'));
+    }
+
+    public function mount()
+    {
+        $this->model = app($this->modelClass);
     }
 
     public function getModelPropertyBasedOnDottedString($model, $dottedString)
@@ -100,12 +105,10 @@ abstract class EzComponent extends \Livewire\Component
     {
         $this->openCrudModal();
         $this->model = app($this->modelClass);
-
     }
 
     public function saveModelData()
     {
-
         if (!empty($this->rolesPermission['save'])) {
             if (!Auth::user()->hasRole($this->rolesPermission['save'])) {
                 $this->showToast('Save failed', 'You do not have required permissions to do this!', 'error');
@@ -123,7 +126,12 @@ abstract class EzComponent extends \Livewire\Component
         $this->model->save();
 
         $this->afterSave();
-        $this->showToast('Save successful', '', 'success');
+
+
+        $this->notification()->success(
+            'Saved',
+            "$this->modelName  was successfull saved"
+        );
         $this->closeCrudModal();
     }
 
@@ -196,7 +204,7 @@ abstract class EzComponent extends \Livewire\Component
 
     protected function tableModelsQuery()
     {
-        return $this->modelClass::with($this->withArray())->paginate(10);
+        return $this->modelClass::with($this->withArray())->paginate(15);
     }
 
 
@@ -208,7 +216,7 @@ abstract class EzComponent extends \Livewire\Component
      *  Return collection of fields
      * @return Collection
      */
-    abstract public function formFields(): Collection;
+    abstract public function formBladeViewName(): string;
 
     /**
      * @param string $view

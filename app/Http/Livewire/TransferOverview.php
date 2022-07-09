@@ -50,7 +50,7 @@ class TransferOverview extends Component
         if($this->transfer) {
             return Vehicle::whereNull('transfer_id')->when($this->transfer->exists, function ($q) {
                 $q->orWhere('transfer_id', $this->transfer->vehicle->id);
-            })->get();
+            })->get()->prepend(['name'=>'Select vehicle','id'=>null],null);
         }
 
         return collect();

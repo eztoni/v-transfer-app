@@ -1,16 +1,14 @@
 <div >
 
-    <x-ez-card>
-        <x-slot name="title" class="flex justify-between">
-            Destinations
+    <x-card title="Destinations">
+        <x-slot name="action" >
 
-            <button wire:click="addDestination" class="btn btn-sm ">Add Destination</button>
+            <x-button wire:click="addDestination" positive>Add Destination</x-button>
 
         </x-slot>
-        <x-slot name="body">
 
-            <input type="text" wire:model="search" class="input input-primary my-2" placeholder="Find Destination">
-            <table class="table table-compact w-full" wire:loading.delay.class="opacity-50">
+            <x-input type="text" wire:model="search" placeholder="Find Destination"/>
+            <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
                 <thead>
                 <tr>
                     <th>#Id</th>
@@ -28,10 +26,8 @@
                         <td>{{ $d->id }}</td>
                         <td>{{ $d->name }}</td>
                         <td class="text-center">
-                            <button wire:click="updateDestination({{$d->id}})" class="btn btn-circle btn-sm btn-success">
-                                <i class="fas fa-pen"></i>
-                            </button>
-
+                            <x-button.circle icon="pencil" wire:click="updateDestination({{$d->id}})" primary>
+                            </x-button.circle>
                         </td>
 
                     </tr>
@@ -39,7 +35,7 @@
                 @empty
                     <tr>
                         <td colspan="999">
-                            <div class="alert alert-warning">
+                            <div class="ds-alert ds-alert-warning">
                                 <div class="flex-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          class="w-6 h-6 mx-2 stroke-current">
@@ -56,46 +52,39 @@
             </table>
             {{ $destinations->links() }}
 
-            <div class="modal {{ $softDeleteModal ? 'modal-open fadeIn' : '' }}">
-                <div class="modal-box max-h-screen overflow-y-auto">
-                    <b>Confirm deletion?</b>
-                    <p>This action will delete the destination.</p>
-                    <hr class="my-4">
 
-                    <div class="mt-4 flex justify-between">
-                        <button wire:click="closeSoftDeleteModal()" class="btn btn-sm ">Close</button>
-                        <button wire:click="softDelete()" class="btn btn-sm ">Delete</button>
-                    </div>
+        <x-modal.card wire:model="softDeleteModal" title="Confirm deletion?">
+            <p>This action will delete the destination.</p>
+            <hr class="my-4">
+
+            <x-slot name="footer" >
+                <div class="mt-4 flex justify-between">
+                    <x-button wire:click="closeSoftDeleteModal()" >Close</x-button>
+                    <x-button wire:click="softDelete()" positive>Delete</x-button>
                 </div>
-            </div>
+
+            </x-slot>
+        </x-modal.card>
 
 
-            <div class="modal {{ $destinationModal ? 'modal-open fadeIn' : '' }}">
-                <div class="modal-box max-h-screen overflow-y-auto">
-                    Adding new destination
-                    <hr class="my-4">
+        <x-modal.card wire:model="destinationModal"
+                      title="{{  !empty($this->destination->exists) ? 'Update':'Add' }} new destination"
+        >
+            <x-input label="Name:" wire:model="destination.name"></x-input>
 
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">Destination name :</span>
-                        </label>
-                        <input wire:model="destination.name" class="input input-bordered"
-                               placeholder="Destination name">
-                        @error('destination.name')
-                        <x-input-alert type='warning'>{{ $message }}</x-input-alert>
-                        @enderror
-                    </div>
+            <x-slot name="footer" >
+                <div class="flex justify-between">
 
-                    <div class="mt-4 flex justify-between">
-                        <button wire:click="closeDestinationModal()" class="btn btn-sm ">Close</button>
-                        <button wire:click="saveDestinationData()"
-                                class="btn btn-sm ">{{  !empty($this->destination->exists) ? 'Update':'Add' }}</button>
-                    </div>
+                <x-button wire:click="closeDestinationModal()" >Close</x-button>
+                <x-button wire:click="saveDestinationData()" positive
+                        class="btn btn-sm ">{{  !empty($this->destination->exists) ? 'Update':'Add' }}</x-button>
                 </div>
-            </div>
+            </x-slot>
+        </x-modal.card>
 
-        </x-slot>
 
-    </x-ez-card>
+
+
+    </x-card>
 </div>
 

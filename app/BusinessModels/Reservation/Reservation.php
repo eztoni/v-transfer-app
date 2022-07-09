@@ -42,8 +42,7 @@ abstract class Reservation
         $validator = Validator::make($this->model->toArray(),
             [
                 'destination_id' => 'required',
-                'date' => 'required|date',
-                'time' => 'required',
+                'date_time' => 'required|date',
                 'pickup_location' => 'required|integer',
                 'pickup_address' => 'required|string',
                 'dropoff_location' => 'required|integer',
