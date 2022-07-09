@@ -1,20 +1,12 @@
 <div x-data="{open: false,selectedLanguage: 'en'}">
 
-    <x-ez-card class="mb-5">
+    <x-card cardClasses="mb-4">
+        <div class="flex justify-between">
+            <h3 class="font-medium whitespace-normal text-md text-secondary-700 dark:text-secondary-400">Transfer details</h3>
 
-        <x-slot name="title">
-            <div class="flex justify-between">
-                <span>Transfer edit: <b>{{$this->transfer->name}}</b></span>
-
-                <x-button href="{{route('transfer-overview')}}"  primary label="Back to transfer overview" />
-
-            </div>
-        </x-slot>
-        <x-slot name="body" class="p-2 pl-4 pt-4">
-
-        </x-slot>
-    </x-ez-card>
-
+            <x-button href="{{route('transfer-overview')}}"  primary label="Back to transfer overview" />
+        </div>
+    </x-card>
 
 
 

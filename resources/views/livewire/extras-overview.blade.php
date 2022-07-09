@@ -1,9 +1,7 @@
+<div>
     <x-card title="Extras">
         <x-slot name="action" >
-
-
             <x-button wire:click="addExtra" positive>Add Extra</x-button>
-
         </x-slot>
 
 
@@ -21,12 +19,12 @@
                 @forelse ($extras as $ex)
 
                     <tr>
-                        <td>{{ $ex->id }}</td>
-                        <td>{{ $ex->name }}</td>
-                        <td>{{ $ex->description }}</td>
+                        <th>{{ $ex->id }}</th>
+                        <th>{{ $ex->name }}</th>
+                        <th>{{ strlen($ex->description) > 25 ? substr($ex->description,0,25)."..." : $ex->description }}</th>
                         <td class="text-center">
-                                <x-button.circle icon="pencil" primary href="{{ route('extras-edit',$ex)}}">
-                                </x-button.circle>
+                            <x-button.circle icon="pencil" primary href="{{ route('extras-edit',$ex)}}">
+                            </x-button.circle>
                         </td>
                     </tr>
 
@@ -47,6 +45,7 @@
                     </tr>
                 @endforelse
                 </tbody>
+
 
             </table>
             {{$extras->links()}}
@@ -69,9 +68,7 @@
                 </div>
             </x-slot>
         </x-modal.card>
-
-
-
     </x-card>
+</div>
 
 
