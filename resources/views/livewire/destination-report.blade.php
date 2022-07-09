@@ -1,123 +1,98 @@
 <div>
-    <x-ez-card class="mb-2">
-        <x-slot name="title">
-            Destination Reports
-        </x-slot>
+    <x-card cardClasses="mb-2" title=" Destination Reports">
 
 
-        <x-slot name="body">
-         
+
 
             <div class="grid grid-cols-4 gap-2">
                 @role(\App\Models\User::ROLE_ADMIN.'|'.\App\Models\User::ROLE_SUPER_ADMIN)
-                <x-form.ez-select
-                    :show-empty-value="false"
-                    model="destination"
+
+
+
+                <x-select
+                    option-key-value
+                    wire:model="destination"
                     label="Destination"
-                    :items="$this->adminDestinations"
-                    sm="true"
-                ></x-form.ez-select>
+                    :options="$this->adminDestinations->pluck('name','id')"
+                ></x-select>
                 @endrole
-                <div class="form-control">
-                    <label class="label ">
-                        <span class="label-text ">Date from:</span>
-                    </label>
-                    <input x-init="
-                                        flatpickr($el, {
-                                        disableMobile: 'true',
-                                        minDate:'{{\Carbon\Carbon::now()->subYears(3)->format('Y-m-d')}}',
-                                        dateFormat:'d.m.Y',
-                                        defaultDate:'{{$dateFrom}}'});
-                                        " readonly
-                           wire:model="dateFrom"
-                           class=" input input-bordered input-sm "
-                           placeholder="Date to:">
 
-                    @error('dateFrom')
-                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                    @enderror
-                </div>
-                <div class="form-control">
-                    <label class="label ">
-                        <span class="label-text ">Date to:</span>
-                    </label>
-                    <input x-init="
-                                        flatpickr($el, {
-                                        disableMobile: 'true',
-                                        minDate:'{{\Carbon\Carbon::now()->subYears(3)->format('Y-m-d')}}',
-                                        dateFormat:'d.m.Y',
-                                        defaultDate:'{{$dateTo}}'});
-                                        " readonly
-                           wire:model="dateTo"
-                           class=" input input-bordered input-sm "
-                           placeholder="Date to:">
-
-                    @error('dateTo')
-                    <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                    @enderror
-                </div>
-                <x-form.ez-select
-                    :show-empty-value="false"
-                    model="partner"
+                <x-datetime-picker
+                    without-time
+                    without-timezone
+                    label="Date from"
+                    wire:model.defer.defer="dateFrom"
+                    display-format="DD.MM.YYYY"
+                />
+                <x-datetime-picker
+                    without-time
+                    label="Date to"
+                    wire:model.defer.defer="dateTo"
+                    display-format="DD.MM.YYYY"
+                />
+                <x-select
+                    option-key-value
+                    wire:model="partner"
                     label="Partner"
-                    :items="$this->partners"
-                    sm="true"
-                ></x-form.ez-select>
-                <x-form.ez-select
-                    :show-empty-value="false"
-                    model="pickupLocation"
+                    :options="$this->partners"
+                ></x-select>
+                <x-select
+                    option-key-value
+                    wire:model="pickupLocation"
                     label="Pickup location"
-                    :items="$this->pickupLocations"
-                    sm="true"
-                ></x-form.ez-select>
-                <x-form.ez-select
-                    :show-empty-value="false"
-                    model="dropoffLocation"
-                    label="Dropoff location"
-                    :items="$this->dropoffLocations"
-                    sm="true"
-                ></x-form.ez-select>
-                <x-form.ez-select
-                    :show-empty-value="false"
-                    model="status"
-                    label="Status"
-                    :items="$this->statuses"
-                    sm="true"
-                ></x-form.ez-select>
+                    :options="$this->pickupLocations"
+                ></x-select>
 
-                <div class="form-control">
-                    <label class="label ">
-                        <span class="label-text ">&nbsp;</span>
-                    </label>
-                    <button class="btn btn-success btn-sm" wire:click="generate">Generate report</button>
+                 <x-select
+                    option-key-value
+                    wire:model="dropoffLocation"
+                    label="Dropoff location"
+                    :options="$this->dropoffLocations"
+                ></x-select>
+
+                <x-select
+                    option-key-value
+                    wire:model="status"
+                    label="Status"
+                    :options="App\Models\Reservation::STATUS_ARRAY"
+                ></x-select>
+
+                <div class="ds-form-control flex-col justify-end">
+                    <x-button primary wire:click="generate">Generate report</x-button>
+
                 </div>
 
             </div>
-        </x-slot>
 
 
-    </x-ez-card>
-    <div class="divider"></div>
-    <div class="stats shadow-lg mb-2 border w-full">
+    </x-card>
+    <div class="ds-divider"></div>
 
-        <div class="stat">
+@if($this->filteredReservations)
 
-            <div class="stat-title">Total Reservations</div>
-            <div class="stat-value text-primary">{{count($filteredReservations)}}</div>
+
+
+
+    <div class="ds-stats rounded-lg shadow-md mb-2 border w-full">
+
+        <div class="ds-stat">
+
+            <div class="ds-stat-title">Total Reservations</div>
+            <div class="ds-stat-value text-primary">{{count($filteredReservations)}}</div>
 
         </div>
 
-        <div class="stat">
+        <div class="ds-stat ">
 
-            <div class="stat-title">Total revenue</div>
-            <div class="stat-value text-success">{{$this->totalEur}}</div>
-            <div class="stat-desc font-bold">{{$this->totalHRK}}</div>
+            <div class="ds-stat-title">Total revenue</div>
+            <div class="ds-stat-value text-success">{{$this->totalEur}}</div>
+            <div class="ds-stat-desc font-bold">{{$this->totalHRK}}</div>
         </div>
 
-        <div class="stat">
-            <div class="stat-title">Confirmed reservations:</div>
+        <div class="ds-stat">
+            <div class="ds-stat-title">Confirmed reservations:</div>
 
-            <div class="stat-value text-primary">
+            <div class="ds-stat-value text-primary">
 
               @php
                  echo count( Arr::where($filteredReservations, function ($value, $key) {
@@ -126,7 +101,7 @@
               @endphp
             </div>
 
-            <div class="stat-desc font-bold">
+            <div class="ds-stat-desc font-bold">
                 Cancelled reservations:
                 @php
                     echo count( Arr::where($filteredReservations, function ($value, $key) {
@@ -138,9 +113,10 @@
         </div>
 
     </div>
-    <x-ez-card>
-        <x-slot name="body">
-            <table class="table table-compact w-full">
+    <div class="ds-divider"></div>
+
+    <x-card>
+            <table class="ds-table ds-table-compact w-full">
                 <thead>
                 <tr>
                     <th></th>
@@ -167,12 +143,12 @@
 
                             @if(Arr::get($reservation,'children'))
                                 <br>
-                                <span>C.: {{Arr::get($reservation,'children')}}</span>
+                                <span>C: {{Arr::get($reservation,'children')}}</span>
 
                             @endif
                             @if(Arr::get($reservation,'infants'))
                                 <br>
-                                <span>I.: {{Arr::get($reservation,'infants')}}</span>
+                                <span>I: {{Arr::get($reservation,'infants')}}</span>
                             @endif
 
                         </td>
@@ -192,8 +168,14 @@
 
                 </tbody>
             </table>
-        </x-slot>
 
 
-    </x-ez-card>
+    </x-card>
+    @else
+
+
+
+
+    @endif
+
 </div>

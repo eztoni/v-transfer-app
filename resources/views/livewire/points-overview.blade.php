@@ -13,7 +13,7 @@
         </tr>
         </thead>
         <tbody>
-        @forelse ($this->points as $p)
+        @forelse ($points as $p)
             <tr>
                 <td>{{ $p->id }}</td>
                 <td>{{ $p->name }}</td>
@@ -102,7 +102,7 @@
         </x-slot>
 
     </x-modal.card>
-
+    {{$points->links()}}
 
 </x-card>
 

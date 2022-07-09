@@ -158,7 +158,8 @@
         </div>
 
         <div class="col-span-1">
-            <x-card cardClasses="h-full" cardClasses="h-full" class="mb-4 shadow-none border-none " title="Main traveller">
+            <x-card cardClasses="h-full" cardClasses="h-full" class="mb-4 shadow-none border-none "
+                    title="Main traveller">
 
 
                 <table class="ds-table ds-table-compact w-full">
@@ -328,43 +329,41 @@
         </div>
     </div>
 
+    @if($otherTravellerModal)
+        <x-modal.card wire:model="otherTravellerModal" title="Update other traveller data">
 
-    <x-modal.card wire:model="otherTravellerModal" title="Update other traveller data">
+            <x-select
+                wire:model="otherTraveller.title"
+                label="Title:"
+                :options="\App\Models\Reservation::TRAVELLER_TITLES"
+                option-key-value
+            ></x-select>
 
-
-        <x-native-select
-            wire:model="otherTraveller.title"
-            label="Title:"
-            :options="\App\Models\Reservation::TRAVELLER_TITLES"
-            option-key-value
-        ></x-native-select>
-
-        <x-input
-            wire:model="otherTraveller.first_name"
-            label="First Name:"
-        ></x-input>
-
-
-        <x-input
-            wire:model="otherTraveller.last_name"
-            label="Last Name:"
-        ></x-input>
+            <x-input
+                wire:model="otherTraveller.first_name"
+                label="First Name:"
+            ></x-input>
 
 
-        <x-input
-            wire:model="otherTravellerComment"
-            label="Comment:"
-        ></x-input>
+            <x-input
+                wire:model="otherTraveller.last_name"
+                label="Last Name:"
+            ></x-input>
 
 
-        <x-slot name="footer" class="mt-4 flex justify-between">
-            <x-button wire:click="closeOtherTravellerModal()">Close</x-button>
-            <x-button wire:click="saveOtherTravellerData()" positive
-            >Update
-            </x-button>
-        </x-slot>
-
-    </x-modal.card>
+            <x-input
+                wire:model="otherTravellerComment"
+                label="Comment:"
+            ></x-input>
 
 
+            <x-slot name="footer" class="mt-4 flex justify-between">
+                <x-button wire:click="closeOtherTravellerModal()">Close</x-button>
+                <x-button wire:click="saveOtherTravellerData()" positive
+                >Update
+                </x-button>
+            </x-slot>
+
+        </x-modal.card>
+    @endif
 </div>

@@ -35,9 +35,6 @@ class PointsOverview extends Component
 
 
 
-    public function getPointsProperty(){
-        return Point::whereDestinationId(Auth::user()->destination_id)->get();
-    }
 
 
     protected function rules()
@@ -115,6 +112,10 @@ class PointsOverview extends Component
     public function render()
     {
         $destinations = Destination::all();
-        return view('livewire.points-overview',compact('destinations'));
+
+        $points = Point::whereDestinationId(Auth::user()->destination_id)->paginate(15);
+
+
+        return view('livewire.points-overview',compact('destinations','points'));
     }
 }

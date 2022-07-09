@@ -41,6 +41,7 @@
             {{ $slot }}
         </div>
     </main>
+
     <x-notifications />
 
 </div>

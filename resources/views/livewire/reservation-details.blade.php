@@ -1,5 +1,4 @@
 <div x-data="reservationSettings">
-
     <x-card class=" flex-grow mb-2">
         <div class="flex items-center justify-between">
             <div>

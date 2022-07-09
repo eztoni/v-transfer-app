@@ -52,6 +52,11 @@ class Reservation extends Model
         return $this->status === self::STATUS_CONFIRMED;
     }
 
+    public function isRoundTrip()
+    {
+        return !empty($this->round_trip_id);
+    }
+
     public function getIsRoundTripAttribute()
     {
         return !empty($this->round_trip_id);

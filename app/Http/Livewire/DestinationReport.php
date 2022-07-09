@@ -8,6 +8,7 @@ use App\Models\Reservation;
 use App\Models\Route;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Money\Converter;
@@ -47,20 +48,15 @@ class DestinationReport extends Component
     public function mount()
     {
         $this->destination = \Auth::user()->destination_id;
-        $this->dateFrom = Carbon::now()->format('d.m.Y');
-        $this->dateTo = Carbon::now()->format('d.m.Y');
+        $this->dateFrom = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $this->dateTo = Carbon::now()->endOfMonth()->format('Y-m-d');
         $this->filteredReservations = [];
 
+
+        //Calls method that has dependancy injection
+        App::call( [ $this, 'generate' ] );
     }
 
-    public function getStatusesProperty()
-    {
-        $return = [0 => 'Select status'];
-        foreach (Reservation::STATUS_ARRAY as $s) {
-            $return[$s] = Str::ucfirst($s);
-        }
-        return $return;
-    }
 
     public function getPickupLocationsProperty()
     {
@@ -109,8 +105,8 @@ class DestinationReport extends Component
                 ->whereIsMain(true)
                 ->with(['leadTraveller', 'pickupLocation', 'dropoffLocation'])
                 ->where('destination_id', $this->destination)
-                ->whereDate('created_at', '>=', Carbon::createFromFormat('d.m.Y', $this->dateFrom))
-                ->whereDate('created_at', '<=', Carbon::createFromFormat('d.m.Y', $this->dateTo))
+                ->whereDate('created_at', '>=', $this->dateFrom)
+                ->whereDate('created_at', '<=',$this->dateTo)
                 ->when($this->partner != 0, function ($q) {
                     $q->where('partner_id', $this->partner);
                 })
@@ -176,9 +172,7 @@ class DestinationReport extends Component
 
     public function getAdminDestinationsProperty()
     {
-        return Destination::all()->mapWithKeys(function ($i) {
-            return [$i->id => $i->name];
-        })->toArray();
+        return Destination::all();
     }
 
 
