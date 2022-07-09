@@ -1,4 +1,4 @@
-    <x-card title="Transfers">
+<div><x-card title="Transfers">
         <x-slot name="action">
             <x-button wire:click="addTransfer" positive>Add Transfer</x-button>
         </x-slot>
@@ -78,3 +78,4 @@
     </x-card>
 
 
+</div>

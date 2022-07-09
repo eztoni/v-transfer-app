@@ -1,3 +1,4 @@
+<div>
     <x-card title="Vehicles">
         <x-slot name="action" >
             <x-button wire:click="addVehicle" positive>Add Vehicle</x-button>
@@ -76,3 +77,4 @@
     </x-card>
 
 
+</div>
