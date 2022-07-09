@@ -12,6 +12,7 @@ use App\Models\Route;
 use App\Models\Transfer;
 use App\Models\Traveller;
 use App\Services\TransferAvailability;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
@@ -559,7 +560,8 @@ class InternalReservation extends Component
         }
 
         try {
-            return (new TransferAvailability(
+            Debugbar::startMeasure('getTransfers');
+            $transfers= (new TransferAvailability(
                 $this->stepOneFields['adults'],
                 $route,
                 $this->stepOneFields['children'],
@@ -567,6 +569,8 @@ class InternalReservation extends Component
                 $this->stepOneFields['luggage'],
             ))
                 ->getAvailablePartnerTransfers();
+            Debugbar::stopMeasure('getTransfers');
+            return $transfers;
 
         }catch (\Exception $e){
             return collect([]);

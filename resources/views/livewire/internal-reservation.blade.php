@@ -1,13 +1,25 @@
+@php
+    \Barryvdh\Debugbar\Facades\Debugbar::startMeasure('whole-blade');
+@endphp
 <div class="internal-reservation container " x-data="app()">
     <div class="grid grid-cols-3 gap-4">
         <div class="col-span-2 ">
+            @php
+                \Barryvdh\Debugbar\Facades\Debugbar::startMeasure('a');
+            @endphp
             @if($step === 1)
 
                 <x-card>
                         <x-slot name="action">
                             <x-button sm label="Pull data" wire:click="$set('pullModal',true)" icon="cloud-download" ></x-button>
                         </x-slot>
-                        <x-modal.card max-width="6xl" wire:model="pullModal" lg title="Pull data from Opera">
+                    @php
+                        \Barryvdh\Debugbar\Facades\Debugbar::startMeasure('pull-modal');
+                    @endphp
+                    @if($this->pullModal)
+
+
+                    <x-modal.card max-width="6xl" wire:model="pullModal" lg title="Pull data from Opera">
 
                             <div class="flex gap-4   flex-wrap">
                                 <x-input
@@ -112,9 +124,13 @@
                             </div>
 
                         </x-modal.card>
-
-
-
+                    @endif
+                    @php
+                        \Barryvdh\Debugbar\Facades\Debugbar::stopMeasure('pull-modal');
+                    @endphp
+                    @php
+                        \Barryvdh\Debugbar\Facades\Debugbar::startMeasure('first-row');
+                    @endphp
                     <div class="grid grid-cols-2 gap-2">
                         <div class="ds-form-control ">
                             @if(!empty($this->stepOneFields['destinationId']))
@@ -239,7 +255,12 @@
                             </div>
                         @endif
                     </div>
-
+                    @php
+                        \Barryvdh\Debugbar\Facades\Debugbar::stopMeasure('first-row');
+                    @endphp
+                    @php
+                        \Barryvdh\Debugbar\Facades\Debugbar::startMeasure('pickers');
+                    @endphp
 
                     @if(!empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
                         <div x-data="{open: false}" x-show="open" x-transition
@@ -248,7 +269,9 @@
 
                             <div class="ds-divider my-1 "></div>
 
-
+                            @php
+                                \Barryvdh\Debugbar\Facades\Debugbar::startMeasure('pickers1');
+                            @endphp
                             <div class="grid grid-cols-2  gap-2">
                                 <x-datetime-picker
                                     label="Date to:"
@@ -268,7 +291,12 @@
                                     />
                                 @endif
                             </div>
-
+                            @php
+                                \Barryvdh\Debugbar\Facades\Debugbar::stopMeasure('pickers1');
+                            @endphp
+                            @php
+                                \Barryvdh\Debugbar\Facades\Debugbar::startMeasure('inputs');
+                            @endphp
                             <div class="flex justify-end my-3">
                                 <x-checkbox lg class="justify-end ml-auto" left-label="Round trip"
                                             wire:model="roundTrip"/>
@@ -302,9 +330,18 @@
                                 />
 
                             </div>
+                            @php
+                                \Barryvdh\Debugbar\Facades\Debugbar::stopMeasure('inputs');
+                            @endphp
                         </div>
                     @endif
+                    @php
+                        \Barryvdh\Debugbar\Facades\Debugbar::stopMeasure('pickers');
+                    @endphp
                 </x-card>
+                @php
+                    \Barryvdh\Debugbar\Facades\Debugbar::startMeasure('transfers');
+                @endphp
 
                 @if($this->availableTransfers->isEmpty() &&
                     !empty($stepOneFields['destinationId']) &&
@@ -328,7 +365,10 @@
                     </div>
                 @endif
 
-                @if($this->availableTransfers->isNotEmpty() && !empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
+
+
+
+            @if($this->availableTransfers->isNotEmpty() && !empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
                     <div x-data="{open: false}" x-show="open" x-transition
                          x-init="setTimeout(() => { open = true })">
 
@@ -351,8 +391,8 @@
                             {{--  Check if last transfer has the same partner as current one --}}
                             @if(!$lastTransfer ||($lastTransfer && $lastTransfer->partner->id !== $item->partner->id))
                                 @if($lastTransfer)
-                    </div>
-                @endif
+                                    </div>
+                                @endif
 
 
 
@@ -408,13 +448,19 @@
                     </div>
                     @endforeach
                 </div>
-
+                @php
+                    \Barryvdh\Debugbar\Facades\Debugbar::stopMeasure('transfers');
+                @endphp
 
         </div>
         @endif
         @endif
-
-
+        @php
+            \Barryvdh\Debugbar\Facades\Debugbar::stopMeasure('a');
+        @endphp
+        @php
+            \Barryvdh\Debugbar\Facades\Debugbar::startMeasure('b');
+        @endphp
         @if($step === 2)
             <div class="mb-2">
                 <x-card>
@@ -642,6 +688,9 @@
             @endif
 
         @endif
+        @php
+            \Barryvdh\Debugbar\Facades\Debugbar::stopMeasure('b');
+        @endphp
     </div>
     @if($this->availableTransfers->isNotEmpty() && !empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
         <div x-data="{open: false}" x-show="open" x-transition
@@ -809,3 +858,6 @@
     }
 </script>
 </div>
+@php
+    \Barryvdh\Debugbar\Facades\Debugbar::stopMeasure('whole-blade');
+@endphp
