@@ -35,6 +35,12 @@
                     </x-slot>
                     Activity Log
                 </x-nav-link>
+                <x-nav-link :href="route('phpinfo')" :active="request()->routeIs('phpinfo')">
+                    <x-slot name="icon">
+                        <i class="far fa-address-card"></i>
+                    </x-slot>
+                    PHP info
+                </x-nav-link>
             @endif
         </ul>
     </div>
