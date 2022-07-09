@@ -7,7 +7,111 @@
                         <x-slot name="action">
                             <x-button sm label="Pull data" wire:click="$set('pullModal',true)" icon="cloud-download" ></x-button>
                         </x-slot>
-                        
+                        <x-modal.card max-width="6xl" wire:model="pullModal" lg title="Pull data from Opera">
+
+                            <div class="flex gap-4   flex-wrap">
+                                <x-input
+                                    wire:model.defer="pullDataFields.resId"
+                                    label="Reservation ID"
+                                />
+
+                                <x-input
+                                    wire:model.defer="pullDataFields.fName"
+                                    label="Guest name"/>
+                                <x-input
+                                    wire:model.defer="pullDataFields.lName"
+                                    label="Guest last name"/>
+
+
+
+
+                                <x-datetime-picker
+                                    without-time
+                                    label="Check in:"
+                                    display-format="DD.MM.YYYY"
+                                    wire:model.defer="pullDataFields.dFrom"
+                                />
+                                <x-datetime-picker
+                                    without-time
+                                    label="Check out:"
+                                    display-format="DD.MM.YYYY"
+                                    wire:model.defer="pullDataFields.dTo"
+                                />
+
+                                <x-select
+                                    options-key-value
+                                    :searchable="true"
+                                    wire:model.defer=""
+                                    :options="$this->pointsAccomodation->pluck('name','id')"
+                                    label="Property"
+                                >
+
+                                </x-select>
+                            </div>
+
+
+                            <hr class="my-4">
+                            @if($this->apiData)
+
+
+                            <div class="max-h-96 overflow-y-scroll">
+                                <table class="ds-table ds-table-compact w-full  ">
+                                    <thead>
+                                    <tr>
+                                        <th>#Res. Code</th>
+                                        <th>First Name</th>
+                                        <th>Lastname</th>
+                                        <th>Email</th>
+                                        <th>Adults</th>
+                                        <th>Children</th>
+                                        <th>Check in</th>
+                                        <th>Check out</th>
+                                        <th>Pull</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    @foreach($this->apiData as $k=> $r)
+
+                                        <tr>
+                                            <th>{{$k}}</th>
+                                            <th>{{\Illuminate\Support\Str::title( \Illuminate\Support\Arr::get($r,'reservationHolderData.firstName')??'-')}}</th>
+                                            <th>{{\Illuminate\Support\Str::title(\Illuminate\Support\Arr::get($r,'reservationHolderData.lastName')??'-')}}</th>
+                                            <th>{{\Illuminate\Support\Arr::get($r,'reservationHolderData.email')??'-'}}</th>
+                                            <th>{{\Illuminate\Support\Arr::get($r,'adults')}}</th>
+                                            <th>{{\Illuminate\Support\Arr::get($r,'children')}}</th>
+                                            <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkIn'))->format('d.m.Y')}}</th>
+                                            <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkOut'))->format('d.m.Y')}}</th>
+
+                                            <td>
+                                                <x-button.circle sm wire:click="pullRes('{{$k}}')" icon="cloud-download" />
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            @endif
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <div wire:loading class="text-primary">
+                                        Loading data...
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <x-button wire:click="pullData" class="pull-right mt-4  mx-4" primary>Search</x-button>
+
+                                    <x-button   wire:click="closePullModal" class="pull-right mt-4 ">Close</x-button>
+
+                                </div>
+
+
+                            </div>
+
+                        </x-modal.card>
 
 
 
