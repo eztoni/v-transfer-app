@@ -51,10 +51,10 @@ class InternalReservation extends Component
 
 
         if ($this->pullDataFields['dFrom']) {
-            $api->setCheckInFilter(Carbon::createFromFormat('d.m.Y', $this->pullDataFields['dFrom']));
+            $api->setCheckInFilter(Carbon::create($this->pullDataFields['dFrom']));
         }
         if ($this->pullDataFields['dTo']) {
-           $api->setCheckOutFilter(Carbon::createFromFormat('d.m.Y', $this->pullDataFields['dTo']));
+           $api->setCheckOutFilter(Carbon::create( $this->pullDataFields['dTo']));
 
         }
 

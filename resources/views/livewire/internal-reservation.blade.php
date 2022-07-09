@@ -4,90 +4,58 @@
             @if($step === 1)
 
                 <x-card>
+                        <x-slot name="action">
+                            <x-button sm label="Pull data" wire:click="$set('pullModal',true)" icon="cloud-download" ></x-button>
+                        </x-slot>
+                        <x-modal.card max-width="6xl" wire:model="pullModal" lg title="Pull data from Opera">
 
-                        <x-ez-modal :is-open="$this->pullModal" lg>
-
-                            <div class="flex gap-4  flex-wrap">
-                                <x-form.ez-text-input
+                            <div class="flex gap-4   flex-wrap">
+                                <x-input
                                     wire:model.defer="pullDataFields.resId"
-                                    sm label="Reservation ID"
-                                ></x-form.ez-text-input>
+                                    label="Reservation ID"
+                                />
 
-                                <x-form.ez-text-input
+                                <x-input
                                     wire:model.defer="pullDataFields.fName"
-                                    sm label="Guest name"></x-form.ez-text-input>
-                                <x-form.ez-text-input
+                                    label="Guest name"/>
+                                <x-input
                                     wire:model.defer="pullDataFields.lName"
-                                    sm label="Guest last name"></x-form.ez-text-input>
-
-                            </div>
-                            <div class="flex gap-4   mt-2 flex-wrap">
-
-                            <div class=""><p class="text-sm">Check in:</p>
-                                    <input x-init="
-                                        flatpickr($el, {
-                                        disableMobile: 'true',
-                                        minDate:'today',
-                                        dateFormat:'d.m.Y',
-                                        defaultDate:'{{$pullDataFields['dFrom']}}'});
-                                        " readonly
-                                           wire:model.defer="pullDataFields.dFrom"
-                                           class=" input input-bordered input-sm mt-2"
-                                           placeholder="Date to:">
-                                </div>
-
-                                <div class=""><p class="text-sm">Check out:</p>
-
-                            <input x-init="
-                                        flatpickr($el, {
-                                        disableMobile: 'true',
-                                        minDate:'today',
-                                        dateFormat:'d.m.Y',
-                                        defaultDate:'{{$pullDataFields['dTo']}}'});
-                                        " readonly
-                                   wire:model.defer="pullDataFields.dTo"
-                                   class=" input input-bordered input-sm mt-2"
-                                   placeholder="Date to:">
+                                    label="Guest last name"/>
 
 
+
+
+                                <x-datetime-picker
+                                    without-time
+                                    label="Check in:"
+                                    display-format="DD.MM.YYYY"
+                                    wire:model.defer="pullDataFields.dFrom"
+                                />
+                                <x-datetime-picker
+                                    without-time
+                                    label="Check out:"
+                                    display-format="DD.MM.YYYY"
+                                    wire:model.defer="pullDataFields.dTo"
+                                />
+
+                                <x-select
+                                    options-key-value
+                                    :searchable="true"
+                                    wire:model.defer=""
+                                    :options="$this->pointsAccomodation->pluck('name','id')"
+                                    label="Property"
+                                >
+
+                                </x-select>
                             </div>
 
-                                <div class="">
-                                    <div class="form-control pt-2" wire:ignore>
-                                        <label class="label-text mb-1 ">Property</label>
 
-                                        <select id="propertySelect" x-init=" $('#propertySelect').select2(
-                                                {
-                                                    closeOnSelect: true,
-
-                                                      placeholder: 'Select or type dropoff address',
-                                                }
-                                            ).on('change', function (e) {
-                                                @this.
-                                                set('pullDataFields.property', $('#propertySelect').val())
-                                            })
-                                            ">
-                                            <option></option>
-
-                                            @foreach($this->pointsAccomodation as $point)
-                                                <option
-                                                    @if($this->pullDataFields['property'] === $point->pms_code)
-                                                    selected
-                                                    @endif
-                                                    value="{{$point->pms_code}}">{{$point->name}}</option>
-                                            @endforeach
-
-                                        </select>
-
-                                    </div>
-                                </div>
-                            </div>
                             <hr class="my-4">
                             @if($this->apiData)
 
 
                             <div class="max-h-96 overflow-y-scroll">
-                                <table class="table table-compact w-full  ">
+                                <table class="ds-table ds-table-compact w-full  ">
                                     <thead>
                                     <tr>
                                         <th>#Res. Code</th>
@@ -117,7 +85,7 @@
                                             <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkOut'))->format('d.m.Y')}}</th>
 
                                             <td>
-                                                <button wire:click="pullRes('{{$k}}')" class="btn btn-xs" ><i class="fas fa-download"></i></button>
+                                                <x-button.circle sm wire:click="pullRes('{{$k}}')" icon="cloud-download" />
                                             </td>
                                         </tr>
                                     @endforeach
@@ -127,31 +95,26 @@
                             </div>
                             @endif
                             <div class="flex justify-between items-center">
+                                <div>
+                                    <div wire:loading.delay class="text-primary">
+                                        Loading data...
+                                    </div>
+                                </div>
 
                                 <div>
-                                    <label wire:click="pullData" class="pull-right mt-4 btn btn-primary btn-sm btn-outline mx-4">Search</label>
+                                    <x-button wire:click="pullData" class="pull-right mt-4  mx-4" primary>Search</x-button>
 
-                                    <label   wire:click="closePullModal" class="pull-right mt-4 btn btn-sm btn-outline">Close</label>
+                                    <x-button   wire:click="closePullModal" class="pull-right mt-4 ">Close</x-button>
 
                                 </div>
-                                <div wire:loading.delay class="text-primary">
-                                    Loading data...
-                                </div>
+
 
                             </div>
 
-                        </x-ez-modal>
+                        </x-modal.card>
 
-                    </x-slot>
 
-                    <x-slot name="body" class="">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="form-control ">
-                                @if(!empty($this->stepOneFields['destinationId']))
-                                    @if($this->startingPoints->isNotEmpty())
-                                        <label class="label-text ">Pickup location</label>
-                                        <select class="my-select select-sm" wire:model="stepOneFields.startingPointId">
-                                            <option value="">Pickup location</option>
+
                     <div class="grid grid-cols-2 gap-2">
                         <div class="ds-form-control ">
                             @if(!empty($this->stepOneFields['destinationId']))
