@@ -554,7 +554,6 @@ class InternalReservation extends Component
 
         $route = $this->selectedRoute;
 
-        return collect([]);
         if (!$route) {
             return collect([]);
         }
