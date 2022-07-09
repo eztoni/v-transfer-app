@@ -241,13 +241,177 @@
                     </div>
 
 
+                    @if(!empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
+                        <div x-data="{open: false}" x-show="open" x-transition
+                             x-init="setTimeout(() => { open = true })">
 
+
+                            <div class="ds-divider my-1 "></div>
+
+
+                            <div class="grid grid-cols-2  gap-2">
+                                <x-datetime-picker
+                                    label="Date to:"
+                                    wire:model="stepOneFields.dateTime"
+                                    :min="now()"
+                                    time-format="24"
+                                    display-format="DD.MM.YYYY HH:mm"
+                                />
+
+                                @if($roundTrip)
+                                    <x-datetime-picker
+                                        label="Date from:"
+                                        wire:model="stepOneFields.returnDateTime"
+                                        :min="now()"
+                                        time-format="24"
+                                        display-format="DD.MM.YYYY HH:mm"
+                                    />
+                                @endif
+                            </div>
+
+                            <div class="flex justify-end my-3">
+                                <x-checkbox lg class="justify-end ml-auto" left-label="Round trip"
+                                            wire:model="roundTrip"/>
+                            </div>
+
+
+                            <div class="ds-divider my-1 "></div>
+
+                            <div class="flex flex-wrap justify-between gap-2">
+
+                                <x-input label="Adults:"
+                                         x-data="{oldVal:''}"
+                                         @focusin="this.oldVal = $el.value;$el.value = ''"
+                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"
+                                         wire:model="stepOneFields.adults"
+                                />
+                                <x-input label="Child(3-17):"
+                                         x-data="{oldVal:''}"
+                                         @focusin="this.oldVal = $el.value;$el.value = ''"
+                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"
+                                         wire:model="stepOneFields.children"
+                                />
+                                <x-input label="Infant(0-2):"
+                                         x-data="{oldVal:''}"
+                                         @focusin="this.oldVal = $el.value;$el.value = ''"
+                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"
+                                         wire:model="stepOneFields.infants"
+                                />
+                                <x-input label="Luggage"
+                                         wire:model="stepOneFields.luggage"
+                                />
+
+                            </div>
+                        </div>
+                    @endif
                 </x-card>
 
+                @if($this->availableTransfers->isEmpty() &&
+                    !empty($stepOneFields['destinationId']) &&
+                    !empty($stepOneFields['startingPointId']) &&
+                    !empty($stepOneFields['endingPointId']))
+
+
+                    <div x-data="{open: false}" x-show="open" x-transition
+                         x-init="setTimeout(() => { open = true })">
+
+                        <div class="ds-alert ds-alert-info  shadow-lg ">
+                            <div>
+                                <i class="fas fa-search text-lg"></i>
+                                <div>
+                                    <h3 class="font-bold">No transfers for selected route!</h3>
+                                    <div class="text-xs">Try changing the route, or add a transfer to route.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                @endif
+
+                @if($this->availableTransfers->isNotEmpty() && !empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
+                    <div x-data="{open: false}" x-show="open" x-transition
+                         x-init="setTimeout(() => { open = true })">
+
+                        <div class="ds-divider"></div>
+
+                        <div class="my-4">
+                            <x-card>
+                                <div class="ds-card-title "><i class="fas fa-search text-lg"></i>
+                                    Search results:
+                                </div>
+                            </x-card>
+                        </div>
+
+
+                        @php
+                            $lastTransfer = null;
+                        @endphp
+                        @foreach($this->availableTransfers as $item)
+
+                            {{--  Check if last transfer has the same partner as current one --}}
+                            @if(!$lastTransfer ||($lastTransfer && $lastTransfer->partner->id !== $item->partner->id))
+                                @if($lastTransfer)
+                    </div>
+                @endif
 
 
 
+                <div
+                    class="border-2  gap-2 mb-2 bg-gradient-to-b from-primary-500 to-white pb-2 flex flex-col rounded-lg relative shadow-md">
+                    <div class="w-full flex justify-between text-neutral-content px-4 pt-1 text-lg font-bold "
+                    >
+                        <span>  {{$item->partner->name}}</span>
+                        <a class="font-medium link"
+                           href="tel:{{$item->partner->phone}}">{{$item->partner->phone}}</a>
+                    </div>
 
+                    @endif
+
+                    @php
+                        $lastTransfer = $item;
+                    @endphp
+                    <div class="ds-card rounded-none bg-base-100  ">
+                        <div
+                            class="ds-card-body p-2 {{$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id) ?'shadow-inner bg-blue-100':''}}">
+
+                            <div class="flex gap-4">
+                                <div class="basis-1/5">
+                                    <img class="h-24 w-full object-cover rounded-xl"
+                                         src="{{$item->transfer->primaryImageUrl}}"/>
+                                </div>
+                                <div class="basis-4/5">
+                                    <h2 class="ds-card-title mb-2">{{$item->transfer->name}}</h2>
+                                    <div class="flex gap-4 mb-2">
+                                        <span class=" ">Type: Van</span>
+                                        <span
+                                            class=" ">Max. Occ: {{$item->transfer->vehicle->max_occ}}</span>
+                                        <span
+                                            class=" ">Max. Luggage:{{$item->transfer->vehicle->max_luggage}}</span>
+
+                                    </div>
+
+                                    <span class="  ">Price: <b>
+                                     {{\App\Facades\EzMoney::format($this->roundTrip
+                                            ?$item->price_round_trip
+                                            :$item->price)}}
+                                            EUR</b></span>
+
+                                    <x-button
+                                        :primary="$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id)"
+                                        class="absolute bottom-2 right-2"
+                                        wire:click="selectTransfer({{$item->transfer_id}},{{$item->partner_id}})">
+                                        {{$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id) ?'Selected':'Select'}}
+                                    </x-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+
+
+        </div>
+        @endif
         @endif
 
 
@@ -479,157 +643,7 @@
 
         @endif
     </div>
-    @if($this->availableTransfers->isNotEmpty() && !empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
-        <div x-data="{open: false}" x-show="open" x-transition
-             x-init="setTimeout(() => { open = true })">
-            <div class="col-span-1 sticky" style="top: 5vh">
-                <div>
-
-                    <x-card title="Reservation details">
-                        <div class="res-details">
-                            @if($this->selectedStartingPoint)
-                                <p><span>From:</span> <b>{{$this->selectedStartingPoint->name}}</b></p>
-
-                                @if($this->stepOneFields['pickupAddress'])
-                                    <p><span>Address:</span> <b
-                                            class="text-right">{{$this->stepOneFields['pickupAddress']}}</b></p>
-                                @endif
-                                <div class="ds-divider my-1    "></div>
-
-                            @endif
-                            @if($this->selectedEndingPoint)
-
-                                <p>To: <b>{{$this->selectedEndingPoint->name}}</b></p>
-
-                                @if($this->stepOneFields['dropoffAddress'])
-                                    <p><span>Address:</span> <b
-                                            class="text-right">{{$this->stepOneFields['dropoffAddress']}}</b></p>
-                                @endif
-                                <div class="ds-divider my-1    "></div>
-
-                            @endif
-                            @if(!empty($this->stepOneFields['date']))
-                                <p>Date to:
-                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['date'])->format('d.m.Y')}}</b>
-                                </p>
-
-                            @endif
-                            @if(!empty($this->stepOneFields['time']))
-                                <p>Time to:
-                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['time'])->format('H:i')}}</b>
-                                </p>
-
-                            @endif
-                            @if(!empty($this->stepOneFields['returnDate']))
-                                <p>Time from:
-                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['returnDate'])->format('d.m.Y')}}</b>
-                                </p>
-
-                            @endif
-                            @if(!empty($this->stepOneFields['returnTime']))
-                                <p>Time from:
-                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['returnTime'])->format('H:i')}}</b>
-                                </p>
-
-                            @endif
-                            <p>Passengers: <b>{{$this->totalPassengers}}</b></p>
-                            <p>Ticket type: <b>{{$this->roundTrip ? 'Round trip' : 'One way'}}</b></p>
-
-
-                            @if($this->selectedExtras->isNotEmpty())
-                                <div class="ds-divider my-1"></div>
-
-
-                                <p class="font-bold">Extras:</p>
-
-                                @foreach($this->selectedExtras as $extra)
-                                    <p>{{$extra->name}}:
-                                        <b>{{\Cknow\Money\Money::EUR($extra->partner->first()?->pivot->price)}}</b>
-                                    </p>
-                                @endforeach
-
-
-                            @endif
-                            @if($this->stepTwoFields['seats'])
-                                <div class="ds-divider my-1"></div>
-                                <p class="font-bold">Seats:</p>
-
-                                @foreach($this->stepTwoFields['seats'] as $seat)
-                                    <p>{{\Illuminate\Support\Arr::get(\App\Models\Transfer::CHILD_SEATS,$seat)}}
-                                    </p>
-                                @endforeach
-
-
-                            @endif
-
-                        </div>
-
-                        @if($this->step === 2 && $this->totalPrice)
-
-                            <x-slot name="footer">
-                                <div class="text-right ml-auto gap-2 pr-2">
-                                    Total price:
-                                    <b> {{ \App\Facades\EzMoney::format($this->totalPrice->getAmount()) }}
-                                        EUR</b>
-                                </div>
-                            </x-slot>
-                        @endif
-                    </x-card>
-
-
-                    @if($step === 1)
-                        <div class="my-2 ">
-                            <x-card>
-                                <x-button lg wire:click="nextStep" class="float-right" right-icon="arrow-right" positive
-                                         class="w-full" label="Next step"></x-button>
-                            </x-card>
-                        </div>
-
-                        <x-errors/>
-
-
-
-                    @endif
-
-
-
-                    @if($step === 2 && $resSaved == false)
-                        <div class="my-2">
-                            <x-card>
-
-                                <x-select
-                                    label="Confirmation language"
-                                    wire:model="stepTwoFields.confirmationLanguage"
-                                    :options="$this->confirmationLanguagesArray"
-                                    option-key-value
-                                />
-                                <div class="my-4 flex justify-end">
-
-                                <x-checkbox lg
-                                            label="Send Email"
-                                            wire:model="stepTwoFields.sendMail"
-                                />
-                                </div>
-
-                                <x-slot name="footer" class="mt-4">
-                                    <x-button wire:click="saveReservation" lg positive class="float-right w-full"
-                                              label="Complete reservation">
-                                    </x-button>
-                                </x-slot>
-
-
-                                <x-errors/>
-                            </x-card>
-                        </div>
-
-
-
-                    @endif
-                </div>
-
-            </div>
-        </div>
-    @endif
+    
 
 </div>
 
