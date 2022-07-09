@@ -16,11 +16,9 @@
                     @php
                         \Barryvdh\Debugbar\Facades\Debugbar::startMeasure('pull-modal');
                     @endphp
-                    @if($this->pullModal)
 
-
-                    <x-modal.card max-width="6xl" wire:model="pullModal" lg title="Pull data from Opera">
-
+                        <x-modal.card max-width="6xl" wire:model="pullModal" lg title="Pull data from Opera">
+                            @if($this->pullModal)
                             <div class="flex gap-4   flex-wrap">
                                 <x-input
                                     wire:model.defer="pullDataFields.resId"
@@ -33,6 +31,7 @@
                                 <x-input
                                     wire:model.defer="pullDataFields.lName"
                                     label="Guest last name"/>
+
 
 
 
@@ -56,55 +55,55 @@
                                     wire:model.defer=""
                                     :options="$this->pointsAccomodation->pluck('name','id')"
                                     label="Property"
-                                >
+                                />
 
-                                </x-select>
+
                             </div>
-
+                            @endif
 
                             <hr class="my-4">
                             @if($this->apiData)
 
 
-                            <div class="max-h-96 overflow-y-scroll">
-                                <table class="ds-table ds-table-compact w-full  ">
-                                    <thead>
-                                    <tr>
-                                        <th>#Res. Code</th>
-                                        <th>First Name</th>
-                                        <th>Lastname</th>
-                                        <th>Email</th>
-                                        <th>Adults</th>
-                                        <th>Children</th>
-                                        <th>Check in</th>
-                                        <th>Check out</th>
-                                        <th>Pull</th>
-
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    @foreach($this->apiData as $k=> $r)
-
+                                <div class="max-h-96 overflow-y-scroll">
+                                    <table class="ds-table ds-table-compact w-full  ">
+                                        <thead>
                                         <tr>
-                                            <th>{{$k}}</th>
-                                            <th>{{\Illuminate\Support\Str::title( \Illuminate\Support\Arr::get($r,'reservationHolderData.firstName')??'-')}}</th>
-                                            <th>{{\Illuminate\Support\Str::title(\Illuminate\Support\Arr::get($r,'reservationHolderData.lastName')??'-')}}</th>
-                                            <th>{{\Illuminate\Support\Arr::get($r,'reservationHolderData.email')??'-'}}</th>
-                                            <th>{{\Illuminate\Support\Arr::get($r,'adults')}}</th>
-                                            <th>{{\Illuminate\Support\Arr::get($r,'children')}}</th>
-                                            <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkIn'))->format('d.m.Y')}}</th>
-                                            <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkOut'))->format('d.m.Y')}}</th>
+                                            <th>#Res. Code</th>
+                                            <th>First Name</th>
+                                            <th>Lastname</th>
+                                            <th>Email</th>
+                                            <th>Adults</th>
+                                            <th>Children</th>
+                                            <th>Check in</th>
+                                            <th>Check out</th>
+                                            <th>Pull</th>
 
-                                            <td>
-                                                <x-button.circle sm wire:click="pullRes('{{$k}}')" icon="cloud-download" />
-                                            </td>
                                         </tr>
-                                    @endforeach
+                                        </thead>
+                                        <tbody>
 
-                                    </tbody>
-                                </table>
-                            </div>
+                                        @foreach($this->apiData as $k=> $r)
+
+                                            <tr>
+                                                <th>{{$k}}</th>
+                                                <th>{{\Illuminate\Support\Str::title( \Illuminate\Support\Arr::get($r,'reservationHolderData.firstName')??'-')}}</th>
+                                                <th>{{\Illuminate\Support\Str::title(\Illuminate\Support\Arr::get($r,'reservationHolderData.lastName')??'-')}}</th>
+                                                <th>{{\Illuminate\Support\Arr::get($r,'reservationHolderData.email')??'-'}}</th>
+                                                <th>{{\Illuminate\Support\Arr::get($r,'adults')}}</th>
+                                                <th>{{\Illuminate\Support\Arr::get($r,'children')}}</th>
+                                                <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkIn'))->format('d.m.Y')}}</th>
+                                                <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkOut'))->format('d.m.Y')}}</th>
+
+                                                <td>
+                                                    <x-button.circle sm wire:click="pullRes('{{$k}}')" icon="cloud-download" />
+                                                </td>
+                                            </tr>
+                                        @endforeach
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             @endif
                             <div class="flex justify-between items-center">
                                 <div>
@@ -124,7 +123,9 @@
                             </div>
 
                         </x-modal.card>
-                    @endif
+
+
+
                     @php
                         \Barryvdh\Debugbar\Facades\Debugbar::stopMeasure('pull-modal');
                     @endphp
