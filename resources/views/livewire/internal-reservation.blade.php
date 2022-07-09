@@ -96,7 +96,7 @@
                             @endif
                             <div class="flex justify-between items-center">
                                 <div>
-                                    <div wire:loading.delay class="text-primary">
+                                    <div wire:loading class="text-primary">
                                         Loading data...
                                     </div>
                                 </div>
