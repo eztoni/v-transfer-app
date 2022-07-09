@@ -1,17 +1,13 @@
 <div x-data="{open: false,selectedLanguage: 'en'}">
-    <x-ez-card class="mb-5">
 
-        <x-slot name="title">
-            <div class="flex justify-between">
-                <span>Extra edit: <b>{{$this->extra->name}}</b></span>
-                <x-button href="{{route('extras-overview')}}"  primary label="Back to extras overview" />
+    <x-card cardClasses="mb-4">
+        <div class="flex justify-between">
+            <h3 class="font-medium whitespace-normal text-md text-secondary-700 dark:text-secondary-400">Extra edit: <b>{{$this->extra->name}}</b></h3>
 
-            </div>
-        </x-slot>
-        <x-slot name="body" class="p-2 pl-4 pt-4">
+            <x-button href="{{route('extras-overview')}}"  primary label="Back to extras overview" />
+        </div>
+    </x-card>
 
-        </x-slot>
-    </x-ez-card>
     @livewire('image-gallery-uploader',['id' => $extra->id,'model' => $extra,'mediaCollectionName' => 'extraImages'])
 
 
