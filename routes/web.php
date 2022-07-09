@@ -99,6 +99,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
                 ['role:' . User::ROLE_SUPER_ADMIN]
             )->group(function () {
 #------------------------------------------------------------------------------------------SUPERADMINS
+
+                Route::get('/phpini', function () {
+                    return view('phpini');
+                });
                 Route::get('laravel-logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('laravel-logs');
                 Route::get('super-admin-dashboard', [SuperAdminDashboardController::class, 'show'])->name('super-admin-dashboard');
                 Route::get('/language-overview', \App\Http\Livewire\LanguageOverview::class)->name('language-overview');
