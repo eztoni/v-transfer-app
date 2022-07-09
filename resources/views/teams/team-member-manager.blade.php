@@ -1,10 +1,10 @@
 <div>
     @if (Gate::check('addTeamMember', $team))
-        <x-section-border />
+        <x-jet-section-border />
 
         <!-- Add Team Member -->
         <div class="mt-10 sm:mt-0">
-            <x-form-section submit="addTeamMember">
+            <x-jet-form-section submit="addTeamMember">
                 <x-slot name="title">
                     {{ __('Add Team Member') }}
                 </x-slot>
@@ -24,14 +24,14 @@
                     <div class="col-span-6 sm:col-span-4">
                         <x-label for="email" value="{{ __('Email') }}" />
                         <x-input id="name" type="text" class="block w-full mt-1" wire:model.defer="addTeamMemberForm.email" />
-                        <x-input-error for="email" class="mt-2" />
+                        <x-jet-input-error for="email" class="mt-2" />
                     </div>
 
                     <!-- Role -->
                     @if (count($this->roles) > 0)
                         <div class="col-span-6 lg:col-span-4">
                             <x-label for="role" value="{{ __('Role') }}" />
-                            <x-input-error for="role" class="mt-2" />
+                            <x-jet-input-error for="role" class="mt-2" />
 
                             <div class="mt-1 border border-gray-200 rounded-lg cursor-pointer">
                                 @foreach ($this->roles as $index => $role)
@@ -62,24 +62,24 @@
                 </x-slot>
 
                 <x-slot name="actions">
-                    <x-action-message class="mr-3" on="saved">
+                    <x-jet-action-message class="mr-3" on="saved">
                         {{ __('Added.') }}
-                    </x-action-message>
+                    </x-jet-action-message>
 
                     <x-button>
                         {{ __('Add') }}
                     </x-button>
                 </x-slot>
-            </x-form-section>
+            </x-jet-form-section>
         </div>
     @endif
 
     @if ($team->users->isNotEmpty())
-        <x-section-border />
+        <x-jet-section-border />
 
         <!-- Manage Team Members -->
         <div class="mt-10 sm:mt-0">
-            <x-action-section>
+            <x-jet-action-section>
                 <x-slot name="title">
                     {{ __('Team Members') }}
                 </x-slot>
@@ -127,12 +127,12 @@
                         @endforeach
                     </div>
                 </x-slot>
-            </x-action-section>
+            </x-jet-action-section>
         </div>
     @endif
 
     <!-- Role Management Modal -->
-    <x-dialog-modal wire:model="currentlyManagingRole">
+    <x-jet-dialog-modal wire:model="currentlyManagingRole">
         <x-slot name="title">
             {{ __('Manage Role') }}
         </x-slot>
@@ -165,18 +165,18 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="stopManagingRole" wire:loading.attr="disabled">
+            <x-jet-secondary-button wire:click="stopManagingRole" wire:loading.attr="disabled">
                 {{ __('Nevermind') }}
-            </x-secondary-button>
+            </x-jet-secondary-button>
 
             <x-button class="ml-2" wire:click="updateRole" wire:loading.attr="disabled">
                 {{ __('Save') }}
             </x-button>
         </x-slot>
-    </x-dialog-modal>
+    </x-jet-dialog-modal>
 
     <!-- Leave Team Confirmation Modal -->
-    <x-confirmation-modal wire:model="confirmingLeavingTeam">
+    <x-jet-confirmation-modal wire:model="confirmingLeavingTeam">
         <x-slot name="title">
             {{ __('Leave Team') }}
         </x-slot>
@@ -186,18 +186,18 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('confirmingLeavingTeam')" wire:loading.attr="disabled">
+            <x-jet-secondary-button wire:click="$toggle('confirmingLeavingTeam')" wire:loading.attr="disabled">
                 {{ __('Nevermind') }}
-            </x-secondary-button>
+            </x-jet-secondary-button>
 
-            <x-danger-button class="ml-2" wire:click="leaveTeam" wire:loading.attr="disabled">
+            <x-jet-danger-button class="ml-2" wire:click="leaveTeam" wire:loading.attr="disabled">
                 {{ __('Leave') }}
-            </x-danger-button>
+            </x-jet-danger-button>
         </x-slot>
-    </x-confirmation-modal>
+    </x-jet-confirmation-modal>
 
     <!-- Remove Team Member Confirmation Modal -->
-    <x-confirmation-modal wire:model="confirmingTeamMemberRemoval">
+    <x-jet-confirmation-modal wire:model="confirmingTeamMemberRemoval">
         <x-slot name="title">
             {{ __('Remove Team Member') }}
         </x-slot>
@@ -207,13 +207,13 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('confirmingTeamMemberRemoval')" wire:loading.attr="disabled">
+            <x-jet-secondary-button wire:click="$toggle('confirmingTeamMemberRemoval')" wire:loading.attr="disabled">
                 {{ __('Nevermind') }}
-            </x-secondary-button>
+            </x-jet-secondary-button>
 
-            <x-danger-button class="ml-2" wire:click="removeTeamMember" wire:loading.attr="disabled">
+            <x-jet-danger-button class="ml-2" wire:click="removeTeamMember" wire:loading.attr="disabled">
                 {{ __('Remove') }}
-            </x-danger-button>
+            </x-jet-danger-button>
         </x-slot>
-    </x-confirmation-modal>
+    </x-jet-confirmation-modal>
 </div>

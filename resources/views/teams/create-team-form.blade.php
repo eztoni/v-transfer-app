@@ -1,4 +1,4 @@
-<x-form-section submit="createTeam">
+<x-jet-form-section submit="createTeam">
     <x-slot name="title">
         {{ __('Team Details') }}
     </x-slot>
@@ -24,7 +24,7 @@
         <div class="col-span-6 sm:col-span-4">
             <x-label for="name" value="{{ __('Team Name') }}" />
             <x-input id="name" type="text" class="block w-full mt-1" wire:model.defer="state.name" autofocus />
-            <x-input-error for="name" class="mt-2" />
+            <x-jet-input-error for="name" class="mt-2" />
         </div>
     </x-slot>
 
@@ -33,4 +33,4 @@
             {{ __('Create') }}
         </x-button>
     </x-slot>
-</x-form-section>
+</x-jet-form-section>

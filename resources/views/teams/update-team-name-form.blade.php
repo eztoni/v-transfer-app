@@ -1,4 +1,4 @@
-<x-form-section submit="updateTeamName">
+<x-jet-form-section submit="updateTeamName">
     <x-slot name="title">
         {{ __('Team Name') }}
     </x-slot>
@@ -32,19 +32,19 @@
                         wire:model.defer="state.name"
                         :disabled="! Gate::check('update', $team)" />
 
-            <x-input-error for="name" class="mt-2" />
+            <x-jet-input-error for="name" class="mt-2" />
         </div>
     </x-slot>
 
     @if (Gate::check('update', $team))
         <x-slot name="actions">
-            <x-action-message class="mr-3" on="saved">
+            <x-jet-action-message class="mr-3" on="saved">
                 {{ __('Saved.') }}
-            </x-action-message>
+            </x-jet-action-message>
 
             <x-button>
                 {{ __('Save') }}
             </x-button>
         </x-slot>
     @endif
-</x-form-section>
+</x-jet-form-section>
