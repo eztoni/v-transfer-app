@@ -643,7 +643,157 @@
 
         @endif
     </div>
-    
+    @if($this->availableTransfers->isNotEmpty() && !empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
+        <div x-data="{open: false}" x-show="open" x-transition
+             x-init="setTimeout(() => { open = true })">
+            <div class="col-span-1 sticky" style="top: 5vh">
+                <div>
+
+                    <x-card title="Reservation details">
+                        <div class="res-details">
+                            @if($this->selectedStartingPoint)
+                                <p><span>From:</span> <b>{{$this->selectedStartingPoint->name}}</b></p>
+
+                                @if($this->stepOneFields['pickupAddress'])
+                                    <p><span>Address:</span> <b
+                                            class="text-right">{{$this->stepOneFields['pickupAddress']}}</b></p>
+                                @endif
+                                <div class="ds-divider my-1    "></div>
+
+                            @endif
+                            @if($this->selectedEndingPoint)
+
+                                <p>To: <b>{{$this->selectedEndingPoint->name}}</b></p>
+
+                                @if($this->stepOneFields['dropoffAddress'])
+                                    <p><span>Address:</span> <b
+                                            class="text-right">{{$this->stepOneFields['dropoffAddress']}}</b></p>
+                                @endif
+                                <div class="ds-divider my-1    "></div>
+
+                            @endif
+                            @if(!empty($this->stepOneFields['date']))
+                                <p>Date to:
+                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['date'])->format('d.m.Y')}}</b>
+                                </p>
+
+                            @endif
+                            @if(!empty($this->stepOneFields['time']))
+                                <p>Time to:
+                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['time'])->format('H:i')}}</b>
+                                </p>
+
+                            @endif
+                            @if(!empty($this->stepOneFields['returnDate']))
+                                <p>Time from:
+                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['returnDate'])->format('d.m.Y')}}</b>
+                                </p>
+
+                            @endif
+                            @if(!empty($this->stepOneFields['returnTime']))
+                                <p>Time from:
+                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['returnTime'])->format('H:i')}}</b>
+                                </p>
+
+                            @endif
+                            <p>Passengers: <b>{{$this->totalPassengers}}</b></p>
+                            <p>Ticket type: <b>{{$this->roundTrip ? 'Round trip' : 'One way'}}</b></p>
+
+
+                            @if($this->selectedExtras->isNotEmpty())
+                                <div class="ds-divider my-1"></div>
+
+
+                                <p class="font-bold">Extras:</p>
+
+                                @foreach($this->selectedExtras as $extra)
+                                    <p>{{$extra->name}}:
+                                        <b>{{\Cknow\Money\Money::EUR($extra->partner->first()?->pivot->price)}}</b>
+                                    </p>
+                                @endforeach
+
+
+                            @endif
+                            @if($this->stepTwoFields['seats'])
+                                <div class="ds-divider my-1"></div>
+                                <p class="font-bold">Seats:</p>
+
+                                @foreach($this->stepTwoFields['seats'] as $seat)
+                                    <p>{{\Illuminate\Support\Arr::get(\App\Models\Transfer::CHILD_SEATS,$seat)}}
+                                    </p>
+                                @endforeach
+
+
+                            @endif
+
+                        </div>
+
+                        @if($this->step === 2 && $this->totalPrice)
+
+                            <x-slot name="footer">
+                                <div class="text-right ml-auto gap-2 pr-2">
+                                    Total price:
+                                    <b> {{ \App\Facades\EzMoney::format($this->totalPrice->getAmount()) }}
+                                        EUR</b>
+                                </div>
+                            </x-slot>
+                        @endif
+                    </x-card>
+
+
+                    @if($step === 1)
+                        <div class="my-2 ">
+                            <x-card>
+                                <x-button lg wire:click="nextStep" class="float-right" right-icon="arrow-right" positive
+                                         class="w-full" label="Next step"></x-button>
+                            </x-card>
+                        </div>
+
+                        <x-errors/>
+
+
+
+                    @endif
+
+
+
+                    @if($step === 2 && $resSaved == false)
+                        <div class="my-2">
+                            <x-card>
+
+                                <x-select
+                                    label="Confirmation language"
+                                    wire:model="stepTwoFields.confirmationLanguage"
+                                    :options="$this->confirmationLanguagesArray"
+                                    option-key-value
+                                />
+                                <div class="my-4 flex justify-end">
+
+                                <x-checkbox lg
+                                            label="Send Email"
+                                            wire:model="stepTwoFields.sendMail"
+                                />
+                                </div>
+
+                                <x-slot name="footer" class="mt-4">
+                                    <x-button wire:click="saveReservation" lg positive class="float-right w-full"
+                                              label="Complete reservation">
+                                    </x-button>
+                                </x-slot>
+
+
+                                <x-errors/>
+                            </x-card>
+                        </div>
+
+
+
+                    @endif
+                </div>
+
+            </div>
+        </div>
+    @endif
 
 </div>
 
