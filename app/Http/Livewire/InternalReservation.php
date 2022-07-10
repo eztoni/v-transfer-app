@@ -70,7 +70,11 @@ class InternalReservation extends Component
    public function closePullModal()
     {
         $this->pullModal = false;
+        $this->emptyPullData();
+    }
 
+    public function emptyPullData(){
+        $this->apiData = [];
     }
 
     public function pullRes($i){
