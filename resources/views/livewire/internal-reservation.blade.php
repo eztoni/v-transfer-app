@@ -10,15 +10,16 @@
             @if($step === 1)
 
                 <x-card>
-                        <x-slot name="action">
-                            <x-button sm label="Pull data" wire:click="$set('pullModal',true)" icon="cloud-download" ></x-button>
-                        </x-slot>
+                    <x-slot name="action">
+                        <x-button sm label="Pull data" wire:click="$set('pullModal',true)"
+                                  icon="cloud-download"></x-button>
+                    </x-slot>
                     @php
                         \Barryvdh\Debugbar\Facades\Debugbar::startMeasure('pull-modal');
                     @endphp
 
-                        <x-modal.card max-width="6xl" wire:model="pullModal" lg title="Pull data from Opera">
-                            @if($this->pullModal)
+                    <x-modal.card max-width="6xl" wire:model="pullModal" lg title="Pull data from Opera">
+                        @if($this->pullModal)
                             <div class="flex gap-4   flex-wrap">
                                 <x-input
                                     wire:model.defer="pullDataFields.resId"
@@ -31,9 +32,6 @@
                                 <x-input
                                     wire:model.defer="pullDataFields.lName"
                                     label="Guest last name"/>
-
-
-
 
 
                                 <x-datetime-picker
@@ -59,71 +57,71 @@
 
 
                             </div>
-                            @endif
+                        @endif
 
-                            <hr class="my-4">
-                            @if($this->apiData)
+                        <hr class="my-4">
+                        @if($this->apiData)
 
 
-                                <div class="max-h-96 overflow-y-scroll">
-                                    <table class="ds-table ds-table-compact w-full  ">
-                                        <thead>
+                            <div class="max-h-96 overflow-y-scroll">
+                                <table class="ds-table ds-table-compact w-full  ">
+                                    <thead>
+                                    <tr>
+                                        <th>#Res. Code</th>
+                                        <th>First Name</th>
+                                        <th>Lastname</th>
+                                        <th>Email</th>
+                                        <th>Adults</th>
+                                        <th>Children</th>
+                                        <th>Check in</th>
+                                        <th>Check out</th>
+                                        <th>Pull</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    @foreach($this->apiData as $k=> $r)
+
                                         <tr>
-                                            <th>#Res. Code</th>
-                                            <th>First Name</th>
-                                            <th>Lastname</th>
-                                            <th>Email</th>
-                                            <th>Adults</th>
-                                            <th>Children</th>
-                                            <th>Check in</th>
-                                            <th>Check out</th>
-                                            <th>Pull</th>
+                                            <th>{{$k}}</th>
+                                            <th>{{\Illuminate\Support\Str::title( \Illuminate\Support\Arr::get($r,'reservationHolderData.firstName')??'-')}}</th>
+                                            <th>{{\Illuminate\Support\Str::title(\Illuminate\Support\Arr::get($r,'reservationHolderData.lastName')??'-')}}</th>
+                                            <th>{{\Illuminate\Support\Arr::get($r,'reservationHolderData.email')??'-'}}</th>
+                                            <th>{{\Illuminate\Support\Arr::get($r,'adults')}}</th>
+                                            <th>{{\Illuminate\Support\Arr::get($r,'children')}}</th>
+                                            <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkIn'))->format('d.m.Y')}}</th>
+                                            <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkOut'))->format('d.m.Y')}}</th>
 
+                                            <td>
+                                                <x-button.circle sm wire:click="pullRes('{{$k}}')"
+                                                                 icon="cloud-download"/>
+                                            </td>
                                         </tr>
-                                        </thead>
-                                        <tbody>
+                                    @endforeach
 
-                                        @foreach($this->apiData as $k=> $r)
-
-                                            <tr>
-                                                <th>{{$k}}</th>
-                                                <th>{{\Illuminate\Support\Str::title( \Illuminate\Support\Arr::get($r,'reservationHolderData.firstName')??'-')}}</th>
-                                                <th>{{\Illuminate\Support\Str::title(\Illuminate\Support\Arr::get($r,'reservationHolderData.lastName')??'-')}}</th>
-                                                <th>{{\Illuminate\Support\Arr::get($r,'reservationHolderData.email')??'-'}}</th>
-                                                <th>{{\Illuminate\Support\Arr::get($r,'adults')}}</th>
-                                                <th>{{\Illuminate\Support\Arr::get($r,'children')}}</th>
-                                                <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkIn'))->format('d.m.Y')}}</th>
-                                                <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkOut'))->format('d.m.Y')}}</th>
-
-                                                <td>
-                                                    <x-button.circle sm wire:click="pullRes('{{$k}}')" icon="cloud-download" />
-                                                </td>
-                                            </tr>
-                                        @endforeach
-
-                                        </tbody>
-                                    </table>
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <div wire:loading class="text-primary">
+                                    Loading data...
                                 </div>
-                            @endif
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <div wire:loading class="text-primary">
-                                        Loading data...
-                                    </div>
-                                </div>
+                            </div>
 
-                                <div>
-                                    <x-button wire:click="pullData" class="pull-right mt-4  mx-4" primary>Search</x-button>
+                            <div>
+                                <x-button wire:click="pullData" class="pull-right mt-4  mx-4" primary>Search</x-button>
 
-                                    <x-button   wire:click="closePullModal" class="pull-right mt-4 ">Close</x-button>
-
-                                </div>
-
+                                <x-button wire:click="closePullModal" class="pull-right mt-4 ">Close</x-button>
 
                             </div>
 
-                        </x-modal.card>
 
+                        </div>
+
+                    </x-modal.card>
 
 
                     @php
@@ -149,9 +147,16 @@
                             @endif
                             @if($this->stepOneFields['startingPointId'] && $this->stepOneFields['endingPointId'] )
 
-                                <div class="ds-form-control  pt-2" wire:ignore>
-                                    <label class="label-text text-sm">Pickup address</label>
-                                    <select id="pickupSelect" x-init=" $(' #pickupSelect').select2(
+                                <div class="ds-form-control  pt-2">
+                                    <x-dynamic-component
+                                        :component="WireUi::component('label')"
+                                        class="mb-1"
+                                        label="Pickup address"
+                                        :has-error="$this->getErrorBag()->has('stepOneFields.pickupAddress')"
+                                        :for="\Illuminate\Support\Str::random()"
+                                    />
+                                    <div class="ds-form-control" wire:ignore>
+                                        <select id="pickupSelect" x-init=" $(' #pickupSelect').select2(
                                         {
                                         closeOnSelect: true,
                                         tags: true,
@@ -163,37 +168,41 @@
                                         })
 
                                         ">
-                                        <option></option>
+                                            <option></option>
 
-                                        @php
-                                            $itemSelected = false;
-                                        @endphp
+                                            @php
+                                                $itemSelected = false;
+                                            @endphp
 
-                                        @foreach($this->pickupAddressPoints as $pickupAddressPoint)
+                                            @foreach($this->pickupAddressPoints as $pickupAddressPoint)
 
 
 
-                                            <option
-                                                @if($this->stepOneFields['pickupAddress'] === $pickupAddressPoint->name. ' ' . $pickupAddressPoint->address)
-                                                selected
+                                                <option
+                                                    @if($this->stepOneFields['pickupAddress'] === $pickupAddressPoint->name. ' ' . $pickupAddressPoint->address)
+                                                    selected
 
-                                                @php
-                                                    $itemSelected = true;
-                                                @endphp
+                                                    @php
+                                                        $itemSelected = true;
+                                                    @endphp
 
-                                                @endif
-                                                value="{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}">{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}</option>
+                                                    @endif
+                                                    value="{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}">{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}</option>
 
-                                        @endforeach
+                                            @endforeach
 
-                                        @if($itemSelected === false)
-                                            <option
-                                                value="{{$this->stepOneFields['pickupAddress']}}" selected>
-                                                {{$this->stepOneFields['pickupAddress']}}</option>
-                                        @endif
-                                    </select>
+                                            @if($itemSelected === false)
+                                                <option
+                                                    value="{{$this->stepOneFields['pickupAddress']}}" selected>
+                                                    {{$this->stepOneFields['pickupAddress']}}</option>
+                                            @endif
+                                        </select>
+                                    </div>
                                 </div>
-
+                                <x-dynamic-component
+                                    :component="WireUi::component('error')"
+                                    name="stepOneFields.pickupAddress"
+                                />
                             @endif
                         </div>
                         @if(!empty($this->stepOneFields['startingPointId']))
@@ -214,8 +223,15 @@
 
                                 @endif
                                 @if($this->stepOneFields['startingPointId'] && $this->stepOneFields['endingPointId']  )
-                                    <div class="ds-form-control pt-2" wire:ignore>
-                                        <label class="label-text text-sm">Dropoff address</label>
+                                    <div class="ds-form-control pt-2" >
+                                        <x-dynamic-component
+                                            :component="WireUi::component('label')"
+                                            class="mb-1"
+                                            label="Dropoff address"
+                                            :has-error="$this->getErrorBag()->has('stepOneFields.dropoffAddress')"
+                                            :for="\Illuminate\Support\Str::random()"
+                                        />
+                                        <div class="ds-form-control" wire:ignore>
 
                                         <select id="dropoffSelect" x-init=" $('#dropoffSelect').select2(
                                                 {
@@ -252,6 +268,11 @@
                                         </select>
 
                                     </div>
+                                    </div>
+                                    <x-dynamic-component
+                                        :component="WireUi::component('error')"
+                                        name="stepOneFields.dropoffAddress"
+                                    />
                                 @endif
                             </div>
                         @endif
@@ -273,23 +294,22 @@
                             @php
                                 \Barryvdh\Debugbar\Facades\Debugbar::startMeasure('pickers1');
                             @endphp
-                            <div class="grid grid-cols-2  gap-2">
-                                <x-datetime-picker
-                                    label="Date to:"
-                                    wire:model="stepOneFields.dateTime"
-                                    :min="now()"
-                                    time-format="24"
-                                    display-format="DD.MM.YYYY HH:mm"
-                                />
 
+
+                            <div class="grid grid-cols-2  gap-2">
+                                <x-flatpickr
+                                    label="Date to:"
+                                    :default-date="$this->stepOneFields['dateTime']"
+                                    wire:model.defer="stepOneFields.dateTime"
+                                ></x-flatpickr>
                                 @if($roundTrip)
-                                    <x-datetime-picker
+
+                                    <x-flatpickr
                                         label="Date from:"
-                                        wire:model="stepOneFields.returnDateTime"
-                                        :min="now()"
-                                        time-format="24"
-                                        display-format="DD.MM.YYYY HH:mm"
-                                    />
+                                        :default-date="$this->stepOneFields['returnDateTime']"
+                                        wire:model.defer="stepOneFields.returnDateTime"
+                                    ></x-flatpickr>
+
                                 @endif
                             </div>
                             @php
@@ -348,7 +368,7 @@
                     !empty($stepOneFields['destinationId']) &&
                     !empty($stepOneFields['startingPointId']) &&
                     !empty($stepOneFields['endingPointId']))
-
+                    <div class="ds-divider"></div>
 
                     <div x-data="{open: false}" x-show="open" x-transition
                          x-init="setTimeout(() => { open = true })">
@@ -369,7 +389,7 @@
 
 
 
-            @if($this->availableTransfers->isNotEmpty() && !empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
+                @if($this->availableTransfers->isNotEmpty() && !empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
                     <div x-data="{open: false}" x-show="open" x-transition
                          x-init="setTimeout(() => { open = true })">
 
@@ -392,8 +412,8 @@
                             {{--  Check if last transfer has the same partner as current one --}}
                             @if(!$lastTransfer ||($lastTransfer && $lastTransfer->partner->id !== $item->partner->id))
                                 @if($lastTransfer)
-                                    </div>
-                                @endif
+                    </div>
+                @endif
 
 
 
@@ -474,26 +494,26 @@
             <div class="ds-divider"></div>
             <div class="mb-2">
 
-            <x-card title="Transfer details">
-                <div class="grid grid-cols-3 gap-4">
+                <x-card title="Transfer details">
+                    <div class="grid grid-cols-3 gap-4">
 
-                    <x-textarea
-                        label="Remark:"
-                        wire:model="stepTwoFields.remark"
-                    />
+                        <x-textarea
+                            label="Remark:"
+                            wire:model="stepTwoFields.remark"
+                        />
 
-                    <x-input wire:model="stepTwoFields.arrivalFlightNumber"
-                             label="Flight number {{$roundTrip?'#1':''}}"
-                    ></x-input>
-
-                    @if($roundTrip)
-                        <x-input label="Flight number #2"
-                                 wire:model="stepTwoFields.departureFlightNumber"
+                        <x-input wire:model="stepTwoFields.arrivalFlightNumber"
+                                 label="Flight number {{$roundTrip?'#1':''}}"
                         ></x-input>
-                    @endif
-                </div>
 
-            </x-card>
+                        @if($roundTrip)
+                            <x-input label="Flight number #2"
+                                     wire:model="stepTwoFields.departureFlightNumber"
+                            ></x-input>
+                        @endif
+                    </div>
+
+                </x-card>
             </div>
             <div class="mb-2">
                 <x-card title="Lead traveller details">
@@ -531,9 +551,9 @@
             <div class="flex justify-end my-4">
 
                 <x-checkbox
-                lg
-                wire:model="activateExtras"
-                label="Add extras"
+                    lg
+                    wire:model="activateExtras"
+                    label="Add extras"
                 >
                 </x-checkbox>
 
@@ -541,7 +561,7 @@
             </div>
             @if($this->activateExtras)
                 <div class="mb-4">
-                <x-card class="mb-4" title="Extras">
+                    <x-card class="mb-4" title="Extras">
                         @if($this->extras->isNotEmpty())
 
                             <table class="ds-table w-full">
@@ -561,10 +581,10 @@
                                 @foreach($this->extras as $extra)
                                     <tr>
                                         <th>
-                                                <x-checkbox
-                                                    lg
-                                                       wire:model="stepTwoFields.extras.{{$extra->id}}"
-                                                      />
+                                            <x-checkbox
+                                                lg
+                                                wire:model="stepTwoFields.extras.{{$extra->id}}"
+                                            />
                                         </th>
                                         <td>
                                             <div class="flex items-center space-x-3">
@@ -593,7 +613,7 @@
                             <x-input-alert type="warning">No extras for selected partner</x-input-alert>
                         @endif
 
-                </x-card>
+                    </x-card>
                 </div>
             @endif
 
@@ -722,30 +742,20 @@
                                 <div class="ds-divider my-1    "></div>
 
                             @endif
-                            @if(!empty($this->stepOneFields['date']))
-                                <p>Date to:
-                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['date'])->format('d.m.Y')}}</b>
+                            @if(!empty($this->stepOneFields['dateTime']))
+                                <p>Date:
+                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['dateTime'])->format('d.m.Y H:i')}}</b>
                                 </p>
 
                             @endif
-                            @if(!empty($this->stepOneFields['time']))
-                                <p>Time to:
-                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['time'])->format('H:i')}}</b>
-                                </p>
 
-                            @endif
-                            @if(!empty($this->stepOneFields['returnDate']))
+                            @if(!empty($this->stepOneFields['returnDateTime']))
                                 <p>Time from:
-                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['returnDate'])->format('d.m.Y')}}</b>
+                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['returnDateTime'])->format('d.m.Y H:i')}}</b>
                                 </p>
 
                             @endif
-                            @if(!empty($this->stepOneFields['returnTime']))
-                                <p>Time from:
-                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['returnTime'])->format('H:i')}}</b>
-                                </p>
 
-                            @endif
                             <p>Passengers: <b>{{$this->totalPassengers}}</b></p>
                             <p>Ticket type: <b>{{$this->roundTrip ? 'Round trip' : 'One way'}}</b></p>
 
@@ -795,7 +805,7 @@
                         <div class="my-2 ">
                             <x-card>
                                 <x-button lg wire:click="nextStep" class="float-right" right-icon="arrow-right" positive
-                                         class="w-full" label="Next step"></x-button>
+                                          class="w-full" label="Next step"></x-button>
                             </x-card>
                         </div>
 
@@ -819,10 +829,10 @@
                                 />
                                 <div class="my-4 flex justify-end">
 
-                                <x-checkbox lg
-                                            label="Send Email"
-                                            wire:model="stepTwoFields.sendMail"
-                                />
+                                    <x-checkbox lg
+                                                label="Send Email"
+                                                wire:model="stepTwoFields.sendMail"
+                                    />
                                 </div>
 
                                 <x-slot name="footer" class="mt-4">

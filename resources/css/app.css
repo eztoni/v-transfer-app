@@ -5,7 +5,7 @@
 @import "toastr/build/toastr.css";
 @import "flatpickr/dist/flatpickr.min.css";
 @import "select2/dist/css/select2.css";
-@import "my.css";
+@import "select2Fix.css";
 @import "animate.css/animate.css";
 /*
 Remove popping buttons on page load

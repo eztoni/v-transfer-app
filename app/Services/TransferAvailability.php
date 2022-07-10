@@ -47,10 +47,9 @@ class TransferAvailability
 
         $partnerOrder = new ReservationPartnerOrderCache($this->route->destination_id);
         $order = $partnerOrder->getPartnerOrder();
-
         $availableTransfers = RouteTransfer::query()
             ->where('route_id', $this->route->id)
-            ->with(['transfer', 'partner'])
+            ->with(['transfer', 'partner','transfer.media'])
             ->whereHas('partner')
             ->whereHas('transfer.vehicle', function ($q) {
                 $q->where('max_luggage', '>=', $this->luggage)

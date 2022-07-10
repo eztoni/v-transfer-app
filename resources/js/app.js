@@ -19,3 +19,4 @@ import './toastr'
 Livewire.on('destination_changed', () => {
     window.location.reload();
 })
+

@@ -141,7 +141,7 @@ class InternalReservation extends Component
             'stepOneFields.endingPointId' => 'required',
             'stepOneFields.dropoffAddress' => 'required|string|min:3',
             'stepOneFields.pickupAddress' => 'required|string|min:3',
-            'stepOneFields.dateTime' => 'required|date|after_or_equal:' . Carbon::now()->format('d.m.Y'),
+            'stepOneFields.dateTime' => 'required|date|after_or_equal:' . Carbon::now()->format('d.m.Y H:i'),
             'stepOneFields.adults' => 'required|integer|min:1|max:50',
             'stepOneFields.children' => 'required|numeric|integer|max:50',
             'stepOneFields.infants' => 'required|numeric|integer|max:50',
@@ -276,7 +276,7 @@ class InternalReservation extends Component
         $businessModel = new \App\BusinessModels\Reservation\Actions\CreateReservation(new \App\Models\Reservation());
         $businessModel->setRequiredAttributes(
             auth()->user()->destination_id,
-            Carbon::make($this->stepOneFields['dateTime']),
+            Carbon::createFromFormat('d.m.Y H:i',$this->stepOneFields['dateTime']),
             Point::find($this->stepOneFields['startingPointId'])->id,
             $this->stepOneFields['pickupAddress'],
             Point::find($this->stepOneFields['endingPointId'])->id,
@@ -313,7 +313,7 @@ class InternalReservation extends Component
 
         if ($this->roundTrip) {
             $businessModel->setRoundTrip(
-                Carbon::make($this->stepOneFields['returnDateTime']),
+                Carbon::createFromFormat('d.m.Y H:i',$this->stepOneFields['returnDateTime']),
                 $this->stepTwoFields['departureFlightNumber'] ?? '',
             );
         }
@@ -356,7 +356,6 @@ class InternalReservation extends Component
     {
         $this->stepOneFields['destinationId'] = \Auth::user()->destination_id;
 
-
         $this->initiateFields();
 
     }
@@ -367,8 +366,8 @@ class InternalReservation extends Component
 
     private function initiateFields()
     {
-        $this->stepOneFields['dateTime'] = Carbon::now();
-        $this->stepOneFields['returnDateTime'] = Carbon::now();
+        $this->stepOneFields['dateTime'] = Carbon::now()->roundHour()->addMinutes(30)->format('d.m.Y H:i');
+        $this->stepOneFields['returnDateTime'] = Carbon::now()->roundHour()->addHour()->format('d.m.Y H:i');
     }
 
 
