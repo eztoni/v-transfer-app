@@ -160,47 +160,47 @@
                                         :for="\Illuminate\Support\Str::random()"
                                     />
                                     <div class="ds-form-control" wire:ignore>
-                                        <select id="pickupSelect" x-init=" $(' #pickupSelect').select2(
-                                        {
-                                        closeOnSelect: true,
-                                        tags: true,
-                                        placeholder: 'Select or type pickup address',
-                                        }
-                                        ).on('change', function (e) {
-                                        @this.
-                                        set('stepOneFields.pickupAddress', $('#pickupSelect').select2('val'))
-                                        })
+{{--                                        <select id="pickupSelect" x-init=" $(' #pickupSelect').select2(--}}
+{{--                                        {--}}
+{{--                                        closeOnSelect: true,--}}
+{{--                                        tags: true,--}}
+{{--                                        placeholder: 'Select or type pickup address',--}}
+{{--                                        }--}}
+{{--                                        ).on('change', function (e) {--}}
+{{--                                        @this.--}}
+{{--                                        set('stepOneFields.pickupAddress', $('#pickupSelect').select2('val'))--}}
+{{--                                        })--}}
 
-                                        ">
-                                            <option></option>
+{{--                                        ">--}}
+{{--                                            <option></option>--}}
 
-                                            @php
-                                                $itemSelected = false;
-                                            @endphp
+{{--                                            @php--}}
+{{--                                                $itemSelected = false;--}}
+{{--                                            @endphp--}}
 
-                                            @foreach($this->pickupAddressPoints as $pickupAddressPoint)
+{{--                                            @foreach($this->pickupAddressPoints as $pickupAddressPoint)--}}
 
 
 
-                                                <option
-                                                    @if($this->stepOneFields['pickupAddress'] === $pickupAddressPoint->name. ' ' . $pickupAddressPoint->address)
-                                                    selected
+{{--                                                <option--}}
+{{--                                                    @if($this->stepOneFields['pickupAddress'] === $pickupAddressPoint->name. ' ' . $pickupAddressPoint->address)--}}
+{{--                                                    selected--}}
 
-                                                    @php
-                                                        $itemSelected = true;
-                                                    @endphp
+{{--                                                    @php--}}
+{{--                                                        $itemSelected = true;--}}
+{{--                                                    @endphp--}}
 
-                                                    @endif
-                                                    value="{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}">{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}</option>
+{{--                                                    @endif--}}
+{{--                                                    value="{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}">{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}</option>--}}
 
-                                            @endforeach
+{{--                                            @endforeach--}}
 
-                                            @if($itemSelected === false)
-                                                <option
-                                                    value="{{$this->stepOneFields['pickupAddress']}}" selected>
-                                                    {{$this->stepOneFields['pickupAddress']}}</option>
-                                            @endif
-                                        </select>
+{{--                                            @if($itemSelected === false)--}}
+{{--                                                <option--}}
+{{--                                                    value="{{$this->stepOneFields['pickupAddress']}}" selected>--}}
+{{--                                                    {{$this->stepOneFields['pickupAddress']}}</option>--}}
+{{--                                            @endif--}}
+{{--                                        </select>--}}
                                     </div>
                                 </div>
                                 <x-dynamic-component
@@ -237,39 +237,39 @@
                                         />
                                         <div class="ds-form-control" wire:ignore>
 
-                                        <select id="dropoffSelect" x-init=" $('#dropoffSelect').select2(
-                                                {
-                                                    closeOnSelect: true,
-                                                    tags: true,
-                                                      placeholder: 'Select or type dropoff address',
-                                                }
-                                            ).on('change', function (e) {
-                                                @this.
-                                                set('stepOneFields.dropoffAddress', $('#dropoffSelect').val())
-                                            })
-                                            ">
-                                            <option></option>
-                                            @php
-                                                $itemSelected = false;
-                                            @endphp
-                                            @foreach($this->dropoffAddressPoints as $dropoffAddressPoint)
-                                                <option
-                                                    @if($this->stepOneFields['dropoffAddress'] === $dropoffAddressPoint->name. ' ' . $dropoffAddressPoint->address)
-                                                    selected
+{{--                                        <select id="dropoffSelect" x-init=" $('#dropoffSelect').select2(--}}
+{{--                                                {--}}
+{{--                                                    closeOnSelect: true,--}}
+{{--                                                    tags: true,--}}
+{{--                                                      placeholder: 'Select or type dropoff address',--}}
+{{--                                                }--}}
+{{--                                            ).on('change', function (e) {--}}
+{{--                                                @this.--}}
+{{--                                                set('stepOneFields.dropoffAddress', $('#dropoffSelect').val())--}}
+{{--                                            })--}}
+{{--                                            ">--}}
+{{--                                            <option></option>--}}
+{{--                                            @php--}}
+{{--                                                $itemSelected = false;--}}
+{{--                                            @endphp--}}
+{{--                                            @foreach($this->dropoffAddressPoints as $dropoffAddressPoint)--}}
+{{--                                                <option--}}
+{{--                                                    @if($this->stepOneFields['dropoffAddress'] === $dropoffAddressPoint->name. ' ' . $dropoffAddressPoint->address)--}}
+{{--                                                    selected--}}
 
-                                                    @php
-                                                        $itemSelected = true;
-                                                    @endphp
+{{--                                                    @php--}}
+{{--                                                        $itemSelected = true;--}}
+{{--                                                    @endphp--}}
 
-                                                    @endif
-                                                    value="{{$dropoffAddressPoint->name . ' ' . $dropoffAddressPoint->address}}">{{$dropoffAddressPoint->name. ' ' . $dropoffAddressPoint->address}}</option>
-                                            @endforeach
-                                            @if($itemSelected === false)
-                                                <option
-                                                    value="{{$this->stepOneFields['dropoffAddress']}}" selected>
-                                                    {{$this->stepOneFields['dropoffAddress']}}</option>
-                                            @endif
-                                        </select>
+{{--                                                    @endif--}}
+{{--                                                    value="{{$dropoffAddressPoint->name . ' ' . $dropoffAddressPoint->address}}">{{$dropoffAddressPoint->name. ' ' . $dropoffAddressPoint->address}}</option>--}}
+{{--                                            @endforeach--}}
+{{--                                            @if($itemSelected === false)--}}
+{{--                                                <option--}}
+{{--                                                    value="{{$this->stepOneFields['dropoffAddress']}}" selected>--}}
+{{--                                                    {{$this->stepOneFields['dropoffAddress']}}</option>--}}
+{{--                                            @endif--}}
+{{--                                        </select>--}}
 
                                     </div>
                                     </div>
@@ -331,27 +331,27 @@
 
                             <div class="flex flex-wrap justify-between gap-2">
 
-{{--                                <x-input label="Adults:"--}}
-{{--                                         x-data="{oldVal:''}"--}}
-{{--                                         @focusin="this.oldVal = $el.value;$el.value = ''"--}}
-{{--                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"--}}
-{{--                                         wire:model="stepOneFields.adults"--}}
-{{--                                />--}}
-{{--                                <x-input label="Child(3-17):"--}}
-{{--                                         x-data="{oldVal:''}"--}}
-{{--                                         @focusin="this.oldVal = $el.value;$el.value = ''"--}}
-{{--                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"--}}
-{{--                                         wire:model="stepOneFields.children"--}}
-{{--                                />--}}
-{{--                                <x-input label="Infant(0-2):"--}}
-{{--                                         x-data="{oldVal:''}"--}}
-{{--                                         @focusin="this.oldVal = $el.value;$el.value = ''"--}}
-{{--                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"--}}
-{{--                                         wire:model="stepOneFields.infants"--}}
-{{--                                />--}}
-{{--                                <x-input label="Luggage"--}}
-{{--                                         wire:model="stepOneFields.luggage"--}}
-{{--                                />--}}
+                                <x-input label="Adults:"
+                                         x-data="{oldVal:''}"
+                                         @focusin="this.oldVal = $el.value;$el.value = ''"
+                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"
+                                         wire:model="stepOneFields.adults"
+                                />
+                                <x-input label="Child(3-17):"
+                                         x-data="{oldVal:''}"
+                                         @focusin="this.oldVal = $el.value;$el.value = ''"
+                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"
+                                         wire:model="stepOneFields.children"
+                                />
+                                <x-input label="Infant(0-2):"
+                                         x-data="{oldVal:''}"
+                                         @focusin="this.oldVal = $el.value;$el.value = ''"
+                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"
+                                         wire:model="stepOneFields.infants"
+                                />
+                                <x-input label="Luggage"
+                                         wire:model="stepOneFields.luggage"
+                                />
 
                             </div>
                             @php
@@ -438,32 +438,32 @@
 
                             <div class="flex gap-4">
                                 <div class="basis-1/5">
-{{--                                    <img class="h-24 w-full object-cover rounded-xl"--}}
-{{--                                         src="{{$item->transfer->primaryImageUrl}}"/>--}}
+                                    <img class="h-24 w-full object-cover rounded-xl"
+                                         src="{{$item->transfer->primaryImageUrl}}"/>
                                 </div>
                                 <div class="basis-4/5">
                                     <h2 class="ds-card-title mb-2">{{$item->transfer->name}}</h2>
                                     <div class="flex gap-4 mb-2">
-{{--                                        <span class=" ">Type: Van</span>--}}
-{{--                                        <span--}}
-{{--                                            class=" ">Max. Occ: {{$item->transfer->vehicle->max_occ}}</span>--}}
-{{--                                        <span--}}
-{{--                                            class=" ">Max. Luggage:{{$item->transfer->vehicle->max_luggage}}</span>--}}
+                                        <span class=" ">Type: Van</span>
+                                        <span
+                                            class=" ">Max. Occ: {{$item->transfer->vehicle->max_occ}}</span>
+                                        <span
+                                            class=" ">Max. Luggage:{{$item->transfer->vehicle->max_luggage}}</span>
 
                                     </div>
 
                                     <span class="  ">Price: <b>
-{{--                                     {{\App\Facades\EzMoney::format($this->roundTrip--}}
-{{--                                            ?$item->price_round_trip--}}
-{{--                                            :$item->price)}}--}}
-{{--                                            EUR</b></span>--}}
+                                     {{\App\Facades\EzMoney::format($this->roundTrip
+                                            ?$item->price_round_trip
+                                            :$item->price)}}
+                                            EUR</b></span>
 
-{{--                                    <x-button--}}
-{{--                                        :primary="$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id)"--}}
-{{--                                        class="absolute bottom-2 right-2"--}}
-{{--                                        wire:click="selectTransfer({{$item->transfer_id}},{{$item->partner_id}})">--}}
-{{--                                        {{$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id) ?'Selected':'Select'}}--}}
-{{--                                    </x-button>--}}
+                                    <x-button
+                                        :primary="$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id)"
+                                        class="absolute bottom-2 right-2"
+                                        wire:click="selectTransfer({{$item->transfer_id}},{{$item->partner_id}})">
+                                        {{$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id) ?'Selected':'Select'}}
+                                    </x-button>
                                 </div>
                             </div>
                         </div>
