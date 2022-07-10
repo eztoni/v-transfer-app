@@ -457,12 +457,12 @@
                                             :$item->price)}}
                                             EUR</b></span>
 
-{{--                                    <x-button--}}
-{{--                                        :primary="$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id)"--}}
-{{--                                        class="absolute bottom-2 right-2"--}}
-{{--                                        wire:click="selectTransfer({{$item->transfer_id}},{{$item->partner_id}})">--}}
-{{--                                        {{$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id) ?'Selected':'Select'}}--}}
-{{--                                    </x-button>--}}
+                                    <x-button
+                                        :primary="$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id)"
+                                        class="absolute bottom-2 right-2"
+                                        wire:click="selectTransfer({{$item->transfer_id}},{{$item->partner_id}})">
+                                        {{$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id) ?'Selected':'Select'}}
+                                    </x-button>
                                 </div>
                             </div>
                         </div>
