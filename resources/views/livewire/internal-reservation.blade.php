@@ -34,16 +34,20 @@
                                     label="Guest last name"/>
 
 
-                                <x-datetime-picker
-                                    without-time
+                                <x-flatpickr
                                     label="Check in:"
-                                    display-format="DD.MM.YYYY"
+                                    min-date=""
+                                    date-format="d.m.Y"
+                                    :enable-time="false"
+                                    :default-date="$this->pullDataFields['dFrom']"
                                     wire:model.defer="pullDataFields.dFrom"
                                 />
-                                <x-datetime-picker
-                                    without-time
+                                <x-flatpickr
                                     label="Check out:"
-                                    display-format="DD.MM.YYYY"
+                                    min-date=""
+                                    :enable-time="false"
+                                    date-format="d.m.Y"
+                                    :default-date="$this->pullDataFields['dTo']"
                                     wire:model.defer="pullDataFields.dTo"
                                 />
 
@@ -434,8 +438,8 @@
 
                             <div class="flex gap-4">
                                 <div class="basis-1/5">
-                                    <img class="h-24 w-full object-cover rounded-xl"
-                                         src="{{$item->transfer->primaryImageUrl}}"/>
+{{--                                    <img class="h-24 w-full object-cover rounded-xl"--}}
+{{--                                         src="{{$item->transfer->primaryImageUrl}}"/>--}}
                                 </div>
                                 <div class="basis-4/5">
                                     <h2 class="ds-card-title mb-2">{{$item->transfer->name}}</h2>
