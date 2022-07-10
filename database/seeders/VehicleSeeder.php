@@ -10,7 +10,7 @@ class VehicleSeeder extends Seeder
 {
     public function run()
     {
-        $vehicles =    \App\Models\Vehicle::factory(6)->create();
+        $vehicles =    \App\Models\Vehicle::factory(2)->create();
         (new  SeedImagesToModels())($vehicles,'vehicleImages');
     }
 }
