@@ -160,47 +160,47 @@
                                         :for="\Illuminate\Support\Str::random()"
                                     />
                                     <div class="ds-form-control" wire:ignore>
-{{--                                        <select id="pickupSelect" x-init=" $(' #pickupSelect').select2(--}}
-{{--                                        {--}}
-{{--                                        closeOnSelect: true,--}}
-{{--                                        tags: true,--}}
-{{--                                        placeholder: 'Select or type pickup address',--}}
-{{--                                        }--}}
-{{--                                        ).on('change', function (e) {--}}
-{{--                                        @this.--}}
-{{--                                        set('stepOneFields.pickupAddress', $('#pickupSelect').select2('val'))--}}
-{{--                                        })--}}
+                                        <select id="pickupSelect" x-init=" $(' #pickupSelect').select2(
+                                        {
+                                        closeOnSelect: true,
+                                        tags: true,
+                                        placeholder: 'Select or type pickup address',
+                                        }
+                                        ).on('change', function (e) {
+                                        @this.
+                                        set('stepOneFields.pickupAddress', $('#pickupSelect').select2('val'))
+                                        })
 
-{{--                                        ">--}}
-{{--                                            <option></option>--}}
+                                        ">
+                                            <option></option>
 
-{{--                                            @php--}}
-{{--                                                $itemSelected = false;--}}
-{{--                                            @endphp--}}
+                                            @php
+                                                $itemSelected = false;
+                                            @endphp
 
-{{--                                            @foreach($this->pickupAddressPoints as $pickupAddressPoint)--}}
+                                            @foreach($this->pickupAddressPoints as $pickupAddressPoint)
 
 
 
-{{--                                                <option--}}
-{{--                                                    @if($this->stepOneFields['pickupAddress'] === $pickupAddressPoint->name. ' ' . $pickupAddressPoint->address)--}}
-{{--                                                    selected--}}
+                                                <option
+                                                    @if($this->stepOneFields['pickupAddress'] === $pickupAddressPoint->name. ' ' . $pickupAddressPoint->address)
+                                                    selected
 
-{{--                                                    @php--}}
-{{--                                                        $itemSelected = true;--}}
-{{--                                                    @endphp--}}
+                                                    @php
+                                                        $itemSelected = true;
+                                                    @endphp
 
-{{--                                                    @endif--}}
-{{--                                                    value="{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}">{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}</option>--}}
+                                                    @endif
+                                                    value="{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}">{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}</option>
 
-{{--                                            @endforeach--}}
+                                            @endforeach
 
-{{--                                            @if($itemSelected === false)--}}
-{{--                                                <option--}}
-{{--                                                    value="{{$this->stepOneFields['pickupAddress']}}" selected>--}}
-{{--                                                    {{$this->stepOneFields['pickupAddress']}}</option>--}}
-{{--                                            @endif--}}
-{{--                                        </select>--}}
+                                            @if($itemSelected === false)
+                                                <option
+                                                    value="{{$this->stepOneFields['pickupAddress']}}" selected>
+                                                    {{$this->stepOneFields['pickupAddress']}}</option>
+                                            @endif
+                                        </select>
                                     </div>
                                 </div>
                                 <x-dynamic-component
@@ -237,39 +237,39 @@
                                         />
                                         <div class="ds-form-control" wire:ignore>
 
-{{--                                        <select id="dropoffSelect" x-init=" $('#dropoffSelect').select2(--}}
-{{--                                                {--}}
-{{--                                                    closeOnSelect: true,--}}
-{{--                                                    tags: true,--}}
-{{--                                                      placeholder: 'Select or type dropoff address',--}}
-{{--                                                }--}}
-{{--                                            ).on('change', function (e) {--}}
-{{--                                                @this.--}}
-{{--                                                set('stepOneFields.dropoffAddress', $('#dropoffSelect').val())--}}
-{{--                                            })--}}
-{{--                                            ">--}}
-{{--                                            <option></option>--}}
-{{--                                            @php--}}
-{{--                                                $itemSelected = false;--}}
-{{--                                            @endphp--}}
-{{--                                            @foreach($this->dropoffAddressPoints as $dropoffAddressPoint)--}}
-{{--                                                <option--}}
-{{--                                                    @if($this->stepOneFields['dropoffAddress'] === $dropoffAddressPoint->name. ' ' . $dropoffAddressPoint->address)--}}
-{{--                                                    selected--}}
+                                        <select id="dropoffSelect" x-init=" $('#dropoffSelect').select2(
+                                                {
+                                                    closeOnSelect: true,
+                                                    tags: true,
+                                                      placeholder: 'Select or type dropoff address',
+                                                }
+                                            ).on('change', function (e) {
+                                                @this.
+                                                set('stepOneFields.dropoffAddress', $('#dropoffSelect').val())
+                                            })
+                                            ">
+                                            <option></option>
+                                            @php
+                                                $itemSelected = false;
+                                            @endphp
+                                            @foreach($this->dropoffAddressPoints as $dropoffAddressPoint)
+                                                <option
+                                                    @if($this->stepOneFields['dropoffAddress'] === $dropoffAddressPoint->name. ' ' . $dropoffAddressPoint->address)
+                                                    selected
 
-{{--                                                    @php--}}
-{{--                                                        $itemSelected = true;--}}
-{{--                                                    @endphp--}}
+                                                    @php
+                                                        $itemSelected = true;
+                                                    @endphp
 
-{{--                                                    @endif--}}
-{{--                                                    value="{{$dropoffAddressPoint->name . ' ' . $dropoffAddressPoint->address}}">{{$dropoffAddressPoint->name. ' ' . $dropoffAddressPoint->address}}</option>--}}
-{{--                                            @endforeach--}}
-{{--                                            @if($itemSelected === false)--}}
-{{--                                                <option--}}
-{{--                                                    value="{{$this->stepOneFields['dropoffAddress']}}" selected>--}}
-{{--                                                    {{$this->stepOneFields['dropoffAddress']}}</option>--}}
-{{--                                            @endif--}}
-{{--                                        </select>--}}
+                                                    @endif
+                                                    value="{{$dropoffAddressPoint->name . ' ' . $dropoffAddressPoint->address}}">{{$dropoffAddressPoint->name. ' ' . $dropoffAddressPoint->address}}</option>
+                                            @endforeach
+                                            @if($itemSelected === false)
+                                                <option
+                                                    value="{{$this->stepOneFields['dropoffAddress']}}" selected>
+                                                    {{$this->stepOneFields['dropoffAddress']}}</option>
+                                            @endif
+                                        </select>
 
                                     </div>
                                     </div>
