@@ -135,10 +135,10 @@
                             @if(!empty($this->stepOneFields['destinationId']))
                                 @if($this->startingPoints->isNotEmpty())
 
-                                    <x-select
+                                    <x-native-select
                                         label="Pickup location:"
                                         wire:model="stepOneFields.startingPointId"
-                                        :options="$this->startingPoints->pluck('name','id')"
+                                        :options="$this->startingPoints->prepend(['name'=>'Select a starting point','id'=>''])->pluck('name','id')"
                                         option-key-value
                                     />
                                 @else
@@ -210,10 +210,10 @@
                             <div class="ds-form-control ">
 
                                 @if($this->endingPoints->isNotEmpty())
-                                    <x-select
+                                    <x-native-select
                                         label="Drop off location:"
                                         wire:model="stepOneFields.endingPointId"
-                                        :options="$this->endingPoints->pluck('name','id')"
+                                        :options="$this->endingPoints->prepend(['name'=>'Select an ending point','id'=>''])->pluck('name','id')"
                                         option-key-value
 
                                     />
@@ -434,8 +434,8 @@
 
                             <div class="flex gap-4">
                                 <div class="basis-1/5">
-{{--                                    <img class="h-24 w-full object-cover rounded-xl"--}}
-{{--                                         src="{{$item->transfer->primaryImageUrl}}"/>--}}
+                                    <img class="h-24 w-full object-cover rounded-xl"
+                                         src="{{$item->transfer->primaryImageUrl}}"/>
                                 </div>
                                 <div class="basis-4/5">
                                     <h2 class="ds-card-title mb-2">{{$item->transfer->name}}</h2>
@@ -454,12 +454,12 @@
                                             :$item->price)}}
                                             EUR</b></span>
 
-{{--                                    <x-button--}}
-{{--                                        :primary="$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id)"--}}
-{{--                                        class="absolute bottom-2 right-2"--}}
-{{--                                        wire:click="selectTransfer({{$item->transfer_id}},{{$item->partner_id}})">--}}
-{{--                                        {{$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id) ?'Selected':'Select'}}--}}
-{{--                                    </x-button>--}}
+                                    <x-button
+                                        :primary="$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id)"
+                                        class="absolute bottom-2 right-2"
+                                        wire:click="selectTransfer({{$item->transfer_id}},{{$item->partner_id}})">
+                                        {{$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id) ?'Selected':'Select'}}
+                                    </x-button>
                                 </div>
                             </div>
                         </div>
