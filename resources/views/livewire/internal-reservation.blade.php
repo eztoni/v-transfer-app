@@ -331,27 +331,27 @@
 
                             <div class="flex flex-wrap justify-between gap-2">
 
-                                <x-input label="Adults:"
-                                         x-data="{oldVal:''}"
-                                         @focusin="this.oldVal = $el.value;$el.value = ''"
-                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"
-                                         wire:model="stepOneFields.adults"
-                                />
-                                <x-input label="Child(3-17):"
-                                         x-data="{oldVal:''}"
-                                         @focusin="this.oldVal = $el.value;$el.value = ''"
-                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"
-                                         wire:model="stepOneFields.children"
-                                />
-                                <x-input label="Infant(0-2):"
-                                         x-data="{oldVal:''}"
-                                         @focusin="this.oldVal = $el.value;$el.value = ''"
-                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"
-                                         wire:model="stepOneFields.infants"
-                                />
-                                <x-input label="Luggage"
-                                         wire:model="stepOneFields.luggage"
-                                />
+{{--                                <x-input label="Adults:"--}}
+{{--                                         x-data="{oldVal:''}"--}}
+{{--                                         @focusin="this.oldVal = $el.value;$el.value = ''"--}}
+{{--                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"--}}
+{{--                                         wire:model="stepOneFields.adults"--}}
+{{--                                />--}}
+{{--                                <x-input label="Child(3-17):"--}}
+{{--                                         x-data="{oldVal:''}"--}}
+{{--                                         @focusin="this.oldVal = $el.value;$el.value = ''"--}}
+{{--                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"--}}
+{{--                                         wire:model="stepOneFields.children"--}}
+{{--                                />--}}
+{{--                                <x-input label="Infant(0-2):"--}}
+{{--                                         x-data="{oldVal:''}"--}}
+{{--                                         @focusin="this.oldVal = $el.value;$el.value = ''"--}}
+{{--                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"--}}
+{{--                                         wire:model="stepOneFields.infants"--}}
+{{--                                />--}}
+{{--                                <x-input label="Luggage"--}}
+{{--                                         wire:model="stepOneFields.luggage"--}}
+{{--                                />--}}
 
                             </div>
                             @php
@@ -444,26 +444,26 @@
                                 <div class="basis-4/5">
                                     <h2 class="ds-card-title mb-2">{{$item->transfer->name}}</h2>
                                     <div class="flex gap-4 mb-2">
-                                        <span class=" ">Type: Van</span>
-                                        <span
-                                            class=" ">Max. Occ: {{$item->transfer->vehicle->max_occ}}</span>
-                                        <span
-                                            class=" ">Max. Luggage:{{$item->transfer->vehicle->max_luggage}}</span>
+{{--                                        <span class=" ">Type: Van</span>--}}
+{{--                                        <span--}}
+{{--                                            class=" ">Max. Occ: {{$item->transfer->vehicle->max_occ}}</span>--}}
+{{--                                        <span--}}
+{{--                                            class=" ">Max. Luggage:{{$item->transfer->vehicle->max_luggage}}</span>--}}
 
                                     </div>
 
                                     <span class="  ">Price: <b>
-                                     {{\App\Facades\EzMoney::format($this->roundTrip
-                                            ?$item->price_round_trip
-                                            :$item->price)}}
-                                            EUR</b></span>
+{{--                                     {{\App\Facades\EzMoney::format($this->roundTrip--}}
+{{--                                            ?$item->price_round_trip--}}
+{{--                                            :$item->price)}}--}}
+{{--                                            EUR</b></span>--}}
 
-                                    <x-button
-                                        :primary="$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id)"
-                                        class="absolute bottom-2 right-2"
-                                        wire:click="selectTransfer({{$item->transfer_id}},{{$item->partner_id}})">
-                                        {{$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id) ?'Selected':'Select'}}
-                                    </x-button>
+{{--                                    <x-button--}}
+{{--                                        :primary="$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id)"--}}
+{{--                                        class="absolute bottom-2 right-2"--}}
+{{--                                        wire:click="selectTransfer({{$item->transfer_id}},{{$item->partner_id}})">--}}
+{{--                                        {{$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id) ?'Selected':'Select'}}--}}
+{{--                                    </x-button>--}}
                                 </div>
                             </div>
                         </div>
