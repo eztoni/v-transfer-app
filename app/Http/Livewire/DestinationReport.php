@@ -48,8 +48,8 @@ class DestinationReport extends Component
     public function mount()
     {
         $this->destination = \Auth::user()->destination_id;
-        $this->dateFrom = Carbon::now()->startOfMonth()->format('Y-m-d');
-        $this->dateTo = Carbon::now()->endOfMonth()->format('Y-m-d');
+        $this->dateFrom = Carbon::now()->startOfMonth()->format('d.m.Y');
+        $this->dateTo = Carbon::now()->endOfMonth()->format('d.m.Y');
         $this->filteredReservations = [];
 
 
@@ -105,8 +105,8 @@ class DestinationReport extends Component
                 ->whereIsMain(true)
                 ->with(['leadTraveller', 'pickupLocation', 'dropoffLocation'])
                 ->where('destination_id', $this->destination)
-                ->whereDate('created_at', '>=', $this->dateFrom)
-                ->whereDate('created_at', '<=',$this->dateTo)
+                ->whereDate('created_at', '>=', Carbon::createFromFormat('d.m.Y',$this->dateFrom))
+                ->whereDate('created_at', '<=',Carbon::createFromFormat('d.m.Y',$this->dateTo))
                 ->when($this->partner != 0, function ($q) {
                     $q->where('partner_id', $this->partner);
                 })

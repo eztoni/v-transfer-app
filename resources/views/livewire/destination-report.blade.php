@@ -17,19 +17,25 @@
                 ></x-select>
                 @endrole
 
-                <x-datetime-picker
-                    without-time
-                    without-timezone
-                    label="Date from"
-                    wire:model.defer.defer="dateFrom"
-                    display-format="DD.MM.YYYY"
+                <x-flatpickr
+                    label="Date from:"
+                    min-date=""
+                    date-format="d.m.Y"
+                    :enable-time="false"
+                    :default-date="$this->dateFrom"
+                    wire:model.defer="dateFrom"
                 />
-                <x-datetime-picker
-                    without-time
-                    label="Date to"
-                    wire:model.defer.defer="dateTo"
-                    display-format="DD.MM.YYYY"
+
+                <x-flatpickr
+                    label="Date to:"
+                    min-date=""
+                    date-format="d.m.Y"
+                    :enable-time="false"
+                    :default-date="$this->dateTo"
+                    wire:model.defer="dateTo"
                 />
+
+
                 <x-select
                     option-key-value
                     wire:model="partner"
