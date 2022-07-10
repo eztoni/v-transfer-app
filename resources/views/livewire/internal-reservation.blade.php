@@ -285,8 +285,7 @@
                     @endphp
 
                     @if(!empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
-                        <div x-data="{open: false}" x-show="open" x-transition
-                             x-init="setTimeout(() => { open = true })">
+                        <div >
 
 
                             <div class="ds-divider my-1 "></div>
@@ -370,8 +369,7 @@
                     !empty($stepOneFields['endingPointId']))
                     <div class="ds-divider"></div>
 
-                    <div x-data="{open: false}" x-show="open" x-transition
-                         x-init="setTimeout(() => { open = true })">
+                    <div >
 
                         <div class="ds-alert ds-alert-info  shadow-lg ">
                             <div>
@@ -390,8 +388,7 @@
 
 
                 @if($this->availableTransfers->isNotEmpty() && !empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
-                    <div x-data="{open: false}" x-show="open" x-transition
-                         x-init="setTimeout(() => { open = true })">
+                    <div >
 
                         <div class="ds-divider"></div>
 
@@ -714,8 +711,7 @@
         @endphp
     </div>
     @if($this->availableTransfers->isNotEmpty() && !empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
-        <div x-data="{open: false}" x-show="open" x-transition
-             x-init="setTimeout(() => { open = true })">
+        <div >
             <div class="col-span-1 sticky" style="top: 5vh">
                 <div>
 
