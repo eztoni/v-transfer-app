@@ -434,8 +434,8 @@
 
                             <div class="flex gap-4">
                                 <div class="basis-1/5">
-                                    <img class="h-24 w-full object-cover rounded-xl"
-                                         src="{{$item->transfer->primaryImageUrl}}"/>
+{{--                                    <img class="h-24 w-full object-cover rounded-xl"--}}
+{{--                                         src="{{$item->transfer->primaryImageUrl}}"/>--}}
                                 </div>
                                 <div class="basis-4/5">
                                     <h2 class="ds-card-title mb-2">{{$item->transfer->name}}</h2>
