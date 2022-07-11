@@ -8,10 +8,14 @@ use App\Scopes\DestinationScope;
 use App\Scopes\OwnerScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Point extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     const TYPE_AIRPORT = 'airport';
     const TYPE_ACCOMMODATION = 'accommodation';
@@ -38,6 +42,14 @@ class Point extends Model
         'active',
     ];
 
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty();
+    }
+
     public function owner(){
         return $this->belongsTo(Owner::class);
     }
@@ -50,4 +62,6 @@ class Point extends Model
         static::addGlobalScope(new ActiveScope());
         static::addGlobalScope(new DestinationScope());
     }
+
+
 }
