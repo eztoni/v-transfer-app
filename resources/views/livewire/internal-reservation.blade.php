@@ -23,7 +23,7 @@
                             <div class="flex gap-4   flex-wrap">
                                 <x-input
                                     wire:model.defer="pullDataFields.resId"
-                                    label="Reservation ID"
+                                    label="Reservation code"
                                 />
 
                                 <x-input
@@ -33,28 +33,28 @@
                                     wire:model.defer="pullDataFields.lName"
                                     label="Guest last name"/>
 
+                                    <x-flatpickr
+                                        label="Check in:"
+                                        min-date="today"
+                                        date-format="d.m.Y"
+                                        :enable-time="false"
+                                        :default-date="$this->pullDataFields['dFrom']"
+                                        wire:model="pullDataFields.dFrom"
+                                    />
 
-                                <x-flatpickr
-                                    label="Check in:"
-                                    min-date=""
-                                    date-format="d.m.Y"
-                                    :enable-time="false"
-                                    :default-date="$this->pullDataFields['dFrom']"
-                                    wire:model.defer="pullDataFields.dFrom"
-                                />
-                                <x-flatpickr
-                                    label="Check out:"
-                                    min-date=""
-                                    :enable-time="false"
-                                    date-format="d.m.Y"
-                                    :default-date="$this->pullDataFields['dTo']"
-                                    wire:model.defer="pullDataFields.dTo"
-                                />
+                                    <x-flatpickr
+                                        label="Check out:"
+                                         min-date="today"
+                                        :enable-time="false"
+                                        date-format="d.m.Y"
+                                        :default-date="$this->pullDataFields['dTo']"
+                                        wire:model="pullDataFields.dTo"
+                                    />
 
                                 <x-select
                                     options-key-value
                                     :searchable="true"
-                                    wire:model.defer=""
+                                    wire:model.defer="pullDataFields.property"
                                     :options="$this->pointsAccomodation->pluck('name','id')"
                                     label="Property"
                                 />
@@ -110,7 +110,7 @@
                         @endif
                         <div class="flex justify-between items-center">
                             <div>
-                                <div wire:loading class="text-primary">
+                                <div wire:loading.delay class="text-primary">
                                     Loading data...
                                 </div>
                             </div>

@@ -13,11 +13,13 @@ class Flatpickr extends FormComponent
         public ?string $label = null,
         public ?string $hint = null,
         public ?string $minDate = 'today',
+        public ?string $maxDate = '',
         public ?string $dateFormat = 'd.m.Y H:i',
         public ?bool $enableTime = true,
         public ?bool $time24 = true,
         public ?string $defaultDate = '',
         public ?bool $noCalendar = false,
+        public ?string $min = '',
     )
     {
 
