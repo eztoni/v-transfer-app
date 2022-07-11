@@ -161,6 +161,10 @@
             <x-card cardClasses="h-full" cardClasses="h-full" class="mb-4 shadow-none border-none "
                     title="Main traveller">
 
+                <x-slot name="action">
+                    <x-button wire:click="openTravellerModal({{$this->reservation->leadTraveller->id}},'leadTraveller')" icon="pencil" />
+                </x-slot>
+
 
                 <table class="ds-table ds-table-compact w-full">
 
@@ -251,7 +255,7 @@
                                 <td> {{$otherTraveller->last_name}}</td>
                                 <td> {{$otherTraveller->reservations->first()->pivot->comment}}</td>
                                 <td class="text-center">
-                                    <x-button wire:click="openOtherTravellerModal({{$otherTraveller->id}})"
+                                    <x-button wire:click="openTravellerModal({{$otherTraveller->id}},'otherTraveller')"
                                               icon="pencil"
                                     />
 
@@ -266,7 +270,7 @@
             </div>
         @endif
 
-        @if($this->otherTravellers->isNotEmpty())
+        @if($this->reservation->extras->isNotEmpty())
 
             <div class="col-span-1">
 
@@ -329,37 +333,52 @@
         </div>
     </div>
 
-    @if($otherTravellerModal)
-        <x-modal.card wire:model="otherTravellerModal" title="Update other traveller data">
+    @if($travellerModal)
+        <x-modal.card wire:model="travellerModal" title="Update other traveller data">
 
             <x-select
-                wire:model="otherTraveller.title"
+                wire:model="traveller.title"
                 label="Title:"
                 :options="\App\Models\Reservation::TRAVELLER_TITLES"
                 option-key-value
             ></x-select>
 
             <x-input
-                wire:model="otherTraveller.first_name"
+                wire:model="traveller.first_name"
                 label="First Name:"
             ></x-input>
 
 
             <x-input
-                wire:model="otherTraveller.last_name"
+                wire:model="traveller.last_name"
                 label="Last Name:"
             ></x-input>
 
+            @if($this->leadTravellerEdit)
+                <x-input
+                    wire:model="traveller.reservation_number"
+                    label="Reservation Number:"
+                ></x-input>
 
-            <x-input
-                wire:model="otherTravellerComment"
-                label="Comment:"
-            ></x-input>
+                <x-input
+                    wire:model="traveller.phone"
+                    label="Phone:"
+                ></x-input>
 
+                <x-input
+                    wire:model="traveller.email"
+                    label="Email:"
+                ></x-input>
+            @else
+                <x-input
+                    wire:model="otherTravellerComment"
+                    label="Comment:"
+                ></x-input>
+            @endif
 
             <x-slot name="footer" class="mt-4 flex justify-between">
-                <x-button wire:click="closeOtherTravellerModal()">Close</x-button>
-                <x-button wire:click="saveOtherTravellerData()" positive
+                <x-button wire:click="closeTravellerModal()">Close</x-button>
+                <x-button wire:click="saveTravellerData()" positive
                 >Update
                 </x-button>
             </x-slot>

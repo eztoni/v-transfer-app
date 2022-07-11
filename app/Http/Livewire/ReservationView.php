@@ -7,6 +7,7 @@ use App\Models\Reservation;
 use App\Models\Traveller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class ReservationView extends Component
@@ -14,18 +15,29 @@ class ReservationView extends Component
 
     public $reservationId;
     public Reservation $reservation;
-    public $otherTravellerModal;
-    public $otherTraveller;
+    public $traveller;
+    public $leadTravellerEdit = false;
     public $otherTravellerComment;
+    public $travellerModal;
+
 
     protected function rules()
     {
-        return [
-            'otherTraveller.first_name'=>'required|max:50|min:2',
-            'otherTraveller.last_name'=>'required|max:50|min:2',
-            'otherTraveller.title'=>'required|max:50|min:2',
+
+        $rules = [
+            'traveller.first_name'=>'required|max:50|min:2',
+            'traveller.last_name'=>'required|max:50|min:2',
+            'traveller.title'=>'required|max:50|min:2',
             'otherTravellerComment'=>'nullable|max:100',
         ];
+
+        if ($this->leadTravellerEdit) {
+            $rules['traveller.reservation_number'] = 'required';
+            $rules['traveller.phone'] = 'required|numeric';
+            $rules['traveller.email'] = 'required|email';
+        }
+
+        return $rules;
     }
 
     protected $listeners = [
@@ -35,21 +47,30 @@ class ReservationView extends Component
     public function mount(Reservation $reservation)
     {
         $this->reservation = $reservation;
-        $this->reservation->loadMissing(['pickupLocation','otherTravellers','leadTraveller','transfer','partner']);
+        $this->reservation->loadMissing(['pickupLocation','otherTravellers','leadTraveller','transfer','partner','extras']);
     }
 
     //MODAL
-    public function openOtherTravellerModal($travellerId){
-        $this->otherTravellerModal = true;
-        $this->otherTraveller = Traveller::findOrFail($travellerId);
-        $this->otherTravellerComment = $this->reservation?->otherTravellers->where('id',$this->otherTraveller->id)->first()?->pivot->comment;
+    public function openTravellerModal($travellerId,$travellerModel){
+
+        if($travellerModel == 'leadTraveller'){
+            $this->leadTravellerEdit = true;
+        }else{
+            $this->leadTravellerEdit = false;
+        }
+
+        $this->travellerModal = true;
+
+        $this->traveller = Traveller::findOrFail($travellerId);
+        $this->otherTravellerComment = $this->reservation?->otherTravellers->where('id',$travellerId)->first()?->pivot->comment;
+
     }
 
-    public function closeOtherTravellerModal(){
-        $this->otherTravellerModal = false;
+    public function closeTravellerModal(){
+        $this->travellerModal = false;
     }
 
-    public function saveOtherTravellerData(){
+    public function saveTravellerData(){
         if(!Auth::user()->hasRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN]))
             return;
 
@@ -58,7 +79,7 @@ class ReservationView extends Component
         if($this->otherTravellerComment){
             \DB::table('reservation_traveller')->updateOrInsert(
                 [
-                    'traveller_id'=>$this->otherTraveller->id,
+                    'traveller_id'=>$this->traveller->id,
                     'reservation_id'=>$this->reservation->id,
                 ],
                 [
@@ -68,10 +89,10 @@ class ReservationView extends Component
             );
         }
 
-        $this->otherTraveller->save();
-        $this->showToast('Saved','Other traveller data saved','success');
+        $this->traveller->save();
+        $this->showToast('Saved','Traveller data saved','success');
         $this->reservation->refresh();
-        $this->closeOtherTravellerModal();
+        $this->closeTravellerModal();
     }
 
     //END OF MODAL

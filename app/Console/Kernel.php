@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Services\Sync;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,7 +25,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+
+        #Weekly Property Sync
+        $schedule->call(function(){
+            $valamarPropertySync = new \App\Services\Sync\ValamarPropertySync();
+            $valamarPropertySync->sync();
+        })->weekly()->sundays('23:00');
     }
 
     /**
