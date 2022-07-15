@@ -50,12 +50,11 @@
                                         :default-date="$this->pullDataFields['dTo']"
                                         wire:model="pullDataFields.dTo"
                                     />
-
                                 <x-select
-                                    options-key-value
+                                    option-key-value
                                     :searchable="true"
                                     wire:model.defer="pullDataFields.property"
-                                    :options="$this->pointsAccomodation->pluck('name','id')"
+                                    :options="$this->pointsAccomodation->pluck('name','pms_code')->toArray()"
                                     label="Property"
                                 />
 
