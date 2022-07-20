@@ -13,6 +13,7 @@
                         flatpickr($el, {
                         disableMobile: 'true',
                         minDate:'{{$minDate}}',
+                        maxDate:'{{$maxDate}}',
                         dateFormat:'{{$dateFormat}}',
                         noCalendar:'{{$noCalendar}}',
                         enableTime: {{$enableTime?'true':'false'}},

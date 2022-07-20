@@ -25,72 +25,8 @@ use function PHPUnit\Framework\arrayHasKey;
 class InternalReservation extends Component
 {
 
-    public $apiData = [];
-
-    public $pullDataFields=[
-        'resId'=>null,
-        'fName'=>null,
-        'lName'=>null,
-        'dFrom'=>null,
-        'dTo' => null,
-        'property' => null,
-
-    ];
-    public  bool $pullModal = false;
 
 
-
-
-    public function pullData()
-    {
-        $api = new \App\Services\Api\ValamarClientApi();
-
-        $api->setReservationCodeFilter($this->pullDataFields['resId'])
-            ->setFirstNameFilter($this->pullDataFields['fName'])
-            ->setLastNameFilter($this->pullDataFields['lName'])
-        ->setPropertyPMSCodeFilter($this->pullDataFields['property']);
-
-
-        if ($this->pullDataFields['dFrom']) {
-            $api->setCheckInFilter(Carbon::create($this->pullDataFields['dFrom']));
-        }
-        if ($this->pullDataFields['dTo']) {
-           $api->setCheckOutFilter(Carbon::create( $this->pullDataFields['dTo']));
-
-        }
-
-
-        $this->apiData = $api->getReservationList();
-    }
-
-    public function openPullModal()
-    {
-    $this->pullModal = true;
-    }
-   public function closePullModal()
-    {
-        $this->pullModal = false;
-        $this->emptyPullData();
-    }
-
-    public function emptyPullData(){
-        $this->apiData = [];
-    }
-
-    public function pullRes($i){
-
-        $data = Arr::get($this->apiData,$i);
-
-        $this->stepOneFields['adults'] = Arr::get($data,'adults');
-        $this->stepOneFields['children'] = Arr::get($data,'children');
-        $this->stepTwoFields['leadTraveller']['firstName'] = Arr::get($data,'reservationHolderData.firstName');
-        $this->stepTwoFields['leadTraveller']['lastName'] = Arr::get($data,'reservationHolderData.lastName');
-        $this->stepTwoFields['leadTraveller']['email'] = Arr::get($data,'reservationHolderData.email');
-        $this->stepTwoFields['leadTraveller']['phone'] = Arr::get($data,'reservationHolderData.mobile');
-        $this->stepTwoFields['leadTraveller']['reservationNumber'] = $i;
-        $this->showToast('Data pulled');
-        $this->closePullModal();
-    }
 
 
     public $stepOneFields = [
@@ -208,6 +144,40 @@ class InternalReservation extends Component
         ],
     ];
 
+
+    public $pullDataFields=[
+        'resId'=>null,
+        'fName'=>null,
+        'lName'=>null,
+        'dFrom'=>null,
+        'dTo' => null,
+        'property' => null,
+
+    ];
+
+    public function pullDataRules(){
+        return [
+            'pullDataFields.resId'=>      'required_without:pullDataFields.property',
+            'pullDataFields.fName'=>      'string|nullable',
+            'pullDataFields.lName'=>      'string|nullable',
+            'pullDataFields.dFrom'=>      'date|nullable',
+            'pullDataFields.dTo' =>       'date|nullable|sometimes|before:'.Carbon::createFromFormat('d.m.Y',$this->pullDataFields['dFrom']??now()->format('d.m.Y'))->addYear()->format('d.m.Y'),
+            'pullDataFields.property' =>  'required_without:pullDataFields.resId',
+
+        ];
+    }
+
+    private $pullDataFieldNames = [
+        'pullDataFields.resId'=>'reservation code',
+        'pullDataFields.fName'=>'first name',
+        'pullDataFields.lName'=>'last name',
+        'pullDataFields.dFrom'=>'date from',
+        'pullDataFields.dTo' => 'date to',
+        'pullDataFields.property' => 'property',
+    ];
+
+    public $apiData = [];
+    public  bool $pullModal = false;
 
     public $resSaved = false;
 
@@ -436,6 +406,74 @@ class InternalReservation extends Component
     }
 
 
+    public function pullData()
+    {
+        $this->validate($this->pullDataRules(),[],$this->pullDataFieldNames);
+
+
+        $api = new \App\Services\Api\ValamarClientApi();
+
+        $api->setReservationCodeFilter($this->pullDataFields['resId'])
+            ->setFirstNameFilter($this->pullDataFields['fName'])
+            ->setLastNameFilter($this->pullDataFields['lName'])
+            ->setPropertyPMSCodeFilter($this->pullDataFields['property']);
+
+
+        if ($this->pullDataFields['dFrom']) {
+            $api->setCheckInFilter(Carbon::create($this->pullDataFields['dFrom']));
+        }
+        if ($this->pullDataFields['dTo']) {
+            $api->setCheckOutFilter(Carbon::create( $this->pullDataFields['dTo']));
+
+        }
+
+
+        $this->apiData = $api->getReservationList();
+    }
+
+    public function openPullModal()
+    {
+        $this->pullModal = true;
+    }
+    public function closePullModal()
+    {
+        $this->pullModal = false;
+        $this->emptyPullData();
+    }
+
+    public function emptyPullData(){
+        $this->apiData = [];
+    }
+
+    public function pullRes($i){
+
+        $data = Arr::get($this->apiData,$i);
+
+        $this->stepOneFields['adults'] = Arr::get($data,'adults');
+        $this->stepOneFields['children'] = Arr::get($data,'children');
+        $this->stepOneFields['luggage'] = Arr::get($data,'adults');
+
+        $this->roundTrip = true;
+        $this->stepOneFields['returnDateTime'] = Carbon::make(Arr::get($data,'checkOut') ?? now())?->format('d.m.Y H:i') ;
+
+        $point =  Point::query()
+            ->where('type',Point::TYPE_ACCOMMODATION)
+            ->wherePmsClass(Arr::get($data,'propertyOperaClass'))
+            ->wherePmsCode(Arr::get($data,'propertyOperaCode'))->first();
+
+        if($point){
+            $this->stepOneFields['dropoffAddress'] =$point->name .' '. $point->address;
+        }
+
+
+        $this->stepTwoFields['leadTraveller']['firstName'] = Str::title(Arr::get($data,'reservationHolderData.firstName'));
+        $this->stepTwoFields['leadTraveller']['lastName'] = Str::title(Arr::get($data,'reservationHolderData.lastName'));
+        $this->stepTwoFields['leadTraveller']['email'] = Arr::get($data,'reservationHolderData.email');
+        $this->stepTwoFields['leadTraveller']['phone'] = Arr::get($data,'reservationHolderData.mobile');
+        $this->stepTwoFields['leadTraveller']['reservationNumber'] = $i;
+        $this->showToast('Data pulled');
+        $this->closePullModal();
+    }
     //reset the points when we change destination
 
     public function updatedStepOneFieldsDestinationId()
