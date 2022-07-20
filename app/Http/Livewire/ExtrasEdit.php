@@ -51,12 +51,9 @@ class ExtrasEdit extends Component
 
     public function mount()
     {
-
         $this->instantiateComponentValues();
-        $this->partnerId = Partner::first()->id;
-
+        $this->partnerId = Partner::first()?->id;
         $this->setModelPrices();
-
     }
 
     public function updatedPartnerId()
