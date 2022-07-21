@@ -12,6 +12,8 @@ class ReservationDetails extends Component
 
     public Reservation|null $editReservation = null;
     public Reservation|null $cancelReservation = null;
+    public bool $cancelModal = false;
+    public bool $editModal = false;
 
     public $rules = [
         'editReservations'=>'nullable',
@@ -33,15 +35,21 @@ class ReservationDetails extends Component
     }
     public function openCancelModal($id)
     {
+        $this->cancelModal= true;
+
         $this->cancelReservation = Reservation::findOrFail($id);
     }
     public function closeCancelModal()
     {
+        $this->cancelModal= false;
         $this->cancelReservation = null;
+        $this->render();
     }
 
     public function openUpdateModal($id)
     {
+        $this->editModal = true;
+
         $this->editReservation = Reservation::findOrFail($id);
     }
 
@@ -52,7 +60,10 @@ class ReservationDetails extends Component
 
     public function closeUpdateModal()
     {
+        $this->editModal = false;
         $this->editReservation = null;
+        $this->render();
+
     }
 
     public function render()

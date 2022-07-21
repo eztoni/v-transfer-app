@@ -92,14 +92,14 @@
     </script>
 
     @if($editReservation)
-        <x-modal.card wire:model="editReservation" title="Editing reservation #{{$this->editReservation->id}}">
+        <x-modal.card wire:model="editModal"  title="Editing reservation #{{$this->editReservation->id}}">
             <livewire:edit-transfer-reservation :reservation="$this->editReservation"/>
         </x-modal.card>
     @endif
 
     @if($cancelReservation)
 
-        <x-modal.card wire:model="cancelReservation"  title="Cancel reservation #{{$this->cancelReservation->id}}">
+        <x-modal.card wire:model="cancelModal" title="Cancel reservation #{{$this->cancelReservation->id}}">
             <livewire:cancel-transfer-reservation :reservation="$this->cancelReservation"/>
         </x-modal.card>
     @endif

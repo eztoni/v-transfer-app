@@ -3,9 +3,11 @@
     <div class="ds-divider"></div>
 
 
+<div class="flex justify-end">
+    <x-button label="Yes" negative wire:click="cancelReservation"/>
 
-    <x-button label="Yes" class=" text-white float-right" wire:click="cancelReservation"/>
+    <x-button label="No"  wire:click="close"/>
+</div>
 
-    <x-button label="No" class="  float-right mx-2" wire:click="close"/>
 
 </div>
