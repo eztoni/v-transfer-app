@@ -22,7 +22,7 @@
                         <td>{{ $tr->id }}</td>
                         <td >{{ $tr->name }}</td>
                         <td >{{ $tr->destination->name }}</td>
-                        <td>{{$tr->vehicle->name}}</td>
+                        <td>{{$tr->vehicle->type}}</td>
                         <td class="text-center">
                             <x-button.circle icon="pencil" primary  href="{{ route('transfer-edit',$tr)}}">
                             </x-button.circle>

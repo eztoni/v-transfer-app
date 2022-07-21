@@ -16,7 +16,6 @@ class VehicleFactory extends Factory
     {
         return [
             'destination_id' => 1,
-            'name' => $this->faker->word(),
             'type' => $this->faker->word(),
             'max_luggage' => $this->faker->randomNumber(),
             'max_occ' => $this->faker->randomNumber(),

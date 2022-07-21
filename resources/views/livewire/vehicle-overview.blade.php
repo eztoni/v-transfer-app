@@ -9,7 +9,6 @@
                 <thead>
                 <tr>
                     <th>#Id</th>
-                    <th>Name</th>
                     <th>Type</th>
                     <th class="text-center">Edit</th>
                 </tr>
@@ -19,7 +18,6 @@
 
                     <tr>
                         <td>{{ $ve->id }}</td>
-                        <td >{{ $ve->name }}</td>
                         <td >{{ $ve->type }}</td>
 
                         <td class="text-center">
@@ -53,7 +51,8 @@
         <x-modal.card wire:model="vehicleModal" title="{{  !empty($this->vehicle->exists) ? 'Updating':'Adding' }} vehicle">
             <div class="">
 
-                <x-input label="Name:" wire:model="vehicleName"/>
+
+
                 <x-input label="Type:" wire:model="vehicle.type"/>
                 <x-input label="Max Occ:" wire:model="vehicle.max_occ"/>
                 <x-input label="Max Luggage:" wire:model="vehicle.max_luggage"/>

@@ -103,6 +103,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
                 Route::get('/phpinfo', function () {
                     return view('phpini');
                 })->name('phpinfo');
+
+
+
                 Route::get('laravel-logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('laravel-logs');
                 Route::get('super-admin-dashboard', [SuperAdminDashboardController::class, 'show'])->name('super-admin-dashboard');
                 Route::get('/language-overview', \App\Http\Livewire\LanguageOverview::class)->name('language-overview');

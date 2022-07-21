@@ -65,10 +65,7 @@
 
                     <tbody>
 
-                    <tr>
-                        <td class="font-bold">Vehicle:</td>
-                        <td>{{$this->reservation->transfer->vehicle->name}}</td>
-                    </tr>
+
                     <tr>
                         <td class="font-bold">Vehicle type:</td>
                         <td>{{$this->reservation->transfer->vehicle->type}}</td>

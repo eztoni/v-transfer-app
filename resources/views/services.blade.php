@@ -40,7 +40,7 @@
                                     x-text="item.service_category"></span> </span>
                         </div>
                         <div class="flex-shrink-0">
-                            <div class="badge">
+                            <div class="ds-badge">
                                 <span>25 Mins</span>
                             </div>
 
@@ -72,7 +72,7 @@
                                 x-text="item.service_category"></span></td>
                         <td x-text="item.service_category"></td>
                         <td>
-                            <div class="badge">
+                            <div class="ds-badge">
                                 <span>25 Mins</span>
                             </div>
                         </td>

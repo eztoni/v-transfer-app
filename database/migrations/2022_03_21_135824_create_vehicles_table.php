@@ -14,8 +14,7 @@ class CreateVehiclesTable extends Migration
             $table->foreignIdFor(\App\Models\Destination::class);
             $table->foreignIdFor(\App\Models\Transfer::class)->nullable();
 
-            $table->text('name');
-            $table->string('type');
+            $table->text('type');
             $table->integer('max_luggage');
             $table->integer('max_occ');
 

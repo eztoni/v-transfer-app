@@ -17,11 +17,9 @@ class VehicleOverview extends Component
     public $search = '';
     public $vehicle;
     public $vehicleModal;
-    public $vehicleName;
 
     protected $rules = [
-        'vehicleName' => 'required|max:255',
-        'vehicle.type' => 'max:255',
+        'vehicle.type' => 'required|max:255',
         'vehicle.max_luggage' => 'required|integer',
         'vehicle.max_occ' => 'required|integer',
     ];
@@ -49,7 +47,6 @@ class VehicleOverview extends Component
     public function saveVehicleData(){
 
         $this->validate();
-        $this->vehicle->name = $this->vehicleName;
 
         $this->vehicle->destination_id = Auth::user()->destination_id;
         $this->vehicle->save();
@@ -60,7 +57,7 @@ class VehicleOverview extends Component
 
     public function render()
     {
-        $vehicles = Vehicle::search('name',$this->search)->paginate(10);
+        $vehicles = Vehicle::search('type',$this->search)->paginate(10);
         return view('livewire.vehicle-overview',compact('vehicles'));
     }
 

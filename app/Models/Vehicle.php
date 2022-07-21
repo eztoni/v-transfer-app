@@ -22,12 +22,11 @@ class Vehicle extends Model implements HasMedia
     const IMAGE_PRIMARY_PROPERTY = 'primary';
 
     protected $fillable = [
-        'name',
         'type',
         'max_luggage',
         'max_occ',
     ];
-    public $translatable = ['name'];
+    public $translatable = ['type'];
 
     public function getPrimaryImageAttribute(){
         $image = $this->getMedia('vehicleImages', function (Media $media) {

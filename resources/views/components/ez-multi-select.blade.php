@@ -24,7 +24,7 @@
         </template>
 
         <template x-for="id in Object.keys(addedItems)" :key="id">
-            <div class="badge mb-1 pr-0 z-50 flex-shrink-0 badge-primary mr-1 py-3">
+            <div class="ds-badge mb-1 pr-0 z-50 flex-shrink-0 ds-badge-primary mr-1 py-3">
                 <span x-text="addedItems[id]"></span>
                 <button class="btn-outline btn-circle btn-xs ml-1 text-base-100" @click="removeItem(id)">X</button>
             </div>

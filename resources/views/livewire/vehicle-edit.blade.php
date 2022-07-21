@@ -3,8 +3,8 @@
     <x-ez-card class="mb-5">
 
         <x-slot name="title">
-            <div class="flex justify-between">
-                <span>Vehicle edit: <b>{{$vehicle->name}}</b></span>
+            <div class="flex justify-between items-center">
+                <span>Vehicle edit: <b>{{$vehicle->type}}</b></span>
 
                 <x-button href="{{route('vehicle-overview')}}"  primary label="Back to vehicle overview" />
 
@@ -38,7 +38,7 @@
             @foreach($this->companyLanguages as $languageIso)
                 <div :key="{{$languageIso}}" class="mb-4" x-show="selectedLanguage ==='{{$languageIso}}'" x-transition:enter>
                     <div class="form-control"  x-data="{html:null}">
-                        <x-input label="Name ({{Str::upper($languageIso)}}):" wire:model="vehicleName.{{$languageIso}}"
+                        <x-input label="Type ({{Str::upper($languageIso)}}):" wire:model="vehicleType.{{$languageIso}}"
                         />
                     </div>
                 </div>
@@ -47,9 +47,6 @@
 
             <div class="ds-divider"></div>
 
-            <div class="form-control mt-4 mb-4">
-                <x-input label="Type:" wire:model="vehicle.type"/>
-            </div>
             <div class="form-control mt-4 mb-4">
                 <x-input label="Max Occ." wire:model="vehicle.max_occ"/>
             </div>

@@ -31,7 +31,6 @@ class TransferPrices extends Component
     public function mount(): void
     {
 
-
         $first = Transfer::first();
         $this->transferId = $first->id ?? null;
         $this->partnerId = Partner::first()?->id;

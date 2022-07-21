@@ -12,20 +12,19 @@ class VehicleEdit extends Component
 
     public $companyLanguages = ['en'];
     public $vehicleId = null;
-    public $vehicleName = [
+    public $vehicleType = [
         'en' => null
     ];
     protected function rules()
     {
         $ruleArray = [
-            'vehicleName.en' => 'required|min:3',
-            'vehicle.type' => 'max:255',
+            'vehicleType.en' => 'required|min:3',
             'vehicle.max_luggage' => 'required|integer',
             'vehicle.max_occ' => 'required|integer',
         ];
         foreach ($this->companyLanguages as $lang) {
             if ($lang !== 'en') {
-                $ruleArray['vehicleName.' . $lang] = 'nullable|min:3';
+                $ruleArray['vehicleType.' . $lang] = 'nullable|min:3';
             }
         }
         return $ruleArray;
@@ -40,13 +39,13 @@ class VehicleEdit extends Component
         $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
 
         foreach ($this->companyLanguages as $lang) {
-            $this->vehicleName[$lang] = $this->vehicle->getTranslation('name', $lang, false);
+            $this->vehicleType[$lang] = $this->vehicle->getTranslation('type', $lang, false);
         }
     }
 
-    public function updatedVehicleName()
+    public function updatedvehicleType()
     {
-        $this->vehicle->setTranslations('name', $this->vehicleName);
+        $this->vehicle->setTranslations('type', $this->vehicleType);
     }
     public function updated($field)
     {
@@ -57,7 +56,7 @@ class VehicleEdit extends Component
     {
         $this->validate();
 
-        $this->vehicle->setTranslations('name', $this->vehicleName);
+        $this->vehicle->setTranslations('type', $this->vehicleType);
         $this->vehicle->save();
 
         $this->showToast('Update successful');
