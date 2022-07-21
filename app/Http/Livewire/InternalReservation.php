@@ -299,8 +299,9 @@ class InternalReservation extends Component
 
 
             $travellerMail = $this->stepTwoFields['leadTraveller']['email'];
+
             if($travellerMail){
-            $this->emailList = \Arr::add($this->emailList, 'travellerMail', $travellerMail);
+                $this->emailList = \Arr::add($this->emailList, 'travellerMail', $travellerMail);
             }
 
             /*
@@ -313,7 +314,9 @@ class InternalReservation extends Component
             }
             */
 
-            $this->sendConfirmationMail($this->emailList,$id);
+            if($this->emailList){
+                $this->sendConfirmationMail($this->emailList,$id);
+            }
 
         }
 

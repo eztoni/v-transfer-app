@@ -20,12 +20,18 @@ class EditTransferReservation extends Component
         1 => 'Yes',
     ];
 
+    public $date;
+
+    public function mount()
+    {
+        $this->date = $this->reservation->date_time->format('d.m.Y H:i');
+    }
+
 
     protected function rules()
     {
         $rules = [
-            'reservation.date' => 'required',
-            'reservation.time' => 'required|date_format:H:i',
+            'date' => 'required|date|after_or_equal:' . Carbon::now()->format('d.m.Y') ,
             'reservation.adults' => 'required|integer|integer|min:1|max:50',
             'reservation.children' => 'required|numeric|integer|max:50',
             'reservation.infants' => 'required|numeric|integer|max:50',
@@ -34,15 +40,21 @@ class EditTransferReservation extends Component
             'reservation.flight_number' => 'nullable|string',
         ];
 
-        if ($this->reservation->isDirty('date')) {
-            $rules['reservation.date'] = 'required|date|after_or_equal:' . Carbon::now()->format('d.m.Y') . '|date_format:d.m.Y';
+        if ($this->reservation->isDirty('dateTime')) {
+            $rules['date'] = 'required|date|after_or_equal:' . Carbon::now()->format('d.m.Y') ;
         }
 
         return $rules;
     }
 
+    public function updatedDate() {
+
+        $this->reservation->date_time = Carbon::createFromFormat('d.m.Y H:i',$this->date);
+
+    }
+
     public $fieldNames = [
-        'reservation.date' => 'date',
+        'reservation.date_time' => 'date & time',
         'reservation.time' => 'time',
         'reservation.adults' => 'adults',
         'reservation.children' => 'children',
@@ -63,13 +75,14 @@ class EditTransferReservation extends Component
     }
 
     public function sendModificationMail($userEmails = array(),$resId){
-        Mail::to($userEmails)->send(new ModificationMail($resId));
+        if($userEmails){
+            Mail::to($userEmails)->send(new ModificationMail($resId));
+        }
     }
 
     public function save()
     {
 
-        $this->reservation->date = $this->reservation->date->format('Y-m-d');
         $this->validate($this->rules(),[],$this->fieldNames);
         $updater = new UpdateReservation($this->reservation);
 
