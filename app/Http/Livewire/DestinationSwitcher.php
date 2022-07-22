@@ -22,6 +22,7 @@ class DestinationSwitcher extends Component
         $user->save();
 
         $this->emit('destination_changed');
+        $this->redirect('/');
     }
 
     public function render()
