@@ -17,11 +17,23 @@ class VehicleOverview extends Component
     public $search = '';
     public $vehicle;
     public $vehicleModal;
+    public $vehicleType = [
+        'en' => null
+    ];
 
     protected $rules = [
-        'vehicle.type' => 'required|max:255',
+        'vehicleType.en' => 'required|min:3',
         'vehicle.max_luggage' => 'required|integer',
         'vehicle.max_occ' => 'required|integer',
+    ];
+
+    public $fieldNames = [
+        'vehicleType.en' => 'Type',
+    ];
+
+    public $messages = [
+        'vehicleType.en.required' => 'The vehicle type is required.',
+        'vehicleType.en.min:3' => 'The vehicle type must contain at least 3 characters.'
     ];
 
     public function updated($propertyName)
@@ -37,8 +49,6 @@ class VehicleOverview extends Component
         $this->vehicleModal = false;
     }
 
-
-
     public function addVehicle(){
         $this->openVehicleModal();
         $this->vehicle = new Vehicle();
@@ -46,9 +56,10 @@ class VehicleOverview extends Component
 
     public function saveVehicleData(){
 
-        $this->validate();
+        $this->validate($this->rules, $this->messages, $this->fieldNames);
 
         $this->vehicle->destination_id = Auth::user()->destination_id;
+        $this->vehicle->setTranslations('type', $this->vehicleType);
         $this->vehicle->save();
         $this->showToast('Success','Vehicle saved, add some info to it!');
         $this->closeVehicleModal();
