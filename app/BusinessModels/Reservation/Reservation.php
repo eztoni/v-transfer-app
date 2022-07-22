@@ -22,6 +22,7 @@ abstract class Reservation
     protected Traveller $leadTraveller;
     protected Collection $otherTravellers;
     protected array $travellerComments;
+    protected bool $sendMail = false;
 
     protected Collection $extras;
 

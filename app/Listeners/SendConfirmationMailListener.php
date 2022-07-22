@@ -6,6 +6,7 @@ use App\Events\ReservationCreatedEvent;
 use App\Mail\ConfirmationMail;
 use App\Models\Partner;
 use App\Models\Point;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 
 class SendConfirmationMailListener
@@ -24,25 +25,30 @@ class SendConfirmationMailListener
 
     public function handle(ReservationCreatedEvent $event)
     {
-        $reservation = $event->reservation;
 
-        $travellerMail = $reservation->leadTraveller->email;
-        if($travellerMail){
-           $this->emailList = \Arr::add($this->emailList, 'travellerMail', $travellerMail);
-        }
+        if(Arr::get($event->config,ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM)){
 
-        $partnerMail = Partner::findOrFail($reservation->partner->id)->email;
-        if($partnerMail) {
-            $this->emailList = \Arr::add($this->emailList, 'partnerMail', $partnerMail);
-        }
+            $reservation = $event->reservation;
 
-        $accommodationMail = Point::find($reservation->dropoffLocation->id)->reception_email;
-        if($accommodationMail){
+            $travellerMail = $reservation->leadTraveller->email;
+            if($travellerMail){
+                $this->emailList = \Arr::add($this->emailList, 'travellerMail', $travellerMail);
+            }
+
+            $partnerMail = Partner::findOrFail($reservation->partner->id)->email;
+            if($partnerMail) {
+                $this->emailList = \Arr::add($this->emailList, 'partnerMail', $partnerMail);
+            }
+
+            $accommodationMail = Point::find($reservation->dropoffLocation->id)->reception_email;
+            if($accommodationMail){
                 $this->emailList = \Arr::add($this->emailList, 'accommodationMail', $accommodationMail);
-        }
+            }
 
-        if($this->emailList){
-             $this->sendConfirmationMail($this->emailList,$reservation->id);
+            if($this->emailList){
+                $this->sendConfirmationMail($this->emailList,$reservation->id);
+            }
+
         }
 
     }

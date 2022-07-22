@@ -292,33 +292,10 @@ class InternalReservation extends Component
             );
         }
 
+        $businessModel->setSendMailBool($this->stepTwoFields['sendMail']);
 
         $id = $businessModel->saveReservation();
 
-        if($this->stepTwoFields['sendMail'] == true){
-
-
-            $travellerMail = $this->stepTwoFields['leadTraveller']['email'];
-
-            if($travellerMail){
-                $this->emailList = \Arr::add($this->emailList, 'travellerMail', $travellerMail);
-            }
-
-            /*
-            $partnerMail = Partner::findOrFail($this->selectedPartner)->email;
-            $this->emailList = \Arr::add($this->emailList, 'partnerMail', $partnerMail);
-
-            $accommodationMail = Point::find($this->stepOneFields['endingPointId'])->reception_email;
-            if($accommodationMail){
-                $this->emailList = \Arr::add($this->emailList, 'accommodationMail', $accommodationMail);
-            }
-            */
-
-            if($this->emailList){
-                $this->sendConfirmationMail($this->emailList,$id);
-            }
-
-        }
 
         $this->showToast('Reservation saved');
         Redirect::route('reservation-details', $id);
