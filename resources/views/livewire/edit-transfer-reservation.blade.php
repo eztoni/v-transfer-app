@@ -42,11 +42,17 @@
         wire:model="reservation.remark"
     />
 
-    <x-select label="Send Modify Email:"
-              option-key-value
-              :options="$this->sendEmailArray"
-              wire:model="sendModifyMail"
-             />
+    <x-native-select
+        label="Send Modify Email:"
+        :options="[
+            ['name' => 'Yes',  'id' => 1],
+            ['name' => 'No', 'id' => 0],
+        ]"
+        option-label="name"
+        option-value="id"
+        wire:model="sendModifyMail"
+    />
+
 
 
     <div class=" my-4">

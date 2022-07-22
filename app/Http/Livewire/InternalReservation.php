@@ -314,18 +314,11 @@ class InternalReservation extends Component
 
     }
 
-    public function sendConfirmationMail($userEmails = array(),$resId){
-        Mail::to($userEmails)->send(new ConfirmationMail($resId));
-    }
-
     private function initiateFields()
     {
         $this->stepOneFields['dateTime'] = Carbon::now()->roundHour()->addMinutes(30)->format('d.m.Y H:i');
         $this->stepOneFields['returnDateTime'] = Carbon::now()->roundHour()->addHour()->format('d.m.Y H:i');
     }
-
-
-
 
     public function updated($property)
     {

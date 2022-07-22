@@ -18,11 +18,6 @@ class EditTransferReservation extends Component
 
     public Reservation $reservation;
     public $sendModifyMail = 1;
-    public $emailList = array();
-    public $sendEmailArray = [
-        0 => 'No',
-        1 => 'Yes',
-    ];
 
     public $date;
 
@@ -78,12 +73,6 @@ class EditTransferReservation extends Component
         $this->emit('updateCancelled');
     }
 
-    public function sendModificationMail($userEmails = array(),$resId){
-        if($userEmails){
-            Mail::to($userEmails)->send(new ModificationMail($resId));
-        }
-    }
-
     public function confirmationDialog(){
         $this->dialog()->confirm([
             'title'       => 'You are about to modify a reservation?',
@@ -108,21 +97,9 @@ class EditTransferReservation extends Component
         $this->validate($this->rules(),[],$this->fieldNames);
         $this->reservation->date_time = $this->date;
         $updater = new UpdateReservation($this->reservation);
+        $updater->setSendMailBool($this->sendModifyMail);
 
         $updater->updateReservation();
-
-        if($this->sendModifyMail == 1){
-
-
-            $travellerMail = $this->reservation->leadTraveller?->email;
-            if($travellerMail){
-                $this->emailList = \Arr::add($this->emailList, 'travellerMail', $travellerMail);
-            }
-
-            $this->sendModificationMail($this->emailList,$this->reservation->id);
-
-        }
-
 
         $this->emit('updateCompleted');
     }

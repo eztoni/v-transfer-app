@@ -267,7 +267,7 @@
                                                                         <small>Please note that this trip is <b>ROUND TRIP</b>. Information are below</small>
                                                                         <p style="font-size: 14px"><b>Round Trip Pickup: </b> {{$reservation->dropoff_address}}</p>
                                                                         <p style="font-size: 14px"><b>Round Trip Dropoff: </b> {{$reservation->pickup_address}}</p>
-                                                                        <p style="font-size: 14px"><b>Round Trip Date: </b> {{$reservation->returnReservation->date->format('d.m.Y H:i')}}</p>
+                                                                        <p style="font-size: 14px"><b>Round Trip Date: </b> {{$reservation->returnReservation->date_time->format('d.m.Y H:i')}}</p>
                                                                     @endif
 
                                                                     <br>

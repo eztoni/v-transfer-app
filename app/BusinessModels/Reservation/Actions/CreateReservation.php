@@ -74,7 +74,7 @@ class CreateReservation extends Reservation
                 $this->saveRoundTrip();
             }
 
-            ReservationCreatedEvent::dispatch($this->model);
+            ReservationCreatedEvent::dispatch($this->model,[ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail]);
 
         });
 
@@ -104,11 +104,8 @@ class CreateReservation extends Reservation
             $roundTrip->travellers()->save($traveller, ['comment' => $this->travellerComments[$k], 'lead' => false]);
         }
 
-        ReservationCreatedEvent::dispatch($roundTrip);
-
         $this->model->round_trip_id = $roundTrip->id;
         $this->model->save();
-
 
     }
 
@@ -123,6 +120,12 @@ class CreateReservation extends Reservation
     public function addLeadTraveller(Traveller $traveller)
     {
         $this->leadTraveller = $traveller;
+        return $this;
+    }
+
+    public function setSendMailBool(bool $sendMail)
+    {
+        $this->sendMail = $sendMail;
         return $this;
     }
 
