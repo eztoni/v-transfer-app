@@ -1,6 +1,8 @@
 <div>
 
 
+    <x-dialog z-index="z-50" blur="md" align="end" />
+
     <div class="divider"></div>
     <x-flatpickr
         :class="$reservation->isDirty('date_time')?'border-success':''"
@@ -48,7 +50,7 @@
 
 
     <div class=" my-4">
-        <x-button positive wire:click="save">
+        <x-button positive wire:click="confirmationDialog">
             Save
         </x-button>
         <x-button  wire:click="cancel">
