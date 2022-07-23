@@ -41,13 +41,12 @@
             {{ $slot }}
         </div>
     </main>
-    <div class="notif-wrapper">
-        <x-notifications />
 
-    </div>
 
 </div>
-
+<div class="notif-wrapper">
+    <x-notifications />
+</div>
 @include('components.right-drawer')
 @stack('modals')
 @stack('scripts-bottom')
