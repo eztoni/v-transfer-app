@@ -18,7 +18,7 @@
 
                     <tr>
                         <td>{{ $ve->id }}</td>
-                        <td >{{ $ve->type }}</td>
+                        <td>{{ $ve->type }}</td>
 
                         <td class="text-center">
                             <x-button.circle primary href="{{ route('vehicle-edit',$ve) }}" icon="pencil">
@@ -53,7 +53,7 @@
 
 
 
-                <x-input label="Type:" wire:model="vehicle.type"/>
+                <x-input label="Type:" wire:model="vehicleType.en"/>
                 <x-input label="Max Occ:" wire:model="vehicle.max_occ"/>
                 <x-input label="Max Luggage:" wire:model="vehicle.max_luggage"/>
 

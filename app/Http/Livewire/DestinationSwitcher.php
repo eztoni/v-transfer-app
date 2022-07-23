@@ -24,6 +24,7 @@ use Actions;
         $user->save();
 
         $this->emit('destination_changed');
+        $this->redirect('/');
     }
 
     public function render()

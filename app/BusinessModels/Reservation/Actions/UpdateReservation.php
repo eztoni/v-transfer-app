@@ -12,7 +12,14 @@ class UpdateReservation extends \App\BusinessModels\Reservation\Reservation
 
         $this->model->save();
 
-        ReservationUpdatedEvent::dispatch($this->model);
+        ReservationUpdatedEvent::dispatch($this->model,[ReservationUpdatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail]);
 
     }
+
+    public function setSendMailBool(bool $sendMail)
+    {
+        $this->sendMail = $sendMail;
+        return $this;
+    }
+
 }

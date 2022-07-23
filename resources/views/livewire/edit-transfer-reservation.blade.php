@@ -1,6 +1,8 @@
 <div>
 
 
+    <x-dialog z-index="z-50" blur="md" align="end" />
+
     <div class="divider"></div>
     <x-flatpickr
         :class="$reservation->isDirty('date_time')?'border-success':''"
@@ -40,15 +42,21 @@
         wire:model="reservation.remark"
     />
 
-    <x-select label="Send Modify Email:"
-              option-key-value
-              :options="$this->sendEmailArray"
-              wire:model="sendModifyMail"
-             />
+    <x-native-select
+        label="Send Modify Email:"
+        :options="[
+            ['name' => 'Yes',  'id' => 1],
+            ['name' => 'No', 'id' => 0],
+        ]"
+        option-label="name"
+        option-value="id"
+        wire:model="sendModifyMail"
+    />
+
 
 
     <div class=" my-4">
-        <x-button positive wire:click="save">
+        <x-button positive wire:click="confirmationDialog">
             Save
         </x-button>
         <x-button  wire:click="cancel">

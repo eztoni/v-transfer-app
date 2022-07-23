@@ -9,13 +9,17 @@ class ReservationCreatedEvent
 {
     use Dispatchable;
 
+    const SEND_MAIL_CONFIG_PARAM = 'send_mail';
+
     public $reservation;
+    public $config;
 
 
-    public function __construct(Reservation $reservation)
+    public function __construct(Reservation $reservation,array $config = [])
     {
 
         $this->reservation = $reservation;
+        $this->config = $config;
 
     }
 }
