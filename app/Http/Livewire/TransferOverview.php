@@ -6,11 +6,14 @@ use App\Models\Destination;
 use App\Models\Transfer;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Livewire\Component;
 use Livewire\WithPagination;
+use WireUi\Traits\Actions;
 
 class TransferOverview extends Component
 {
+use Actions;
 
     use WithPagination;
 
@@ -80,10 +83,10 @@ class TransferOverview extends Component
 
         $this->transfer->save();
         $this->transfer->vehicle()->save(Vehicle::findOrFail($this->vehicleId));
-        $this->showToast('Success','Transfer saved, add some info to it!');
+        $this->notification()->success('Success','Transfer saved, add some info to it!');
         $this->closeTransferModal();
 
-        return \Redirect::to(route('transfer-edit',['transfer'=>$this->transfer->id]));
+        return Redirect::to(route('transfer-edit',['transfer'=>$this->transfer->id]));
 
     }
 

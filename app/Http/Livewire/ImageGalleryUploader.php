@@ -5,9 +5,11 @@ namespace App\Http\Livewire;
 use App\Models\Extra;
 use Livewire\Component;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use WireUi\Traits\Actions;
 
 class ImageGalleryUploader extends Component
 {
+use Actions;
 
     public $modelId;
     public $model;

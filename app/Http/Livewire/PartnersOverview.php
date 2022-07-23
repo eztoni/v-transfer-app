@@ -10,9 +10,11 @@ use App\Scopes\DestinationScope;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
+use WireUi\Traits\Actions;
 
 class PartnersOverview extends Component
 {
+use Actions;
 
     use WithPagination;
 
@@ -51,10 +53,6 @@ class PartnersOverview extends Component
         $this->partner = new Partner();
     }
 
-    public function restartSelect2()
-    {
-        $this->emit('restartSelect2');
-    }
 
 
     public function updatedPartnerDestinationId(){
@@ -66,7 +64,6 @@ class PartnersOverview extends Component
         $this->openPartnerModal();
         $this->partner = new Partner();
         $this->selectedDestinations = [];
-        $this->restartSelect2();
     }
 
     public function updatePartner($partnerId){
@@ -87,7 +84,7 @@ class PartnersOverview extends Component
         $this->validate();
         $this->partner->save();
         $this->partner->destinations()->sync($this->selectedDestinations);
-        $this->showToast('Saved','Partner Saved','success');
+        $this->notification()->success('Saved','Partner Saved');
         $this->closePartnerModal();
 
     }
@@ -106,7 +103,7 @@ class PartnersOverview extends Component
     public function softDelete(){
         Partner::find($this->deleteId)->delete();
         $this->closeSoftDeleteModal();
-        $this->showToast('Partner deleted','',);
+        $this->notification()->success('Partner deleted','',);
     }
     //------------- Soft Delete End ---------
 

@@ -14,9 +14,11 @@ use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Formatter\DecimalMoneyFormatter;
 use Money\Parser\DecimalMoneyParser;
+use WireUi\Traits\Actions;
 
 class ExtrasEdit extends Component
 {
+use Actions;
     public Extra $extra;
     public $extraId = null;
     public $companyLanguages = ['en'];
@@ -110,7 +112,7 @@ class ExtrasEdit extends Component
             ]
         );
 
-        $this->showToast('Saved', 'Extra Price Saved');
+        $this->notification()->success('Saved', 'Extra Price Saved');
 
     }
 
@@ -120,7 +122,7 @@ class ExtrasEdit extends Component
         $this->extra->setTranslations('name', $this->extraName);
         $this->extra->setTranslations('description', $this->extraDescription);
         $this->extra->save();
-        $this->showToast('Update successful');
+        $this->notification()->success('Update successful');
     }
 
 

@@ -7,7 +7,7 @@
 
         </x-slot>
 
-            <x-input type="text" wire:model="search" placeholder="Find Destination"/>
+            <x-input type="text" wire:model="search" class="my-2" placeholder="Find Destination"/>
             <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
                 <thead>
                 <tr>

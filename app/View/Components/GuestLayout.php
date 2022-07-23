@@ -6,6 +6,7 @@ use Illuminate\View\Component;
 
 class GuestLayout extends Component
 {
+
     public $title;
 
     /**

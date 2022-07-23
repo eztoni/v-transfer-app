@@ -9,9 +9,11 @@ use App\Models\User;
 use App\Scopes\CompanyScope;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class CompanySwitcher extends Component
 {
+use Actions;
 
     public function changeCompany($companyId){
         if(!Auth::user()->hasRole(User::ROLE_SUPER_ADMIN))

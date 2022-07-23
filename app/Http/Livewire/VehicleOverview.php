@@ -9,9 +9,11 @@ use Livewire\WithPagination;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Parser\DecimalMoneyParser;
+use WireUi\Traits\Actions;
 
 class VehicleOverview extends Component
 {
+use Actions;
     use WithPagination;
 
     public $search = '';
@@ -50,7 +52,7 @@ class VehicleOverview extends Component
 
         $this->vehicle->destination_id = Auth::user()->destination_id;
         $this->vehicle->save();
-        $this->showToast('Success','Vehicle saved, add some info to it!');
+        $this->notification()->success('Success','Vehicle saved, add some info to it!');
         $this->closeVehicleModal();
         return \Redirect::to(route('vehicle-edit',['vehicle'=>$this->vehicle->id]));
     }

@@ -4,7 +4,7 @@
             <x-button wire:click="addVehicle" positive>Add Vehicle</x-button>
         </x-slot>
 
-            <x-input  wire:model="search" placeholder="Find Vehicle" />
+            <x-input  wire:model="search" placeholder="Find Vehicle" class="my-2"/>
             <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
                 <thead>
                 <tr>

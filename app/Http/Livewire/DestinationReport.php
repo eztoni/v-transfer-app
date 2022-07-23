@@ -17,9 +17,11 @@ use Money\Currency;
 use Money\Exchange\SwapExchange;
 use Money\Money;
 use Swap\Laravel\Facades\Swap;
+use WireUi\Traits\Actions;
 
 class DestinationReport extends Component
 {
+use Actions;
     public int $destination;
 
     public $dateFrom;

@@ -7,9 +7,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
+use WireUi\Traits\Actions;
 
 class CompanyOverview extends Component
 {
+use Actions;
 
     use WithPagination;
 
@@ -63,7 +65,7 @@ class CompanyOverview extends Component
 
         $this->validate();
         $this->company->save();
-        $this->showToast('Saved','Company Saved','success');
+        $this->notification()->success('Saved','Company Saved');
         $this->closeCompanyModal();
 
     }
@@ -82,7 +84,7 @@ class CompanyOverview extends Component
     public function softDelete(){
         Company::find($this->deleteId)->delete();
         $this->closeSoftDeleteModal();
-        $this->showToast('Company deleted','',);
+        $this->notification()->success('Company deleted','',);
     }
     //------------- Soft Delete End -----------------
 

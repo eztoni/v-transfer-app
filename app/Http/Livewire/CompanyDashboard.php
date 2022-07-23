@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use WireUi\Traits\Actions;
 
 class CompanyDashboard extends Component
 {
+use Actions;
     use WithFileUploads;
 
     public $photo;
@@ -66,7 +68,7 @@ class CompanyDashboard extends Component
         $this->validate();
         $this->company->languages()->sync($this->selectedLanguages);
         $this->company->save();
-        $this->showToast('Saved', 'Company Saved', 'success');
+        $this->notification()->success('Saved', 'Company Saved');
     }
 
     public function savePhoto()
@@ -77,7 +79,7 @@ class CompanyDashboard extends Component
         $path = $this->photo->store('tempImages');
         $this->company->addMedia(Storage::path($path))->toMediaCollection('logo');
         $this->setImageUrl();
-        $this->showToast('Saved', 'Image saved', 'success');
+        $this->notification()->success('Saved', 'Image saved');
 
     }
 

@@ -8,9 +8,11 @@ use App\Scopes\CompanyScope;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
+use WireUi\Traits\Actions;
 
 class LanguageOverview extends Component
 {
+use Actions;
 
     use WithPagination;
 
@@ -69,7 +71,7 @@ class LanguageOverview extends Component
 
         $this->validate();
         $this->language->save();
-        $this->showToast('Saved','Language Saved','success');
+        $this->notification()->success('Saved','Language Saved');
         $this->closeLanguageModal();
 
     }
@@ -88,7 +90,7 @@ class LanguageOverview extends Component
     public function softDelete(){
         Language::find($this->deleteId)->delete();
         $this->closeSoftDeleteModal();
-        $this->showToast('Language deleted','',);
+        $this->notification()->success('Language deleted','',);
     }
     //------------- Soft Delete End -----------------
 

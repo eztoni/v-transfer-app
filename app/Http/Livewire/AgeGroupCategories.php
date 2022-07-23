@@ -7,9 +7,11 @@ use App\Models\AgeGroup;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class AgeGroupCategories extends Component
 {
+use Actions;
 
     public $search = '';
     public $ageCategory;
@@ -72,7 +74,7 @@ class AgeGroupCategories extends Component
 
         $this->ageCategory->age_group_id = $this->ageGroup->id;
         $this->ageCategory->save();
-        $this->showToast('Saved','Age Category Saved','success');
+        $this->notification()->success('Saved','Age Category Saved');
         $this->closeAgeCategoryModal();
     }
 

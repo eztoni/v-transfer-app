@@ -10,6 +10,7 @@ use WireUi\Traits\Actions;
 
 abstract class EzComponent extends \Livewire\Component
 {
+
     use WithPagination;
     use Actions;
     const FIELD_TYPE_TEXT = 1;
@@ -111,7 +112,7 @@ abstract class EzComponent extends \Livewire\Component
     {
         if (!empty($this->rolesPermission['save'])) {
             if (!Auth::user()->hasRole($this->rolesPermission['save'])) {
-                $this->showToast('Save failed', 'You do not have required permissions to do this!', 'error');
+                $this->notification()->error('Save failed', 'You do not have required permissions to do this!');
                 return;
             }
         }
@@ -170,13 +171,13 @@ abstract class EzComponent extends \Livewire\Component
 
         if (!empty($this->rolesPermission['delete'])) {
             if (!Auth::user()->hasRole($this->rolesPermission['save'])) {
-                $this->showToast('Delete failed', 'You do not have required permissions to do this!', 'error');
+                $this->notification()->error('Delete failed', 'You do not have required permissions to do this!');
                 return;
             }
         }
         $this->modelClass::findOrFail($this->deleteId)->delete();
         $this->closeSoftDeleteModal();
-        $this->showToast('Deleting successful!', '',);
+        $this->notification()->success('Deleting successful!', '');
     }
 
     /**

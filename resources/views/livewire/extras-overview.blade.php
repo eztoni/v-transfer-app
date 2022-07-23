@@ -5,7 +5,7 @@
         </x-slot>
 
 
-            <x-input  wire:model="search"  placeholder="Find Extra"/>
+            <x-input  wire:model="search" class="my-2"  placeholder="Find Extra"/>
             <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
                 <thead>
                 <tr>

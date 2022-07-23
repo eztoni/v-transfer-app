@@ -19,15 +19,13 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 use function Clue\StreamFilter\fun;
 use function PHPUnit\Framework\arrayHasKey;
 
 class InternalReservation extends Component
 {
-
-
-
-
+    use Actions;
 
     public $stepOneFields = [
         'destinationId' => null,
@@ -320,7 +318,7 @@ class InternalReservation extends Component
 
         }
 
-        $this->showToast('Reservation saved');
+        $this->notification()->success('Reservation saved');
         Redirect::route('reservation-details', $id);
     }
 
@@ -474,7 +472,7 @@ class InternalReservation extends Component
         $this->stepTwoFields['leadTraveller']['email'] = Arr::get($data,'reservationHolderData.email');
         $this->stepTwoFields['leadTraveller']['phone'] = Arr::get($data,'reservationHolderData.mobile');
         $this->stepTwoFields['leadTraveller']['reservationNumber'] = $i;
-        $this->showToast('Data pulled');
+        $this->notification()->success('Data pulled');
         $this->closePullModal();
     }
     //reset the points when we change destination

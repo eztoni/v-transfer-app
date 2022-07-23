@@ -11,10 +11,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
+use WireUi\Traits\Actions;
 
 
 class PointsOverview extends Component
 {
+use Actions;
 
     use WithPagination;
 
@@ -85,7 +87,7 @@ class PointsOverview extends Component
         $this->point->destination_id = $this->destinationId;
         $this->point->owner_id = Auth::user()->owner_id;
         $this->point->save();
-        $this->showToast('Saved','Point Saved','success');
+        $this->notification()->success('Saved','Point Saved');
         $this->closePointModal();
 
     }
@@ -105,7 +107,7 @@ class PointsOverview extends Component
     public function softDelete(){
         Point::find($this->deleteId)->delete();
         $this->closeSoftDeleteModal();
-        $this->showToast('Point deleted','',);
+        $this->notification()->success('Point deleted','',);
     }
     //------------- Soft Delete End ---------
 

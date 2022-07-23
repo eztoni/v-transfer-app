@@ -9,9 +9,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class DestinationSwitcher extends Component
 {
+use Actions;
 
     public function changeDestination($destinationId){
         if(!Auth::user()->hasAnyRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN,User::ROLE_USER]))

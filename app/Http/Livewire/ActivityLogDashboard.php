@@ -5,9 +5,11 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\Activitylog\Models\Activity;
+use WireUi\Traits\Actions;
 
 class ActivityLogDashboard extends Component
 {
+use Actions;
 
     use WithPagination;
 

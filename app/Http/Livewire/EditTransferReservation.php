@@ -9,9 +9,11 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use App\Mail\ModificationMail;
+use WireUi\Traits\Actions;
 
 class EditTransferReservation extends Component
 {
+use Actions;
     public Reservation $reservation;
     public $sendModifyMail = 1;
     public $emailList = array();

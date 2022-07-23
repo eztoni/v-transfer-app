@@ -6,9 +6,11 @@ use App\Models\Destination;
 use App\Models\Partner;
 use App\Models\Reservation;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class BookingOverview extends Component
 {
+use Actions;
 
     public $destinationId;
     public $partnerId;

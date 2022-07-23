@@ -6,9 +6,11 @@ use App\Models\AgeGroup;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
+use WireUi\Traits\Actions;
 
 class AgeGroupOverview extends Component
 {
+use Actions;
 
     use WithPagination;
 
@@ -50,7 +52,7 @@ class AgeGroupOverview extends Component
         $this->validate();
         $this->ageGroup->company_id = Auth::user()->company_id;
         $this->ageGroup->save();
-        $this->showToast('Success','Age group saved, add some categories to it!');
+        $this->notification()->success('Success','Age group saved, add some categories to it!');
         $this->closeAgeGroupModal();
 
     }

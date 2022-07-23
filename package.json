@@ -45,7 +45,6 @@
         "select2": "^4.1.0-rc.0",
         "theme-change": "^2.0.2",
         "toastify-js": "^1.11.1",
-        "toastr": "^2.1.4",
         "turbolinks": "^5.2.0",
         "wowjs": "^1.1.3"
     }

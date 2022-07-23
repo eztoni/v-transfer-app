@@ -4,9 +4,11 @@ namespace App\Http\Livewire;
 
 use App\Models\Reservation;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class ReservationDetails extends Component
 {
+use Actions;
 
     public Reservation|null $reservation;
 
@@ -55,7 +57,7 @@ class ReservationDetails extends Component
 
     public function updateCompleted(){
         $this->closeUpdateModal();
-        $this->showToast('Reservation updated');
+        $this->notification()->success('Reservation updated');
     }
 
     public function closeUpdateModal()

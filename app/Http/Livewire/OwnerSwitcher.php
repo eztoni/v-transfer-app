@@ -7,9 +7,11 @@ use App\Models\Owner;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class OwnerSwitcher extends Component
 {
+use Actions;
 
     public function changeOwner($ownerId){
         if(!Auth::user()->hasAnyRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN]))
@@ -18,7 +20,7 @@ class OwnerSwitcher extends Component
         $owner = Owner::findOrFail($ownerId);
 
         if($owner->destinations->isEmpty()){
-            $this->showToast('Action failed!','Selected owner has no destinations!','error');
+            $this->notification()->error('Action failed!','Selected owner has no destinations!');
             return;
         }
 

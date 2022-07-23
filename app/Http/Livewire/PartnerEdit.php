@@ -7,9 +7,11 @@ use App\Models\Partner;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class PartnerEdit extends Component
 {
+use Actions;
 
     public Partner $partner;
     public $selectedDestinations = [];
@@ -44,7 +46,7 @@ class PartnerEdit extends Component
         $this->partner->destinations()->sync($this->selectedDestinations);
         $this->validate();
         $this->partner->save();
-        $this->showToast('Saved','Partner Saved','success');
+        $this->notification()->success('Saved','Partner Saved');
 
     }
 

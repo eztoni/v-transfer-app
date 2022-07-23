@@ -7,7 +7,7 @@
 
         </x-slot>
 
-        <X-input wire:model="search" placeholder="Find Partner"/>
+        <x-input wire:model="search" placeholder="Find Partner" class="mb-2"/>
         <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
             <thead>
             <tr>

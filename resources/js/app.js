@@ -14,7 +14,6 @@ Alpine.start();
 import {themeChange} from "theme-change"
 themeChange(false)
 
-import './toastr'
 
 Livewire.on('destination_changed', () => {
     window.location.reload();

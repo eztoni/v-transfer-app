@@ -13,9 +13,11 @@ use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Formatter\DecimalMoneyFormatter;
 use Money\Parser\DecimalMoneyParser;
+use WireUi\Traits\Actions;
 
 class ExtrasOverview extends Component
 {
+use Actions;
     use WithPagination;
 
     public $search = '';
@@ -79,7 +81,7 @@ class ExtrasOverview extends Component
         $this->extra->setTranslations('description', $this->extraDescription);
         $this->extra->owner_id = Auth::user()->owner_id;
         $this->extra->save();
-        $this->showToast('Success','Extra saved, add some info to it!');
+        $this->notification()->success('Success','Extra saved, add some info to it!');
         $this->closeExtraModal();
         return redirect('extras-edit/'.$this->extra->id);
 

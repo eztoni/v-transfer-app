@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
+use WireUi\Traits\Actions;
 
 class RoutesOverview extends Component
 {
+use Actions;
 
     use WithPagination;
 
@@ -86,7 +88,7 @@ class RoutesOverview extends Component
         $this->validate();
         $this->route->owner_id = Auth::user()->owner_id;
         $this->route->save();
-        $this->showToast('Saved','Route Saved','success');
+        $this->notification()->success('Saved','Route Saved');
         $this->closeRouteModal();
     }
 
@@ -104,7 +106,7 @@ class RoutesOverview extends Component
     public function softDelete(){
         Route::find($this->deleteId)->delete();
         $this->closeSoftDeleteModal();
-        $this->showToast('Route deleted','',);
+        $this->notification()->success('Route deleted','',);
     }
     //------------- Soft Delete End ---------
 

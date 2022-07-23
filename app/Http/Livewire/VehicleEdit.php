@@ -5,9 +5,11 @@ namespace App\Http\Livewire;
 use App\Models\Language;
 use App\Models\Vehicle;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class VehicleEdit extends Component
 {
+use Actions;
     public Vehicle $vehicle;
 
     public $companyLanguages = ['en'];
@@ -59,7 +61,7 @@ class VehicleEdit extends Component
         $this->vehicle->setTranslations('type', $this->vehicleType);
         $this->vehicle->save();
 
-        $this->showToast('Update successful');
+        $this->notification()->success('Update successful');
     }
 
     public function render()

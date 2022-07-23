@@ -4,9 +4,11 @@ namespace App\Http\Livewire;
 
 use App\Models\User;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class EditUserDataBySuperadmin extends Component
 {
+use Actions;
 
     public $user;
     public $editData =[];
@@ -41,7 +43,7 @@ class EditUserDataBySuperadmin extends Component
         $this->validate();
         $this->user->fill($this->editData);
         $this->user->save();
-        $this->showToast('User Saved','','success');
+        $this->notification()->success('User Saved','');
 
     }
 

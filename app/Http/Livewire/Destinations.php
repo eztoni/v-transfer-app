@@ -8,9 +8,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
+use WireUi\Traits\Actions;
 
 class Destinations extends Component
 {
+use Actions;
     use WithPagination;
 
     public $search = '';
@@ -61,7 +63,7 @@ class Destinations extends Component
 
         $this->destination->owner_id = Auth::user()->owner_id;
         $this->destination->save();
-        $this->showToast('Saved','Destination Saved','success');
+        $this->notification()->success('Saved','Destination Saved');
         $this->closeDestinationModal();
 
     }
@@ -80,7 +82,7 @@ class Destinations extends Component
     public function softDelete(){
         Destination::find($this->deleteId)->delete();
         $this->closeSoftDeleteModal();
-        $this->showToast('Destination deleted','',);
+        $this->notification()->success('Destination deleted','',);
     }
     //------------- Soft Delete End -----------------
 

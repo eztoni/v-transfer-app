@@ -20,10 +20,12 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
 use Livewire\Component;
 use Spatie\Activitylog\Models\Activity;
+use WireUi\Traits\Actions;
 use function Symfony\Component\String\b;
 
 class Dashboard extends Component
 {
+use Actions;
 
 
     public function mount()

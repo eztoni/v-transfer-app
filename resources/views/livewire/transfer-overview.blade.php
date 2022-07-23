@@ -3,7 +3,7 @@
             <x-button wire:click="addTransfer" positive>Add Transfer</x-button>
         </x-slot>
 
-            <x-input type="text" wire:model="search" placeholder="Find Transfer"/>
+            <x-input type="text" wire:model="search" class="my-2" placeholder="Find Transfer"/>
 
             <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
                 <thead>

@@ -9,9 +9,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class ReservationView extends Component
 {
+use Actions;
 
     public $reservationId;
     public Reservation $reservation;
@@ -90,7 +92,7 @@ class ReservationView extends Component
         }
 
         $this->traveller->save();
-        $this->showToast('Saved','Traveller data saved','success');
+        $this->notification()->success('Saved','Traveller data saved');
         $this->reservation->refresh();
         $this->closeTravellerModal();
     }

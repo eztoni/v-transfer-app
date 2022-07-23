@@ -14,10 +14,12 @@ use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Parser\DecimalMoneyParser;
 use Money\Parser\IntlLocalizedDecimalParser;
+use WireUi\Traits\Actions;
 use function Symfony\Component\String\b;
 
 class TransferPrices extends Component
 {
+use Actions;
 
     public $pivotModal;
     public $routePrice = [];
@@ -112,7 +114,7 @@ class TransferPrices extends Component
             ]
         );
 
-        $this->showToast('Updated', 'Round Trip Data');
+        $this->notification()->success('Updated', 'Round Trip Data');
     }
 
     public function saveRoutePrice($routeId){
@@ -135,7 +137,7 @@ class TransferPrices extends Component
             ]
         );
 
-        $this->showToast('Saved', 'Route Price Saved');
+        $this->notification()->success('Saved', 'Route Price Saved');
 
     }
 
@@ -148,7 +150,7 @@ class TransferPrices extends Component
 
         if(preg_match(\App\Services\Helpers\EzMoney::MONEY_REGEX,$this->routePriceRoundTrip[$routeId]) <= 0){
             $this->addError('routePriceRoundTrip.'.$routeId, 'The round trip price field is invalid.');
-            $this->showToast('Not Saved', 'Round Trip Price Invalid Value','error');
+            $this->notification()->success('Not Saved', 'Round Trip Price Invalid Value');
             return;
         }
 
@@ -165,7 +167,7 @@ class TransferPrices extends Component
             ]
         );
 
-        $this->showToast('Saved', 'Round Trip Price Saved');
+        $this->notification()->success('Saved', 'Round Trip Price Saved');
 
     }
 

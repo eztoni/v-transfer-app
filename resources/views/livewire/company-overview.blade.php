@@ -6,7 +6,7 @@
         </x-slot>
 
 
-        <x-input label="Find company" wire:model="search"></x-input>
+        <x-input label="Find company" class="my-2" wire:model="search"></x-input>
 
         <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
             <thead>

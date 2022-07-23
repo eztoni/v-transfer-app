@@ -7,11 +7,13 @@ use App\Models\Owner;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 use function PHPUnit\Framework\isEmpty;
 
 
 class UserOverview extends Component
 {
+use Actions;
 
     public $user;
     public $userModal;
@@ -61,7 +63,6 @@ class UserOverview extends Component
         $this->user = new User();
         $this->selectedDestinations = [];
         $this->userDestinations = [];
-        $this->restartSelect2();
     }
 
     public function updateUser($userId){
@@ -75,11 +76,6 @@ class UserOverview extends Component
         if($this->userDestinations){
             $this->fillSelect2();
         }
-    }
-
-    public function restartSelect2()
-    {
-        $this->emit('restartSelect2');
     }
 
     public function fillSelect2()
@@ -118,7 +114,7 @@ class UserOverview extends Component
         $this->user->availableDestinations()->sync($this->selectedDestinations);
         $this->user->forgetCachedPermissions();
 
-        $this->showToast('User Saved','','success');
+        $this->notification()->success('User Saved','');
         $this->closeUserModal();
 
     }

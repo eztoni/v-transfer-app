@@ -8,9 +8,11 @@ use App\Models\Transfer;
 use App\Models\Vehicle;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class TransferEdit extends Component
 {
+use Actions;
     public Transfer $transfer;
     public $companyLanguages = ['en'];
     public $vehicleId = null;
@@ -96,7 +98,7 @@ class TransferEdit extends Component
         $vehicle = Vehicle::findOrFail($this->vehicleId);
         $vehicle->transfer_id = $this->transfer->id;
         $vehicle->save();
-        $this->showToast('Update successful');
+        $this->notification()->success('Update successful');
     }
 
 
