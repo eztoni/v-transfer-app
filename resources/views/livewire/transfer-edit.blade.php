@@ -46,7 +46,7 @@
                     label="Vehicle:"
                     option-label="name"
                     option-value="id"
-                    :options="$this->vehicles->map(fn ($m) => ['id'=>$m->id,'name'=>$m->name])->toArray() "
+                    :options="$this->vehicles->map(fn ($m) => ['id'=>$m->id,'name'=>$m->type])->toArray() "
                     wire:model="vehicleId"
                 />
             </div>

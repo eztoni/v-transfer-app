@@ -53,7 +53,7 @@ use Actions;
         if($this->transfer) {
             return Vehicle::whereNull('transfer_id')->when($this->transfer->exists, function ($q) {
                 $q->orWhere('transfer_id', $this->transfer->vehicle->id);
-            })->get()->prepend(['name'=>'Select vehicle','id'=>null],null);
+            })->get()->prepend(['type'=>'Select vehicle','id'=>null],null);
         }
 
         return collect();
@@ -94,7 +94,6 @@ use Actions;
     public function render()
     {
         $transfers = Transfer::with('destination')->search('name',$this->search)->paginate(10);
-
 
         return view('livewire.transfer-overview',compact('transfers'));
     }

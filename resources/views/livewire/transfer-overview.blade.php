@@ -59,7 +59,7 @@
                                  wire:model="vehicleId"
                                  label="Vehicle:"
                                  option-key-value
-                                 :options="$this->vehicles->pluck('name','id')"
+                                 :options="$this->vehicles->pluck('type','id')"
                 />
 
                 <x-slot name="footer" >
