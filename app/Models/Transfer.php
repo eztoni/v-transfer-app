@@ -77,6 +77,7 @@ class Transfer extends Model implements HasMedia
 
     public function routes()
     {
-        return $this->belongsToMany(Route::class)->withPivot(['price','round_trip','price_round_trip']);
+        return $this->belongsToMany(Route::class)->withPivot(['price','round_trip','price_round_trip','commission','discount','tax_level','calculation_type','date_from','date_to']);
     }
+
 }
