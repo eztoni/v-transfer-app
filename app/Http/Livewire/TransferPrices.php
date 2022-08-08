@@ -13,6 +13,7 @@ use App\Models\Transfer;
 use Carbon\Carbon;
 
 use Cknow\Money\Money;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
@@ -69,13 +70,14 @@ use Actions;
 
             foreach($routes as $r){
 
+
                 $this->routePrice[$r->id] = EzMoney::format($r->pivot->price);
                 $this->routeRoundTrip[$r->id] = $r->pivot->round_trip;
                 $this->routePriceRoundTrip[$r->id] =EzMoney::format($r->pivot->price_round_trip);
                 $this->routeCalculationType[$r->id] = $r->pivot->calculation_type;
                 $this->routeTaxLevel[$r->id] = $r->pivot->tax_level;
-                $this->routeDateFrom[$r->id] = $r->pivot->date_from;
-                $this->routeDateTo[$r->id] = $r->pivot->date_from;
+                $this->routeDateFrom[$r->id] = Carbon::make($r->pivot->date_from) ?? '';
+                $this->routeDateTo[$r->id] = Carbon::make($r->pivot->date_to) ?? '';
                 $this->routeCommissionPercentage[$r->id] = $r->pivot->commission;
                 $this->routeDiscountPercentage[$r->id] = $r->pivot->discount;
                 $this->routePriceWithDiscount[$r->id] = EzMoney::format(GetRouteDiscount::run($this->transfer,false,$r->id));
