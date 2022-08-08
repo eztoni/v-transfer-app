@@ -285,8 +285,8 @@ use Actions;
                 'price_round_trip' => $roundTripPrice,
                 'commission' => $this->routeCommissionPercentage[$routeId],
                 'discount' => $this->routeDiscountPercentage[$routeId],
-                'date_from' => $this->routeDateFrom[$routeId],
-                'date_to' => $this->routeDateTo[$routeId],
+                'date_from' => Carbon::create($this->routeDateFrom[$routeId]),
+                'date_to' => Carbon::create($this->routeDateTo[$routeId]),
                 'tax_level' => $this->routeTaxLevel[$routeId],
                 'calculation_type' => $this->routeCalculationType[$routeId]
             ]
