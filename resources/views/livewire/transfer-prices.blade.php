@@ -64,7 +64,7 @@
                                     min-date=""
                                     date-format="d.m.Y"
                                     :enable-time="false"
-                                    :default-date="\Carbon\Carbon::now()->format('d.m.Y')"
+                                    :default-date="$this->routeDateFrom[$r->id]"
                                     wire:model.defer="routeDateFrom.{{$r->id}}"
                                 />
 
@@ -73,7 +73,7 @@
                                     min-date=""
                                     date-format="d.m.Y"
                                     :enable-time="false"
-                                    :default-date="\Carbon\Carbon::now()->format('d.m.Y')"
+                                    :default-date="$this->routeDateTo[$r->id]"
                                     wire:model.defer="routeDateTo.{{$r->id}}"
                                 />
                             </div>
