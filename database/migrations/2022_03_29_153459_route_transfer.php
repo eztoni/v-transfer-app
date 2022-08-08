@@ -15,8 +15,8 @@ class RouteTransfer extends Migration
             $table->bigInteger('price')->default(0);
             $table->bigInteger('price_round_trip')->default(0);
             $table->boolean('round_trip')->default(false);
-            $table->date('date_from')->nullable();
-            $table->date('date_to')->nullable();
+            $table->dateTime('date_from')->nullable();
+            $table->dateTime('date_to')->nullable();
             $table->string('tax_level')->nullable();
             $table->string('calculation_type')->nullable();
             $table->integer('commission')->default(0);
