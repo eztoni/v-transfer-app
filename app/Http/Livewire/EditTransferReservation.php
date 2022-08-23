@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 use App\Mail\ModificationMail;
-use WireUi\Traits\Actions;
+
 
 class EditTransferReservation extends Component
 {

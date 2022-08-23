@@ -2,12 +2,14 @@
     <x-slot name="action" >
         <x-button wire:click="addPoint" positive>Add Point</x-button>
     </x-slot>
+    <x-input type="text" wire:model="search" class="my-2" placeholder="Search Points"/>
 
     <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
         <thead>
         <tr>
             <th>#ID</th>
             <th>Name</th>
+            <th>Internal Name</th>
             <th class="text-center">Update</th>
             <th class="text-center">Delete</th>
         </tr>
@@ -17,6 +19,7 @@
             <tr>
                 <td>{{ $p->id }}</td>
                 <td>{{ $p->name }}</td>
+                <td>{{ $p->internal_name }}</td>
                 <td class="text-center">
                     <x-button.circle primary wire:click="updatePoint({{$p->id}})" icon="pencil">
                     </x-button.circle>
@@ -53,7 +56,12 @@
     <x-modal.card wire:model="pointModal" title="{{  !empty($this->point->exists) ? 'Updating':'Adding' }} point">
         <div class="">
 
-            <x-input label="Name:" wire:model="point.name"/>
+            <x-input label="Name:" wire:model="point.name"
+            hint="Official name/address. This name will be showed to guests and drivers."
+            />
+            <x-input label="Internal Name:" wire:model="point.internal_name"
+            hint="This name will be shown in the system to the users."
+            />
             <x-input label="Description:" wire:model="point.description"/>
             <x-input label="Address:" wire:model="point.address"/>
 

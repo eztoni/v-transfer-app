@@ -118,36 +118,30 @@
 
                     <div class="form-control">
 
-                        <label class="label">
-                            <span class="label-text">Starting point:</span>
-                        </label>
-                        <select wire:model="route.starting_point_id" class="select select-bordered">
-                            <option value="">Select a starting point</option>
-                            @foreach($this->startingPoints as $starting_points)
-                                <option value="{{$starting_points['id']}}">{{$starting_points['name']}}</option>
-                            @endforeach
-                        </select>
+                        <x-select
+                            option-key-value
+                            :searchable="true"
+                            wire:model.defer="route.starting_point_id"
+                            :options="$this->startingPoints->pluck('internal_name','id')->toArray()"
+                            label="Starting point:"
+                        ></x-select>
 
-                        @error('route.starting_point_id')
-                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                        @enderror
+
+
                     </div>
 
                     <div class="form-control">
 
-                        <label class="label">
-                            <span class="label-text">Ending point:</span>
-                        </label>
-                        <select wire:model="route.ending_point_id" class="select select-bordered">
-                            <option value="">Select a ending point</option>
-                            @foreach($this->endingPoints as $ending_points)
-                                <option value="{{$ending_points['id']}}">{{$ending_points['name']}}</option>
-                            @endforeach
-                        </select>
+                        <x-select
+                            option-key-value
+                            :searchable="true"
+                            wire:model.defer="route.starting_point_id"
+                            :options="$this->endingPoints->pluck('internal_name','id')->toArray()"
+                            label="Ending point:"
+                        ></x-select>
 
-                        @error('route.ending_point_id')
-                        <x-input-alert type='warning'>{{$message}}</x-input-alert>
-                        @enderror
+
+
                     </div>
 
                     <div class="form-control">
