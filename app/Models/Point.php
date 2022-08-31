@@ -57,6 +57,11 @@ class Point extends Model
         return $this->belongsTo(Destination::class);
     }
 
+    public function getInternalNameAttribute($vale)
+    {
+        return $vale?: $this->name;
+    }
+
     protected static function booted()
     {
         static::addGlobalScope(new ActiveScope());

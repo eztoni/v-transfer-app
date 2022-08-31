@@ -130,7 +130,7 @@
                                     <x-native-select
                                         label="Pickup location:"
                                         wire:model="stepOneFields.startingPointId"
-                                        :options="$this->startingPoints->prepend(['name'=>'Select a starting point','id'=>''])->pluck('name','id')"
+                                        :options="$this->startingPoints->prepend(['internal_name'=>'Select a starting point','id'=>''])->pluck('internal_name','id')"
                                         option-key-value
                                     />
                                 @else
@@ -179,7 +179,7 @@
                                                     @endphp
 
                                                     @endif
-                                                    value="{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}">{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}</option>
+                                                    value="{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}">{{$pickupAddressPoint->internal_name}}</option>
 
                                             @endforeach
 
@@ -205,7 +205,7 @@
                                     <x-native-select
                                         label="Drop off location:"
                                         wire:model="stepOneFields.endingPointId"
-                                        :options="$this->endingPoints->prepend(['name'=>'Select an ending point','id'=>''])->pluck('name','id')"
+                                        :options="$this->endingPoints->prepend(['internal_name'=>'Select an ending point','id'=>''])->pluck('internal_name','id')"
                                         option-key-value
 
                                     />
@@ -250,7 +250,7 @@
                                                     @endphp
 
                                                     @endif
-                                                    value="{{$dropoffAddressPoint->name . ' ' . $dropoffAddressPoint->address}}">{{$dropoffAddressPoint->name. ' ' . $dropoffAddressPoint->address}}</option>
+                                                    value="{{$dropoffAddressPoint->name . ' ' . $dropoffAddressPoint->address}}">{{$dropoffAddressPoint->internal_name}}</option>
                                             @endforeach
                                             @if($itemSelected === false)
                                                 <option
