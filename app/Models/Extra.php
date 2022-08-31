@@ -86,7 +86,7 @@ class Extra extends Model implements HasMedia
 
     public function partner()
     {
-        return $this->belongsToMany(Partner::class)->withPivot(['price']);
+        return $this->belongsToMany(Partner::class)->withPivot(['price','commission','discount','tax_level','calculation_type','date_from','date_to']);
     }
 
     public function getPrice($partnerId){

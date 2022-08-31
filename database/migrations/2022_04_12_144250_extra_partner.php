@@ -12,6 +12,12 @@ class ExtraPartner extends Migration
             $table->foreignId('extra_id')->constrained();
             $table->foreignId('partner_id')->default(0);
             $table->bigInteger('price');
+            $table->dateTime('date_from')->nullable();
+            $table->dateTime('date_to')->nullable();
+            $table->string('tax_level')->nullable();
+            $table->string('calculation_type')->nullable();
+            $table->integer('commission')->default(0);
+            $table->integer('discount')->default(0);
             $table->timestamps();
         });
     }
