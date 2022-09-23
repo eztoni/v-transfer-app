@@ -6,6 +6,7 @@ use App\Models\Destination;
 use App\Models\Language;
 use App\Models\Transfer;
 use App\Models\Vehicle;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use WireUi\Traits\Actions;
@@ -58,7 +59,8 @@ use Actions;
 
     public function getVehiclesProperty()
     {
-            return Vehicle::whereNull('transfer_id')->when($this->transfer->exists,function ($q){
+            return Vehicle::whereNull('transfer_id')
+                ->when($this->transfer->exists,function ($q){
                 $q->orWhere('transfer_id',$this->transfer->id);
             })->get();
     }
@@ -94,10 +96,20 @@ use Actions;
             return;
         }
 
-        Vehicle::where('transfer_id',$this->transfer->id)->update(['transfer_id' => null]);
-        $vehicle = Vehicle::findOrFail($this->vehicleId);
-        $vehicle->transfer_id = $this->transfer->id;
-        $vehicle->save();
+        if ($this->transfer->vehicle->id !== $this->vehicleId){
+            DB::transaction(function () {
+
+                $vehicle = Vehicle::findOrFail($this->vehicleId);
+
+                Vehicle::where('transfer_id',$this->transfer->id)->update(['transfer_id' => null]);
+
+                $vehicle->transfer_id = $this->transfer->id;
+                $vehicle->save();
+
+            }, 5);
+        }
+
+
         $this->notification()->success('Update successful');
     }
 
