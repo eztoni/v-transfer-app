@@ -132,8 +132,7 @@ use Actions;
             $this->extraPrice = \EzMoney::format($this->extra->getPrice($this->partnerId)); // 1,99;
         }
 
-        $pivot_partner =  $this->extra->partner->where('id', $this->partnerId)->first()->pivot;
-
+        $pivot_partner =  $this->extra->partner->where('id', $this->partnerId)->first()?->pivot;
 
         $this->extraCalculationType = $pivot_partner->calculation_type;
         $this->extraTaxLevel = $pivot_partner->tax_level;
@@ -143,8 +142,6 @@ use Actions;
         $this->extraDiscountPercentage = $pivot_partner->discount;
         $this->extraPriceWithDiscount = \App\Facades\EzMoney::format(GetExtraDiscount::run($this->extra,$this->partnerId));
         $this->extraPriceCommission= \App\Facades\EzMoney::format(GetExtraCommission::run($this->extra,$this->partnerId));
-
-
     }
 
     public function saveExtraPrice(){
