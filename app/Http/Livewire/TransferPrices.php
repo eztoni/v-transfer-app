@@ -72,8 +72,8 @@ use Actions;
                 $this->routePriceRoundTrip[$r->id] =EzMoney::format($r->pivot->price_round_trip);
                 $this->routeCalculationType[$r->id] = $r->pivot->calculation_type;
                 $this->routeTaxLevel[$r->id] = $r->pivot->tax_level;
-                $this->routeDateFrom[$r->id] = Carbon::make($r->pivot->date_from) ?? '';
-                $this->routeDateTo[$r->id] = Carbon::make($r->pivot->date_to) ?? '';
+                $this->routeDateFrom[$r->id] = Carbon::make($r->pivot->date_from)?->format('d.m.Y') ?? '';
+                $this->routeDateTo[$r->id] = Carbon::make($r->pivot->date_to)?->format('d.m.Y') ?? '';
                 $this->routeCommissionPercentage[$r->id] = $r->pivot->commission;
                 $this->routeDiscountPercentage[$r->id] = $r->pivot->discount;
                 $this->routePriceWithDiscount[$r->id] = EzMoney::format(GetRouteDiscount::run($this->transfer,false,$r->id));
@@ -283,8 +283,8 @@ use Actions;
                 'price_round_trip' => $roundTripPrice,
                 'commission' => $this->routeCommissionPercentage[$routeId],
                 'discount' => $this->routeDiscountPercentage[$routeId],
-                'date_from' => Carbon::create($this->routeDateFrom[$routeId]),
-                'date_to' => Carbon::create($this->routeDateTo[$routeId]),
+                'date_from' => Carbon::createFromFormat('d.m.Y',$this->routeDateFrom[$routeId]),
+                'date_to' => Carbon::createFromFormat('d.m.Y',$this->routeDateTo[$routeId]),
                 'tax_level' => $this->routeTaxLevel[$routeId],
                 'calculation_type' => $this->routeCalculationType[$routeId]
             ]
