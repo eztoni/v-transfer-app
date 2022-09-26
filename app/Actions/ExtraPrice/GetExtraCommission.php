@@ -16,8 +16,10 @@ class GetExtraCommission
     public function handle(Extra $extra,$partner_id,$newCommission = '',$newPrice = null)
     {
 
+        if (!$pivot_partner =  $extra->partner->where('id', $partner_id)->first()?->pivot){
+            return 0;
+        }
 
-        $pivot_partner =  $extra->partner->where('id', $partner_id)->first()->pivot;
         $commission = $pivot_partner->commission;
         $amount = $pivot_partner->price;
 

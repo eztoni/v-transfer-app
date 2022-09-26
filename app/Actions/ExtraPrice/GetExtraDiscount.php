@@ -18,7 +18,10 @@ class GetExtraDiscount
     public function handle(Extra $extra,$partner_id,$newDiscount = '',$newPrice = null)
     {
 
-        $pivot_partner =  $extra->partner->where('id', $partner_id)->first()->pivot;
+
+        if (!$pivot_partner =  $extra->partner->where('id', $partner_id)->first()?->pivot){
+            return 0;
+        }
 
         $discount = $pivot_partner->discount;
         $amount = $pivot_partner->price;
@@ -33,6 +36,7 @@ class GetExtraDiscount
         }
 
         $money = new Money($amount,new Currency('EUR'));
+
         if ($discount <= 0 || $money->isZero()) {
             return 0;
         }
