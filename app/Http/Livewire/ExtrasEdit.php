@@ -13,6 +13,7 @@ use App\Services\Helpers\EzMoney;
 use Carbon\Carbon;
 use Cknow\Money\Casts\MoneyIntegerCast;
 use Cknow\Money\Money;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
@@ -22,7 +23,8 @@ use WireUi\Traits\Actions;
 
 class ExtrasEdit extends Component
 {
-use Actions;
+    use Actions;
+
     public Extra $extra;
     public $extraId = null;
     public $companyLanguages = ['en'];
@@ -47,14 +49,14 @@ use Actions;
     protected $casts = [
         'extraPrice' => MoneyIntegerCast::class. ':EUR,true',
     ];
+
     public $fieldNames = [
-        'routeCommissionPercentage.*' => 'commission Percentage',
-        'routePrice.*' => 'price',
-        'routePriceRoundTrip.*' => 'round trip price',
-        'routeTaxLevel.*' => 'route tax level',
-        'routeCalculationType.*' => 'route calculation type',
-        'routeDateFrom.*' => 'date from',
-        'routeDateTo.*' => 'date to'
+        'extraCommissionPercentage.*' => 'extra commission Percentage',
+        'extraPrice.*' => 'price',
+        'extraTaxLevel.*' => 'extra tax level',
+        'extraCalculationType.*' => 'extra calculation type',
+        'extraDateFrom.*' => 'date from',
+        'extraDateTo.*' => 'date to'
     ];
 
     protected function rules()
@@ -91,24 +93,34 @@ use Actions;
         $this->setModelPrices();
     }
 
+    public function updated($field)
+    {
+
+        if(Str::contains($field, 'extraDiscountPercentage')){
+
+            if($this->extraDiscountPercentage > 100){
+                $this->extraDiscountPercentage = 100;
+            }
+
+            $this->updateExtraPrice();
+        }
+
+        if(Str::contains($field, 'extraCommissionPercentage')){
+
+            if($this->extraCommissionPercentage > 100){
+                $this->extraCommissionPercentage = 100;
+            }
+
+            $this->updateExtraPrice();
+        }
+
+        $this->validateOnly($field);
+    }
 
     public function updateExtraPrice(){
-
         $this->extraPriceWithDiscount = \App\Facades\EzMoney::format(GetExtraDiscount::run($this->extra,$this->partnerId,$this->extraDiscountPercentage,$this->extraPrice));
         $this->extraPriceCommission = \App\Facades\EzMoney::format(GetExtraCommission::run($this->extra,$this->partnerId,$this->extraCommissionPercentage,$this->extraPrice));
     }
-
-    public function updateDiscountPercentage(){
-        $this->extraPriceWithDiscount = \App\Facades\EzMoney::format(GetExtraDiscount::run($this->extra,$this->partnerId,$this->extraDiscountPercentage,$this->extraPrice));
-        $this->extraPriceCommission = \App\Facades\EzMoney::format(GetExtraCommission::run($this->extra,$this->partnerId,$this->extraCommissionPercentage,$this->extraPrice));
-    }
-
-    public function updateCommissionPercentage(){
-        $this->extraPriceWithDiscount = \App\Facades\EzMoney::format(GetExtraDiscount::run($this->extra,$this->partnerId,$this->extraDiscountPercentage,$this->extraPrice));
-        $this->extraPriceCommission = \App\Facades\EzMoney::format(GetExtraCommission::run($this->extra,$this->partnerId,$this->extraCommissionPercentage,$this->extraPrice));
-    }
-
-
 
     public function instantiateComponentValues()
     {
@@ -127,10 +139,6 @@ use Actions;
         $this->extra->setTranslations('description', $this->extraDescription);
     }
 
-    public function updated($field)
-    {
-        $this->validateOnly($field);
-    }
 
     private function setModelPrices(){
 
@@ -156,9 +164,7 @@ use Actions;
 
     public function save(){
 
-       // $this->validate($this->rules(), [], $this->fieldNames);
-        $this->validate();
-
+        $this->validate($this->rules(), [], $this->fieldNames);
 
         \DB::table('extra_partner')->updateOrInsert(
             [
