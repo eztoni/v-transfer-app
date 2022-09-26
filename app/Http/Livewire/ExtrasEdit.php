@@ -47,24 +47,15 @@ use Actions;
     protected $casts = [
         'extraPrice' => MoneyIntegerCast::class. ':EUR,true',
     ];
-
-
-    public function updateExtraPrice(){
-
-        $this->extraPriceWithDiscount = \App\Facades\EzMoney::format(GetExtraDiscount::run($this->extra,$this->partnerId,$this->extraDiscountPercentage,$this->extraPrice));
-        $this->extraPriceCommission = \App\Facades\EzMoney::format(GetExtraCommission::run($this->extra,$this->partnerId,$this->extraCommissionPercentage,$this->extraPrice));
-    }
-
-    public function updateDiscountPercentage(){
-        $this->extraPriceWithDiscount = \App\Facades\EzMoney::format(GetExtraDiscount::run($this->extra,$this->partnerId,$this->extraDiscountPercentage,$this->extraPrice));
-        $this->extraPriceCommission = \App\Facades\EzMoney::format(GetExtraCommission::run($this->extra,$this->partnerId,$this->extraCommissionPercentage,$this->extraPrice));
-    }
-
-    public function updateCommissionPercentage(){
-        $this->extraPriceWithDiscount = \App\Facades\EzMoney::format(GetExtraDiscount::run($this->extra,$this->partnerId,$this->extraDiscountPercentage,$this->extraPrice));
-        $this->extraPriceCommission = \App\Facades\EzMoney::format(GetExtraCommission::run($this->extra,$this->partnerId,$this->extraCommissionPercentage,$this->extraPrice));
-    }
-
+    public $fieldNames = [
+        'routeCommissionPercentage.*' => 'commission Percentage',
+        'routePrice.*' => 'price',
+        'routePriceRoundTrip.*' => 'round trip price',
+        'routeTaxLevel.*' => 'route tax level',
+        'routeCalculationType.*' => 'route calculation type',
+        'routeDateFrom.*' => 'date from',
+        'routeDateTo.*' => 'date to'
+    ];
 
     protected function rules()
     {
@@ -86,8 +77,6 @@ use Actions;
         return $ruleArray;
     }
 
-
-
     public function mount()
     {
         $this->instantiateComponentValues();
@@ -103,10 +92,27 @@ use Actions;
     }
 
 
+    public function updateExtraPrice(){
+
+        $this->extraPriceWithDiscount = \App\Facades\EzMoney::format(GetExtraDiscount::run($this->extra,$this->partnerId,$this->extraDiscountPercentage,$this->extraPrice));
+        $this->extraPriceCommission = \App\Facades\EzMoney::format(GetExtraCommission::run($this->extra,$this->partnerId,$this->extraCommissionPercentage,$this->extraPrice));
+    }
+
+    public function updateDiscountPercentage(){
+        $this->extraPriceWithDiscount = \App\Facades\EzMoney::format(GetExtraDiscount::run($this->extra,$this->partnerId,$this->extraDiscountPercentage,$this->extraPrice));
+        $this->extraPriceCommission = \App\Facades\EzMoney::format(GetExtraCommission::run($this->extra,$this->partnerId,$this->extraCommissionPercentage,$this->extraPrice));
+    }
+
+    public function updateCommissionPercentage(){
+        $this->extraPriceWithDiscount = \App\Facades\EzMoney::format(GetExtraDiscount::run($this->extra,$this->partnerId,$this->extraDiscountPercentage,$this->extraPrice));
+        $this->extraPriceCommission = \App\Facades\EzMoney::format(GetExtraCommission::run($this->extra,$this->partnerId,$this->extraCommissionPercentage,$this->extraPrice));
+    }
+
+
+
     public function instantiateComponentValues()
     {
         $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
-
         $this->extraId = $this->extra->id;
         foreach ($this->companyLanguages as $lang) {
             $this->extraName[$lang] = $this->extra->getTranslation('name', $lang, false);
@@ -144,35 +150,6 @@ use Actions;
         $this->extraPriceCommission= \App\Facades\EzMoney::format(GetExtraCommission::run($this->extra,$this->partnerId));
     }
 
-    public function saveExtraPrice(){
-
-        $this->validate();
-
-
-        \DB::table('extra_partner')->updateOrInsert(
-            [
-                'extra_id'=>$this->extraId,
-                'partner_id'=>$this->partnerId,
-            ],
-            [
-                'price' => \EzMoney::parseForDb($this->extraPrice)
-            ]
-        );
-
-        $this->notification()->success('Saved', 'Extra Price Saved');
-
-    }
-
-    public $fieldNames = [
-        'routeCommissionPercentage.*' => 'commission Percentage',
-        'routePrice.*' => 'price',
-        'routePriceRoundTrip.*' => 'round trip price',
-        'routeTaxLevel.*' => 'route tax level',
-        'routeCalculationType.*' => 'route calculation type',
-        'routeDateFrom.*' => 'date from',
-        'routeDateTo.*' => 'date to'
-    ];
-
 
     public function save(){
 
@@ -200,9 +177,6 @@ use Actions;
 
     }
 
-
-
-
     public function saveExtra()
     {
         $this->extra->setTranslations('name', $this->extraName);
@@ -210,8 +184,6 @@ use Actions;
         $this->extra->save();
         $this->notification()->success('Update successful');
     }
-
-
 
     public function render()
     {
