@@ -32,8 +32,8 @@ class ExtrasEdit extends Component
     public $extraDateTo;
     public $extraTaxLevel;
     public $extraCalculationType;
-    public $extraDiscountPercentage;
-    public $extraCommissionPercentage;
+    public $extraDiscountPercentage = 0;
+    public $extraCommissionPercentage = 0;
     public $extraPriceWithDiscount;
     public $extraPriceCommission;
     public $extraPrice;
