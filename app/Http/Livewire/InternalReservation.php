@@ -107,8 +107,8 @@ class InternalReservation extends Component
             'stepTwoFields.leadTraveller.phone' => 'required|string',
         ];
 
-        if ($this->activateOtherTravellersInput) {
-            $rules['stepTwoFields.otherTravellers'] = 'array|min:' . $this->getTotalPassengersProperty() - 1;
+        if ($this->activateOtherTravellersInput ) {
+            $rules['stepTwoFields.otherTravellers'] = 'array';
             $rules['stepTwoFields.otherTravellers.*.firstName'] = 'required|string';
             $rules['stepTwoFields.otherTravellers.*.lastName'] = 'required|string';
         }

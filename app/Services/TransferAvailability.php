@@ -26,7 +26,7 @@ class TransferAvailability
 
     private function getTotalNumOfPeople(): int
     {
-        return  $this->adults + $this->children + $this->infants;
+        return  (int)($this->adults + $this->children + $this->infants);
     }
 
     public function getAvailablePartnerTransfers()
