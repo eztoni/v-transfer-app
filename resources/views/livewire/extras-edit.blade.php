@@ -124,9 +124,9 @@
                         wire:model="extraCalculationType"
                     />
 
-                    <x-input wire:change="updateDiscountPercentage" wire:model.debounce.300ms="extraDiscountPercentage" label="Discount in %" placeholder="0" />
+                    <x-input wire:change="updateExtraPrice" wire:model.debounce.300ms="extraDiscountPercentage" label="Discount in %" placeholder="0" />
 
-                    <x-input wire:change="updateCommissionPercentage" wire:model.debounce.300ms="extraCommissionPercentage" label="Commission in %" placeholder="0" />
+                    <x-input wire:change="updateExtraPrice" wire:model.debounce.300ms="extraCommissionPercentage" label="Commission in %" placeholder="0" />
 
                 </div>
 

@@ -95,9 +95,9 @@
                                     wire:model="routeCalculationType.{{$r->id}}"
                                 />
 
-                                <x-input wire:model.debounce.300ms="routeDiscountPercentage.{{$r->id}}" label="Discount in %" placeholder="0" />
+                                <x-input wire:model.debounce.300ms="routeDiscountPercentage.{{$r->id}}" label="Discount in %" placeholder="0"/>
 
-                                <x-input wire:model.debounce.300ms="routeCommissionPercentage.{{$r->id}}" label="Commission in %" placeholder="0" />
+                                <x-input wire:model.debounce.300ms="routeCommissionPercentage.{{$r->id}}" label="Commission in %" placeholder="0"/>
 
                             </div>
 

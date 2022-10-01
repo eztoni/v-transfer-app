@@ -26,7 +26,7 @@ use function Symfony\Component\String\b;
 
 class TransferPrices extends Component
 {
-use Actions;
+    use Actions;
 
     public $pivotModal;
     public $transfer;
@@ -48,6 +48,44 @@ use Actions;
     public $showSearch = true;
     public $partnerId = 0;
 
+    public $fieldNames = [
+        'routeCommissionPercentage.*' => 'commission Percentage',
+        'routeDiscountPercentage.*' => 'discount Percentage',
+        'routePrice.*' => 'price',
+        'routePriceRoundTrip.*' => 'round trip price',
+        'routeTaxLevel.*' => 'route tax level',
+        'routeCalculationType.*' => 'route calculation type',
+        'routeDateFrom.*' => 'date from',
+        'routeDateTo.*' => 'date to'
+    ];
+
+    public function rules(){
+
+        return [
+            'routeCommissionPercentage.*' => 'required|min:0|max:100|integer',
+            'routeDiscountPercentage.*' => 'required|min:0|max:100|integer',
+            'routePrice.*' => 'required|min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
+            'routePriceRoundTrip.*' => 'min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
+            'routeTaxLevel.*' => 'required',
+            'routeCalculationType.*' => 'required',
+            'routeDateFrom.*' => 'required|date',
+            'routeDateTo.*' => 'required|date|after_or_equal:routeDateFrom.*',
+        ];
+    }
+
+    public function singelSaveRules($routeId){
+
+        return [
+            'routeCommissionPercentage.'.$routeId => 'required|min:0|max:100|integer',
+            'routeDiscountPercentage.'.$routeId => 'required|min:0|max:100|integer',
+            'routePrice.'.$routeId => 'required|min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
+            'routePriceRoundTrip.'.$routeId  => 'min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
+            'routeTaxLevel.'.$routeId  => 'required',
+            'routeCalculationType.'.$routeId  => 'required',
+            'routeDateFrom.'.$routeId  => 'required|date',
+            'routeDateTo.'.$routeId  => 'required|date|after_or_equal:routeDateFrom.'.$routeId,
+        ];
+    }
 
     public function mount(): void
     {
@@ -99,11 +137,21 @@ use Actions;
 
         if(Str::contains($property, 'routeDiscountPercentage')){
             $routeId = explode('.',$property)[1];
+
+            if($this->routeDiscountPercentage[$routeId] > 100){
+                $this->routeDiscountPercentage[$routeId] = 100;
+            }
+
             $this->updateDiscountPrices($routeId);
         }
 
         if(Str::contains($property, 'routeCommissionPercentage')){
             $routeId = explode('.',$property)[1];
+
+            if($this->routeCommissionPercentage[$routeId] > 100){
+                $this->routeCommissionPercentage[$routeId] = 100;
+            }
+
             $this->updateCommissionPrices($routeId);
         }
 
@@ -136,45 +184,6 @@ use Actions;
         $this->setModelPrices();
     }
 
-    public $fieldNames = [
-        'routeCommissionPercentage.*' => 'commission Percentage',
-        'routePrice.*' => 'price',
-        'routePriceRoundTrip.*' => 'round trip price',
-        'routeTaxLevel.*' => 'route tax level',
-        'routeCalculationType.*' => 'route calculation type',
-        'routeDateFrom.*' => 'date from',
-        'routeDateTo.*' => 'date to'
-    ];
-
-    public function rules(){
-
-        return [
-            'routeCommissionPercentage.*' => 'required|min:0|max:100|integer',
-            'routeDiscountPercentage.*' => 'required|min:0|max:100|integer',
-            'routePrice.*' => 'required|min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
-            'routePriceRoundTrip.*' => 'min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
-            'routeTaxLevel.*' => 'required',
-            'routeCalculationType.*' => 'required',
-            'routeDateFrom.*' => 'required|date',
-            'routeDateTo.*' => 'required|date|after_or_equal:routeDateFrom.*',
-        ];
-    }
-
-    public function singelSaveRules($routeId){
-
-        return [
-            'routeCommissionPercentage.'.$routeId => 'required|min:0|max:100|integer',
-            'routeDiscountPercentage.'.$routeId => 'required|min:0|max:100|integer',
-            'routePrice.'.$routeId => 'required|min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
-            'routePriceRoundTrip.'.$routeId  => 'min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
-            'routeTaxLevel.'.$routeId  => 'required',
-            'routeCalculationType.'.$routeId  => 'required',
-            'routeDateFrom.'.$routeId  => 'required|date',
-            'routeDateTo.'.$routeId  => 'required|date|after_or_equal:routeDateFrom.'.$routeId,
-        ];
-    }
-
-
     public function getTransferRoutesProperty(){
         if($this->transferId > 0){
             return Transfer::find($this->transferId)->routes;
@@ -203,60 +212,6 @@ use Actions;
         );
 
         $this->notification()->success('Updated', 'Round Trip Data');
-    }
-
-    public function saveRoutePrice($routeId){
-
-        $this->validate();
-
-        if(empty($this->routePrice[$routeId])){
-            return;
-        }
-
-
-        \DB::table('route_transfer')->updateOrInsert(
-            [
-                'route_id'=>$routeId,
-                'transfer_id'=>$this->transferId,
-                'partner_id'=>$this->partnerId,
-            ],
-            [
-                'price' =>  EzMoney::parseForDb($this->routePrice[$routeId])
-            ]
-        );
-
-        $this->notification()->success('Saved', 'Route Price Saved');
-
-    }
-
-    public function saveRoutePriceRoundTrip($routeId){
-
-        if(empty($this->routePriceRoundTrip[$routeId])){
-            $this->addError('routePriceRoundTrip.'.$routeId, 'The round trip price field is empty.');
-            return;
-        }
-
-        if(preg_match(\App\Services\Helpers\EzMoney::MONEY_REGEX,$this->routePriceRoundTrip[$routeId]) <= 0){
-            $this->addError('routePriceRoundTrip.'.$routeId, 'The round trip price field is invalid.');
-            $this->notification()->success('Not Saved', 'Round Trip Price Invalid Value');
-            return;
-        }
-
-        $money = Money::parse(str_replace(',','.',$this->routePriceRoundTrip[$routeId]),'EUR');
-
-        \DB::table('route_transfer')->updateOrInsert(
-            [
-                'route_id'=>$routeId,
-                'transfer_id'=>$this->transferId,
-                'partner_id'=>$this->partnerId,
-            ],
-            [
-                'price_round_trip' =>  $money->getAmount()
-            ]
-        );
-
-        $this->notification()->success('Saved', 'Round Trip Price Saved');
-
     }
 
     public function save($routeId){
