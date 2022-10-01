@@ -117,17 +117,19 @@
 
                             <div class="flex">
                                 <h1 class="text-1xl mb-1 font-bold mr-2">Round Trip</h1>
-                                <x-toggle md wire:click="saveRoundTrip({{$r->id}})" wire:model="routeRoundTrip.{{$r->id}}" />
+                                <x-toggle md  wire:model="routeRoundTrip.{{$r->id}}" />
                             </div>
 
+                            @if($routeRoundTrip[$r->id])
+                                <div class="grid grid-cols-4  gap-2 mb-4">
+                                    <x-input wire:change="updateRoutePriceRoundTrip({{$r->id}})"  wire:model="routePriceRoundTrip.{{$r->id}}" label="Round Trip Price" />
 
-                            <div class="grid grid-cols-4  gap-2 mb-4">
-                                <x-input wire:change="updateRoutePriceRoundTrip({{$r->id}})"  wire:model="routePriceRoundTrip.{{$r->id}}" label="Round Trip Price" />
+                                    <x-input wire:model="routeRoundTripPriceWithDiscount.{{$r->id}}" label="Round Trip with discount" disabled/>
 
-                                <x-input wire:model="routeRoundTripPriceWithDiscount.{{$r->id}}" label="Round Trip with discount" disabled/>
+                                    <x-input wire:model="routeRoundTripPriceCommission.{{$r->id}}" label="Round Trip Commission" disabled />
+                                </div>
 
-                                <x-input wire:model="routeRoundTripPriceCommission.{{$r->id}}" label="Round Trip Commission" disabled />
-                            </div>
+                            @endif
 
 
                             <div class="flex justify-end my-3">

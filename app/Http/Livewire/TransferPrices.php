@@ -195,24 +195,7 @@ class TransferPrices extends Component
         return  Route::with(['startingPoint','endingPoint'])->get();
     }
 
-    public function saveRoundTrip($routeId){
 
-
-        $saved = $this->routeRoundTrip[$routeId];
-
-        \DB::table('route_transfer')->updateOrInsert(
-            [
-                'route_id'=>$routeId,
-                'transfer_id'=>$this->transferId,
-                'partner_id'=>$this->partnerId,
-            ],
-            [
-                'round_trip' => $saved,
-            ]
-        );
-
-        $this->notification()->success('Updated', 'Round Trip Data');
-    }
 
     public function save($routeId){
 
@@ -241,7 +224,9 @@ class TransferPrices extends Component
                 'date_from' => Carbon::createFromFormat('d.m.Y',$this->routeDateFrom[$routeId]),
                 'date_to' => Carbon::createFromFormat('d.m.Y',$this->routeDateTo[$routeId]),
                 'tax_level' => $this->routeTaxLevel[$routeId],
-                'calculation_type' => $this->routeCalculationType[$routeId]
+                'calculation_type' => $this->routeCalculationType[$routeId],
+                'round_trip' => $this->routeRoundTrip[$routeId],
+
             ]
         );
 
