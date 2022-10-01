@@ -33,6 +33,7 @@ class GetExtraCommission
         }
 
         $money = new Money($amount,new Currency('EUR'));
+
         if ($commission <= 0 || $money->isZero()) {
             return 0;
         }

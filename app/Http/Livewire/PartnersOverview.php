@@ -53,8 +53,6 @@ use Actions;
         $this->partner = new Partner();
     }
 
-
-
     public function updatedPartnerDestinationId(){
         $this->partner->starting_point_id = null;
         $this->partner->ending_point_id = null;

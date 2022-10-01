@@ -307,25 +307,29 @@
 
                             <div class="flex flex-wrap justify-between gap-2">
 
+
                                 <x-input label="Adults:"
                                          x-data="{oldVal:''}"
                                          @focusin="this.oldVal = $el.value;$el.value = ''"
-                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"
+                                         @focusout="$el.value =='' ? $el.value = this.oldVal:'';$el.dispatchEvent(new Event('input'))"
                                          wire:model="stepOneFields.adults"
                                 />
                                 <x-input label="Child(3-17):"
                                          x-data="{oldVal:''}"
                                          @focusin="this.oldVal = $el.value;$el.value = ''"
-                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"
+                                         @focusout="$el.value =='' ? $el.value = this.oldVal:'';$el.dispatchEvent(new Event('input'))"
                                          wire:model="stepOneFields.children"
                                 />
                                 <x-input label="Infant(0-2):"
                                          x-data="{oldVal:''}"
                                          @focusin="this.oldVal = $el.value;$el.value = ''"
-                                         @focusout="$el.value =='' ? $el.value = this.oldVal:''"
+                                         @focusout="$el.value =='' ? $el.value = this.oldVal:'';$el.dispatchEvent(new Event('input'))"
                                          wire:model="stepOneFields.infants"
                                 />
                                 <x-input label="Luggage"
+                                         x-data="{oldVal:''}"
+                                         @focusin="this.oldVal = $el.value;$el.value = ''"
+                                         @focusout="$el.value =='' ? $el.value = this.oldVal:'';$el.dispatchEvent(new Event('input'))"
                                          wire:model="stepOneFields.luggage"
                                 />
 

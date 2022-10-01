@@ -320,6 +320,7 @@ class InternalReservation extends Component
 
     public function updated($property)
     {
+        $this->validateOnly($property, array_merge($this->stepOneRules(), $this->stepTwoRules()), [], $this->fieldNames);
 
         if (in_array($property, [
             'stepOneFields.startingPointId',
@@ -340,6 +341,7 @@ class InternalReservation extends Component
             'stepOneFields.infants',
             'stepOneFields.luggage',
         ])) {
+
             $value= \Arr::get($this->stepOneFields, explode('.', $property)[1]);
             if (!is_numeric($value) ) {
                 \Arr::set($this->stepOneFields, explode('.', $property)[1], 0);
@@ -353,7 +355,6 @@ class InternalReservation extends Component
         }
 
 
-        $this->validateOnly($property, array_merge($this->stepOneRules(), $this->stepTwoRules()), [], $this->fieldNames);
     }
 
     public function resetAdresses()
@@ -564,31 +565,24 @@ class InternalReservation extends Component
 
     public function getAvailableTransfersProperty()
     {
-
-        $route = $this->selectedRoute;
-
-        if (!$route) {
+        if (!$this->selectedRoute) {
             return collect([]);
         }
 
         try {
-            Debugbar::startMeasure('getTransfers');
-            $transfers= (new TransferAvailability(
-                $this->stepOneFields['adults'],
-                $route,
-                $this->stepOneFields['children'],
-                $this->stepOneFields['infants'],
-                $this->stepOneFields['luggage'],
+            return (new TransferAvailability(
+                $this->selectedRoute,
+                (int)$this->stepOneFields['adults'],
+                (int)$this->stepOneFields['children'],
+                (int)$this->stepOneFields['infants'],
+                (int)$this->stepOneFields['luggage'],
+                $this->roundTrip
             ))
                 ->getAvailablePartnerTransfers();
-            Debugbar::stopMeasure('getTransfers');
-            return $transfers;
 
         }catch (\Exception $e){
             return collect([]);
         }
-
-
     }
 
     /*

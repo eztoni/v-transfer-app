@@ -32,6 +32,7 @@ class TransferExtrasPriceSeeder extends Seeder
                             'partner_id' => $partner->id,
                             'price' => rand(1000, 100000),
                             'price_round_trip' => rand(1000, 100000),
+                            'round_trip'=> random_int(1,100)>30?true:false
 
                         ]
                     );

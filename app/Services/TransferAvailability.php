@@ -12,22 +12,15 @@ use Carbon\Carbon;
 class TransferAvailability
 {
 
-
-    private Route $route;
-
-    private int $luggage;
-    private int $adults;
-    private int $children;
-    private int $infants;
-
-
-    public function __construct(int $adults, Route $route, int $children = 0, int $infants = 0, int $luggage = 0)
+    public function __construct(
+        private Route $route,
+        private int $adults,
+        private int $children,
+        private int $infants,
+        private int $luggage,
+        private bool $roundTrip = false
+    )
     {
-        $this->route = $route;
-        $this->luggage = $luggage;
-        $this->adults = $adults;
-        $this->children = $children;
-        $this->infants = $infants;
     }
 
 
@@ -49,6 +42,7 @@ class TransferAvailability
         $order = $partnerOrder->getPartnerOrder();
         $availableTransfers = RouteTransfer::query()
             ->where('route_id', $this->route->id)
+            ->where('round_trip',$this->roundTrip)
             ->with(['transfer', 'partner','transfer.media'])
             ->whereHas('partner')
             ->whereHas('transfer.vehicle', function ($q) {
