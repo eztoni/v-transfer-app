@@ -120,7 +120,7 @@
                                 <x-toggle md  wire:model="routeRoundTrip.{{$r->id}}" />
                             </div>
 
-                            @if($routeRoundTrip[$r->id])
+                            @if(Arr::get($routeRoundTrip,$r->id))
                                 <div class="grid grid-cols-4  gap-2 mb-4">
                                     <x-input wire:change="updateRoutePriceRoundTrip({{$r->id}})"  wire:model="routePriceRoundTrip.{{$r->id}}" label="Round Trip Price" />
 
