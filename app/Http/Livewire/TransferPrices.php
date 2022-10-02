@@ -48,6 +48,20 @@ class TransferPrices extends Component
     public $showSearch = true;
     public $partnerId = 0;
 
+
+    public function singelFieldNames($routeId){
+        return [
+            'routeCommissionPercentage.'.$routeId => 'commission Percentage',
+            'routeDiscountPercentage.'.$routeId => 'discount Percentage',
+            'routePrice.'.$routeId => 'price',
+            'routePriceRoundTrip.'.$routeId => 'round trip price',
+            'routeTaxLevel.'.$routeId => 'route tax level',
+            'routeCalculationType.'.$routeId => 'route calculation type',
+            'routeDateFrom.'.$routeId => 'date from',
+            'routeDateTo.'.$routeId => 'date to'
+        ];
+    }
+
     public $fieldNames = [
         'routeCommissionPercentage.*' => 'commission Percentage',
         'routeDiscountPercentage.*' => 'discount Percentage',
@@ -114,22 +128,22 @@ class TransferPrices extends Component
                 $this->routeDateTo[$r->id] = Carbon::make($r->pivot->date_to)?->format('d.m.Y') ?? '';
                 $this->routeCommissionPercentage[$r->id] = $r->pivot->commission;
                 $this->routeDiscountPercentage[$r->id] = $r->pivot->discount;
-                $this->routePriceWithDiscount[$r->id] = EzMoney::format(GetRouteDiscount::run($this->transfer,false,$r->id));
-                $this->routeRoundTripPriceWithDiscount[$r->id] = EzMoney::format(GetRouteDiscount::run($this->transfer,true,$r->id));
-                $this->routePriceCommission[$r->id] = EzMoney::format(GetRouteCommission::run($this->transfer,false,$r->id));
-                $this->routeRoundTripPriceCommission[$r->id] = EzMoney::format(GetRouteCommission::run($this->transfer,true,$r->id));
+                $this->routePriceWithDiscount[$r->id] = EzMoney::format(GetRouteDiscount::run($this->transfer,false,$r->id,$r->pivot->discount,EzMoney::format($r->pivot->price)));
+                $this->routeRoundTripPriceWithDiscount[$r->id] = EzMoney::format(GetRouteDiscount::run($this->transfer,true,$r->id,$r->pivot->discount,EzMoney::format($r->pivot->price),EzMoney::format($r->pivot->price_round_trip)));
+                $this->routePriceCommission[$r->id] = EzMoney::format(GetRouteCommission::run($this->transfer,false,$r->id,$r->pivot->commission,EzMoney::format($r->pivot->price)));
+                $this->routeRoundTripPriceCommission[$r->id] = EzMoney::format(GetRouteCommission::run($this->transfer,true,$r->id,$r->pivot->commission,EzMoney::format($r->pivot->price),EzMoney::format($r->pivot->price_round_trip)));
             }
         }
     }
 
     public function updateDiscountPrices($rId){
-        $this->routePriceWithDiscount[$rId] = EzMoney::format(GetRouteDiscount::run($this->transfer,false,$rId,$this->routeDiscountPercentage[$rId],$this->routePrice[$rId]));
-        $this->routeRoundTripPriceWithDiscount[$rId] = EzMoney::format(GetRouteDiscount::run($this->transfer,true,$rId,$this->routeDiscountPercentage[$rId],$this->routePriceRoundTrip[$rId]));
+        $this->routePriceWithDiscount[$rId] = EzMoney::format(GetRouteDiscount::run($this->transfer,false,$rId,Arr::get($this->routeDiscountPercentage,$rId),Arr::get($this->routePrice,$rId)));
+        $this->routeRoundTripPriceWithDiscount[$rId] = EzMoney::format(GetRouteDiscount::run($this->transfer,true,$rId,Arr::get($this->routeDiscountPercentage,$rId),Arr::get($this->routePrice,$rId),Arr::get($this->routePriceRoundTrip,$rId)));
     }
 
     public function updateCommissionPrices($rId){
-        $this->routePriceCommission[$rId] = EzMoney::format(GetRouteCommission::run($this->transfer,false,$rId,$this->routeCommissionPercentage[$rId],$this->routePrice[$rId]));
-        $this->routeRoundTripPriceCommission[$rId] = EzMoney::format(GetRouteCommission::run($this->transfer,true,$rId,$this->routeCommissionPercentage[$rId],$this->routePriceRoundTrip[$rId]));
+        $this->routePriceCommission[$rId] = EzMoney::format(GetRouteCommission::run($this->transfer,false,$rId,Arr::get($this->routeCommissionPercentage,$rId),Arr::get($this->routePrice,$rId)));
+        $this->routeRoundTripPriceCommission[$rId] = EzMoney::format(GetRouteCommission::run($this->transfer,true,$rId,Arr::get($this->routeCommissionPercentage,$rId),Arr::get($this->routePriceRoundTrip,$rId)));
     }
 
     public function updated($property): void
@@ -160,13 +174,13 @@ class TransferPrices extends Component
     }
 
     public function updateRoutePrice($rId){
-        $this->routePriceWithDiscount[$rId] = EzMoney::format(GetRouteDiscount::run($this->transfer,false,$rId,$this->routeDiscountPercentage[$rId],$this->routePrice[$rId]));
-        $this->routePriceCommission[$rId] = EzMoney::format(GetRouteCommission::run($this->transfer,false,$rId,$this->routeCommissionPercentage[$rId],$this->routePrice[$rId]));
+        $this->routePriceWithDiscount[$rId] = EzMoney::format(GetRouteDiscount::run($this->transfer,false,$rId,Arr::get($this->routeDiscountPercentage,$rId),$this->routePrice[$rId]));
+        $this->routePriceCommission[$rId] = EzMoney::format(GetRouteCommission::run($this->transfer,false,$rId,Arr::get($this->routeCommissionPercentage,$rId),$this->routePrice[$rId]));
     }
 
     public function updateRoutePriceRoundTrip($rId){
-        $this->routeRoundTripPriceWithDiscount[$rId] = EzMoney::format(GetRouteDiscount::run($this->transfer,true,$rId,$this->routeDiscountPercentage[$rId],$this->routePriceRoundTrip[$rId]));
-        $this->routeRoundTripPriceCommission[$rId] = EzMoney::format(GetRouteCommission::run($this->transfer,true,$rId,$this->routeCommissionPercentage[$rId],$this->routePriceRoundTrip[$rId]));
+        $this->routeRoundTripPriceWithDiscount[$rId] = EzMoney::format(GetRouteDiscount::run($this->transfer,true,$rId,Arr::get($this->routeDiscountPercentage,$rId),$this->routePriceRoundTrip[$rId]));
+        $this->routeRoundTripPriceCommission[$rId] = EzMoney::format(GetRouteCommission::run($this->transfer,true,$rId,Arr::get($this->routeCommissionPercentage,$rId),$this->routePriceRoundTrip[$rId]));
     }
 
     public function updatedTransferId(): void
@@ -199,14 +213,14 @@ class TransferPrices extends Component
 
     public function save($routeId){
 
-        $this->validate($this->singelSaveRules($routeId), [], $this->fieldNames);
+        $this->validate($this->singelSaveRules($routeId), [], $this->singelFieldNames($routeId));
 
         if(empty($this->routePrice[$routeId])){
             return;
         }
 
         $roundTripPrice = 0;
-        if($this->routePriceRoundTrip[$routeId]){
+        if(Arr::get($this->routePriceRoundTrip,$routeId)){
             $roundTripPrice = EzMoney::parseForDb($this->routePriceRoundTrip[$routeId]);
         }
 
