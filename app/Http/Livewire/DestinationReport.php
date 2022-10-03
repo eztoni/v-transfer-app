@@ -177,7 +177,6 @@ use Actions;
         return Destination::all();
     }
 
-
     public function render()
     {
         return view('livewire.destination-report');

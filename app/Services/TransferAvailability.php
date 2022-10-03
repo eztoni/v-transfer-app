@@ -42,7 +42,7 @@ class TransferAvailability
         $order = $partnerOrder->getPartnerOrder();
         $availableTransfers = RouteTransfer::query()
             ->where('route_id', $this->route->id)
-            ->where('round_trip',$this->roundTrip)
+            ->orWhere('round_trip',$this->roundTrip)
             ->with(['transfer', 'partner','transfer.media'])
             ->whereHas('partner')
             ->whereHas('transfer.vehicle', function ($q) {

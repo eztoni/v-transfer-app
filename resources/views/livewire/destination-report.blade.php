@@ -7,14 +7,14 @@
             <div class="grid grid-cols-4 gap-2">
                 @role(\App\Models\User::ROLE_ADMIN.'|'.\App\Models\User::ROLE_SUPER_ADMIN)
 
-
-
-                <x-select
+                <x-native-select
                     option-key-value
                     wire:model="destination"
                     label="Destination"
+                    clearable="false"
                     :options="$this->adminDestinations->pluck('name','id')"
-                ></x-select>
+                ></x-native-select>
+
                 @endrole
 
                 <x-flatpickr
@@ -35,13 +35,13 @@
                     wire:model.defer="dateTo"
                 />
 
-
                 <x-select
                     option-key-value
                     wire:model="partner"
                     label="Partner"
                     :options="$this->partners"
                 ></x-select>
+
                 <x-select
                     option-key-value
                     wire:model="pickupLocation"

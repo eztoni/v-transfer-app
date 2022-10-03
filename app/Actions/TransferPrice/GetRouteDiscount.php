@@ -62,7 +62,7 @@ class GetRouteDiscount
         $amount = EzMoney::parseForDb($price);
 
         if($roundTrip){
-            $amount = EzMoney::parseForDb("0");
+            $amount = EzMoney::parseForDb($roundTripPrice);
         }
 
         $money = new Money($amount,new Currency('EUR'));
