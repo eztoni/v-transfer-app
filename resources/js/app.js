@@ -1,6 +1,6 @@
-require('./bootstrap');
+import './bootstrap';
 /* FLOATING ACTION BUTTON */
-require('mfb/src/mfb');
+import 'mfb/src/mfb';
 
 /* ALPINE */
 import Alpine from 'alpinejs';
