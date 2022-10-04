@@ -10,8 +10,8 @@
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-    <link rel="stylesheet" href="{{ mix('css/styles.css') }}">
+    @vite('resources/css/app.css')
+    @vite('resources/css/styles.css')
 
 
     @stack('styles')
@@ -24,9 +24,9 @@
     <script
         src="https://maps.googleapis.com/maps/api/js?key={{ Config::get('ez.google_maps_api_key') }}&libraries=places"
         async defer></script>
-    <script src="{{ mix('js/imports.js') }}"></script>
+    @vite('resources/js/imports.js')
     <wireui:scripts />
-    <script defer src="{{ mix('js/app.js') }}" ></script>
+    @vite('resources/js/app.js')
 </head>
 <body class="font-sans antialiased " style="background-color: rgb(229 230 230 / 47%);">
 <div class="h-screen  ds-drawer  ds-drawer-mobile">

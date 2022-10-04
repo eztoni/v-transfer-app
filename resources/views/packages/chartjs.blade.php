@@ -1,4 +1,4 @@
 
 @push('scripts')
-    <script src="{{mix('packages/chartjs/chartjs.js')}}"></script>
+    @vite('resources/packages/chartjs/chartjs.js')
 @endpush
