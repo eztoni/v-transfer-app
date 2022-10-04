@@ -2,7 +2,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.0",
@@ -11,7 +14,7 @@
         "florianv/laravel-swap": "^2.3",
         "fruitcake/laravel-cors": "^3.0",
         "guzzlehttp/guzzle": "^7.4.2",
-        "laravel/framework": "^9.11",
+        "laravel/framework": "^9.19",
         "laravel/jetstream": "^2.7.5",
         "laravel/sanctum": "^2.6",
         "laravel/tinker": "^2.7.2",
