@@ -1,5 +1,7 @@
 
+
 <div class="internal-reservation container " x-data="app()">
+
     <div class="grid grid-cols-3 gap-4">
         <div class="col-span-2 ">
 

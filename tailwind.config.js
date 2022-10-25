@@ -12,7 +12,6 @@ module.exports = {
         './vendor/wireui/wireui/src/View/**/*.php'
     ],
     presets: [
-
         require('./vendor/wireui/wireui/tailwind.config.js')
     ],
     theme: {

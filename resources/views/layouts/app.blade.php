@@ -6,12 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
-    <link rel="icon" href="/img/valamar-fav.png" sizes="32x32">
+    <link rel="icon" href="/img/favicon.ico" sizes="32x32">
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
     <!-- Styles -->
     @vite('resources/css/app.css')
-    @vite('resources/css/styles.css')
+    @vite('resources/css/styles.scss')
+
 
 
     @stack('styles')
@@ -27,6 +28,7 @@
     @vite('resources/js/imports.js')
     <wireui:scripts />
     @vite('resources/js/app.js')
+
 </head>
 <body class="font-sans antialiased " style="background-color: rgb(229 230 230 / 47%);">
 <div class="h-screen  ds-drawer  ds-drawer-mobile">

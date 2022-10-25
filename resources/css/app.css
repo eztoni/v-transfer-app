@@ -6,6 +6,8 @@
 @import "select2/dist/css/select2.css";
 @import "select2Fix.css";
 @import "animate.css/animate.css";
+@import '#/dropzone/dist/dropzone.css';
+
 /*
 Remove popping buttons on page load
  */

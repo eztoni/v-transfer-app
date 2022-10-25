@@ -14,7 +14,10 @@ use Actions;
 
     public $destinationId;
     public $partnerId;
-    public $dateRange = [];
+    public $dateRange = [
+        0=>[],
+        1=>[],
+    ];
 
 
     public function getReservationsProperty(){

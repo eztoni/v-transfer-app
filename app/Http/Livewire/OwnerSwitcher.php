@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Company;
 use App\Models\Owner;
 use App\Models\User;
+use App\Scopes\OwnerScope;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use WireUi\Traits\Actions;
@@ -19,7 +20,9 @@ use Actions;
 
         $owner = Owner::findOrFail($ownerId);
 
-        if($owner->destinations->isEmpty()){
+        $destinations = $owner->destinations()->withoutGlobalScope(OwnerScope::class)->get();
+
+        if($destinations->isEmpty()){
             $this->notification()->error('Action failed!','Selected owner has no destinations!');
             return;
         }

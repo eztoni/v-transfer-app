@@ -4,7 +4,7 @@
         style="max-width: 260px;"
 
         class="flex flex-col  relative border mb-2 mt-2 md:mt-0  lg:shadow-md  lg:shadow-sky-100  rounded-lg bg-base-100 text-base-content w-80">
-        <img class="logo-img absolute" src="{{asset('/storage/static_images/ez-logo.png')}}">
+        <img class="logo-img absolute" src="{{asset('/storage/static_images/valamar-puzina.png')}}">
 
         <div
             class="sticky inset-x-0 bg-transparent top-0 z-50  w-full p-0 transition duration-200 ease-in-out border-b block border-base-300 ">

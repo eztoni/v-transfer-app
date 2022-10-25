@@ -20,12 +20,12 @@
                         <x-datetime-picker
                             without-time
                             label="Date from"
-                            wire:model.defer.defer="dateRange.0"
+                            wire:model.defer="dateRange.0"
                         />
                         <x-datetime-picker
                             without-time
                             label="Date to"
-                            wire:model.defer.defer="dateRange.1"
+                            wire:model.defer="dateRange.1"
                         />
 
 

@@ -59,18 +59,18 @@
                         <p class=" text-2xl">Company Logo</p>
                         <p>This is your company image.<b> Upload</b> new image by pressing the button below!</p>
                         <input wire:model="photo" type="file" x-ref="photo_input" @change="filename=$el.files[0].name" class="hidden">
-                        <button x-show="filename === false" class="  btn  btn-primary btn-sm w-full" @click="$refs.photo_input.click()">
+                        <x-button primary x-show="filename === false" class="  btn  btn-primary btn-sm w-full" @click="$refs.photo_input.click()">
                             Choose
                             image
-                        </button>
+                        </x-button>
                         <div class="flex w-full gap-4" x-show="filename!==false" x-transition:enter>
-                            <button class="btn-square btn btn-error btn-sm"
+                            <x-button warning sm
                                     @click="$refs.photo_input.value = null;filename=false;@this.set('photo',null)">x
-                            </button>
-                            <button class=" flex-grow btn  btn-success btn-sm " :disabled="filename===false" @click="$refs.photo_input.value = null;filename=false" wire:click="savePhoto">
+                            </x-button>
+                            <x-button positive class=" flex-grow btn  btn-success btn-sm " x-bind:disabled="filename===false" @click="$refs.photo_input.value = null;filename=false" wire:click="savePhoto">
                                 <i class="fas fa-upload"></i>
                                 Upload
-                            </button>
+                            </x-button>
                         </div>
 
                         <p x-show="filename!==false" class="mb-2"><b>File: </b><span x-text="filename"></span></p>

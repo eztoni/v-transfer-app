@@ -9,7 +9,7 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-        <link rel="icon" href="/img/valamar-fav.png" sizes="32x32">
+        <link rel="icon" href="/img/favicon.ico" sizes="32x32">
 
         <!-- Styles -->
         @vite('resources/css/app.css')

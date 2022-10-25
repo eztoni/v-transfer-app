@@ -1,7 +1,8 @@
 @props(['active'=>'','text'=>'','items'=>[]])
 
 
-<div x-data="{active : {{ $active?'true':'false'}} }" :class="active?'bg-gray-100':''" {{ $attributes->class(['  border-b ds-collapse ds-drawer-submenu ds-collapse-arrow ']) }} >
+<div x-data="{active : {{ $active?'true':'false'}} }"
+     :class="active?'bg-gray-100':''" {{ $attributes->class(['  border-b ds-collapse ds-drawer-submenu ds-collapse-arrow ']) }} >
     <input  x-model="active" type="checkbox"  {{$active?'checked':''}}>
     <div class="ds-collapse-title   font-medium">
         {{ $slot  }}
