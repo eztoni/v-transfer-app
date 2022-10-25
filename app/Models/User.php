@@ -42,6 +42,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'owner_id'
     ];
 
+    protected $attributes = [
+      'city' => '-',
+      'zip' => '-',
+    ];
+
+
+
     public function getNameAttribute($value)
     {
         if (App::environment('production')) {

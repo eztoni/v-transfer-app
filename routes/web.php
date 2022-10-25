@@ -64,6 +64,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         Route::get('/age-group-categories/{ageGroup}', AgeGroupCategories::class)->name('age-group-categories');
         //Routes
         Route::get('/routes-overview', \App\Http\Livewire\CRUD\RoutesOverview::class)->name('routes-overview');
+        Route::get('/owner-overview', \App\Http\Livewire\CRUD\OwnerOverview::class)->name('owner-overview');
         //Extras
         Route::get('/extras-overview', ExtrasOverview::class)->name('extras-overview');
         Route::get('/extras-edit/{extra}', ExtrasEdit::class)->name('extras-edit');

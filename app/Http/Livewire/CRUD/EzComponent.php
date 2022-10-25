@@ -22,6 +22,10 @@ abstract class EzComponent extends \Livewire\Component
     public Model $model;
     public string $modelClass;
     public bool $crudModal = false;
+
+    public bool $isUpdate = false;
+
+
     /**
      * Set array of roles as value of this array to only allow those roles to do the action
      * @var array|false[]
@@ -99,14 +103,18 @@ abstract class EzComponent extends \Livewire\Component
     public function updateModel($modelId)
     {
         $this->openCrudModal();
+        $this->isUpdate = true;
         $this->model = $this->modelClass::find($modelId);
     }
 
     public function addModel()
     {
         $this->openCrudModal();
+        $this->isUpdate = false;
         $this->model = app($this->modelClass);
     }
+
+
 
     public function saveModelData()
     {

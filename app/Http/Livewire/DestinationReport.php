@@ -27,7 +27,7 @@ use Actions;
     public $dateFrom;
     public $dateTo;
     public $partner = 0;
-    public $status = 0;
+    public $status = 'All';
 
     public $pickupLocation = 0;
     public $dropoffLocation = 0;
@@ -105,7 +105,7 @@ use Actions;
         $this->filteredReservations =
             Reservation::query()
                 ->whereIsMain(true)
-                ->with(['leadTraveller', 'pickupLocation', 'dropoffLocation'])
+                ->with(['leadTraveller', 'pickupLocation', 'dropoffLocation','returnReservation'])
                 ->where('destination_id', $this->destination)
                 ->whereDate('created_at', '>=', Carbon::createFromFormat('d.m.Y',$this->dateFrom))
                 ->whereDate('created_at', '<=',Carbon::createFromFormat('d.m.Y',$this->dateTo))
@@ -118,7 +118,7 @@ use Actions;
                 ->when($this->dropoffLocation != 0, function ($q) {
                     $q->where('dropoff_location', $this->dropoffLocation);
                 })
-                ->when($this->status != 0, function ($q) {
+                ->when($this->status != 'All', function ($q) {
                     $q->where('status', $this->status);
                 })
                 ->get()
@@ -133,20 +133,22 @@ use Actions;
                         $this->totalHRK = $this->totalHRK->add($priceHRK->getMoney());
                     }
 
-
                     return [
                         'id' => $i->id,
                         'name' => $i->leadTraveller?->first()->full_name,
-                        'date' => $i->date?->format('d.m.Y'),
+                        'date_time' => $i->date_time?->format('d.m.Y @ H:i'),
                         'partner' => $i->partner->name,
                         'adults' => $i->adults,
                         'children' => $i->children,
                         'infants' => $i->infants,
                         'transfer' => $i->transfer?->name,
-                        'vehicle' => $i->transfer?->vehicle?->name,
+                        'vehicle' => $i->transfer?->vehicle?->type,
                         'status' => $i->status,
                         'price_eur' => (string)$priceEur,
                         'price_hrk' => (string)$priceHRK,
+                        'round_trip' => $i->is_round_trip,
+                        'round_trip_date' => $i->returnReservation?->date_time?->format('d.m.Y @ H:i'),
+
                     ];
                 })->toArray();
 

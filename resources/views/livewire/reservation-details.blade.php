@@ -21,8 +21,8 @@
 
     <div class="ds-divider"></div>
     <div class="ds-tabs ">
-        <a class="ds-tab ds-tab-lifted  ds-tab-lg flex-grow"
-
+        <a class="ds-tab ds-tab-lifted  ds-tab-lg flex-grow "
+            style="border-color: #136baa;"
            :class="{ 'ds-tab-active': tab === 'reservation' }"
            x-on:click.prevent="tab = 'reservation'" href="#">
             @if(!$reservation->isCancelled())
@@ -46,6 +46,7 @@
         @if($reservation->is_round_trip)
 
             <a class="ds-tab ds-tab-lifted ds-tab-lg flex-grow"
+               style="border-color: #136baa;"
                :class="{ 'ds-tab-active': tab === 'round-trip-reservation' }"
                x-on:click.prevent="tab = 'round-trip-reservation'" href="#">
                 @if(!$reservation->returnReservation->isCancelled())

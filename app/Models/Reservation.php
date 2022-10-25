@@ -16,8 +16,8 @@ class Reservation extends Model
     public const STATUS_CANCELLED = 'cancelled';
 
     const  STATUS_ARRAY = [
-        self::STATUS_PENDING,
         self::STATUS_CONFIRMED,
+        self::STATUS_PENDING,
         self::STATUS_CANCELLED,
     ];
 

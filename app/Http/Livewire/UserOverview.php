@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Destination;
 use App\Models\Owner;
 use App\Models\User;
+use App\Scopes\OwnerScope;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use WireUi\Traits\Actions;
@@ -19,7 +20,6 @@ use Actions;
     public $userModal;
     public $userRole = '';
     public $selectedDestinations = [];
-    public $userDestinations = [];
 
 
 
@@ -29,8 +29,8 @@ use Actions;
             'user.name' => 'required|min:3',
             'user.email' => 'required|email|unique:users,email,'.$this->user->id,
             'user.owner_id' => 'required',
-            'user.city' => 'min:3',
-            'user.zip' => 'min:3',
+            'user.city' => '',
+            'user.zip' => '',
             'user.oib' => 'digits:13|integer|unique:users,oib,'.$this->user->id,
             'user.set_password'=>'nullable|min:6',
             'user.set_password_confirmation'=>'nullable|same:user.set_password',
@@ -62,7 +62,6 @@ use Actions;
         $this->openUserModal();
         $this->user = new User();
         $this->selectedDestinations = [];
-        $this->userDestinations = [];
     }
 
     public function updateUser($userId){
@@ -70,17 +69,17 @@ use Actions;
         $this->openUserModal();
         $this->user = User::findOrFail($userId);
         $this->userRole = $this->user->getRoleNames()->first();
-        $this->userDestinations = $this->user->availableDestinations->pluck('id')->toArray();
         $this->selectedDestinations = $this->user->availableDestinations->pluck('id')->toArray();
 
-        if($this->userDestinations){
-            $this->fillSelect2();
-        }
     }
 
     public function fillSelect2()
     {
         $this->emit('fillSelect2');
+    }
+
+    public function updatedUserOwnerId(){
+        $this->selectedDestinations = [];
     }
 
     public function saveUserData(){
@@ -132,7 +131,8 @@ use Actions;
         $owners = Owner::all()->mapWithKeys(function ($i) {
             return [$i->id => $i->name];
         })->toArray();
-        $destinations = Destination::all();
+
+        $destinations = Destination::withoutGlobalScope(OwnerScope::class)->where('owner_id',$this->user->owner_id)->get();
 
         return view('livewire.user-overview',compact('users','currentUser','roles','owners','destinations'));
     }

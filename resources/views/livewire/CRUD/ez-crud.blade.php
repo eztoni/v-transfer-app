@@ -2,7 +2,7 @@
         :title="$pluralModelName"
     >
         <x-slot name="action">
-            <x-button wire:click="addModel" positive icon="plus">Add {{$modelName}}</x-button>
+            <x-button type="button" wire:click="addModel" positive icon="plus">Add {{$modelName}}</x-button>
         </x-slot>
         <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
             <thead>

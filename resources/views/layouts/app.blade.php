@@ -30,8 +30,8 @@
     @vite('resources/js/app.js')
 
 </head>
-<body class="font-sans antialiased " style="background-color: rgb(229 230 230 / 47%);">
-<div class="h-screen  ds-drawer  ds-drawer-mobile">
+<body class="font-sans antialiased  " style="background-color: rgb(229 230 230 / 47%);">
+<div class="h-screen  ds-drawer  ds-drawer-mobile ">
 
     <input id="main-menu" type="checkbox" @change="$refs['right-drawer'].checked = false" class=" ds-drawer-toggle">
 
@@ -39,7 +39,7 @@
 
     <main class=" block p-2 overflow-x-hidden   text-base-content   ds-drawer-content ">
         @include('components.navbar')
-        <div >
+        <div class="container" >
             {{ $slot }}
         </div>
     </main>
