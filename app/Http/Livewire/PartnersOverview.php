@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Destination;
+use App\Models\Language;
 use App\Models\Partner;
 use App\Models\User;
 use App\Scopes\CompanyScope;
@@ -14,7 +15,7 @@ use WireUi\Traits\Actions;
 
 class PartnersOverview extends Component
 {
-use Actions;
+    use Actions;
 
     use WithPagination;
 
@@ -25,17 +26,61 @@ use Actions;
     public $deleteId = '';
     public $selectedDestinations = [];
 
+    public $copyTermsModal = false;
 
+    public $companyLanguages = ['en'];
+
+    public $partnerPreviewId = 0;
+
+    public $terms = [
+        'en' => null
+    ];
+
+    public function getPartnersWithTermsProperty()
+    {
+        return Partner::whereNotNull('terms')->where('id','!=',$this->partner->id)->get();
+    }
+
+    public function openCopyTermsModal(){
+        $this->copyTermsModal = true;
+    }
+    public function closeCopyTermsModal(){
+        $this->copyTermsModal = false;
+    }
+
+    public function getTermsPreviewProperty(){
+        return \Arr::get($this->partnersWithTerms->where('id',$this->partnerPreviewId)->first()?->getTranslations(),'terms');
+    }
+
+    public function copyPartnerTerms()
+    {
+        $this->terms = $this->termsPreview;
+        $this->closeCopyTermsModal();
+        $this->partnerPreviewId = 0;
+    }
 
     protected function rules()
     {
-        return [
+        $ruleArray= [
+            'terms.en' => 'required|min:3',
             'partner.name'=>'required|max:255|min:2',
             'partner.email'=>'required|email',
+            'partner.address'=>'required|min:3',
             'selectedDestinations'=>'required',
             'partner.phone'=>'required|max:255',
         ];
+
+        foreach ($this->companyLanguages as $lang) {
+            if ($lang !== 'en') {
+                $ruleArray['terms.' . $lang] = 'nullable|min:3';
+            }
+        }
+    return $ruleArray;
     }
+
+
+
+
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
@@ -50,8 +95,19 @@ use Actions;
     }
 
     public function mount(){
-        $this->partner = new Partner();
+        $this->instantiateComponentValues();
     }
+    public function instantiateComponentValues()
+    {
+        $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
+        $this->partner = new Partner();
+
+        foreach ($this->companyLanguages as $lang) {
+            $this->terms[$lang] = $this->partner->getTranslation('terms', $lang, false);
+        }
+
+    }
+
 
     public function updatedPartnerDestinationId(){
         $this->partner->starting_point_id = null;
@@ -59,6 +115,7 @@ use Actions;
     }
 
     public function addPartner(){
+        $this->terms = [];
         $this->openPartnerModal();
         $this->partner = new Partner();
         $this->selectedDestinations = [];
@@ -68,8 +125,8 @@ use Actions;
 
         $this->openPartnerModal();
         $this->partner = Partner::withoutGlobalScope(DestinationScope::class)->find($partnerId);
+        $this->terms = \Arr::get($this->partner->getTranslations(),'terms',['en'=>'']);
         $this->selectedDestinations = $this->partner?->destinations()?->pluck('id')->toArray();
-
 
     }
 
@@ -78,11 +135,14 @@ use Actions;
         if(!Auth::user()->hasRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN]))
             return;
 
+        $this->partner->setTranslations('terms', $this->terms);
+
         $this->partner->owner_id = Auth::user()->owner_id;
         $this->validate();
         $this->partner->save();
         $this->partner->destinations()->sync($this->selectedDestinations);
         $this->notification()->success('Saved','Partner Saved');
+        $this->terms = [];
         $this->closePartnerModal();
 
     }

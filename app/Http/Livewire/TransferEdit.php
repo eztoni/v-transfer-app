@@ -15,9 +15,10 @@ class TransferEdit extends Component
 {
 use Actions;
     public Transfer $transfer;
-    public $companyLanguages = ['en'];
     public $vehicleId = null;
     public $destinationId = null;
+
+    public $companyLanguages = ['en'];
     public $transferName = [
         'en' => null
     ];
@@ -67,10 +68,7 @@ use Actions;
 
 
 
-    public function updatedTransferName()
-    {
-        $this->transfer->setTranslations('name', $this->transferName);
-    }
+
     public function updated($field)
     {
         $this->validateOnly($field);

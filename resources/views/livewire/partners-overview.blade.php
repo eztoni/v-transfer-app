@@ -1,5 +1,5 @@
 <div>
-
+    <form wire:submit.prevent=""
     <x-card title="Partners">
         <x-slot name="action">
 
@@ -72,12 +72,58 @@
         {{--            </div>--}}
 
 
-        <x-modal.card title="{{  !empty($this->partner->exists) ? 'Update':'Add' }} partner" wire:model="partnerModal">
+        <x-modal.card title="Copy terms" wire:model="copyTermsModal">
+
+            @if($this->partnersWithTerms->isNotEmpty())
+                <x-select option-key-value
+                          label="Partners:"
+                          wire:model="partnerPreviewId"
+                          :options="$this->partnersWithTerms->pluck('name','id')"></x-select>
+            @endif
+                @if($this->partnerPreviewId)
+                <div x-data="{selectedLanguage:'en'}" >
+                    <div class="ds-tabs justify-end mb-2">
+                        @foreach($this->companyLanguages as $languageIso)
+                            <a @click="selectedLanguage='{{$languageIso}}'" class="ds-tab ds-tab-bordered "
+                               x-bind:class="selectedLanguage ==='{{$languageIso}}'?'ds-tab-active':''">
+                                {{Str::upper($languageIso)}}
+                            </a>
+                        @endforeach
+                    </div>
+                    <p >Terms that will be copied:</p>
+
+                @foreach($this->companyLanguages as $languageIso)
+                        <div :key="{{$languageIso}}" class="mb-4" x-show="selectedLanguage ==='{{$languageIso}}'" x-transition:enter>
+                            <div class="form-control"  x-data="{html:null}">
+
+                                <p class="border rounded-lg p-2">
+                                    {{nl2br(Arr::get($this->termsPreview,$languageIso))}}
+                                </p>
+                            </div>
+                        </div>
+
+                    @endforeach
+
+                    </div>
+                @endif
+                <p class="text-warning-600">By clicking Copy Terms button, all terms translations will be copied.</p>
+                <x-slot name="footer">
+                    <div class="flex justify-between">
+
+                        <x-button wire:click="closeCopyTermsModal()" >Close</x-button>
+                        <x-button wire:click="copyPartnerTerms()" positive
+                        >Copy Terms</x-button>
+                    </div>
+                </x-slot>
+        </x-modal.card>
+
+        <x-modal.card title="{{  !empty($this->partner->exists) ? 'Update':'Add' }} partner" wire:model="partnerModal" z-index="z-30">
 
 
             <x-input label="Name:" wire:model="partner.name"></x-input>
             <x-input label="Phone:" wire:model="partner.phone" placeholder="+385 91 119 9111"></x-input>
             <x-input label="Email:" wire:model="partner.email"></x-input>
+            <x-input label="Address:" wire:model="partner.address"></x-input>
             <x-select option-key-value
                       label="Destinations:"
                       wire:model="selectedDestinations"
@@ -85,6 +131,32 @@
                       :options="$destinations->pluck('name','id')"></x-select>
 
 
+            <hr class="my-6">
+
+            <div x-data="{selectedLanguage:'en'}">
+            <div class="ds-tabs justify-end">
+                @foreach($this->companyLanguages as $languageIso)
+                    <a @click="selectedLanguage='{{$languageIso}}'" class="ds-tab ds-tab-bordered "
+                       x-bind:class="selectedLanguage ==='{{$languageIso}}'?'ds-tab-active':''">
+                        {{Str::upper($languageIso)}}
+                    </a>
+                @endforeach
+            </div>
+            @foreach($this->companyLanguages as $languageIso)
+                <div :key="{{$languageIso}}" class="mb-4" x-show="selectedLanguage ==='{{$languageIso}}'" x-transition:enter>
+                    <div class="form-control"  x-data="{html:null}">
+                        <x-textarea label="Terms and conditions ({{Str::upper($languageIso)}}):" wire:model="terms.{{$languageIso}}"
+                        />
+                    </div>
+                </div>
+
+            @endforeach
+                @if($this->partnersWithTerms?->isNotEmpty() > 0)
+                    <x-button sm
+                              wire:click="openCopyTermsModal"
+                              label="Copy terms from another partner" class="float-right"></x-button>
+                @endif
+            </div>
             <x-slot name="footer">
                 <div class="flex justify-between">
 
