@@ -43,6 +43,12 @@ class MainDrawer extends Component
                         'href' => route('transfer-overview'),
                         'show' => true,
                     ],
+                    [
+                        'text' => 'Transfer Prices',
+                        'active' => request()->routeIs('transfer-prices'),
+                        'href' => route('transfer-prices'),
+                        'show' => true,
+                    ],
                 ]
             ],
             [
@@ -55,12 +61,6 @@ class MainDrawer extends Component
                         'text' => 'Transfer Reservation',
                         'active' => request()->routeIs('internal-reservation'),
                         'href' => route('internal-reservation'),
-                        'show' => true,
-                    ],
-                    [
-                        'text' => 'Transfer Prices',
-                        'active' => request()->routeIs('transfer-prices'),
-                        'href' => route('transfer-prices'),
                         'show' => true,
                     ],
                 ]
@@ -105,7 +105,7 @@ class MainDrawer extends Component
 
                     ],
                     [
-                        'text' => 'Pickup & Dropoff Points',
+                        'text' => 'Pick-up and Drop-off Locations',
                         'active' => request()->routeIs('admin.points-overview'),
                         'href' => route('admin.points-overview'),
                         'show' =>\Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN),

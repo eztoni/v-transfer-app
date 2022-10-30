@@ -54,8 +54,8 @@
 
 
                 <x-input label="Type:" wire:model="vehicleType.en"/>
-                <x-input label="Max Occ:" wire:model="vehicle.max_occ"/>
-                <x-input label="Max Luggage:" wire:model="vehicle.max_luggage"/>
+                <x-input label="Maximum Occupancy:" wire:model="vehicle.max_occ"/>
+                <x-input label="Maximum Luggage Allowance:" wire:model="vehicle.max_luggage"/>
 
                 <x-slot name="footer">
                     <div class="mt-4 flex justify-between">

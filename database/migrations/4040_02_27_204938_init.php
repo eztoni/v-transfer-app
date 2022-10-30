@@ -32,13 +32,19 @@ class Init extends Migration
 
         \App\Models\Owner::create(
             [
-                'name' => 'Valamar Rivijera',
+                'name' => 'Valamar Riviera',
                 'company_id' => 1,
             ]
         );
         \App\Models\Owner::create(
             [
-                'name' => 'Imperial Rab',
+                'name' => 'Imperial Riviera',
+                'company_id' => 1,
+            ]
+        );
+        \App\Models\Owner::create(
+            [
+                'name' => 'Helios Faros',
                 'company_id' => 1,
             ]
         );

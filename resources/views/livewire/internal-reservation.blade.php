@@ -19,15 +19,15 @@
                             <div class="flex gap-4   flex-wrap">
                                 <x-input
                                     wire:model.defer="pullDataFields.resId"
-                                    label="Reservation code"
+                                    label="Accomodation Reservation Number"
                                 />
 
                                 <x-input
                                     wire:model.defer="pullDataFields.fName"
-                                    label="Guest name"/>
+                                    label="Reservation Holder Name"/>
                                 <x-input
                                     wire:model.defer="pullDataFields.lName"
-                                    label="Guest last name"/>
+                                    label="Reservation Holder Last Name"/>
 
                                     <x-flatpickr
                                         label="Check in:"
