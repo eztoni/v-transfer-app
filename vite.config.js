@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 
 export default defineConfig({
-
     resolve: {
         alias: {
             '@': '/resources/',
@@ -20,7 +19,6 @@ export default defineConfig({
                 'resources/js/imports.js',
                 'resources/js/init-alpine.js',
             ],
-            refresh: true,
         }),
     ],
 });

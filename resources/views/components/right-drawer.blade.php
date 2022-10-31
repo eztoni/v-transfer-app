@@ -41,6 +41,18 @@
                     </x-slot>
                     PHP info
                 </x-nav-link>
+
+                <x-nav-link href="#"  x-data="{}" @click="localStorage.removeItem('hide-res-dev-tools');window.location.reload()" >
+                    <x-slot name="icon">
+                        <i class="fas fa-database"></i>
+                    </x-slot>
+                    Enable Internal Dev tools
+                </x-nav-link><x-nav-link href="{{route('dev-mail-preview')}}"   >
+                    <x-slot name="icon">
+                        <i class="fas fa-mail"></i>
+                    </x-slot>
+                   Mail preview
+                </x-nav-link>
             @endif
         </ul>
     </div>

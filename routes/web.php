@@ -121,3 +121,15 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 });
 
 
+// For development only
+if (!App::isProduction()){
+
+    Route::middleware(
+        ['role:' . User::ROLE_SUPER_ADMIN ]
+    )->group(function () {
+        Route::get('/dev-mail-preview', \App\Http\Livewire\DevMailPreview::class)->name('dev-mail-preview');
+
+        Route::get('/res-mail-render/{type}/{id}', [\App\Http\Controllers\MailRenderingController::class,'renderReservationMail'])->name('res-mail-render');
+
+    });
+}

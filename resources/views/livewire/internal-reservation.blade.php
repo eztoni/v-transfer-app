@@ -680,10 +680,41 @@
         @endif
 
     </div>
-    @if($this->availableTransfers->isNotEmpty() && !empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
         <div >
             <div class="col-span-1 sticky" style="top: 5vh">
-                <div>
+                <div class="flex flex-col gap-4">
+                    @if(config('valamar.ez_dev_tools') && Auth::user()->hasRole('super-admin') && !App::isProduction() )
+                    <div x-data="{hideDevTools: false}"
+                         x-init="hideDevTools = !!localStorage.getItem('hide-res-dev-tools') "
+                         x-cloak
+                         x-show="!hideDevTools"
+                    >
+                        <x-card title="Internal dev tools" >
+
+                        <div class="absolute top-2 right-2">
+                            <x-button.circle
+                                icon="x"
+                                @click="localStorage.setItem('hide-res-dev-tools', true); hideDevTools = localStorage.getItem('hide-res-dev-tools');"
+                                              sm />
+                        </div>
+
+                    <x-toggle wire:model="devRoundTrip" label="Populate round trip"></x-toggle>
+                    <hr class="my-4">
+                    @foreach($this->populateReservationModes as $mode)
+                            <x-button
+                                label="{{\Illuminate\Support\Str::upper($mode)}}"
+                                wire:click="devPopulateReservation('{{$mode}}')"
+                                      sm
+                                      primary
+                            ></x-button>
+                        @endforeach
+
+
+
+                    </x-card>
+                    </div>
+                    @endif
+                    @if($this->availableTransfers->isNotEmpty() && !empty($stepOneFields['destinationId']) && !empty($stepOneFields['startingPointId']) && !empty($stepOneFields['endingPointId']))
 
                     <x-card title="Reservation details">
                         <div class="res-details">
@@ -768,7 +799,7 @@
 
 
                     @if($step === 1)
-                        <div class="my-2 ">
+                        <div >
                             <x-card>
                                 <x-button lg wire:click="nextStep" class="float-right" right-icon="arrow-right" positive
                                           class="w-full" label="Next step"></x-button>
@@ -815,11 +846,13 @@
 
 
                     @endif
+
+                    @endif
                 </div>
 
             </div>
         </div>
-    @endif
+
 
 </div>
 

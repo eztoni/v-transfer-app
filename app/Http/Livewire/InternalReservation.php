@@ -12,6 +12,7 @@ use App\Models\Route;
 use App\Models\Transfer;
 use App\Models\Traveller;
 use App\Services\TransferAvailability;
+use App\Traits\ReservationDevTools;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
@@ -25,7 +26,7 @@ use function PHPUnit\Framework\arrayHasKey;
 
 class InternalReservation extends Component
 {
-    use Actions;
+    use Actions, ReservationDevTools;
 
     public $stepOneFields = [
         'destinationId' => null,
@@ -360,7 +361,6 @@ class InternalReservation extends Component
     public function resetAdresses()
     {
         $this->stepOneFields['pickupAddress'] = $this->stepOneFields['dropoffAddress'] = '';
-        $this->pickupAddressPointId = $this->dropoffAddressPointId = null;
     }
 
 
@@ -493,7 +493,6 @@ class InternalReservation extends Component
 
     public function getEndingPointsProperty()
     {
-
         return Route::query()
             ->with('endingPoint')
             ->where('destination_id', $this->stepOneFields['destinationId'])
@@ -509,7 +508,6 @@ class InternalReservation extends Component
             ->whereNotIn('id', [
                 (int)$this->stepOneFields['startingPointId'],
                 (int)$this->stepOneFields['endingPointId'],
-                (int)$this->dropoffAddressPointId
             ])
             ->get();
     }
@@ -520,7 +518,6 @@ class InternalReservation extends Component
             ->whereNotIn('id', [
                 (int)$this->stepOneFields['startingPointId'],
                 (int)$this->stepOneFields['endingPointId'],
-                (int)$this->pickupAddressPointId
             ])
             ->get();
 

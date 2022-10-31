@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "01216ce312f612a6bf2ca056d18c9763",
+    "content-hash": "d4a222116baf8ceab22958da00f7a5df",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -9600,16 +9600,16 @@
         },
         {
             "name": "wireui/wireui",
-            "version": "v1.15.1",
+            "version": "v1.17.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wireui/wireui.git",
-                "reference": "b428e3e250845503ca20695346a75ef96180fc5b"
+                "reference": "f82d8472cdb52161c088bc7426a1c0371ea85b31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wireui/wireui/zipball/b428e3e250845503ca20695346a75ef96180fc5b",
-                "reference": "b428e3e250845503ca20695346a75ef96180fc5b",
+                "url": "https://api.github.com/repos/wireui/wireui/zipball/f82d8472cdb52161c088bc7426a1c0371ea85b31",
+                "reference": "f82d8472cdb52161c088bc7426a1c0371ea85b31",
                 "shasum": ""
             },
             "require": {
@@ -9662,7 +9662,7 @@
             ],
             "support": {
                 "issues": "https://github.com/wireui/wireui/issues",
-                "source": "https://github.com/wireui/wireui/tree/v1.15.1"
+                "source": "https://github.com/wireui/wireui/tree/v1.17.1"
             },
             "funding": [
                 {
@@ -9670,7 +9670,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-09-02T02:14:15+00:00"
+            "time": "2022-10-20T01:52:48+00:00"
         }
     ],
     "packages-dev": [
