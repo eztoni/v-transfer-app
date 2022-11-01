@@ -22,7 +22,13 @@ return [
     'infants'=>'Infants',
     'luggage'=>'Luggage',
     'transfer_price_breakdown'=>'Transfer price breakdown',
-    'transfer_price_breakdown'=>'Transfer price breakdown',
+    'total_price'=>'Total price',
+    'valamar_transfer_service'=>'Valamar Transfer Service',
+    'not_fiscalized'=>'This is not fiscalized invoice.',
+
+    'your_res_modified'=>'Your reservation has been modified.',
+    'this_email_is_modification'=>'This email is modification of the reservation. Please save this reservation for your travel.',
+
 
 
 

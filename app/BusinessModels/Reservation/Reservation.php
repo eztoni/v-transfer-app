@@ -55,7 +55,7 @@ abstract class Reservation
                 'price' => 'required|integer',
                 'child_seats' => 'array',
                 'price_breakdown' => 'array',
-                'price_breakdown.*' => 'required_array_keys:name,amount',
+                'price_breakdown.*' => 'required_array_keys:item,amount',
                 'flight_number' => 'string',
                 'remark' => 'string',
                 'luggage' => 'required',

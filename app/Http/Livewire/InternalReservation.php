@@ -238,13 +238,14 @@ class InternalReservation extends Component
 
         $route = $this->selectedRoute;
 
-        $priceHandler = new \App\Services\TransferPrices($this->selectedTransfer,
+        $priceHandler = (new \App\Services\TransferPrices($this->selectedTransfer,
             $this->selectedPartner,
             $this->roundTrip,
             $route ? $route->id : null,
             collect($this->stepTwoFields['extras'])->reject(function ($item) {
             return $item === false;
-        })->keys()->toArray());
+        })->keys()->toArray()))
+            ->setBreakdownLang($this->stepTwoFields['confirmationLanguage']);
 
         $businessModel = new \App\BusinessModels\Reservation\Actions\CreateReservation(new \App\Models\Reservation());
         $businessModel->setRequiredAttributes(

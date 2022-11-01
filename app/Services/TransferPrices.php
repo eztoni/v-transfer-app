@@ -19,6 +19,8 @@ class TransferPrices
 
     private $price;
 
+    private $breakdownLang = 'en';
+
     /**
      * @param $transferId
      * @param $partnerId
@@ -45,6 +47,11 @@ class TransferPrices
         return $this->breakdownArray;
     }
 
+    public function setBreakdownLang($lang){
+        $this->breakdownLang = $lang;
+        return $this;
+    }
+
     private function calculatePrice()
     {
         if (empty($this->transferId) || empty($this->partnerId) || empty($this->routeId)) {
@@ -62,7 +69,7 @@ class TransferPrices
             $this->roundTrip ? $routeData->price_round_trip : $routeData->price
         );
         $this->breakdownArray[]= [
-            'name'=>'transfer_price',
+            'item'=>'transfer_price',
             'amount'=>$price
         ];
 
@@ -78,7 +85,7 @@ class TransferPrices
             $this->breakdownArray[]= [
                 'item'=>'extra',
                 'item_id' =>$exPrice->extra->id,
-                'label'=>'extra'.$exPrice->extra->name,
+                'label'=>$exPrice->extra->getTranslation('name',$this->breakdownLang),
                 'amount'=>$money
             ];
 
