@@ -3,18 +3,18 @@
     <x-mail.body>
         <x-mail.row>
 
-            {{ __('validation.required', ['attribute' => 'asd'])}}, {{$reservation->leadTraveller?->full_name}}
+            {{ __('mail.dear')}}, {{$reservation->leadTraveller?->full_name}}
         </x-mail.row>
         <x-mail.row>
-            Thank you for your transfer reservation. Please save this reservation for your travel.
 
+            {{ __('mail.thank_you_message')}}
         </x-mail.row>
 
         <x-mail.divider></x-mail.divider>
         <x-mail.row>
             <h3 style="font-weight: bold; margin-top: 0; margin-bottom: 1%"> <span
                     style="color: #3498DB; text-decoration: none">
-                                                                          Transfer reservation</span>
+                             Transfer reservation</span>
             </h3>
             <p style="font-size: 14px">Reservation number : #{{$reservation->id}}</p>
             <p style="font-size: 14px">Name : {{$reservation->leadTraveller?->full_name}}</p>
@@ -41,7 +41,7 @@
                 <p style="font-size: 14px"><b>Remark:</b> {{$reservation->remark}}</p>
             @endif
             @if($reservation->returnReservation)
-                <p style="margin-top: 20px;">Please note that this trip is <b>ROUND TRIP</b>. Information are below:</p>
+                <p style="margin-top: 20px;">{{__('mail.please_note_round_trip')}}</p>
                 <p style="font-size: 14px"><b>Round Trip Pickup: </b> {{$reservation->dropoff_address}}</p>
                 <p style="font-size: 14px"><b>Round Trip Dropoff: </b> {{$reservation->pickup_address}}</p>
                 <p style="font-size: 14px"><b>Round Trip

@@ -87,6 +87,21 @@ class ExtrasEdit extends Component
         $this->setModelPrices();
     }
 
+    public function updatedExtraId(){
+        $this->instantiateComponentValues();
+        $this->partnerId = Partner::first()?->id;
+
+        $this->setModelPrices();
+    }
+
+    public function getAllExtrasForSelectProperty()
+    {
+        return Extra::all()->transform(function (Extra $item){
+           return ['id'=>(string) $item->id,
+                   'name'=>$item->name];
+        })->toArray();
+    }
+
     public function updatedPartnerId()
     {
         $this->extraPrice =  null;
@@ -125,7 +140,8 @@ class ExtrasEdit extends Component
     public function instantiateComponentValues()
     {
         $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
-        $this->extraId = $this->extra->id;
+        $this->extra = Extra::find($this->extraId);
+
         foreach ($this->companyLanguages as $lang) {
             $this->extraName[$lang] = $this->extra->getTranslation('name', $lang, false);
             $this->extraDescription[$lang] = $this->extra->getTranslation('description', $lang, false);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Extra;
 use App\Models\Language;
 use App\Models\Vehicle;
 use Livewire\Component;
@@ -11,7 +12,6 @@ class VehicleEdit extends Component
 {
 use Actions;
     public Vehicle $vehicle;
-
     public $companyLanguages = ['en'];
     public $vehicleId = null;
     public $vehicleType = [
@@ -39,12 +39,23 @@ use Actions;
     public function instantiateComponentValues()
     {
         $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
+        $this->vehicle = Vehicle::find($this->vehicleId);
 
         foreach ($this->companyLanguages as $lang) {
             $this->vehicleType[$lang] = $this->vehicle->getTranslation('type', $lang, false);
         }
     }
-
+    public function getAllVehiclesForSelectProperty()
+    {
+        return Vehicle::all()->transform(function (Vehicle $item){
+            return ['id'=>(string) $item->id,
+                'name'=>$item->type];
+        })->toArray();
+    }
+    public function updatedVehicleId()
+    {
+        $this->instantiateComponentValues();
+    }
     public function updatedvehicleType()
     {
         $this->vehicle->setTranslations('type', $this->vehicleType);

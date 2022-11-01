@@ -38,7 +38,10 @@
                         <button wire:click="delete({{$media->id}})" class="ds-badge ds-badge-error group-hover:opacity-100 opacity-0 bg-error text-neutral-content absolute top-2  right-2">
                             X
                         </button>
-                        <img src="{{$media->getFullUrl('thumb')}}" class="group-hover:rounded-b-none rounded h-44 object-cover  border border-gray-200 w-full">
+                        <img
+                            wire:key="{{Str::random()}}"
+                            src="{{$media->getFullUrl('thumb')}}"
+                            class="group-hover:rounded-b-none rounded h-44 object-cover  border border-gray-200 w-full">
                     </div >
                     <div class="ds-btn-group flex group-hover:opacity-100 opacity-0 z-20 relative duration-150  transition-opacity">
                         <button wire:click="moveLeft({{$media->id}})" class="ds-btn ds-btn-accent ds-btn-xs ds-rounded-t-none" ><-</button>

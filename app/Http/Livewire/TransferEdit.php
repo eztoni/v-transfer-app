@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Destination;
+use App\Models\Extra;
 use App\Models\Language;
 use App\Models\Transfer;
 use App\Models\Vehicle;
@@ -15,6 +16,8 @@ class TransferEdit extends Component
 {
 use Actions;
     public Transfer $transfer;
+    public string $transferId = '';
+
     public $vehicleId = null;
     public $destinationId = null;
 
@@ -38,7 +41,9 @@ use Actions;
     }
 
 
-
+    public function updatedTransferId(){
+        $this->instantiateComponentValues();
+    }
 
     public function mount()
     {
@@ -49,15 +54,23 @@ use Actions;
     {
         $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
 
+        $this->transfer = Transfer::find($this->transferId);
+
         $this->vehicleId = $this->transfer->vehicle->id;
         $this->destinationId = $this->transfer->destination_id;
+
         foreach ($this->companyLanguages as $lang) {
             $this->transferName[$lang] = $this->transfer->getTranslation('name', $lang, false);
         }
 
     }
-
-
+    public function getAllTransfersForSelectProperty()
+    {
+        return Transfer::all()->transform(function (Transfer $item){
+            return ['id'=>(string) $item->id,
+                    'name'=>$item->name];
+        })->toArray();
+    }
     public function getVehiclesProperty()
     {
             return Vehicle::whereNull('transfer_id')

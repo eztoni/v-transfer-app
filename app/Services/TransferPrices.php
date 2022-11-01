@@ -61,18 +61,26 @@ class TransferPrices
         $price = Money::EUR(
             $this->roundTrip ? $routeData->price_round_trip : $routeData->price
         );
-        $this->breakdownArray[]= ['name'=>'Transfer price','amount'=>$price];
+        $this->breakdownArray[]= [
+            'name'=>'transfer_price',
+            'amount'=>$price
+        ];
 
         $extrasPrices = ExtraPartner::where('partner_id', $this->partnerId)
             ->with('extra')
             ->whereIn('extra_id', $this->extraIds)
             ->get();
-
+        //todo: reservation state?
         foreach ($extrasPrices as $exPrice) {
             $money = Money::EUR(
                 $exPrice->price
             );
-            $this->breakdownArray[]= ['name'=>'Extra: '.$exPrice->extra->name,'amount'=>$money];
+            $this->breakdownArray[]= [
+                'item'=>'extra',
+                'item_id' =>$exPrice->extra->id,
+                'label'=>'extra'.$exPrice->extra->name,
+                'amount'=>$money
+            ];
 
             $price = $price->add($money->getMoney());
         }
