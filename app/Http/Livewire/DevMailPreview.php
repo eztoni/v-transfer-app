@@ -18,7 +18,7 @@ class DevMailPreview extends Component
 
            return  [
                'name' => "#{$item->id}:  {$item->pickupLocation->name} -> {$item->dropoffLocation->name}",
-               'id' => 1,
+               'id' => $item->id,
                'description' => "<span class='text-warning-600 font-bold'>{$item->partner->name}</span> - <span class='text-success font-bold'> {$roundTrip}</span>"
 
            ];

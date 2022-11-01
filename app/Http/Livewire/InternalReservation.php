@@ -291,7 +291,7 @@ class InternalReservation extends Component
             );
         }
 
-        $businessModel->setSendMailBool($this->stepTwoFields['sendMail']);
+        $businessModel->setSendMail($this->stepTwoFields['sendMail']);
 
         $id = $businessModel->saveReservation();
 

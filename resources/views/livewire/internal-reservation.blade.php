@@ -49,6 +49,7 @@
                                 <x-select
                                     option-key-value
                                     :searchable="true"
+                                    min-items-for-search="2"
                                     wire:model.defer="pullDataFields.property"
                                     :options="$this->pointsAccomodation->pluck('name','pms_code')->toArray()"
                                     label="Property"

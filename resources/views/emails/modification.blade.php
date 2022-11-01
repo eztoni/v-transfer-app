@@ -42,25 +42,31 @@
                 <p style="font-size: 14px"><b>Remark:</b> {{$reservation->remark}}</p>
             @endif
             @if($reservation->returnReservation)
-                <small>Please note that this trip is <b>ROUND TRIP</b>. Information are below</small>
+                <p style="margin-top: 20px;">Please note that this trip is <b>ROUND TRIP</b>. Information are below:</p>
                 <p style="font-size: 14px"><b>Round Trip Pickup: </b> {{$reservation->dropoff_address}}</p>
                 <p style="font-size: 14px"><b>Round Trip Dropoff: </b> {{$reservation->pickup_address}}</p>
                 <p style="font-size: 14px"><b>Round Trip
                         Date: </b> {{$reservation->returnReservation->date_time->format('d.m.Y H:i')}}</p>
             @endif
-            @if($reservation->adults)
-                <p style="font-size: 14px">Adults: {{$reservation->adults}}</p>
-            @endif
-            @if($reservation->children)
-                <p style="font-size: 14px">Children: {{$reservation->children}}</p>
-            @endif
-            @if($reservation->infants)
-                <p style="font-size: 14px">Infants: {{$reservation->infants}}</p>
-            @endif
-
-            <p style="font-size: 14px">Luggage: {{$reservation->luggage}}</p>
-
         </x-mail.row>
+        <x-mail.divider></x-mail.divider>
+        <x-mail.row>
+            <div>
+
+                @if($reservation->adults)
+                    <span style="font-size: 14px;margin-right: 15px;">Adults: {{$reservation->adults}}</span>
+                @endif
+                @if($reservation->children)
+                    <span style="font-size: 14px;margin-right: 15px">Children: {{$reservation->children}}</span>
+                @endif
+                @if($reservation->infants)
+                    <span style="font-size: 14px;margin-right: 15px">Infants: {{$reservation->infants}}</span>
+                @endif
+
+                <span style="font-size: 14px;margin-right: 15px">Luggage: {{$reservation->luggage}}</span>
+            </div>
+        </x-mail.row>
+
         <x-mail.divider></x-mail.divider>
 
         <x-mail.row>

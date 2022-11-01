@@ -1,4 +1,4 @@
-<div x-data="{}" >
+<div  >
 
     <div class="flex gap-4 w-full">
         <x-native-select
@@ -13,6 +13,7 @@
             option-value="id"
             :searchable="true"
             class="flex-grow"
+            :clearable="false"
             min-items-for-search="2"
             wire:model="resId"
             :options="$this->reservationsForSelect"

@@ -19,8 +19,8 @@ class SendConfirmationMailListener
         //
     }
 
-    public function sendConfirmationMail($userEmails = array(),$resId){
-        Mail::to($userEmails)->send(new ConfirmationMail($resId));
+    public function sendConfirmationMail($userEmails,$resId, $locale = null){
+        Mail::to($userEmails)->locale($locale)->send(new ConfirmationMail($resId));
     }
 
     public function handle(ReservationCreatedEvent $event)
@@ -31,6 +31,7 @@ class SendConfirmationMailListener
             $reservation = $event->reservation;
 
             $travellerMail = $reservation->leadTraveller->email;
+
             if($travellerMail){
                 $this->emailList = \Arr::add($this->emailList, 'travellerMail', $travellerMail);
             }
@@ -41,13 +42,15 @@ class SendConfirmationMailListener
             }
 
             $accommodationMail = Point::find($reservation->dropoffLocation->id)->reception_email;
+
             if($accommodationMail){
                 $this->emailList = \Arr::add($this->emailList, 'accommodationMail', $accommodationMail);
             }
 
             if($this->emailList){
-                $this->sendConfirmationMail($this->emailList,$reservation->id);
+                $this->sendConfirmationMail($this->emailList,$reservation->id, $reservation->confirmation_language);
             }
+
 
         }
 

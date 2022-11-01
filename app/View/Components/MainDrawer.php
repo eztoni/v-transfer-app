@@ -17,7 +17,7 @@ class MainDrawer extends Component
                 'icon' => 'fas fa-database',
                 'text' => 'Master Data',
                 'href' => route('master-data'),
-                'show'=> true,
+                'show' => true,
                 'items' => [
                     [
                         'text' => 'Routes',
@@ -53,42 +53,35 @@ class MainDrawer extends Component
             ],
             [
                 'icon' => 'fas fa-euro-sign',
-                'text' => 'Selling',
-                'href' => route('selling'),
-                'show'=> true,
-                'items'=>[
-                    [
-                        'text' => 'Transfer Reservation',
-                        'active' => request()->routeIs('internal-reservation'),
-                        'href' => route('internal-reservation'),
-                        'show' => true,
-                    ],
-                ]
+                'text' => 'Transfer Reservation',
+                'active' => request()->routeIs('internal-reservation'),
+                'href' => route('internal-reservation'),
+                'show' => true,
             ],
             [
                 'icon' => 'fas fa-book',
                 'text' => 'Bookings',
                 'active' => request()->routeIs('bookings'),
                 'href' => route('bookings'),
-                'show'=> true
+                'show' => true
             ],
             [
                 'icon' => 'fas fa-chart-bar',
                 'text' => 'Reports',
                 'active' => request()->routeIs('reports'),
                 'href' => route('reports'),
-                'show'=> true
+                'show' => true
             ],
             [
                 'icon' => 'fas fa-tools',
                 'text' => 'Administration',
-                'show'=> true,
+                'show' => true,
                 'items' => [
                     [
                         'text' => 'User Overview',
                         'active' => request()->routeIs('admin.user-overview'),
                         'href' => route('admin.user-overview'),
-                        'show'=> \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN)
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN)
 
                     ],
                     [
@@ -101,14 +94,14 @@ class MainDrawer extends Component
                         'text' => 'Destinations',
                         'active' => request()->routeIs('admin.destinations'),
                         'href' => route('admin.destinations'),
-                        'show'=> \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN)
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN)
 
                     ],
                     [
                         'text' => 'Pick-up and Drop-off Locations',
                         'active' => request()->routeIs('admin.points-overview'),
                         'href' => route('admin.points-overview'),
-                        'show' =>\Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN),
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN),
                     ],
                     [
                         'text' => 'Owners',
@@ -121,10 +114,12 @@ class MainDrawer extends Component
 
 
         ];
-        return view('components.main-drawer',compact('menuItems'));
+        return view('components.main-drawer', compact('menuItems'));
     }
-    public function isSubActive(array $subItems){
-        return  !empty(Arr::where($subItems,function ($value,$key){
+
+    public function isSubActive(array $subItems)
+    {
+        return !empty(Arr::where($subItems, function ($value, $key) {
             return $value['active'];
         }));
     }

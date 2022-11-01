@@ -74,7 +74,9 @@ class CreateReservation extends Reservation
                 $this->saveRoundTrip();
             }
 
-            ReservationCreatedEvent::dispatch($this->model,[ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail]);
+            ReservationCreatedEvent::dispatch($this->model,[
+                ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail
+            ]);
 
         });
 
@@ -123,7 +125,7 @@ class CreateReservation extends Reservation
         return $this;
     }
 
-    public function setSendMailBool(bool $sendMail)
+    public function setSendMail(bool $sendMail)
     {
         $this->sendMail = $sendMail;
         return $this;
