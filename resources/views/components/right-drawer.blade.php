@@ -56,6 +56,7 @@
                    Mail preview
                 </x-nav-link>
             @endif
+            @endif
         </ul>
     </div>
 </div>
