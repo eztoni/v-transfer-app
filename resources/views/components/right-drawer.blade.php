@@ -47,7 +47,9 @@
                         <i class="fas fa-database"></i>
                     </x-slot>
                     Enable Internal Dev tools
-                </x-nav-link><x-nav-link href="{{route('dev-mail-preview')}}"   >
+                </x-nav-link>
+            @if(!App::isProduction() && \Illuminate\Support\Facades\Auth::user()->hasRole('super_admin'))
+                <x-nav-link href="{{route('dev-mail-preview')}}"   >
                     <x-slot name="icon">
                         <i class="fas fa-mail"></i>
                     </x-slot>
