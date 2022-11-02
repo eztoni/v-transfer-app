@@ -238,7 +238,7 @@ class InternalReservation extends Component
 
         $route = $this->selectedRoute;
 
-        $priceHandler = (new \App\Services\TransferPrices($this->selectedTransfer,
+        $priceHandler = (new \App\Services\TransferPriceCalculator($this->selectedTransfer,
             $this->selectedPartner,
             $this->roundTrip,
             $route ? $route->id : null,
@@ -548,7 +548,7 @@ class InternalReservation extends Component
             return $item === false;
         } )->keys()->toArray();
 
-        $priceCalculator = new \App\Services\TransferPrices($this->selectedTransfer, $this->selectedPartner, $this->roundTrip, $route?->id,$extras);
+        $priceCalculator = new \App\Services\TransferPriceCalculator($this->selectedTransfer, $this->selectedPartner, $this->roundTrip, $route?->id,$extras);
 
         return $priceCalculator->getPrice();
     }

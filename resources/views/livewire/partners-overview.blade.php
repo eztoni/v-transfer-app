@@ -97,7 +97,7 @@
                             <div class="form-control"  x-data="{html:null}">
 
                                 <p class="border rounded-lg p-2">
-                                    {{nl2br(Arr::get($this->termsPreview,$languageIso))}}
+                                    {!!  nl2br(Arr::get($this->termsPreview,$languageIso))!!}
                                 </p>
                             </div>
                         </div>

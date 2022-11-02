@@ -311,10 +311,11 @@
                     </tr>
                     </thead>
                     <tbody>
+
                     @foreach($this->reservation->price_breakdown as $pbItem)
                         <tr>
                             <td class="text-info">{{$loop->index+1}}</td>
-                            <td>{{Arr::get($pbItem,'name')}}</td>
+                            <td>{{\App\Actions\Breakdown\GetPriceBreakdownItemLabel::run($pbItem)}}</td>
                             <td class="text-right"> {{Arr::get($pbItem,'amount.formatted')}}</td>
                         </tr>
                     @endforeach

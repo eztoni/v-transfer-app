@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Casts\ModelCast;
 use App\Scopes\DestinationScope;
 use Database\Seeders\TransferExtrasPriceSeeder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Money\Money;
@@ -154,5 +155,22 @@ class Reservation extends Model
                 $model->updated_by = auth()->user()->id;
             }
         });
+    }
+
+    protected function priceBreakdown(): Attribute
+    {
+        return Attribute::make(
+            get: function ($breakdown){
+                $breakdown = json_decode($breakdown, true);
+                foreach ($breakdown as $key => $breakdownItem){
+                    if(\Arr::get($breakdownItem,'item') === 'extra'){
+                        if(\Arr::get($breakdownItem,'model')){
+                            $breakdown[$key]['model'] = Extra::make(\Arr::get($breakdownItem,'model'));
+                        }
+                    }
+                }
+                return $breakdown;
+            },
+        );
     }
 }

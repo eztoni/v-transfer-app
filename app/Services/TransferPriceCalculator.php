@@ -6,7 +6,7 @@ use App\Pivots\ExtraPartner;
 use Cknow\Money\Money;
 use Illuminate\Support\Facades\DB;
 
-class TransferPrices
+class TransferPriceCalculator
 {
 
     private $transferId;
@@ -26,7 +26,7 @@ class TransferPrices
      * @param $partnerId
      * @param $routeId
      */
-    public function __construct($transferId, $partnerId, $roundTrip, $routeId,$extraIds)
+    public function __construct($transferId, $partnerId, $roundTrip, $routeId, $extraIds)
     {
         $this->transferId = $transferId;
         $this->partnerId = $partnerId;
@@ -77,7 +77,7 @@ class TransferPrices
             ->with('extra')
             ->whereIn('extra_id', $this->extraIds)
             ->get();
-        //todo: reservation state?
+
         foreach ($extrasPrices as $exPrice) {
             $money = Money::EUR(
                 $exPrice->price
@@ -85,7 +85,7 @@ class TransferPrices
             $this->breakdownArray[]= [
                 'item'=>'extra',
                 'item_id' =>$exPrice->extra->id,
-                'label'=>$exPrice->extra->getTranslation('name',$this->breakdownLang),
+                'model'=>$exPrice->extra->toArray(),
                 'amount'=>$money
             ];
 
@@ -106,7 +106,7 @@ class TransferPrices
 
     /**
      * @param mixed $transferId
-     * @return TransferPrices
+     * @return TransferPriceCalculator
      */
     public function setTransferId($transferId)
     {
@@ -116,7 +116,7 @@ class TransferPrices
 
     /**
      * @param mixed $partnerId
-     * @return TransferPrices
+     * @return TransferPriceCalculator
      */
     public function setPartnerId($partnerId)
     {
@@ -126,7 +126,7 @@ class TransferPrices
 
     /**
      * @param mixed $routeId
-     * @return TransferPrices
+     * @return TransferPriceCalculator
      */
     public function setRouteId($routeId)
     {

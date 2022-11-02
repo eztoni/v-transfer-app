@@ -3,34 +3,47 @@
     <x-mail.body>
         <x-mail.row>
 
-            {{ __('mail.dear')}}, {{$reservation->leadTraveller?->full_name}}
+            {{ __('mail.dear')}}, <strong> {{$reservation->leadTraveller?->full_name}}</strong>
         </x-mail.row>
         <x-mail.row>
 
             {{ __('mail.thank_you_message')}}
+            <br>
+
         </x-mail.row>
 
         <x-mail.divider></x-mail.divider>
         <x-mail.row>
+            <br>
+
             <h3 style="font-weight: bold; margin-top: 0; margin-bottom: 1%"> <span
                     style="color: #3498DB; text-decoration: none">
                              {{__('mail.transfer_reservation')}}
                 </span>
             </h3>
+            <br>
+
             <p style="font-size: 14px">{{__('mail.reservation_number')}}: #{{$reservation->id}}</p>
             <p style="font-size: 14px">{{__('mail.name')}}: {{$reservation->leadTraveller?->full_name}}</p>
             <p style="font-size: 14px">{{__('mail.contact_phone')}}: {{$reservation->leadTraveller?->phone}}</p>
             <p style="font-size: 14px">{{__('mail.direction')}}:
                 <b>{{ $reservation->returnReservation ? 'Round Trip' : 'One Way' }}</b></p>
+            <br>
+
         </x-mail.row>
         <x-mail.divider></x-mail.divider>
 
         <x-mail.row>
+            <br>
+
+
             <h3 style="font-weight: bold; margin-top: 0; margin-bottom: 1%"> <span
                     style="color: #3498DB; text-decoration: none">
                 {{__('mail.transfer_itinerary')}}
                 </span>
             </h3>
+            <br>
+
 
             <p style="font-size: 14px"><b>{{__('mail.pickup_address')}}:   </b> {{$reservation->pickup_address}}</p>
             <p style="font-size: 14px"><b>{{__('mail.dropoff_address')}}: </b> {{$reservation->dropoff_address}}</p>
@@ -48,6 +61,8 @@
                 <p style="font-size: 14px"><b>{{__('mail.rt_dropoff')}}: </b> {{$reservation->pickup_address}}</p>
                 <p style="font-size: 14px"><b>{{__('mail.rt_date')}}: </b> {{$reservation->returnReservation->date_time->format('d.m.Y H:i')}}</p>
             @endif
+
+            <br>
         </x-mail.row>
         <x-mail.divider></x-mail.divider>
         <x-mail.row>
@@ -69,26 +84,34 @@
         <x-mail.divider></x-mail.divider>
 
         <x-mail.row>
+            <br>
+
+
             <h3 style="font-weight: bold; margin-top: 0; margin-bottom: 1%"> <span
                     style="color: #3498DB; text-decoration: none;">
                     {{__('mail.transfer_price_breakdown')}}</span>
             </h3>
+            <br>
 
             @foreach($reservation->price_breakdown as $pbItem)
                 <p style="font-size: 14px; margin-bottom: 10px;">{{$loop->index+1}}
-                    . {{Arr::get($pbItem,'name')}}
+                    . {{\App\Actions\Breakdown\GetPriceBreakdownItemLabel::run($pbItem)}}
                     : {{Arr::get($pbItem,'amount.formatted')}}</p>
             @endforeach
 
             <p style="font-size: 18px"><b>{{__('mail.total_price')}}: </b>
                 <b>{{\Cknow\Money\Money::EUR($reservation->price)}}</b></p>
+
+            <br>
         </x-mail.row>
 
 
         <x-mail.divider></x-mail.divider>
 
         <x-mail.row>
-            {{$reservation->partner->terms}}
+            {!!  nl2br($reservation->partner->terms)!!}
+            <br>
+            <br>
         </x-mail.row>
 
 

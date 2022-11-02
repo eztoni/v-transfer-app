@@ -28,6 +28,8 @@ return [
 
     'your_res_modified'=>'Your reservation has been modified.',
     'this_email_is_modification'=>'This email is modification of the reservation. Please save this reservation for your travel.',
+    'extra'=>'Extra',
+    'transfer_price'=>'Transfer price',
 
 
 
