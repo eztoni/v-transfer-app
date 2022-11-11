@@ -65,7 +65,7 @@ use Actions;
         $this->vehicle->save();
         $this->notification()->success('Success','Vehicle saved, add some info to it!');
         $this->closeVehicleModal();
-        return \Redirect::to(route('vehicle-edit',['vehicle'=>$this->vehicle->id]));
+        return \Redirect::to(route('vehicle-edit',['vehicleId'=>$this->vehicle->id]));
     }
 
     public function render()
