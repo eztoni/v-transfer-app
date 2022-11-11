@@ -86,7 +86,7 @@ use Actions;
         $this->notification()->success('Success','Transfer saved, add some info to it!');
         $this->closeTransferModal();
 
-        return Redirect::to(route('transfer-edit',['transfer'=>$this->transfer->id]));
+        return Redirect::to(route('transfer-edit',['transferId'=>$this->transfer->id]));
 
     }
 

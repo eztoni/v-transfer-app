@@ -70,10 +70,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         Route::get('/extras-edit/{extraId}', ExtrasEdit::class)->name('extras-edit');
         //Vehicles
         Route::get('/vehicle-overview', VehicleOverview::class)->name('vehicle-overview');
-        Route::get('/vehicle-edit/{vehicle}', VehicleEdit::class)->name('vehicle-edit');
+        Route::get('/vehicle-edit/{vehicleId}', VehicleEdit::class)->name('vehicle-edit');
 
         Route::get('/transfer-overview', TransferOverview::class)->name('transfer-overview');
-        Route::get('/transfer-edit/{transfer}', \App\Http\Livewire\TransferEdit::class)->name('transfer-edit');
+        Route::get('/transfer-edit/{transferId}', \App\Http\Livewire\TransferEdit::class)->name('transfer-edit');
 
         Route::get('/internal-reservation', InternalReservation::class)->name('internal-reservation');
 
