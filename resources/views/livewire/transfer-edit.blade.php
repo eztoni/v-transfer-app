@@ -140,7 +140,8 @@
         </x-settings-layout.tab>
 
         <x-settings-layout.tab handle="4">
-            @livewire('transfer-prices',['transferId' => $transfer->id,'showSearch' => false])
+            <livewire:new-transfer-prices :transfer="$transfer" :show-search="false"></livewire:new-transfer-prices>
+
 
         </x-settings-layout.tab>
     </x-settings-layout.layout>

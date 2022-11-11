@@ -9,7 +9,7 @@
         />
     @endif
     <div  class="shadow-sm ">
-        <input x-init="
+        <input  x-init="
                         flatpickr($el, {
                         disableMobile: 'true',
                         minDate:'{{$minDate}}',
@@ -19,7 +19,6 @@
                         enableTime: {{$enableTime?'true':'false'}},
                         defaultDate:'{{$defaultDate}}',
                         time_24hr: {{$time24?'true':'false'}},
-
                         @if($enableTime && !$noCalendar && $attributes->has('wire:model.defer'))
                                     onClose: function(selectedDates, dateStr, instance){
                                           @this.set('{{$name}}',dateStr)
@@ -27,6 +26,7 @@
                         @endif
 
                         });
+
                         " readonly
             {{ $attributes->class([
              $defaultClasses(),

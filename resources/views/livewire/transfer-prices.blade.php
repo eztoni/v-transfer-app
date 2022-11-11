@@ -84,14 +84,14 @@
                                 <x-native-select
                                     label="Tax Level"
                                     placeholder="Select text level"
-                                    :options="['PPOM', 'RPO']"
+                                    :options="[\App\Pivots\TransferPricePivot::TAX_LEVEL_PPOM, \App\Pivots\TransferPricePivot::TAX_LEVEL_RPO]"
                                     wire:model="routeTaxLevel.{{$r->id}}"
                                 />
 
                                 <x-native-select
                                     label="Calculation Type"
                                     placeholder="Select Calculation Type"
-                                    :options="['Per Item', 'Per Person']"
+                                    :options="[\App\Pivots\TransferPricePivot::CALC_TYPE_PP, \App\Pivots\TransferPricePivot::CALC_TYPE_PI]"
                                     wire:model="routeCalculationType.{{$r->id}}"
                                 />
 

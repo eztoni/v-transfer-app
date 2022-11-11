@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\Partner;
 use App\Models\Route;
 use App\Models\Transfer;
-use App\Pivots\RouteTransfer;
+use App\Pivots\TransferPricePivot;
 use App\Services\Helpers\ReservationPartnerOrderCache;
 use Carbon\Carbon;
 
@@ -40,7 +40,7 @@ class TransferAvailability
 
         $partnerOrder = new ReservationPartnerOrderCache($this->route->destination_id);
         $order = $partnerOrder->getPartnerOrder();
-        $availableTransfers = RouteTransfer::query()
+        $availableTransfers = TransferPricePivot::query()
             ->where('route_id', $this->route->id)
             ->when($this->roundTrip, function ($q) {
                 $q->where('round_trip', $this->roundTrip);
