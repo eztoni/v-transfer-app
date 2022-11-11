@@ -16,7 +16,6 @@ class TransferEdit extends Component
 {
 use Actions;
     public Transfer $transfer;
-    public string $transferId = '';
 
     public $vehicleId = null;
     public $destinationId = null;
@@ -53,8 +52,6 @@ use Actions;
     public function instantiateComponentValues()
     {
         $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
-
-        $this->transfer = Transfer::find($this->transferId);
 
         $this->vehicleId = $this->transfer->vehicle->id;
         $this->destinationId = $this->transfer->destination_id;

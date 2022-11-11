@@ -10,8 +10,10 @@ use WireUi\Traits\Actions;
 
 class VehicleEdit extends Component
 {
-use Actions;
+    use Actions;
+
     public Vehicle $vehicle;
+
     public $companyLanguages = ['en'];
     public $vehicleId = null;
     public $vehicleType = [
@@ -39,7 +41,6 @@ use Actions;
     public function instantiateComponentValues()
     {
         $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
-        $this->vehicle = Vehicle::find($this->vehicleId);
 
         foreach ($this->companyLanguages as $lang) {
             $this->vehicleType[$lang] = $this->vehicle->getTranslation('type', $lang, false);
