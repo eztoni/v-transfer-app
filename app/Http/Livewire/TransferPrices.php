@@ -44,7 +44,7 @@ class TransferPrices extends Component
     public $routeRoundTrip = [];
     public $routePriceRoundTrip = [];
     public $routeSaveButton = [];
-    public $transferId = null;
+    public $transferId;
     public $showSearch = true;
     public $partnerId = 0;
 
@@ -139,7 +139,6 @@ class TransferPrices extends Component
             $this->transfer = Transfer::with(['routes'=>function ($q){
                 $q->where('partner_id',$this->partnerId);
             }])->find($this->transferId);
-
             $routes = $this->transfer->routes;
 
             foreach($routes as $r){
@@ -151,13 +150,14 @@ class TransferPrices extends Component
                 $this->routeTaxLevel[$r->id] = $r->pivot->tax_level;
                 $this->routeDateFrom[$r->id] = Carbon::make($r->pivot->date_from)?->format('d.m.Y') ?? '';
                 $this->routeDateTo[$r->id] = Carbon::make($r->pivot->date_to)?->format('d.m.Y') ?? '';
-                $this->routeCommissionPercentage[$r->id] = $r->pivot->commission;
-                $this->routeDiscountPercentage[$r->id] = $r->pivot->discount;
+                $this->routeCommissionPercentage[$r->id] = $r->pivot->commission ?: 0;
+                $this->routeDiscountPercentage[$r->id] = $r->pivot->discount ?: 0;
                 $this->routePriceWithDiscount[$r->id] = EzMoney::format(GetRouteDiscount::run($this->transfer,false,$r->id,$r->pivot->discount,EzMoney::format($r->pivot->price)));
                 $this->routeRoundTripPriceWithDiscount[$r->id] = EzMoney::format(GetRouteDiscount::run($this->transfer,true,$r->id,$r->pivot->discount,EzMoney::format($r->pivot->price),EzMoney::format($r->pivot->price_round_trip)));
                 $this->routePriceCommission[$r->id] = EzMoney::format(GetRouteCommission::run($this->transfer,false,$r->id,$r->pivot->commission,EzMoney::format($r->pivot->price)));
                 $this->routeRoundTripPriceCommission[$r->id] = EzMoney::format(GetRouteCommission::run($this->transfer,true,$r->id,$r->pivot->commission,EzMoney::format($r->pivot->price),EzMoney::format($r->pivot->price_round_trip)));
             }
+
         }
     }
 

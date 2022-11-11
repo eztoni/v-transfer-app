@@ -10,6 +10,7 @@ use App\Models\Vehicle;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Symfony\Component\Finder\Finder;
 use WireUi\Traits\Actions;
 
 class TransferEdit extends Component
@@ -17,6 +18,7 @@ class TransferEdit extends Component
 use Actions;
     public Transfer $transfer;
 
+    public $transferId;
     public $vehicleId = null;
     public $destinationId = null;
 
@@ -46,6 +48,7 @@ use Actions;
 
     public function mount()
     {
+        $this->transfer = Transfer::find($this->transferId);
         $this->instantiateComponentValues();
 
     }
