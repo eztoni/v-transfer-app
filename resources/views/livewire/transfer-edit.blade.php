@@ -37,7 +37,7 @@
                     <p class="flex gap-2 items-center">
                         <x-icon name="truck" class="w-5 h-5"/>
                         Vehicle:
-                        <a href="{{route('vehicle-edit',['vehicle'=>$transfer->vehicle->id])}}" >
+                        <a href="{{route('vehicle-edit',['vehicleId'=>$transfer->vehicle->id])}}" >
                         {{$transfer->vehicle->type}}
                         </a>
                     </p>
