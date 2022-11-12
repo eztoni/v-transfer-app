@@ -40,7 +40,7 @@
 
 
         <div>
-            <ul class="ds-menu flex flex-col   ">
+            <ul class="ds-menu flex flex-col  px-1  ">
                 @foreach($menuItems as $item)
                     @if(!array_key_exists('items',$item) && $item['show'])
                         <x-nav-link :href="$item['href']" :active="$item['active']">
