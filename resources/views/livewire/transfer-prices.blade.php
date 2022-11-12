@@ -1,7 +1,7 @@
 <div>
 <x-card title="Transfer Prices">
 
-    <x-slot name="action" >
+
 
         @if($this->showSearch)
             <x-native-select
@@ -25,7 +25,6 @@
         @endif
 
 
-    </x-slot>
 
 
 </x-card>
@@ -131,8 +130,8 @@
 
                             @endif
 
-
                             <div class="flex justify-end my-3">
+
                                 <x-button wire:click="save({{$r->id}})" positive>Save</x-button>
                             </div>
                         </div>
@@ -190,5 +189,6 @@
         </TD>
     </tr>
 @endif
+
 </div>
 

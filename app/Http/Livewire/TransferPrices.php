@@ -263,6 +263,7 @@ class TransferPrices extends Component
 
     }
 
+
     public function render()
     {
         $transfers = Transfer::all();

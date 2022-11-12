@@ -19,26 +19,50 @@ class NewTransferPrices extends Component
 
     use Actions;
 
-    public Transfer $transfer;
+    public ?Transfer $transfer = null;
     public $showSearch = true;
-    public Partner $partner;
+    public ?Partner $partner= null;
     public $modelPrices;
 
     public int $transferId;
     public int $partnerId;
 
-    public $routesdva = [];
 
-    public $priceCalculations = [
+    public function fieldNames($rId){ return
+        [
+        "modelPrices.$rId.price" => 'price',
+        "modelPrices.$rId.price_round_trip" => 'price round trip',
+        "modelPrices.$rId.round_trip" => 'round trip',
+        "modelPrices.$rId.date_from" => 'date from',
+        "modelPrices.$rId.date_to" => 'date to',
+        "modelPrices.$rId.tax_level" => 'tax level',
+        "modelPrices.$rId.calculation_type" => 'calculation type',
+        "modelPrices.$rId.commission" => 'commission',
+        "modelPrices.$rId.discount" => 'discount'
+    ];}
 
-    ];
-    public $roundTripCalculations = [
+    public function ruless($rId){
+        return [
+            "modelPrices.$rId.price" => 'required|min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
+            "modelPrices.$rId.price_round_trip" => 'min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
+            "modelPrices.$rId.round_trip" => 'boolean|nullable',
+            "modelPrices.$rId.date_from" => "required|date_format:d.m.Y|before_or_equal:modelPrices.$rId.date_to",
+            "modelPrices.$rId.date_to" => "required|date_format:d.m.Y|after_or_equal:modelPrices.$rId.date_from",
+            "modelPrices.$rId.tax_level" => 'required',
+            "modelPrices.$rId.calculation_type" => 'required',
+            "modelPrices.$rId.commission" => 'required|integer|min:0|max:100',
+            "modelPrices.$rId.discount" => 'required|integer|min:0|max:100',
+        ];
+    }
 
-    ];
 
     public function mount()
     {
         $this->partner = Partner::first();
+        if (!$this->transfer){
+            $this->transfer = Transfer::first();
+        }
+        $this->transferId = $this->transfer->id;
         $this->partnerId = $this->partner->id;
         $this->setModelPrices();
     }
@@ -70,10 +94,19 @@ class NewTransferPrices extends Component
                 ->get()
                 ->keyBy('route_id')
                 ->toArray();
+
             /** @var Route $route */
             foreach ($this->routes as $route) {
                 if (!\Arr::has($this->modelPrices, $route->id)) {
-                    $this->modelPrices = \Arr::add($this->modelPrices, $route->id, TransferPricePivot::make()->toArray());
+
+                    $newPrice = TransferPricePivot::make()->toArray();
+                    $newPrice['new_price']=true;
+
+                    $this->modelPrices = \Arr::add(
+                        $this->modelPrices,
+                        $route->id,
+                        $newPrice
+                        );
 
                 }
             }
@@ -81,7 +114,6 @@ class NewTransferPrices extends Component
             foreach ($this->modelPrices as $k => $price) {
                 $this->formatPrice($k);
             }
-
         }
     }
 
@@ -107,11 +139,13 @@ class NewTransferPrices extends Component
 
     public function updated($property)
     {
+
         if (Str::contains($property, [
             'price',
             'price_round_trip',
         ])) {
             $routeId = explode('.', $property)[1];
+            $this->validateOnly($property,$this->ruless($routeId), [], $this->fieldNames($routeId));
 
             $priceModel = TransferPricePivot::make($this->modelPrices[$routeId])->toArray();
             $this->modelPrices[$routeId] = $priceModel;
@@ -129,6 +163,8 @@ class NewTransferPrices extends Component
         if (!$priceArray = $this->modelPrices[$routeId]) {
             return;
         }
+
+        $this->validate($this->ruless($routeId), [], $this->fieldNames($routeId));
 
         $priceArray['price'] = EzMoney::parseForDb($priceArray['price']);
         if ($priceArray['price_round_trip'] ?? false) {
@@ -159,8 +195,16 @@ class NewTransferPrices extends Component
             ])
         );
 
+        Arr::set($this->modelPrices[$routeId],'new_price',false);
+
+
         $this->notification()->success('Saved', 'Route Price Saved');
 
+    }
+
+    public function getTransfersProperty()
+    {
+        return Transfer::all();
     }
 
     public function render()
