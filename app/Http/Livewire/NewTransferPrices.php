@@ -69,8 +69,7 @@ class NewTransferPrices extends Component
 
     public function updatedPartnerId()
     {
-        $this->partner = Partner::find($this->transferId);
-
+        $this->partner = Partner::find($this->partnerId);
         $this->setModelPrices();
     }
 
@@ -79,7 +78,6 @@ class NewTransferPrices extends Component
         $this->transfer = Transfer::find($this->transferId);
 
         $this->setModelPrices();
-
     }
 
 
@@ -87,7 +85,7 @@ class NewTransferPrices extends Component
     {
 
         if ($this->transfer && $this->partner) {
-
+            ray($this->partner->id);
             $this->modelPrices = TransferPricePivot::query()
                 ->where('transfer_id', $this->transfer->id)
                 ->where('partner_id', $this->partner->id)
