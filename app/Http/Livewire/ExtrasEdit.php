@@ -25,8 +25,8 @@ class ExtrasEdit extends Component
 {
     use Actions;
 
-    public Extra $extra;
-    public $extraId = null;
+    public $extra;
+    public $extraId;
     public $companyLanguages = ['en'];
     public $extraDateFrom;
     public $extraDateTo;
@@ -51,25 +51,14 @@ class ExtrasEdit extends Component
     ];
 
     public $fieldNames = [
-        'extraCommissionPercentage.*' => 'extra commission Percentage',
-        'extraPrice.*' => 'price',
-        'extraTaxLevel.*' => 'extra tax level',
-        'extraCalculationType.*' => 'extra calculation type',
-        'extraDateFrom.*' => 'date from',
-        'extraDateTo.*' => 'date to'
+        'extraName.*' => 'extra name',
+        'extraDescription.*' => 'extra description'
     ];
 
     protected function rules()
     {
         $ruleArray = [
             'extraName.en' => 'required|min:3',
-            'extraCommissionPercentage' => 'required|min:0|max:100|integer',
-            'extraDiscountPercentage' => 'required|min:0|max:100|integer',
-            'extraPrice' => 'required|min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
-            'extraTaxLevel' => 'required',
-            'extraCalculationType' => 'required',
-            'extraDateFrom' => 'required|date',
-            'extraDateTo' => 'required|date|after_or_equal:extraDateFrom',
         ];
         foreach ($this->companyLanguages as $lang) {
             if ($lang !== 'en') {
@@ -79,19 +68,85 @@ class ExtrasEdit extends Component
         return $ruleArray;
     }
 
+    public $extraPriceFieldNames = [
+        'extraCommissionPercentage.*' => 'extra commission Percentage',
+        'extraPrice.*' => 'price',
+        'extraTaxLevel.*' => 'extra tax level',
+        'extraCalculationType.*' => 'extra calculation type',
+        'extraDateFrom.*' => 'date from',
+        'extraDateTo.*' => 'date to'
+    ];
+
+    protected function extraPriceRules()
+    {
+        return [
+            'extraCommissionPercentage' => 'required|min:0|max:100|integer',
+            'extraDiscountPercentage' => 'required|min:0|max:100|integer',
+            'extraPrice' => 'required|min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
+            'extraTaxLevel' => 'required',
+            'extraCalculationType' => 'required',
+            'extraDateFrom' => 'required|date',
+            'extraDateTo' => 'required|date|after_or_equal:extraDateFrom',
+        ];
+
+    }
+
     public function mount()
     {
-        $this->instantiateComponentValues();
         $this->partnerId = Partner::first()?->id;
+        $this->setModelPrices();
+        $this->instantiateComponentValues();
+    }
 
+    public function updatedPartnerId(): void
+    {
+        $this->extraDateFrom = [];
+        $this->extraDateTo = [];
+        $this->extraTaxLevel = [];
+        $this->extraCalculationType = [];
+        $this->extraCommissionPercentage = 0;
+        $this->extraDiscountPercentage = 0;
+        $this->extraPriceWithDiscount = [];
+        $this->extraPriceCommission = [];
         $this->setModelPrices();
     }
 
-    public function updatedExtraId(){
-        $this->instantiateComponentValues();
-        $this->partnerId = Partner::first()?->id;
+    private function setModelPrices(){
 
+        if( !empty($this->extraId) && !empty($this->partnerId)) {
+            $this->extra = Extra::with(['partner' => function ($q) {
+                $q->where('partner_id', $this->partnerId);
+            }])->find($this->extraId);
+
+            $extra_partner = $this->extra->partner->first();
+
+            $this->extraPrice = \EzMoney::format($extra_partner->pivot->price); // 1,99;
+            $this->extraCalculationType = $extra_partner->pivot->calculation_type;
+            $this->extraTaxLevel = $extra_partner->pivot->tax_level;
+            $this->extraDateFrom = Carbon::make($extra_partner->pivot->date_from)?->format('d.m.Y') ?? '';
+            $this->extraDateTo = Carbon::make($extra_partner->pivot->date_to)?->format('d.m.Y') ?? '';
+            $this->extraCommissionPercentage = $extra_partner->pivot->commission?: 0;
+            $this->extraDiscountPercentage = $extra_partner->pivot->discount ?: 0;
+            $this->extraPriceWithDiscount = \App\Facades\EzMoney::format(GetExtraDiscount::run($this->extra,$this->partnerId));
+            $this->extraPriceCommission= \App\Facades\EzMoney::format(GetExtraCommission::run($this->extra,$this->partnerId));
+
+        }
+    }
+
+    public function instantiateComponentValues()
+    {
+        $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
+        foreach ($this->companyLanguages as $lang) {
+            $this->extraName[$lang] = $this->extra->getTranslation('name', $lang, false);
+            $this->extraDescription[$lang] = $this->extra->getTranslation('description', $lang, false);
+        }
+    }
+
+
+    public function updatedExtraId(){
+        $this->partnerId = Partner::first()?->id;
         $this->setModelPrices();
+        $this->instantiateComponentValues();
     }
 
     public function getAllExtrasForSelectProperty()
@@ -100,12 +155,6 @@ class ExtrasEdit extends Component
            return ['id'=>(string) $item->id,
                    'name'=>$item->name];
         })->toArray();
-    }
-
-    public function updatedPartnerId()
-    {
-        $this->extraPrice =  null;
-        $this->setModelPrices();
     }
 
     public function updated($field)
@@ -137,54 +186,19 @@ class ExtrasEdit extends Component
         $this->extraPriceCommission = \App\Facades\EzMoney::format(GetExtraCommission::run($this->extra,$this->partnerId,$this->extraCommissionPercentage,$this->extraPrice));
     }
 
-    public function instantiateComponentValues()
-    {
-        $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
-        $this->extra = Extra::find($this->extraId);
-
-        foreach ($this->companyLanguages as $lang) {
-            $this->extraName[$lang] = $this->extra->getTranslation('name', $lang, false);
-            $this->extraDescription[$lang] = $this->extra->getTranslation('description', $lang, false);
-        }
-
-    }
-
     public function updatedExtraName()
     {
         $this->extra->setTranslations('name', $this->extraName);
         $this->extra->setTranslations('description', $this->extraDescription);
     }
 
-
-    private function setModelPrices(){
-
-        if($this->extraId > 0){
-            $this->extraPrice = \EzMoney::format($this->extra->getPrice($this->partnerId)); // 1,99;
-        }
-
-        if ($pivot_partner =   $this->extra->partner->where('id', $this->partnerId)->first()?->pivot){
-
-            $this->extraCalculationType = $pivot_partner->calculation_type;
-            $this->extraTaxLevel = $pivot_partner->tax_level;
-            $this->extraDateFrom = Carbon::make($pivot_partner->date_from)?->format('d.m.Y') ?? '';
-            $this->extraDateTo = Carbon::make($pivot_partner->date_to)?->format('d.m.Y') ?? '';
-            $this->extraCommissionPercentage = $pivot_partner->commission;
-            $this->extraDiscountPercentage = $pivot_partner->discount;
-            $this->extraPriceWithDiscount = \App\Facades\EzMoney::format(GetExtraDiscount::run($this->extra,$this->partnerId));
-            $this->extraPriceCommission= \App\Facades\EzMoney::format(GetExtraCommission::run($this->extra,$this->partnerId));
-
-        }
-
-    }
-
-
     public function save(){
 
-        $this->validate($this->rules(), [], $this->fieldNames);
+        $this->validate($this->extraPriceRules(), [], $this->extraPriceFieldNames);
 
         \DB::table('extra_partner')->updateOrInsert(
             [
-                'extra_id'=>$this->extraId,
+                'extra_id'=>$this->extra->id,
                 'partner_id'=>$this->partnerId,
             ],
             [
@@ -198,12 +212,16 @@ class ExtrasEdit extends Component
             ]
         );
 
+
         $this->notification()->success('Saved', 'Extra Price Saved');
 
     }
 
     public function saveExtra()
     {
+
+        $this->validate($this->rules(), [], $this->fieldNames);
+
         $this->extra->setTranslations('name', $this->extraName);
         $this->extra->setTranslations('description', $this->extraDescription);
         $this->extra->save();
