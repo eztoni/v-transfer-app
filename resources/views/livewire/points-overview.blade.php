@@ -82,12 +82,25 @@
             @endif
 
             <x-input label="PMS code:" wire:model="point.pms_code"/>
-
+            <br>
+            <x-errors only="not_unique" />
             <x-slot name="footer">
+
+
+
                 <div class="mt-4 flex justify-between">
-                    <x-button wire:click="closePointModal()" >Close</x-button>
-                    <x-button wire:click="savePointData()" positive
-                    >{{  !empty($this->point->exists) ? 'Update':'Add' }}</x-button>
+                    <div >
+                        <x-button wire:click="$set('importPoint',true)"
+                                  icon="cloud-download"
+                                  label="Import from Api" />
+
+                    </div>
+                    <div >
+                        <x-button wire:click="closePointModal()" icon="x" >Close</x-button>
+                        <x-button wire:click="savePointData()" icon="save" positive
+                        >{{  !empty($this->point->exists) ? 'Update':'Add' }}</x-button>
+                    </div>
+
                 </div>
             </x-slot>
 
@@ -102,7 +115,9 @@
         <p class="text-rose-500">CAREFUL - This action will delete the point!</p>
 
         <x-slot name="footer">
+
             <div class="float-right">
+
                 <x-button wire:click="closeSoftDeleteModal()" label="Close" rose/>
                 <x-button wire:click="softDelete()" label="Delete" positive/>
             </div>
@@ -110,6 +125,57 @@
         </x-slot>
 
     </x-modal.card>
+    <x-modal.card blur max-width="6xl" wire:model="importPoint" title="Import point">
+
+        @if($this->valamarPropertiesFromApi)
+
+
+            <div class="max-h-96 overflow-y-scroll">
+                <table class="ds-table ds-table-compact w-full  ">
+                    <thead>
+                    <tr>
+                        <th>Opera code</th>
+                        <th>Name</th>
+                        <th>Class</th>
+                        <th>Address</th>
+                        <th>Import</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    @foreach($this->valamarPropertiesFromApi as $k=> $r)
+
+                        <tr>
+                           <th>{{\Illuminate\Support\Arr::get($r,'propertyOperaCode')??'-'}}</th>
+                            <th>{{\Illuminate\Support\Arr::get($r,'name')}}</th>
+                            <th>{{\Illuminate\Support\Arr::get($r,'class')}}</th>
+                            <th>{{\Illuminate\Support\Arr::get($r,'address')?:' - '}}</th>
+
+                            <td>
+                                <x-button.circle sm wire:click="setImportData('{{$k}}')"
+                                                 icon="cloud-download"/>
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    </tbody>
+                </table>
+            </div>
+        @endif
+
+        <x-slot name="footer">
+            <div class="float-right">
+                <x-button wire:click="$set('importPoint',false)" label="Close" />
+                <x-button wire:click="softDelete()" label="Import data" positive/>
+            </div>
+
+        </x-slot>
+
+    </x-modal.card>
+
+
+
     {{$points->links()}}
 
 </x-card>
