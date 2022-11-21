@@ -166,15 +166,15 @@
                                 wire:model="extraCalculationType"
                             />
 
-                            <x-input wire:change="updateExtraPrice" wire:model.debounce.300ms="extraDiscountPercentage" label="Discount in %" placeholder="0" />
+                            <x-input wire:change="updateExtraPrice" wire:model.debounce.300ms="extraDiscountPercentage" label="Discount in %"/>
 
-                            <x-input wire:change="updateExtraPrice" wire:model.debounce.300ms="extraCommissionPercentage" label="Commission in %" placeholder="0" />
+                            <x-input wire:change="updateExtraPrice" wire:model.debounce.300ms="extraCommissionPercentage" label="Commission in %"/>
 
                         </div>
 
                         <div class="ds-divider my-1 "></div>
 
-                        <h1 class="text-1xl mb-1 font-bold">One Way</h1>
+                        <h1 class="text-1xl mb-1 font-bold">Extra Price</h1>
 
                         <div class="grid grid-cols-4  gap-2 mb-4">
                             <x-input wire:change="updateExtraPrice" wire:model="extraPrice"  label="Extra Price" />
@@ -185,7 +185,7 @@
                         </div>
 
                         <div class="flex justify-end my-3">
-                            <x-button wire:click="save()" positive>Save</x-button>
+                            <x-button wire:click="save" positive>Save</x-button>
                         </div>
                     </div>
 
