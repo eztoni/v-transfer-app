@@ -48,13 +48,13 @@ use Actions;
 
     public function mount()
     {
-        $this->transfer = Transfer::find($this->transferId);
         $this->instantiateComponentValues();
 
     }
     public function instantiateComponentValues()
     {
         $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
+        $this->transfer = Transfer::find($this->transferId);
 
         $this->vehicleId = $this->transfer->vehicle->id;
         $this->destinationId = $this->transfer->destination_id;
