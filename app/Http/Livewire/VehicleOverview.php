@@ -70,7 +70,7 @@ use Actions;
 
     public function render()
     {
-        $vehicles = Vehicle::search('type',$this->search)->paginate(10);
+        $vehicles = Vehicle::search('type',$this->search)->with('media')->paginate(10);
         return view('livewire.vehicle-overview',compact('vehicles'));
     }
 

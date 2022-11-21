@@ -6,10 +6,12 @@
 
 
             <x-input  wire:model="search" class="my-2"  placeholder="Find Extra"/>
-            <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
-                <thead>
+        <table class="ds-table ds-table-zebra ds-table-compact w-full" wire:loading.delay.class="opacity-50">
+
+        <thead>
                 <tr>
-                    <th>#Id</th>
+                    <th class="w-16">#Id</th>
+                    <th class="w-24 text-center">Image</th>
                     <th>Name</th>
                     <th>Description</th>
                     <th class="text-center">Edit</th>
@@ -20,6 +22,18 @@
 
                     <tr>
                         <th>{{ $ex->id }}</th>
+                        <td class="text-center">
+                            @if($ex->primary_image)
+                                <div class="ds-avatar">
+                                    <div class="ds-mask ds-mask-squircle w-16 h-16">
+                                        <img src="{{$ex->primary_image?->getFullUrl()}}" />
+                                    </div>
+                                </div>
+                            @else
+                                <x-icon name="photograph" class="opacity-50 text-gray-400"/>
+                            @endif
+
+                        </td>
                         <th>{{ $ex->name }}</th>
                         <th>{{ strlen($ex->description) > 25 ? substr($ex->description,0,25)."..." : $ex->description }}</th>
                         <td class="text-center">

@@ -89,7 +89,7 @@ use Actions;
 
     public function render()
     {
-        $extras = Extra::search('name',$this->search)->paginate(10);
+        $extras = Extra::search('name',$this->search)->with('media')->paginate(10);
         return view('livewire.extras-overview',compact('extras'));
     }
 

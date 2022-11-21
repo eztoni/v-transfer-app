@@ -5,12 +5,15 @@
         </x-slot>
 
             <x-input  wire:model="search" placeholder="Find Vehicle" class="my-2"/>
-            <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50">
+            <table class="ds-table ds-table-zebra ds-table-compact w-full" wire:loading.delay.class="opacity-50">
                 <thead>
                 <tr>
-                    <th>#Id</th>
+                    <th class="w-16">#Id</th>
+                    <th class="w-24 text-center">Image</th>
                     <th>Type</th>
-                    <th class="text-center">Edit</th>
+                    <th>Min Occupancy</th>
+                    <th>Max Luggage</th>
+                    <th class="text-right">Edit</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -18,9 +21,23 @@
 
                     <tr>
                         <td>{{ $ve->id }}</td>
-                        <td>{{ $ve->type }}</td>
-
                         <td class="text-center">
+                            @if($ve->primary_image)
+                            <div class="ds-avatar">
+                                <div class="ds-mask ds-mask-squircle w-16 h-16">
+                                    <img src="{{$ve->primary_image?->getFullUrl()}}" />
+                                </div>
+                            </div>
+                                @else
+                                <x-icon name="photograph" class="opacity-50 text-gray-400"/>
+                            @endif
+
+                        </td>
+                        <td >{{ $ve->type }}</td>
+                        <td><span class="ds-badge">{{ $ve->max_occ }}</span></td>
+                        <td><span class="ds-badge">{{ $ve->max_luggage }}</span></td>
+
+                        <td class="text-right">
                             <x-button.circle primary href="{{ route('vehicle-edit',$ve) }}" icon="pencil">
                             </x-button.circle>
                         </td>

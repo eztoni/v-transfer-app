@@ -38,7 +38,6 @@ class RoutesOverview extends EzComponent
         return [
             '#id' => 'id',
             'Name' => 'name',
-            'Destination' => 'destination.name',
             'Starting point' => 'startingPoint.name',
             'Ending point' => 'endingPoint.name',
         ];

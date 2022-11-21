@@ -93,7 +93,7 @@ use Actions;
 
     public function render()
     {
-        $transfers = Transfer::with('destination')->search('name',$this->search)->paginate(10);
+        $transfers = Transfer::with(['destination','media'])->search('name',$this->search)->paginate(10);
 
         return view('livewire.transfer-overview',compact('transfers'));
     }
