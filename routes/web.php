@@ -77,7 +77,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
         Route::get('/internal-reservation', InternalReservation::class)->name('internal-reservation');
 
-        Route::get('/transfer-prices', \App\Http\Livewire\TransferPrices::class)->name('transfer-prices');
+        Route::get('/transfer-prices', \App\Http\Livewire\NewTransferPrices::class)->name('transfer-prices');
 
 #------------------------------------------------------------------------------------------EVERYONE AUTHENTICATED END
         Route::middleware(

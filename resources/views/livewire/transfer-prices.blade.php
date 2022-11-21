@@ -1,7 +1,7 @@
 <div>
 <x-card title="Transfer Prices">
 
-    <x-slot name="action" >
+
 
         @if($this->showSearch)
             <x-native-select
@@ -25,7 +25,6 @@
         @endif
 
 
-    </x-slot>
 
 
 </x-card>
@@ -84,14 +83,14 @@
                                 <x-native-select
                                     label="Tax Level"
                                     placeholder="Select text level"
-                                    :options="['PPOM', 'RPO']"
+                                    :options="[\App\Pivots\TransferPricePivot::TAX_LEVEL_PPOM, \App\Pivots\TransferPricePivot::TAX_LEVEL_RPO]"
                                     wire:model="routeTaxLevel.{{$r->id}}"
                                 />
 
                                 <x-native-select
                                     label="Calculation Type"
                                     placeholder="Select Calculation Type"
-                                    :options="['Per Item', 'Per Person']"
+                                    :options="[\App\Pivots\TransferPricePivot::CALC_TYPE_PP, \App\Pivots\TransferPricePivot::CALC_TYPE_PI]"
                                     wire:model="routeCalculationType.{{$r->id}}"
                                 />
 
@@ -131,8 +130,8 @@
 
                             @endif
 
-
                             <div class="flex justify-end my-3">
+
                                 <x-button wire:click="save({{$r->id}})" positive>Save</x-button>
                             </div>
                         </div>
@@ -190,5 +189,6 @@
         </TD>
     </tr>
 @endif
+
 </div>
 

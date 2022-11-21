@@ -20,24 +20,6 @@ class MainDrawer extends Component
                 'show' => true,
                 'items' => [
                     [
-                        'text' => 'Routes',
-                        'active' => request()->routeIs('routes-overview'),
-                        'href' => route('routes-overview'),
-                        'show' => true,
-                    ],
-                    [
-                        'text' => 'Vehicles',
-                        'active' => request()->routeIs('vehicle-overview'),
-                        'href' => route('vehicle-overview'),
-                        'show' => true,
-                    ],
-                    [
-                        'text' => 'Extras',
-                        'active' => request()->routeIs('extras-overview'),
-                        'href' => route('extras-overview'),
-                        'show' => true,
-                    ],
-                    [
                         'text' => 'Transfers',
                         'active' => request()->routeIs('transfer-overview'),
                         'href' => route('transfer-overview'),
@@ -49,6 +31,26 @@ class MainDrawer extends Component
                         'href' => route('transfer-prices'),
                         'show' => true,
                     ],
+                    [
+                        'text' => 'Routes',
+                        'active' => request()->routeIs('routes-overview'),
+                        'href' => route('routes-overview'),
+                        'show' => true,
+                    ],
+                    [
+                        'text' => 'Extras',
+                        'active' => request()->routeIs('extras-overview'),
+                        'href' => route('extras-overview'),
+                        'show' => true,
+                    ],
+                    [
+                        'text' => 'Vehicles',
+                        'active' => request()->routeIs('vehicle-overview'),
+                        'href' => route('vehicle-overview'),
+                        'show' => true,
+                    ],
+
+
                 ]
             ],
             [
