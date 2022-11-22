@@ -8,25 +8,20 @@ use App\Actions\TransferPrice\GetRouteCommission;
 use App\Models\Extra;
 use App\Models\Language;
 use App\Models\Partner;
-use App\Models\Transfer;
-use App\Services\Helpers\EzMoney;
+use App\Pivots\ExtraPartner;
 use Carbon\Carbon;
-use Cknow\Money\Casts\MoneyIntegerCast;
-use Cknow\Money\Money;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Livewire\Component;
-use Money\Currencies\ISOCurrencies;
-use Money\Currency;
-use Money\Formatter\DecimalMoneyFormatter;
-use Money\Parser\DecimalMoneyParser;
+use App\Facades\EzMoney;
 use WireUi\Traits\Actions;
 
 class ExtrasEdit extends Component
 {
     use Actions;
 
-    public $extra;
-    public $extraId;
+  //  public $extra;
+   // public $extraId;
     public $companyLanguages = ['en'];
     public $extraDateFrom;
     public $extraDateTo;
@@ -38,7 +33,14 @@ class ExtrasEdit extends Component
     public $extraPriceCommission;
     public $extraPrice;
 
-    public $partnerId = 0;
+    public int $extraId;
+    public int $partnerId;
+
+    public ?Extra $extra = null;
+    public ?Partner $partner= null;
+
+    public $modelPrices;
+
     public $extraName = [
         'en' => null
     ];
@@ -46,9 +48,9 @@ class ExtrasEdit extends Component
         'en' => null
     ];
 
-    protected $casts = [
+    /*protected $casts = [
         'extraPrice' => MoneyIntegerCast::class. ':EUR,true',
-    ];
+    ];*/
 
     public $fieldNames = [
         'extraName.*' => 'extra name',
@@ -68,50 +70,109 @@ class ExtrasEdit extends Component
         return $ruleArray;
     }
 
-    public $extraPriceFieldNames = [
-        'extraCommissionPercentage.*' => 'extra commission Percentage',
-        'extraPrice.*' => 'price',
-        'extraTaxLevel.*' => 'extra tax level',
-        'extraCalculationType.*' => 'extra calculation type',
-        'extraDateFrom.*' => 'date from',
-        'extraDateTo.*' => 'date to'
-    ];
+    public function extraPriceFieldNames($pId){ return
+        [
+            "modelPrices.$pId.commission" => 'extra commission percentage',
+            "modelPrices.$pId.discount" => 'extra discount percentage',
+            "modelPrices.$pId.price"  => 'price',
+            "modelPrices.$pId.tax_level" => 'extra tax level',
+            "modelPrices.$pId.calculation_type" => 'extra calculation type',
+            "modelPrices.$pId.date_from" => 'date from',
+            "modelPrices.$pId.date_to" => 'date to'
+        ];
+    }
 
-    protected function extraPriceRules()
+    protected function extraPriceRules($pId)
     {
         return [
-            'extraCommissionPercentage' => 'required|min:0|max:100|integer',
-            'extraDiscountPercentage' => 'required|min:0|max:100|integer',
-            'extraPrice' => 'required|min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
-            'extraTaxLevel' => 'required',
-            'extraCalculationType' => 'required',
-            'extraDateFrom' => 'required|date',
-            'extraDateTo' => 'required|date|after_or_equal:extraDateFrom',
+            "modelPrices.$pId.commission" =>  'required|min:0|max:100|integer',
+            "modelPrices.$pId.discount" => 'required|min:0|max:100|integer',
+            "modelPrices.$pId.price" => 'required|min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
+            "modelPrices.$pId.tax_level" => 'required',
+            "modelPrices.$pId.calculation_type" => 'required',
+            "modelPrices.$pId.date_from" => "required|date_format:d.m.Y|before_or_equal:modelPrices.$pId.date_to",
+            "modelPrices.$pId.date_to" => "required|date_format:d.m.Y|after_or_equal:modelPrices.$pId.date_from",
         ];
 
     }
 
-    public function mount()
+    public function instantiateComponentValues()
     {
-        $this->partnerId = Partner::first()?->id;
-        $this->setModelPrices();
-        $this->instantiateComponentValues();
+        $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
+        foreach ($this->companyLanguages as $lang) {
+            $this->extraName[$lang] = $this->extra->getTranslation('name', $lang, false);
+            $this->extraDescription[$lang] = $this->extra->getTranslation('description', $lang, false);
+        }
     }
 
-    public function updatedPartnerId(): void
+
+    public function mount()
     {
-        $this->extraDateFrom = [];
-        $this->extraDateTo = [];
-        $this->extraTaxLevel = [];
-        $this->extraCalculationType = [];
-        $this->extraCommissionPercentage = 0;
-        $this->extraDiscountPercentage = 0;
-        $this->extraPriceWithDiscount = [];
-        $this->extraPriceCommission = [];
+
+        $this->partner = Partner::first();
+        if($this->extraId){
+            $this->extra = Extra::find($this->extraId);
+        }
+        $this->partnerId = $this->partner->id;
         $this->setModelPrices();
     }
 
     private function setModelPrices(){
+
+
+        if ($this->extra && $this->partner) {
+
+
+            $this->modelPrices = ExtraPartner::query()
+                ->where('extra_id', $this->extra->id)
+                ->where('partner_id', $this->partner->id)
+                ->get()
+                ->keyBy('partner_id')
+                ->toArray();
+
+            if (!\Arr::has($this->modelPrices, $this->partnerId)) {
+
+                $newPrice = ExtraPartner::make()->toArray();
+                $newPrice['new_price']=true;
+
+                $this->modelPrices = \Arr::add(
+                    $this->modelPrices,
+                    $this->partnerId,
+                    $newPrice
+                );
+
+            }
+
+            foreach ($this->modelPrices as $k => $price) {
+                $this->formatPrice($k);
+            }
+
+        }
+
+    }
+
+    public function formatPrice($k)
+    {
+        $this->formatValue($k,'price',fn($i)=> EzMoney::format($i));
+        $this->formatValue($k,'price_with_discount',fn($i)=>EzMoney::format($i));
+        $this->formatValue($k,'price_with_commission',fn($i)=>EzMoney::format($i));
+        $this->formatValue($k,'date_from',fn($i)=>Carbon::make($i)?->format('d.m.Y'));
+        $this->formatValue($k,'date_to',fn($i)=>Carbon::make($i)?->format('d.m.Y'));
+    }
+
+    private function formatValue($i,$k,\Closure $fun){
+        if ($currentValue = \Arr::get($this->modelPrices[$i], $k)) {
+            \Arr::set($this->modelPrices[$i], $k, $fun($currentValue));
+        }
+    }
+
+    public function updatedPartnerId(): void
+    {
+        $this->partner = Partner::find($this->partnerId);
+        $this->setModelPrices();
+    }
+
+    private function setModelPricesOld(){
 
         if( !empty($this->extraId) && !empty($this->partnerId)) {
             $this->extra = Extra::with(['partner' => function ($q) {
@@ -133,16 +194,6 @@ class ExtrasEdit extends Component
         }
     }
 
-    public function instantiateComponentValues()
-    {
-        $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
-        foreach ($this->companyLanguages as $lang) {
-            $this->extraName[$lang] = $this->extra->getTranslation('name', $lang, false);
-            $this->extraDescription[$lang] = $this->extra->getTranslation('description', $lang, false);
-        }
-    }
-
-
     public function updatedExtraId(){
         $this->partnerId = Partner::first()?->id;
         $this->setModelPrices();
@@ -157,28 +208,21 @@ class ExtrasEdit extends Component
         })->toArray();
     }
 
-    public function updated($field)
+    public function updated($property)
     {
 
-        if(Str::contains($field, 'extraDiscountPercentage')){
+        if (Str::contains($property, [
+            'price',
+            'commission',
+            'discount',
+        ])) {
+            $routeId = explode('.', $property)[1];
+            $this->validateOnly($property,$this->extraPriceRules($this->partnerId), [], $this->extraPriceFieldNames($this->partnerId));
 
-            if($this->extraDiscountPercentage > 100){
-                $this->extraDiscountPercentage = 100;
-            }
-
-            $this->updateExtraPrice();
+            $priceModel = ExtraPartner::make($this->modelPrices[$routeId])->toArray();
+            $this->modelPrices[$routeId] = $priceModel;
+            $this->formatPrice($routeId);
         }
-
-        if(Str::contains($field, 'extraCommissionPercentage')){
-
-            if($this->extraCommissionPercentage > 100){
-                $this->extraCommissionPercentage = 100;
-            }
-
-            $this->updateExtraPrice();
-        }
-
-        $this->validateOnly($field);
     }
 
     public function updateExtraPrice(){
@@ -194,24 +238,33 @@ class ExtrasEdit extends Component
 
     public function save(){
 
-        $this->validate($this->extraPriceRules(), [], $this->extraPriceFieldNames);
+        if (!$priceArray = $this->modelPrices[$this->partnerId]) {
+            return;
+        }
+
+        $this->validate($this->extraPriceRules($this->partnerId), [], $this->extraPriceFieldNames($this->partnerId));
+
+        $priceArray['price'] = EzMoney::parseForDb($priceArray['price']);
+        $priceArray['date_from'] = Carbon::createFromFormat('d.m.Y',$priceArray['date_from'])->format('Y-m-d');
+        $priceArray['date_to'] = Carbon::createFromFormat('d.m.Y',$priceArray['date_to'])->format('Y-m-d');
 
         \DB::table('extra_partner')->updateOrInsert(
             [
                 'extra_id'=>$this->extra->id,
                 'partner_id'=>$this->partnerId,
             ],
-            [
-                'price' =>  \EzMoney::parseForDb($this->extraPrice),
-                'commission' => $this->extraCommissionPercentage,
-                'discount' => $this->extraDiscountPercentage,
-                'date_from' => Carbon::create($this->extraDateFrom),
-                'date_to' => Carbon::create($this->extraDateTo),
-                'tax_level' => $this->extraTaxLevel,
-                'calculation_type' => $this->extraCalculationType
-            ]
+            Arr::only($priceArray, [
+                'price',
+                'date_from',
+                'date_to',
+                'tax_level',
+                'calculation_type',
+                'commission',
+                'discount',
+            ])
         );
 
+        Arr::set($this->modelPrices[$this->partnerId],'new_price',false);
 
         $this->notification()->success('Saved', 'Extra Price Saved');
 

@@ -31,6 +31,7 @@ class TransferPricePivot extends \Illuminate\Database\Eloquent\Relations\Pivot
         'round_trip' => true,
 
     ];
+
     protected $appends = [
         'price_with_discount',
         'round_trip_price_with_discount',

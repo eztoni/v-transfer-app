@@ -141,8 +141,6 @@
 
         <x-settings-layout.tab handle="4">
             <livewire:new-transfer-prices :transfer="$transfer" :show-search="false"></livewire:new-transfer-prices>
-
-
         </x-settings-layout.tab>
     </x-settings-layout.layout>
 
