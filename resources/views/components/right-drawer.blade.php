@@ -4,7 +4,10 @@
     <div class="ds-drawer-side overflow-hidden  fixed  top-20 bottom-0 right-0 py-2 pointer-events-none ">
         <label for="right-drawer-4" class="ds-drawer-overlay rounded-xl"></label>
         <ul class="ds-menu p-4  w-80 bg-base-100  text-base-content border rounded-xl rounded-br-none rounded-tr-none pointer-events-auto">
-            @if(Auth::user()->hasRole('super-admin'))
+            <h2 class="font-bold text-red-600">Super Admin Menu</h2>
+            <hr class="opacity-50 my-2">
+
+        @if(Auth::user()->hasRole('super-admin'))
                 <x-nav-link :href="route('laravel-logs')" :active="request()->routeIs('log-view')">
                     <x-slot name="icon">
                         <i class="fas fa-warehouse"></i>
@@ -47,6 +50,17 @@
                         <i class="fas fa-database"></i>
                     </x-slot>
                     Enable Internal Dev tools
+                </x-nav-link>
+                <x-nav-link href="{{route('owner-overview')}}" class="flex"  >
+                    <div class="">
+                        <x-slot name="icon">
+
+                        <x-icon name="library" class="w-4 h-4"></x-icon>
+                        </x-slot>
+
+                        Owner Overview
+                    </div>
+
                 </x-nav-link>
             @if(!App::isProduction() && \Illuminate\Support\Facades\Auth::user()->hasRole('super_admin'))
                 <x-nav-link href="{{route('dev-mail-preview')}}"   >

@@ -7,6 +7,8 @@ use App\Models\Destination;
 use App\Models\Point;
 use App\Models\Transfer;
 use App\Models\User;
+use App\Services\Api\ValamarClientApi;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -23,10 +25,12 @@ use Actions;
     public $search = '';
     public $destinationId;
     public $destination;
-    public $point;
+    public ?Point $point;
     public $pointModal;
     public $softDeleteModal;
     public $deleteId = '';
+    public bool $importPoint = false;
+    public $valamarPropertiesFromApi;
 
     public function mount()
     {
@@ -34,10 +38,6 @@ use Actions;
         $this->destinationId = Auth::user()->destination_id;
         $this->destination = Auth::user()->destination;
     }
-
-
-
-
 
     protected function rules()
     {
@@ -85,6 +85,13 @@ use Actions;
             return;
 
         $this->validate();
+
+        if (Point::wherePmsClass($this->point->pms_class)->wherePmsCode($this->point->pms_code)->exists()){
+            $this->addError('not_unique','Property with this Class and Code combination already exists');
+
+            return;
+        }
+
         $this->point->destination_id = $this->destinationId;
         $this->point->owner_id = Auth::user()->owner_id;
         $this->point->save();
@@ -112,12 +119,31 @@ use Actions;
     }
     //------------- Soft Delete End ---------
 
+    public function setImportData($key){
+
+        if ($dataFromApi = Arr::get($this->valamarPropertiesFromApi,$key)){
+
+            $this->point->type = Point::TYPE_ACCOMMODATION;
+            $this->point->pms_code = Arr::get($dataFromApi,'propertyOperaCode')?:'';
+            $this->point->name = Arr::get($dataFromApi,'name')?:'';
+            $this->point->pms_class = Arr::get($dataFromApi,'class')?:'';
+            $this->point->address = Arr::get($dataFromApi,'address')?:'';
+            $this->importPoint = false;
+        }
+    }
+
+
     public function render()
     {
         $destinations = Destination::all();
 
         $points = Point::whereDestinationId(Auth::user()->destination_id)->paginate(15);
 
+        $this->valamarPropertiesFromApi = collect();
+
+         if ($this->importPoint){
+             $this->valamarPropertiesFromApi = (new ValamarClientApi())->getPropertiesList();
+         }
 
         return view('livewire.points-overview',compact('destinations','points'));
     }

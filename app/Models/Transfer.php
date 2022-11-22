@@ -53,6 +53,16 @@ class Transfer extends Model implements HasMedia
         return $image->getFullUrl();
 
     }
+    public function getPrimaryImageAttribute(){
+        $image = $this->getMedia('transferImages', function (Media $media) {
+            return isset($media->custom_properties[self::IMAGE_PRIMARY_PROPERTY]);
+        })->first();
+
+        if(!$image){
+            $image = $this->getMedia('transferImages')->first();
+        }
+        return $image;
+    }
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')

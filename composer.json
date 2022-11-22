@@ -32,6 +32,7 @@
         "spatie/laravel-backup": "^8.1.2",
         "spatie/laravel-medialibrary": "^10.3.4",
         "spatie/laravel-permission": "^5.5.3",
+        "spatie/laravel-ray": "^1.31",
         "spatie/laravel-translatable": "^6.0.0",
         "spatie/period": "^2.3.3",
         "stevebauman/purify": "^4.0.1",
