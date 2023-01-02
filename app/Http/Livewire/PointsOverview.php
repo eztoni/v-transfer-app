@@ -41,7 +41,8 @@ use Actions;
 
     protected function rules()
     {
-        return [
+
+        $ruleArray = [
             'point.name'=>'required|max:255|min:2',
             'point.internal_name'=>'max:255|min:2',
             'point.description'=>'nullable|min:3',
@@ -51,10 +52,15 @@ use Actions;
                 'required',
                 Rule::in(Point::TYPE_ARRAY),
             ],
-            'point.pms_code'=>'nullable',
-            'point.pms_class'=>'nullable',
+            'point.pms_class' => 'nullable|required_if:point.type,'.\App\Models\Point::TYPE_ACCOMMODATION,
+            'point.pms_code' => 'nullable|required_if:point.type,'.\App\Models\Point::TYPE_ACCOMMODATION,
+
         ];
+
+        return $ruleArray;
     }
+
+
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
@@ -86,11 +92,14 @@ use Actions;
 
         $this->validate();
 
-        if (Point::wherePmsClass($this->point->pms_class)->wherePmsCode($this->point->pms_code)->exists()){
-            $this->addError('not_unique','Property with this Class and Code combination already exists');
 
-            return;
+        if($this->point->type == Point::TYPE_ACCOMMODATION){
+            if (Point::wherePmsClass($this->point->pms_class)->wherePmsCode($this->point->pms_code)->where('id', '!=', $this->point->id)->exists()){
+                $this->addError('not_unique','Property with this Class and Code combination already exists');
+                return;
+            }
         }
+
 
         $this->point->destination_id = $this->destinationId;
         $this->point->owner_id = Auth::user()->owner_id;
