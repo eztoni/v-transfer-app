@@ -3,6 +3,8 @@
 namespace App\Services\Api;
 use App\Models\Point;
 use App\Models\Reservation;
+use App\Models\Route;
+use App\Models\Transfer;
 use App\Models\Traveller;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
@@ -19,7 +21,9 @@ class ValamarOperaApi{
     private Traveller $lead_traveller;
     private array $request = array();
     private array $responseBody;
+    private string $packageID;
     private string $callURL;
+    private Route $route;
 
     function __construct(){
         $this->setAuthenticationHeaders();
@@ -30,7 +34,6 @@ class ValamarOperaApi{
         $this->reservation = Reservation::findOrFail($reservation_id);
 
         if($this->validateReservationMapping()){
-
             if($this->buildRequestStruct()){
                 $this->sendOperaRequest();
             }
@@ -64,6 +67,12 @@ class ValamarOperaApi{
             $this->errors[] = 'No reservation number for this reservation';
         }
 
+        #Validate Package ID - Route PMS Code
+        if(!$this->validatePackageID()){
+            $return = false;
+            $this->errors[] = 'Missing Route PMS Code';
+        }
+
         return $return;
     }
 
@@ -85,6 +94,7 @@ class ValamarOperaApi{
 
         return $return;
     }
+
     /**
      * Function used to validate that the reservation number has been set for this reservation
      * @return bool True if the reservation number has been set for this reservation, false otherwise
@@ -98,6 +108,29 @@ class ValamarOperaApi{
         if($this->reservation->lead_traveller?->reservation_number != null){
 
             $this->reservation_number = $this->reservation->lead_traveller?->reservation_number;
+            $return = true;
+        }
+
+        return $return;
+    }
+
+    /**
+     * Function used to validate that the reservation number has been set for this reservation
+     * @return bool True if the reservation number has been set for this reservation, false otherwise
+     */
+    private function validatePackageID() : bool{
+
+        $return = false;
+
+        $this->route = Route::query()
+            ->where('destination_id', $this->reservation->destination_id)
+            ->where('starting_point_id', $this->reservation->pickup_location)
+            ->where('ending_point_id', $this->reservation->dropoff_location)
+            ->get()->first();
+
+
+        if(!empty($this->route) && $this->route->pms_code){
+            $this->packageID = $this->route->pms_code;
             $return = true;
         }
 
@@ -119,15 +152,11 @@ class ValamarOperaApi{
         #Transaction ID - Internal Booking ID
         $this->request['TransactionID'] = $this->reservation->id;
 
-
-        #TODO - Remove
-        $packageID = "PackageID";
-
         #Build Packages
         $this->request['Packages'][] = array(
             #Always Constant - 1
             'Quantity' => 1,
-            'PackageID' => $packageID,
+            'PackageID' => $this->packageID,
             'PricePerUnit' => $this->parsePackagePrice(),
             'PackageType' => 'FIX',
             'ExternalCardID' => $this->reservation->id,
@@ -146,15 +175,19 @@ class ValamarOperaApi{
      */
     private function buildPackageComment() : string{
 
-        $return = 'Transfer: ';
 
-        $pickup = Point::find($this->reservation->pickup_location);
-
-        #Pickup Address
-        $return .= "\nFrom: ".$pickup->name.', '.$this->reservation->pickup_address;
+        $return = 'Transfer:';
 
         #Pickup Time
-        $return .= 'Time: '.Carbon::parse($this->reservation->date_time)->toTimeString();
+        $return .= 'Time: '.Carbon::parse($this->reservation->date_time)->toTimeString('minute');
+
+
+        //TODO - substitute with Route Call
+        $pickup_location = Point::find($this->reservation->pickup_location);
+        $dropoff_location = Point::find($this->reservation->dropoff_location);
+
+        #Route
+        $return .= 'From: '.$pickup_location->name.' To: '.$dropoff_location->name;
 
         #Flight Number
         $return .= 'Flight Number: '.$this->reservation->flight_number;
@@ -192,6 +225,7 @@ class ValamarOperaApi{
      * @return void
      */
     private function sendOperaRequest() : bool{
+
         $this->setCallURL('PackagePosting');
 
         $this->validateResponse(
@@ -209,13 +243,12 @@ class ValamarOperaApi{
     }
 
     /**
-     * @param \Illuminate\Http\Client\Response $response The Curl Response
-     * @return ValamarOperaApi
-     * @throws \Illuminate\Http\Client\RequestException Throw Exception with the appropriate error
-     */
+    * @param \Illuminate\Http\Client\Response $response The Curl Response
+    * @return ValamarOperaApi
+    * @throws \Illuminate\Http\Client\RequestException Throw Exception with the appropriate error
+    */
     private function validateResponse(\Illuminate\Http\Client\Response $response) : ValamarOperaApi
     {
-
 
         if(!$response->successful()){
 
