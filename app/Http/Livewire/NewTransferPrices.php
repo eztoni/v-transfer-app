@@ -190,6 +190,7 @@ class NewTransferPrices extends Component
                 'calculation_type',
                 'commission',
                 'discount',
+                'opera_package_id'
             ])
         );
 

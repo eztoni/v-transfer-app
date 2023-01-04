@@ -6,6 +6,7 @@ use App\BusinessModels\Reservation\Reservation;
 use App\Events\ReservationCreatedEvent;
 use App\Models\Transfer;
 use App\Models\Traveller;
+use App\Services\Api\ValamarOperaApi;
 use App\Services\Helpers\ReservationPartnerOrderCache;
 use Carbon\Carbon;
 use Cknow\Money\Money;
@@ -74,6 +75,8 @@ class CreateReservation extends Reservation
                 $this->saveRoundTrip();
             }
 
+            $this->sendReservationToOpera();
+
             ReservationCreatedEvent::dispatch($this->model,[
                 ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail
             ]);
@@ -86,6 +89,12 @@ class CreateReservation extends Reservation
 
         return $this->model->id;
     }
+
+    public function sendReservationToOpera(){
+        #$operaAPI = new ValamarOperaApi();
+       # $operaAPI->sendReservationToOpera($this->model->id);
+    }
+
     private function saveRoundTrip()
     {
         $roundTrip = $this->model->replicate();
