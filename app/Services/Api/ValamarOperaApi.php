@@ -7,6 +7,7 @@ use App\Models\Route;
 use App\Models\Transfer;
 use App\Models\Traveller;
 use Carbon\Carbon;
+use Exchanger\Exception\Exception;
 use Illuminate\Support\Facades\Http;
 use Cknow\Money\Money;
 use Money\Currency;
@@ -15,7 +16,7 @@ class ValamarOperaApi{
 
     private array $auth_credentials = array();
     private Reservation $reservation;
-    private string $reservation_number = '';
+    private string $reservation_opera_id = '';
     private string $dropoffLocationPMSCode = '';
     private array $errors;
     private Traveller $lead_traveller;
@@ -70,7 +71,7 @@ class ValamarOperaApi{
         #Validate Package ID - Route PMS Code
         if(!$this->validatePackageID()){
             $return = false;
-            $this->errors[] = 'Missing Route PMS Code';
+            $this->errors[] = 'Missing Route Opera Package ID';
         }
 
         return $return;
@@ -103,11 +104,11 @@ class ValamarOperaApi{
 
         $return = false;
 
-        $this->reservation->lead_traveller?->reservation_number;
+        $this->reservation->lead_traveller?->reservation_opera_id;
 
-        if($this->reservation->lead_traveller?->reservation_number != null){
+        if($this->reservation->lead_traveller?->reservation_opera_id != null){
 
-            $this->reservation_number = $this->reservation->lead_traveller?->reservation_number;
+            $this->reservation_opera_id = $this->reservation->lead_traveller?->reservation_opera_id;
             $return = true;
         }
 
@@ -128,10 +129,18 @@ class ValamarOperaApi{
             ->where('ending_point_id', $this->reservation->dropoff_location)
             ->get()->first();
 
+        if(!empty($this->route)){
 
-        if(!empty($this->route) && $this->route->pms_code){
-            $this->packageID = $this->route->pms_code;
-            $return = true;
+            $route_transfer = \DB::table('route_transfer')
+                ->where('route_id',$this->route->id)
+                ->where('partner_id',$this->reservation->partner_id)
+                ->where('transfer_id',$this->reservation->transfer_id)
+                ->get()->first();
+
+            if($route_transfer->opera_package_id){
+                $this->packageID = $this->reservation_opera_id;
+                $return = true;
+            }
         }
 
         return $return;
@@ -148,7 +157,7 @@ class ValamarOperaApi{
         #Resort - Point Destination Code
         $this->request['Resort'] = $this->dropoffLocationPMSCode;
         #PMSReservationID - Reservation Number
-        $this->request['PMSReservationID'] = $this->reservation_number;
+        $this->request['PMSReservationID'] = $this->reservation_opera_id;
         #Transaction ID - Internal Booking ID
         $this->request['TransactionID'] = $this->reservation->id;
 
@@ -159,7 +168,7 @@ class ValamarOperaApi{
             'PackageID' => $this->packageID,
             'PricePerUnit' => $this->parsePackagePrice(),
             'PackageType' => 'FIX',
-            'ExternalCardID' => $this->reservation->id,
+            'ExternalCartID' => $this->reservation->id,
             'ExternalCartItemID' => $this->reservation->id,
             'StartDate' => Carbon::parse($this->reservation->date_time)->toDateString(),
             'EndDate' => Carbon::parse($this->reservation->date_time)->toDateString(),
@@ -181,8 +190,7 @@ class ValamarOperaApi{
         #Pickup Time
         $return .= 'Time: '.Carbon::parse($this->reservation->date_time)->toTimeString('minute');
 
-
-        //TODO - substitute with Route Call
+        #Gather Pickup and Dropoff point Location info
         $pickup_location = Point::find($this->reservation->pickup_location);
         $dropoff_location = Point::find($this->reservation->dropoff_location);
 
@@ -217,7 +225,7 @@ class ValamarOperaApi{
 
         $money = new Money($total,new Currency('EUR'));
         //TODO - check if Money has format output
-        return number_format($money->getAmount(), 2);
+        return number_format($money->getAmount(), 2, '.', '');
     }
 
     /**
@@ -229,7 +237,7 @@ class ValamarOperaApi{
         $this->setCallURL('PackagePosting');
 
         $this->validateResponse(
-            Http::post($this->callURL,json_encode($this->request)));
+            Http::post($this->callURL,$this->request));
 
         return false;
     }
@@ -249,8 +257,7 @@ class ValamarOperaApi{
     */
     private function validateResponse(\Illuminate\Http\Client\Response $response) : ValamarOperaApi
     {
-
-        if(!$response->successful()){
+       if(!$response->successful()){
 
             if($response->serverError()){
                 $response->throw($response->serverError());
@@ -259,9 +266,32 @@ class ValamarOperaApi{
             }
 
         }else{
+
             $this->responseBody = $response->json();
+
+            if(!empty($this->responseBody['ErrorList'])){
+                throw new ValamarOperaAPIException($this->buildErrorOutput($this->responseBody['ErrorList']));
+            }
         }
 
         return $this;
     }
+
+    /**
+     * @param array $error_list List of the errors returned by the API
+     * @return string Formatted string consisting out of errors
+     */
+    private function buildErrorOutput(array $error_list) : string{
+        $return = 'Error';
+
+        if(!empty($error_list)){
+            foreach($error_list as $err){
+                $return .= $err."\n";
+            }
+        }
+
+        return $return;
+    }
 }
+
+class ValamarOperaApiException extends Exception{}
