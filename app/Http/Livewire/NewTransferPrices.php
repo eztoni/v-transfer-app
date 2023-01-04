@@ -176,9 +176,9 @@ class NewTransferPrices extends Component
 
         \DB::table('route_transfer')->updateOrInsert(
             [
-                'route_id' => $priceArray['route_id'],
-                'transfer_id' => $priceArray['transfer_id'],
-                'partner_id' => $priceArray['partner_id'],
+                'route_id' => $routeId,
+                'transfer_id' => $this->transferId,
+                'partner_id' => $this->partnerId,
             ],
             Arr::only($priceArray, [
                 'price',
