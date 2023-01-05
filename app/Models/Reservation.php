@@ -8,7 +8,7 @@ use Database\Seeders\TransferExtrasPriceSeeder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Money\Money;
+use Cknow\Money\Money;
 
 class Reservation extends Model
 {
@@ -79,7 +79,7 @@ class Reservation extends Model
 
     public function getPrice()
     {
-        return \Cknow\Money\Money::EUR($this->price);
+        return Money::EUR($this->price);
     }
 
     public function leadTraveller()
@@ -138,6 +138,52 @@ class Reservation extends Model
         return $this->hasOne(User::class, 'id', 'updated_by');
     }
 
+    protected function getTransferPriceCommissionAttribute(): Money
+    {
+
+        $total = (int) \Arr::get($this->transfer_price_state,'amount.amount');
+        $totalWithCommission = (int) \Arr::get($this->transfer_price_state,$this->is_round_trip?'price_data.round_trip_price_with_commission':  'price_data.price_with_commission');
+
+        $commission =Money::EUR(0);
+
+        if($total && $totalWithCommission){
+            $commission=Money::EUR($totalWithCommission - $total);
+        }
+
+        return $commission;
+    }
+
+    public function getTotalCommissionAmountAttribute():Money
+    {
+        return $this->transfer_price_commission->add($this->extras_summed_commission);
+    }
+
+    protected function getExtrasSummedCommissionAttribute(): Money
+    {
+        $commission =Money::EUR(0);
+
+        $extraPriceData = $this->extras_price_states;
+
+        foreach ($extraPriceData as $extraArray){
+            $total = (int) \Arr::get($extraArray,'amount.amount');
+            $totalWithCommission = (int) \Arr::get($extraArray,'price_data.price_with_commission');
+            if($total && $totalWithCommission){
+                $extraCommission =Money::EUR($totalWithCommission - $total);
+                $commission = $commission->add($extraCommission);
+            }
+        }
+
+        return $commission;
+    }
+
+    public function getExtrasPriceStatesAttribute(){
+        return \Arr::where($this->price_breakdown, fn($i) => $i['item']==='extra');
+    }
+
+    public function getTransferPriceStateAttribute():array
+    {
+        return \Arr::first(\Arr::where($this->price_breakdown, fn($i) => $i['item']==='transfer_price'));
+    }
 
     protected static function booted()
     {

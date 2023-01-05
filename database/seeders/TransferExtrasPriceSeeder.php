@@ -21,6 +21,8 @@ class TransferExtrasPriceSeeder extends Seeder
                         'extra_id' => $extra->id,
                         'partner_id' => $partner->id,
                         'price' => rand(1000, 100000),
+                        'commission' => rand(1, 40),
+                        'discount' => rand(1, 40),
                     ]
                 );
             foreach (Transfer::whereOwnerId(1)->get() as $transfer) {
@@ -32,8 +34,9 @@ class TransferExtrasPriceSeeder extends Seeder
                             'partner_id' => $partner->id,
                             'price' => rand(1000, 100000),
                             'price_round_trip' => rand(1000, 100000),
-                            'round_trip'=> random_int(1,100)>30?true:false
-
+                            'round_trip'=> random_int(1,100)>30?true:false,
+                             'commission' => rand(1, 40),
+                        'discount' => rand(1, 40),
                         ]
                     );
 

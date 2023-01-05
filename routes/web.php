@@ -52,6 +52,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         Route::get('/reservation-details/{reservation}', \App\Http\Livewire\ReservationDetails::class)->name('reservation-details');
 
         Route::get('/reports', \App\Http\Livewire\DestinationReport::class)->name('reports');
+        Route::get('/partner-reports', \App\Http\Livewire\DestinationReport::class)->name('partner-reports');
 
 
         Route::get('/mail', function () {
