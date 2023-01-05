@@ -93,6 +93,10 @@
         }
     </script>
 
+    <x-modal.card wire:model="operaSyncModal" title="Sync reservation #{{$this->reservation->id}} with Opera" >
+        <livewire:sync-opera-transfer-reservation :reservation="$this->reservation"/>
+    </x-modal.card>
+
     @if($editReservation)
         <x-modal.card wire:model="editModal"  title="Editing reservation #{{$this->editReservation->id}}">
             <livewire:edit-transfer-reservation :reservation="$this->editReservation"/>
@@ -106,8 +110,6 @@
         </x-modal.card>
     @endif
 
-    <x-modal.card wire:model="operaSyncModal" title="Sync reservation #{{$this->reservation->id}} with Opera" >
-        <livewire:sync-opera-transfer-reservation :reservation="$this->reservation"/>
-    </x-modal.card>
+
 
 </div>
