@@ -55,9 +55,13 @@ trait ReservationDevTools
             'lastName' => 'Doe',
             'reservationNumber' => '21673',
             'email' => 'john.doe@ez-booker.com',
+            'reservationOperaID'=>'4128763',
+            'reservationOperaConfirmation'=>'CONFIRMATION',
             'phone' => '+385 91 1126213',
         ];
     }
+
+
 
     public function devPopulateReservation($mode){
 

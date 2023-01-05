@@ -10,7 +10,7 @@
                 wire:model="destination"
                 label="Destination"
                 clearable="false"
-                :options="$this->adminDestinations->pluck('name','id')"
+                :options="$this->adminDestinations"
             ></x-native-select>
 
             @endrole
@@ -86,9 +86,15 @@
 
                 <div class="ds-stat-title">Total revenue</div>
                 <div class="ds-stat-value text-success">{{$this->totalEur}}</div>
-                <div class="ds-stat-desc font-bold">{{$this->totalHRK}}</div>
             </div>
 
+            @if($this->isPartnerReporting)
+            <div class="ds-stat ">
+
+                <div class="ds-stat-title">Total commission</div>
+                <div class="ds-stat-value text-warning-400">{{$this->totalCommission}}</div>
+            </div>
+@endif
             <div class="ds-stat">
                 <div class="ds-stat-title">Confirmed reservations:</div>
 
@@ -127,6 +133,11 @@
                     <th>People</th>
                     <th>Transfer</th>
                     <th>Vehicle</th>
+                    @if($this->isPartnerReporting)
+                        <th>Tax lvl</th>
+                        <th>Comm. %</th>
+                        <th>Comm.</th>
+                    @endif
                     <th class="text-center">Status</th>
                     <th class="text-right">Price</th>
                 </tr>
@@ -176,6 +187,12 @@
                         </td>
                         <td>{{Arr::get($reservation,'transfer')}}</td>
                         <td>{{Arr::get($reservation,'vehicle')}}</td>
+                        @if($this->isPartnerReporting)
+                            <td>{{Arr::get($reservation,'tax_level')}}</td>
+                            <td>{{Arr::get($reservation,'commission')}} %</td>
+                            <td>{{Arr::get($reservation,'commission_amount')}}</td>
+
+                        @endif
                         <td class="text-center ">
 
                             @switch(Arr::get($reservation,'status'))
@@ -192,8 +209,6 @@
                         </td>
                         <td class="text-right">
                             <span class="font-bold"> {{Arr::get($reservation,'price_eur')}}</span>
-                            <br>
-                            <span class="opacity-75">{{Arr::get($reservation,'price_hrk')}}</span>
 
                         </td>
 

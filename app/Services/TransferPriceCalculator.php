@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Pivots\ExtraPartner;
+use App\Pivots\TransferPricePivot;
 use Cknow\Money\Money;
 use Illuminate\Support\Facades\DB;
 
@@ -20,6 +21,8 @@ class TransferPriceCalculator
     private $price;
 
     private $breakdownLang = 'en';
+    private $priceData;
+    private $extrasPriceData;
 
     /**
      * @param $transferId
@@ -33,7 +36,10 @@ class TransferPriceCalculator
         $this->routeId = $routeId;
         $this->roundTrip = $roundTrip;
         $this->extraIds = $extraIds;
+        $this->setPriceData();
+        $this->setExtrasPriceData();
         $this->calculatePrice();
+
     }
 
 
@@ -47,7 +53,8 @@ class TransferPriceCalculator
         return $this->breakdownArray;
     }
 
-    public function setBreakdownLang($lang){
+    public function setBreakdownLang($lang)
+    {
         $this->breakdownLang = $lang;
         return $this;
     }
@@ -58,35 +65,33 @@ class TransferPriceCalculator
             return null;
         }
 
-        $routeData = $this->getRouteData();
 
-
-        if (!$routeData) {
+        if (!$this->priceData) {
             return null;
         }
 
         $price = Money::EUR(
-            $this->roundTrip ? $routeData->price_round_trip : $routeData->price
+            $this->roundTrip ? $this->priceData->price_round_trip : $this->priceData->price
         );
-        $this->breakdownArray[]= [
-            'item'=>'transfer_price',
-            'amount'=>$price
+
+        $this->breakdownArray[] = [
+            'item' => 'transfer_price',
+            'amount' => $price,
+            'price_data' =>  $this->priceData->toArray()
         ];
 
-        $extrasPrices = ExtraPartner::where('partner_id', $this->partnerId)
-            ->with('extra')
-            ->whereIn('extra_id', $this->extraIds)
-            ->get();
+        /** @var ExtraPartner $exPrice */
+        foreach ($this->extrasPriceData as $exPrice) {
 
-        foreach ($extrasPrices as $exPrice) {
             $money = Money::EUR(
                 $exPrice->price
             );
-            $this->breakdownArray[]= [
-                'item'=>'extra',
-                'item_id' =>$exPrice->extra->id,
-                'model'=>$exPrice->extra->toArray(),
-                'amount'=>$money
+            $this->breakdownArray[] = [
+                'item' => 'extra',
+                'item_id' => $exPrice->extra->id,
+                'model' => $exPrice->extra->toArray(),
+                'amount' => $money,
+                'price_data' => $exPrice->withoutRelations()->toArray()
             ];
 
             $price = $price->add($money->getMoney());
@@ -95,13 +100,33 @@ class TransferPriceCalculator
         $this->price = $price;
     }
 
-    public function getRouteData()
+
+    public function getPriceData()
     {
-        return DB::table('route_transfer')
-            ->where('route_id', $this->routeId)
-            ->where('partner_id', $this->partnerId)
-            ->where('transfer_id', $this->transferId)
-            ->first();
+        return $this->priceData;
+    }
+
+
+    public function getExtrasPriceData()
+    {
+        return $this->extrasPriceData;
+    }
+
+
+    private function setPriceData(): void
+    {
+        $this->priceData = TransferPricePivot::wherePartnerId( $this->partnerId)
+            ->whereRouteId($this->routeId)
+            ->whereTransferId($this->transferId)->first();
+
+    }
+
+    private function setExtrasPriceData(): void
+    {
+        $this->extrasPriceData =  ExtraPartner::where('partner_id', $this->partnerId)
+            ->with('extra')
+            ->whereIn('extra_id', $this->extraIds)
+            ->get();
     }
 
     /**
@@ -133,8 +158,6 @@ class TransferPriceCalculator
         $this->routeId = $routeId;
         return $this;
     }
-
-
 
 
 }

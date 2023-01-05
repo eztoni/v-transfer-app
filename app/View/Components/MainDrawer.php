@@ -70,9 +70,22 @@ class MainDrawer extends Component
             [
                 'icon' => 'fas fa-chart-bar',
                 'text' => 'Reports',
-                'active' => request()->routeIs('reports'),
-                'href' => route('reports'),
-                'show' => true
+                'show' => true,
+                'items' => [
+                    [
+                        'text' => 'Reservation Report',
+                        'active' => request()->routeIs('reports'),
+                        'href' => route('reports'),
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN)
+                    ],
+                    [
+                        'text' => 'Partner Reporting',
+                        'active' => request()->routeIs('partner-reports'),
+                        'href' => route('partner-reports'),
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN)
+                    ],
+
+                ]
             ],
             [
                 'icon' => 'fas fa-tools',

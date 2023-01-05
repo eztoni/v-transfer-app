@@ -24,7 +24,6 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-
         ReservationCreatedEvent::class => [
             SendConfirmationMailListener::class,
         ],
