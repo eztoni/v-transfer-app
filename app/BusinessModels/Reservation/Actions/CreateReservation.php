@@ -75,7 +75,7 @@ class CreateReservation extends Reservation
                 $this->saveRoundTrip();
             }
 
-            $this->sendReservationToOpera();
+            $this->sendReservationToOpera($this->model->id);
 
             ReservationCreatedEvent::dispatch($this->model,[
                 ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail
@@ -91,8 +91,8 @@ class CreateReservation extends Reservation
     }
 
     public function sendReservationToOpera(){
-        #$operaAPI = new ValamarOperaApi();
-       # $operaAPI->sendReservationToOpera($this->model->id);
+        $operaAPI = new ValamarOperaApi();
+        $operaAPI->syncReservationWithOpera($this->model->id);
     }
 
     private function saveRoundTrip()

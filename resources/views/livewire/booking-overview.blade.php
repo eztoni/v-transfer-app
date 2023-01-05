@@ -69,6 +69,12 @@
                         <span>{{$reservation->pickupLocation->name}} -{{$reservation->date_time->format('d.m.Y H:i')}} - Address: {{$reservation->pickup_address}}</span>
                     </div>
                 </div>
+            <div class="flex flex-col w-full">
+                <div class="flex">
+                    <div class="m-0 divider"></div>
+                    <span class="font-extrabold text-info">Opera Status: <span class="ds-badge ds-badge-{{$reservation->isSyncedWithOpera()?'success':'error'}}">{{$reservation->isSyncedWithOpera()?'Synced':'Not Synced'}}</span></span>
+                </div>
+            </div>
         </x-card>
 
 

@@ -4,6 +4,7 @@ namespace App\BusinessModels\Reservation\Actions;
 
 use App\Events\ReservationCancelledEvent;
 use App\Models\Reservation;
+use App\Services\Api\ValamarOperaApi;
 
 class CancelReservation extends \App\BusinessModels\Reservation\Reservation
 {
@@ -30,6 +31,9 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
         $this->model->status = Reservation::STATUS_CANCELLED;
 
         $this->model->save();
+
+        $api = new ValamarOperaApi();
+        $api->syncReservationWithOpera($this->model->id);
 
         ReservationCancelledEvent::dispatch($this->model);
 
