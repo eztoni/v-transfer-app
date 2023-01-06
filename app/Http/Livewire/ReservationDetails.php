@@ -26,7 +26,7 @@ use Actions;
         'updateCancelled' => 'closeUpdateModal',
         'updateCompleted' => 'updateCompleted',
         'cancelCancelled' => 'closeCancelModal',
-        'cancelCompleted' => 'closeCancelModal'
+        'cancelCompleted' => 'cancelComplete'
     ];
 
     public function mount()
@@ -41,6 +41,11 @@ use Actions;
 
         $this->cancelReservation = Reservation::findOrFail($id);
     }
+
+    public function cancelComplete(){
+        $this->redirect(route('reservation-details', $this->reservation->id));
+    }
+
     public function closeCancelModal()
     {
         $this->cancelModal= false;
