@@ -12,6 +12,7 @@
                 @if($reservation->is_round_trip)
                     <span class="ds-badge  ds-badge-success">Round trip</span>
                 @endif
+                <p><span class="font-extrabold text-info">Opera Status: {{$reservation->isSyncedWithOpera()?'Synced':'Not Synced'}}<br/></span><x-button primary wire:click="openOperaSyncModal({{$reservation->id}})">{{$reservation->isSyncedWithOpera()?'Re-Sync':'Sync'}}</x-button>
 
             </div>
 
@@ -92,6 +93,10 @@
         }
     </script>
 
+    <x-modal.card wire:model="operaSyncModal" title="Sync reservation #{{$this->reservation->id}} with Opera" >
+        <livewire:sync-opera-transfer-reservation :reservation="$this->reservation"/>
+    </x-modal.card>
+
     @if($editReservation)
         <x-modal.card wire:model="editModal"  title="Editing reservation #{{$this->editReservation->id}}">
             <livewire:edit-transfer-reservation :reservation="$this->editReservation"/>
@@ -104,4 +109,7 @@
             <livewire:cancel-transfer-reservation :reservation="$this->cancelReservation"/>
         </x-modal.card>
     @endif
+
+
+
 </div>

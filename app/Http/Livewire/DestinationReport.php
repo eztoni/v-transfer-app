@@ -21,7 +21,8 @@ use WireUi\Traits\Actions;
 
 class DestinationReport extends Component
 {
-use Actions;
+    use Actions;
+
     public int $destination;
 
     public $dateFrom;
@@ -33,8 +34,9 @@ use Actions;
     public $dropoffLocation = 0;
 
     public $totalEur;
-    public $totalHRK;
+    public $totalCommission;
 
+    public bool $isPartnerReporting = false;
 
 
     protected $rules = [
@@ -50,13 +52,23 @@ use Actions;
     public function mount()
     {
         $this->destination = \Auth::user()->destination_id;
+
+
         $this->dateFrom = Carbon::now()->startOfMonth()->format('d.m.Y');
         $this->dateTo = Carbon::now()->endOfMonth()->format('d.m.Y');
         $this->filteredReservations = [];
 
 
-        //Calls method that has dependancy injection
-        App::call( [ $this, 'generate' ] );
+
+
+        $this->isPartnerReporting = request()?->routeIs('partner-reports');
+
+        if($this->isPartnerReporting){
+            $p = Partner::first();
+            if($p){
+                $this->partner = $p->id;
+            }
+        }
     }
 
 
@@ -96,8 +108,7 @@ use Actions;
     public function generate(\Swap\Swap $swap)
     {
         $this->totalEur = Money::EUR(0);
-        $this->totalHRK = Money::HRK(0);
-
+        $this->totalCommission = \Cknow\Money\Money::EUR(0);
         $exchange = new SwapExchange($swap);
 
         $converter = new Converter(new ISOCurrencies(), $exchange);
@@ -105,10 +116,12 @@ use Actions;
         $this->filteredReservations =
             Reservation::query()
                 ->whereIsMain(true)
-                ->with(['leadTraveller', 'pickupLocation', 'dropoffLocation','returnReservation'])
-                ->where('destination_id', $this->destination)
-                ->whereDate('created_at', '>=', Carbon::createFromFormat('d.m.Y',$this->dateFrom))
-                ->whereDate('created_at', '<=',Carbon::createFromFormat('d.m.Y',$this->dateTo))
+                ->with(['leadTraveller', 'pickupLocation', 'dropoffLocation', 'returnReservation'])
+                ->when($this->destination != 'All', function ($q) {
+                    $q->where('destination_id', $this->destination);
+                })
+                ->whereDate('created_at', '>=', Carbon::createFromFormat('d.m.Y', $this->dateFrom))
+                ->whereDate('created_at', '<=', Carbon::createFromFormat('d.m.Y', $this->dateTo))
                 ->when($this->partner != 0, function ($q) {
                     $q->where('partner_id', $this->partner);
                 })
@@ -122,16 +135,15 @@ use Actions;
                     $q->where('status', $this->status);
                 })
                 ->get()
-                ->map(function ($i) use ($converter) {
+                ->map(function (Reservation $i) use ($converter) {
 
                     $priceEur = \Cknow\Money\Money::EUR($i->price);
-                    $priceHRK = \Cknow\Money\Money::
-                    fromMoney($converter
-                        ->convert($priceEur->getMoney(), new Currency('HRK')));
-                    if($i->isConfirmed()){
+
+                    if ($i->isConfirmed()) {
                         $this->totalEur = $this->totalEur->add($priceEur->getMoney());
-                        $this->totalHRK = $this->totalHRK->add($priceHRK->getMoney());
+                        $this->totalCommission = $this->totalCommission->add($i->total_commission_amount);
                     }
+
 
                     return [
                         'id' => $i->id,
@@ -145,16 +157,17 @@ use Actions;
                         'vehicle' => $i->transfer?->vehicle?->type,
                         'status' => $i->status,
                         'price_eur' => (string)$priceEur,
-                        'price_hrk' => (string)$priceHRK,
                         'round_trip' => $i->is_round_trip,
                         'round_trip_date' => $i->returnReservation?->date_time?->format('d.m.Y @ H:i'),
-
+                        'tax_level'=>  \Arr::get($i->transfer_price_state,'price_data.tax_level'),
+                        'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
+                        'commission_amount'=>  $i->total_commission_amount,
                     ];
                 })->toArray();
 
 
-        $this->totalHRK = (string) \Cknow\Money\Money::fromMoney($this->totalHRK);
-        $this->totalEur = (string)  \Cknow\Money\Money::fromMoney($this->totalEur);
+        $this->totalEur = (string)\Cknow\Money\Money::fromMoney($this->totalEur);
+        $this->totalCommission = (string)$this->totalCommission;
 
     }
 
@@ -165,19 +178,32 @@ use Actions;
 
     public function getPartnersProperty()
     {
+        $partners = Partner::query();
 
-        return Partner::whereHas('destinations', function ($q) {
-            $q->where('id', $this->destination);
-        })->get()->mapWithKeys(function ($i) {
+        $partners = $partners->get()->mapWithKeys(function ($i) {
             return [$i->id => $i->name];
-        })->prepend('All partners', 0)
-            ->toArray();
+        });
+
+        if (!$this->isPartnerReporting) {
+            $partners->prepend('All partners', 0);
+        }
+
+        return $partners->toArray();
     }
 
     public function getAdminDestinationsProperty()
     {
-        return Destination::all();
+        $destinations = Destination::all()->mapWithKeys(function ($i) {
+            return [$i->id => $i->name];
+        });
+
+        if ($this->isPartnerReporting) {
+            $destinations->prepend('All partners', 0);
+        }
+
+        return $destinations;
     }
+
 
     public function render()
     {

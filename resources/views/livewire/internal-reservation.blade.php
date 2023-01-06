@@ -68,6 +68,8 @@
                                     <thead>
                                     <tr>
                                         <th>#Res. Code</th>
+                                        <th>#Opera ID</th>
+                                        <th>#Opera Conf.</th>
                                         <th>First Name</th>
                                         <th>Lastname</th>
                                         <th>Email</th>
@@ -85,6 +87,8 @@
 
                                         <tr>
                                             <th>{{$k}}</th>
+                                            <th>{{\Illuminate\Support\Arr::get($r,'OPERA.RESV_NAME_ID')}}</th>
+                                            <th>{{\Illuminate\Support\Arr::get($r,'OPERA.CONFIRMATION_NO')}}</th>
                                             <th>{{\Illuminate\Support\Str::title( \Illuminate\Support\Arr::get($r,'reservationHolderData.firstName')??'-')}}</th>
                                             <th>{{\Illuminate\Support\Str::title(\Illuminate\Support\Arr::get($r,'reservationHolderData.lastName')??'-')}}</th>
                                             <th>{{\Illuminate\Support\Arr::get($r,'reservationHolderData.email')??'-'}}</th>
@@ -505,6 +509,14 @@
 
                         <x-input label="Reservation number"
                                  wire:model="stepTwoFields.leadTraveller.reservationNumber"
+                        ></x-input>
+
+                        <x-input label="Reservation Opera ID"
+                                 wire:model="stepTwoFields.leadTraveller.reservationOperaID"
+                        ></x-input>
+
+                        <x-input label="Opera Confirmation Number"
+                                 wire:model="stepTwoFields.leadTraveller.reservationOperaConfirmation"
                         ></x-input>
                         <x-input label="Email"
                                  wire:model="stepTwoFields.leadTraveller.email"

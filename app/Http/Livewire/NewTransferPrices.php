@@ -62,7 +62,9 @@ class NewTransferPrices extends Component
         if (!$this->transfer){
             $this->transfer = Transfer::first();
         }
-        $this->transferId = $this->transfer->id;
+        if($this->transfer){
+            $this->transferId = $this->transfer->id;
+        }
         $this->partnerId = $this->partner->id;
         $this->setModelPrices();
     }
@@ -190,6 +192,7 @@ class NewTransferPrices extends Component
                 'calculation_type',
                 'commission',
                 'discount',
+                'opera_package_id'
             ])
         );
 

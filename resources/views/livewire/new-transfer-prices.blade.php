@@ -107,7 +107,7 @@
                                     <div x-transition.duration.300ms class="p-4 relative" x-show="isOpen">
 
 
-                                        <h1 class="text-1xl mb-1 font-bold">Date</h1>
+                                        <h1 class="text-1xl mb-1 font-bold">Date & Opera Mapping</h1>
                                         <div class="grid grid-cols-4  gap-2">
                                             <x-flatpickr
                                                 label="Date from:"
@@ -124,7 +124,10 @@
                                                 :enable-time="false"
                                                 wire:model.defer="modelPrices.{{$r->id}}.date_to"
                                             />
+                                            <x-input wire:model="modelPrices.{{$r->id}}.opera_package_id"
+                                                     label="Opera Package ID" placeholder="PCKG{{$r->id}}" />
                                         </div>
+
 
                                         <div class="ds-divider my-1 "></div>
 
@@ -160,7 +163,7 @@
                                         <div class="grid grid-cols-4  gap-2 mb-4">
                                             <x-input wire:model.debounce.500ms="modelPrices.{{$r->id}}.price"
                                                      label="One Way Price"
-                                            hint="Format example: 10.000,00"
+                                                     hint="Format example: 10.000,00"
                                             />
 
                                             <x-input wire:model="modelPrices.{{$r->id}}.price_with_discount"
@@ -198,19 +201,19 @@
 
                                         <div class="flex justify-between my-3 gap-4 items-center">
                                             @if(Arr::get($modelPrices,"{$r->id}.new_price"))
-                                                    <x-badge negative outline>
+                                                <x-badge negative outline>
 
-                                                        <x-icon name="exclamation" class="w-4 h-4" >
+                                                    <x-icon name="exclamation" class="w-4 h-4" >
 
-                                                        </x-icon>
-                                                        <div class="">
-                                                            Price not set
-                                                            <br>
-                                                            Please set the price to make transfer for this partner available for booking
+                                                    </x-icon>
+                                                    <div class="">
+                                                        Price not set
+                                                        <br>
+                                                        Please set the price to make transfer for this partner available for booking
 
-                                                        </div>
+                                                    </div>
 
-                                                    </x-badge>
+                                                </x-badge>
                                             @else
                                                 <p></p>
                                             @endif

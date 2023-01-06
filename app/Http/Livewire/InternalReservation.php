@@ -64,6 +64,8 @@ class InternalReservation extends Component
         'stepTwoFields.leadTraveller.firstName' => ' first name',
         'stepTwoFields.leadTraveller.lastName' => ' last name',
         'stepTwoFields.leadTraveller.reservationNumber' => ' reservation number',
+        'stepTwoFields.leadTraveller.reservationOperaID' => ' reservation opera id',
+        'stepTwoFields.leadTraveller.reservationOperaConfirmation' => ' opera confirmation number',
         'stepTwoFields.leadTraveller.email' => ' email',
         'stepTwoFields.leadTraveller.phone' => ' phone',
         'stepTwoFields.otherTravellers' => 'other travellers',
@@ -104,6 +106,8 @@ class InternalReservation extends Component
             'stepTwoFields.leadTraveller.firstName' => 'required|string',
             'stepTwoFields.leadTraveller.lastName' => 'required|string',
             'stepTwoFields.leadTraveller.reservationNumber' => 'nullable|string',
+            'stepTwoFields.leadTraveller.reservationOperaID' => 'nullable|string',
+            'stepTwoFields.leadTraveller.reservationOperaConfirmation' => 'nullable|string',
             'stepTwoFields.leadTraveller.email' => 'nullable|string|email',
             'stepTwoFields.leadTraveller.phone' => 'required|string',
         ];
@@ -127,6 +131,8 @@ class InternalReservation extends Component
             'firstName' => null,
             'lastName' => null,
             'reservationNumber' => null,
+            'reservationOperaID' => null,
+            'reservationOperaConfirmation' => null,
             'email' => null,
             'phone' => null,
         ],
@@ -234,6 +240,9 @@ class InternalReservation extends Component
         $traveller->email = $this->stepTwoFields['leadTraveller']['email'];
         $traveller->title = $this->stepTwoFields['leadTraveller']['title'];
         $traveller->reservation_number = $this->stepTwoFields['leadTraveller']['reservationNumber'];
+        $traveller->reservation_opera_id = $this->stepTwoFields['leadTraveller']['reservationOperaID'];
+        $traveller->reservation_opera_confirmation = $this->stepTwoFields['leadTraveller']['reservationOperaConfirmation'];
+
         $traveller->phone = $this->stepTwoFields['leadTraveller']['phone'];
 
         $route = $this->selectedRoute;
@@ -444,6 +453,9 @@ class InternalReservation extends Component
         $this->stepTwoFields['leadTraveller']['email'] = Arr::get($data,'reservationHolderData.email');
         $this->stepTwoFields['leadTraveller']['phone'] = Arr::get($data,'reservationHolderData.mobile');
         $this->stepTwoFields['leadTraveller']['reservationNumber'] = $i;
+        $this->stepTwoFields['leadTraveller']['reservationOperaID'] = Arr::get($data,'OPERA.RESV_NAME_ID');
+        $this->stepTwoFields['leadTraveller']['reservationOperaConfirmation'] = Arr::get($data,'OPERA.CONFIRMATION_NO');
+
         $this->notification()->success('Data pulled');
         $this->closePullModal();
     }
