@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Casts\ModelCast;
 use App\Scopes\DestinationScope;
+use App\Services\Api\ValamarOperaApi;
 use Database\Seeders\TransferExtrasPriceSeeder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -156,6 +157,13 @@ class Reservation extends Model
     public function getTotalCommissionAmountAttribute():Money
     {
         return $this->transfer_price_commission->add($this->extras_summed_commission);
+    }
+
+    public function getOperaLog(){
+
+            $log = ValamarOperaApi::getSyncOperaLog($this->id);
+
+            return $log;
     }
 
     protected function getExtrasSummedCommissionAttribute(): Money

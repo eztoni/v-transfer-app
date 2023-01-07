@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Reservation;
+use App\Services\Api\ValamarOperaApi;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 
@@ -17,6 +18,8 @@ use Actions;
     public bool $cancelModal = false;
     public bool $editModal = false;
     public bool $operaSyncModal = false;
+    public bool $operaSyncLogModal = false;
+    public array $syncLog;
 
     public $rules = [
         'editReservations'=>'nullable',
@@ -29,7 +32,8 @@ use Actions;
         'cancelCancelled' => 'closeCancelModal',
         'cancelCompleted' => 'cancelCompleted',
         'syncCompleted'   => 'closeSyncModal',
-        'syncCancelled'   => 'closeSyncModal'
+        'syncCancelled'   => 'closeSyncModal',
+        'syncLogClosed'   => 'closeSyncLogModal'
     ];
 
     public function mount()
@@ -61,6 +65,10 @@ use Actions;
         $this->operaSyncModal = false;
         $this->render();
     }
+    public function closeSyncLogModal(){
+        $this->operaSyncLogModal = false;
+        $this->render();
+    }
 
     public function openUpdateModal($id)
     {
@@ -72,6 +80,11 @@ use Actions;
     public function openOperaSyncModal($id){
         $this->operaSyncModal = true;
         $this->reservation = Reservation::findOrFail($id);
+    }
+
+    public function openOperaSyncLogModal($id){
+        $this->operaSyncLogModal = true;
+        $this->syncLog = ValamarOperaApi::getSyncOperaLog($id);
     }
 
     public function updateCompleted(){

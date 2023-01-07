@@ -21,7 +21,7 @@ class ValamarOperaApi{
     private array $errors;
     private Traveller $lead_traveller;
     private array $request = array();
-    private array $responseBody;
+    private array $responseBody = array();
     private string $packageID;
     private string $callURL;
     private Route $route;
@@ -49,7 +49,8 @@ class ValamarOperaApi{
                 $this->sendOperaRequest();
             }
         }else{
-
+            $this->request = $this->errors;
+            $this->writeCommunicationLog(self::STATUS_ERROR);
         }
     }
 
@@ -141,6 +142,7 @@ class ValamarOperaApi{
             ->where('ending_point_id', $this->reservation->dropoff_location)
             ->get()->first();
 
+
         if(!empty($this->route)){
 
             $route_transfer = \DB::table('route_transfer')
@@ -149,8 +151,9 @@ class ValamarOperaApi{
                 ->where('transfer_id',$this->reservation->transfer_id)
                 ->get()->first();
 
+
             if($route_transfer->opera_package_id){
-                $this->packageID = $this->reservation_opera_id;
+                $this->packageID = $route_transfer->opera_package_id;
                 $return = true;
             }
         }
@@ -296,12 +299,14 @@ class ValamarOperaApi{
 
             $this->responseBody = $response->json();
 
-            if(!empty($this->responseBody['ErrorList'])){
-                $this->writeCommunicationLog(self::STATUS_ERROR);
-                throw new ValamarOperaAPIException($this->buildErrorOutput($this->responseBody['ErrorList']));
-            }
 
-            $this->writeCommunicationLog(self::STATUS_SUCCESS);
+            if($this->responseBody['Status'] == 'ERR'){
+
+                $this->writeCommunicationLog(self::STATUS_ERROR);
+                $response->throw('An Error Has occured');
+            }else{
+                $this->writeCommunicationLog(self::STATUS_SUCCESS);
+            }
         }
 
         return $this;
@@ -333,16 +338,34 @@ class ValamarOperaApi{
         switch ($status){
             case self::STATUS_SUCCESS:
                 $this->reservation->opera_sync = 1;
+                $log_message = 'Opera Sync Success';
                 break;
             case self::STATUS_ERROR:
+
                 $this->reservation->opera_sync = 0;
+
+                if(empty($this->responseBody['Status'])){
+                    if(!empty($this->errors)){
+                        $log_message = $this->errors[0];
+                    }
+                }else{
+
+                    if(!empty($this->responseBody['Packages'])){
+                        foreach($this->responseBody['Packages'] as $package){
+                            if(!empty($package['ErrorList'])){
+                                $log_message = $package['ErrorList'][0];
+                            }
+                        }
+                    }
+                }
                 break;
         }
 
         $this->reservation->save();
 
-        \DB::insert('insert into opera_sync_log (reservation_id, opera_request,opera_response,sync_status,updated_by,updated_at) values (?, ?, ?, ?, ?, ?)',
+        \DB::insert('insert into opera_sync_log (log_message,reservation_id, opera_request,opera_response,sync_status,updated_by,updated_at) values (?, ?, ?, ?, ?, ?, ?)',
             [
+                $log_message,
                 $this->reservation->id,
                 json_encode($this->request),
                 json_encode($this->responseBody),
@@ -353,6 +376,26 @@ class ValamarOperaApi{
 
     }
 
-}
+    /**
+     * @param $reservation_id Reservation ID
+     * @return void array Log Data
+     */
+    static function getSyncOperaLog($reservation_id){
 
-class ValamarOperaApiException extends Exception {}
+        $log = \DB::table('opera_sync_log')
+            ->where('reservation_id','=',$reservation_id)
+            ->orderBy('id','desc')
+            ->limit(1)
+            ->get();
+
+        if(!empty($log)){
+
+            $log = $log[0];
+
+            $log->opera_request = json_decode($log->opera_request,true);
+            $log->opera_response = json_decode($log->opera_response,true);
+        }
+
+        return json_decode(json_encode($log),true);
+    }
+}
