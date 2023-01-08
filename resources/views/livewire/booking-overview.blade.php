@@ -73,6 +73,8 @@
                 <div class="flex">
                     <div class="m-0 divider"></div>
                     <span class="font-extrabold text-info">Opera Status: <span class="ds-badge ds-badge-{{$reservation->isSyncedWithOpera()?'success':'error'}}">{{$reservation->isSyncedWithOpera()?'Synced':'Not Synced'}}</span></span>
+                    <span class="font-extrabold text-info">&nbsp;ZKI: <span class="text-info font-normal">{{$reservation->lead_traveller?->zki ? $reservation->lead_traveller?->zki:'-'}}</span></span>
+                    <span class="font-extrabold text-info">&nbsp;JIR: <span class="text-info font-normal">{{$reservation->lead_traveller?->jir ? $reservation->lead_traveller?->jir:'-'}}</span></span>
                 </div>
             </div>
         </x-card>

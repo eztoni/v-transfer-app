@@ -334,6 +334,7 @@ class ValamarOperaApi{
      */
     private function writeCommunicationLog($status) : void{
 
+        $log_message = '';
         #Update Opera Reservation Status
         switch ($status){
             case self::STATUS_SUCCESS:
@@ -356,6 +357,10 @@ class ValamarOperaApi{
                                 $log_message = $package['ErrorList'][0];
                             }
                         }
+                    }
+
+                    if(!empty($this->responseBody['ErrorList'])){
+                        $log_message = $this->responseBody['ErrorList'][0];
                     }
                 }
                 break;

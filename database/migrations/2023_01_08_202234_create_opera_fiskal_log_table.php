@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('opera_sync_log', function (Blueprint $table) {
+        Schema::create('opera_fiskal_log', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Reservation::class);
-            $table->json('opera_request')->nullable();
-            $table->json('opera_response')->nullable();
-            $table->string('jir')->nullable();
+            $table->integer('reservation_id');
+            $table->enum('log_type',\App\Services\Api\ValamarFiskalizacija::LOG_TYPE_ARRAY);
+            $table->json('request')->nullable();
+            $table->json('response')->nullable();
             $table->string('zki')->nullable();
-            $table->enum('sync_status',\App\Services\Api\ValamarOperaApi::STATUS_ARRAY);
-            $table->integer('updated_by')->nullable();
+            $table->string('jir')->nullable();
+            $table->enum('status',array('success','error'));
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('opera_sync_log');
+        Schema::dropIfExists('opera_fiskal_log');
     }
 };
