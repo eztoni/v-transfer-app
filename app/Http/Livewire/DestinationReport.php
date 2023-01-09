@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Exports\DestinationExport;
 use App\Models\Destination;
 use App\Models\Partner;
 use App\Models\Reservation;
@@ -11,6 +12,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
 use Money\Converter;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
@@ -161,7 +163,7 @@ class DestinationReport extends Component
                         'round_trip_date' => $i->returnReservation?->date_time?->format('d.m.Y @ H:i'),
                         'tax_level'=>  \Arr::get($i->transfer_price_state,'price_data.tax_level'),
                         'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
-                        'commission_amount'=>  $i->total_commission_amount,
+                        'commission_amount'=>  (string) $i->total_commission_amount,
                     ];
                 })->toArray();
 
@@ -189,6 +191,28 @@ class DestinationReport extends Component
         }
 
         return $partners->toArray();
+    }
+
+    public function exportToExcel(){
+
+        $destination = Destination::withoutGlobalScopes()->find($this->destination)?->name;
+        $partner = Partner::find($this->partner)?->name;
+        $owner = \Auth::user()->owner->name;
+
+        $export = new DestinationExport($this->filteredReservations,$this->isPartnerReporting);
+
+        $export->setFilterData([
+
+                Carbon::make($this->dateFrom)->format('d.m.Y'),
+                Carbon::make($this->dateTo)->format('d.m.Y'),
+                $partner??'All',
+                $destination??'All',
+                $this->totalEur,
+                $this->totalCommission
+
+        ]);
+
+        return Excel::download($export,"{$owner}_{$destination}_{$partner}_{$this->dateFrom}.xlsx");
     }
 
     public function getAdminDestinationsProperty()

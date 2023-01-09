@@ -122,6 +122,22 @@
         <div class="ds-divider"></div>
 
         <x-card>
+            <div class="flex justify-end mb-2">
+                Export to excel:
+
+
+
+                <button class="ds-btn ds-btn-outline ds-btn-sm ds-btn-square ml-2 "
+                        wire:loading.class="ds-loading"
+                        wire:target="exportToExcel"
+                        wire:click="exportToExcel">
+
+                    <x-icon name="document-download" wire:loading.remove wire:target="exportToExcel" class="w-5 h-5 ">
+                    </x-icon>
+                </button>
+
+            </div>
+
             <table class="ds-table ds-table-compact w-full">
                 <thead>
                 <tr>
@@ -188,6 +204,7 @@
                         <td>{{Arr::get($reservation,'transfer')}}</td>
                         <td>{{Arr::get($reservation,'vehicle')}}</td>
                         @if($this->isPartnerReporting)
+
                             <td>{{Arr::get($reservation,'tax_level')}}</td>
                             <td>{{Arr::get($reservation,'commission')}} %</td>
                             <td>{{Arr::get($reservation,'commission_amount')}}</td>
