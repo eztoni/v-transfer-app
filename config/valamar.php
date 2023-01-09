@@ -10,5 +10,13 @@ return [
     'valamar_opera_api_pass' => env('VALAMAR_OPERA_API_PASS',''),
     'valamar_opera_api_url' => env('VALAMAR_OPERA_API_BASE_URL',''),
 
+    #Fiskalizacija Demo Mode
+    'valamar_fiskalizacija_demo_mode' => env('VALAMAR_FISKALIZACIJA_DEMO_MODE',''),
+    'valamar_fiskalizacija_demo_oib' => env('VALAMAR_FISKALIZACIJA_DEMO_OIB',''),
+    'valamar_fiskalizacija_demo_cert' => env('VALAMAR_FISKALIZACIJA_DEMO_CERT',''),
+    'valamar_fiskalizacija_demo_cert_pw' => env('VALAMAR_FISKALIZACIJA_DEMO_CERT_PW',''),
+    'valamar_opera_fiskalizacija_active' => env('VALAMAR_FISKALIZACIJA_OPERA_ACTIVE',''),
+
+
     'ez_dev_tools' => env('EZ_DEV_TOOLS_ENABLED',false)
 ];

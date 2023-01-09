@@ -12,6 +12,14 @@
                 @if($reservation->is_round_trip)
                     <span class="ds-badge  ds-badge-success">Round trip</span>
                 @endif
+                <p><span class="font-extrabold text-info">Opera Status: {{$reservation->isSyncedWithOpera()?'Synced':'Not Synced'}}<br/></span>
+                    <x-button primary wire:click="openOperaSyncModal({{$reservation->id}})">{{$reservation->isSyncedWithOpera()?'Re-Sync':'Sync'}}</x-button>
+                    <x-button sm icon="external-link" wire:click="openOperaSyncLogModal({{$reservation->id}})">View Sync Log</x-button>
+                    <br/>
+                    <span class="font-extrabold text-info">&nbsp;ZKI: <span class="text-info font-normal">{{$reservation->lead_traveller?->zki ? $reservation->lead_traveller?->zki:'-'}}</span></span>
+                    <br/>
+                    <span class="font-extrabold text-info">&nbsp;JIR: <span class="text-info font-normal">{{$reservation->lead_traveller?->jir ? $reservation->lead_traveller?->jir:'-'}}</span></span>
+
 
             </div>
 
@@ -92,6 +100,18 @@
         }
     </script>
 
+    @if($operaSyncLogModal)
+    <x-modal.card wire:model="operaSyncLogModal" title="Opera Reservation Sync Log - Reservation ID#{{$this->reservation->id}}">
+        <livewire:sync-opera-transfer-reservation-log :reservation="$this->reservation"/>
+    </x-modal.card>
+    @endif
+
+    @if($operaSyncModal)
+    <x-modal.card wire:model="operaSyncModal" title="Sync reservation #{{$this->reservation->id}} with Opera" >
+        <livewire:sync-opera-transfer-reservation :reservation="$this->reservation"/>
+    </x-modal.card>
+    @endif
+
     @if($editReservation)
         <x-modal.card wire:model="editModal"  title="Editing reservation #{{$this->editReservation->id}}">
             <livewire:edit-transfer-reservation :reservation="$this->editReservation"/>
@@ -104,4 +124,7 @@
             <livewire:cancel-transfer-reservation :reservation="$this->cancelReservation"/>
         </x-modal.card>
     @endif
+
+
+
 </div>

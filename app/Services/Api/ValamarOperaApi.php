@@ -21,16 +21,26 @@ class ValamarOperaApi{
     private array $errors;
     private Traveller $lead_traveller;
     private array $request = array();
-    private array $responseBody;
+    private array $responseBody = array();
     private string $packageID;
     private string $callURL;
     private Route $route;
+
+    const STATUS_SUCCESS = 'success';
+    const STATUS_ERROR = 'error';
+
+    CONST STATUS_ARRAY = array(
+        'success',
+        'error'
+    );
+
+    const VARIABLE_PACKAGE_PRICE = 'ARTICLE';
 
     function __construct(){
         $this->setAuthenticationHeaders();
     }
 
-    public function sendReservationToOpera($reservation_id){
+    public function syncReservationWithOpera($reservation_id){
 
         $this->reservation = Reservation::findOrFail($reservation_id);
 
@@ -38,6 +48,9 @@ class ValamarOperaApi{
             if($this->buildRequestStruct()){
                 $this->sendOperaRequest();
             }
+        }else{
+            $this->request = $this->errors;
+            $this->writeCommunicationLog(self::STATUS_ERROR);
         }
     }
 
@@ -129,6 +142,7 @@ class ValamarOperaApi{
             ->where('ending_point_id', $this->reservation->dropoff_location)
             ->get()->first();
 
+
         if(!empty($this->route)){
 
             $route_transfer = \DB::table('route_transfer')
@@ -137,8 +151,9 @@ class ValamarOperaApi{
                 ->where('transfer_id',$this->reservation->transfer_id)
                 ->get()->first();
 
+
             if($route_transfer->opera_package_id){
-                $this->packageID = $this->reservation_opera_id;
+                $this->packageID = $route_transfer->opera_package_id;
                 $return = true;
             }
         }
@@ -162,70 +177,83 @@ class ValamarOperaApi{
         $this->request['TransactionID'] = $this->reservation->id;
 
         #Build Packages
-        $this->request['Packages'][] = array(
-            #Always Constant - 1
-            'Quantity' => 1,
-            'PackageID' => $this->packageID,
-            'PricePerUnit' => $this->parsePackagePrice(),
-            'PackageType' => 'FIX',
-            'ExternalCartID' => $this->reservation->id,
-            'ExternalCartItemID' => $this->reservation->id,
-            'StartDate' => Carbon::parse($this->reservation->date_time)->toDateString(),
-            'EndDate' => Carbon::parse($this->reservation->date_time)->toDateString(),
-            'Comment' => $this->buildPackageComment(),
-        );
+        $this->request['Packages'][] = $this->buildReservationPackage($this->reservation);
+
+        #If there is a return transfer
+        if((int)$this->reservation->round_trip_id > 0){
+
+            $returnReservation = Reservation::findOrFail($this->reservation->round_trip_id);
+
+            if($returnReservation){
+                $this->request['Packages'][] = $this->buildReservationPackage($returnReservation);
+            }
+        }
 
         return true;
     }
 
+    private function buildReservationPackage(\App\Models\Reservation $reservation) : array{
+
+        return array(
+            #1 if booking is active - 0 if cancelled
+            'Quantity' => $reservation->status == Reservation::STATUS_CONFIRMED ? 1 : 0,
+            'PackageID' => $this->packageID,
+            'PricePerUnit' => $this->parsePackagePrice($reservation),
+            'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
+            'ExternalCartID' => $reservation->id,
+            'ExternalCartItemID' => $reservation->id,
+            'StartDate' => Carbon::parse($reservation->date_time)->toDateString(),
+            'EndDate' => Carbon::parse($reservation->date_time)->toDateString(),
+            'Comment' => $this->buildPackageComment($reservation),
+        );
+    }
     /**
      * Function used to create the package description / info visible to reception
      * @return string Returning the package description
      */
-    private function buildPackageComment() : string{
-
+    private function buildPackageComment(\App\Models\Reservation $reservation) : string{
 
         $return = 'Transfer:';
 
         #Pickup Time
-        $return .= 'Time: '.Carbon::parse($this->reservation->date_time)->toTimeString('minute');
+        $return .= 'Time: '.Carbon::parse($reservation->date_time)->toTimeString('minute');
 
         #Gather Pickup and Dropoff point Location info
-        $pickup_location = Point::find($this->reservation->pickup_location);
-        $dropoff_location = Point::find($this->reservation->dropoff_location);
+        $pickup_location = Point::find($reservation->pickup_location);
+        $dropoff_location = Point::find($reservation->dropoff_location);
 
         #Route
-        $return .= 'From: '.$pickup_location->name.' To: '.$dropoff_location->name;
+        $return .= 'From: '.$pickup_location->name.' To: '.$dropoff_location->name.' ';
 
         #Flight Number
-        $return .= 'Flight Number: '.$this->reservation->flight_number;
+        $return .= 'Flight Number: '.$reservation->flight_number.' ';
 
         #Comment
         if($this->reservation->remark){
-            $return .= 'Remark: '.$this->reservation->remark;
+            $return .= 'Remark: '.$reservation->remark.' ';
         }
 
-        return $return;
+        return trim($return);
     }
 
     /**
      * Get the package price from the Reservation List
      * @return string Price of the package
      */
-    private function parsePackagePrice() : String{
+    private function parsePackagePrice(\App\Models\Reservation $reservation) : String{
 
         $total = 0;
 
         #Get total of all items on the data list
-        if(!empty($this->reservation->price_breakdown)){
-            foreach($this->reservation->price_breakdown as $price_item){
+        if(!empty($reservation->price_breakdown)){
+            foreach($reservation->price_breakdown as $price_item){
                 $total += $price_item['amount']['amount'];
             }
         }
 
         $money = new Money($total,new Currency('EUR'));
-        //TODO - check if Money has format output
-        return number_format($money->getAmount(), 2, '.', '');
+
+        return number_format($money->getAmount()/100, 2, '.', '');
     }
 
     /**
@@ -260,8 +288,10 @@ class ValamarOperaApi{
        if(!$response->successful()){
 
             if($response->serverError()){
+                $this->writeCommunicationLog(self::STATUS_ERROR);
                 $response->throw($response->serverError());
             }else{
+                $this->writeCommunicationLog(self::STATUS_ERROR);
                 $response->throw($response->clientError());
             }
 
@@ -269,8 +299,13 @@ class ValamarOperaApi{
 
             $this->responseBody = $response->json();
 
-            if(!empty($this->responseBody['ErrorList'])){
-                throw new ValamarOperaAPIException($this->buildErrorOutput($this->responseBody['ErrorList']));
+
+            if($this->responseBody['Status'] == 'ERR'){
+
+                $this->writeCommunicationLog(self::STATUS_ERROR);
+                $response->throw('An Error Has occured');
+            }else{
+                $this->writeCommunicationLog(self::STATUS_SUCCESS);
             }
         }
 
@@ -282,6 +317,7 @@ class ValamarOperaApi{
      * @return string Formatted string consisting out of errors
      */
     private function buildErrorOutput(array $error_list) : string{
+
         $return = 'Error';
 
         if(!empty($error_list)){
@@ -292,6 +328,79 @@ class ValamarOperaApi{
 
         return $return;
     }
-}
 
-class ValamarOperaApiException extends Exception{}
+    /**
+     * @return void Write Opera Communication Log
+     */
+    private function writeCommunicationLog($status) : void{
+
+        $log_message = '';
+        #Update Opera Reservation Status
+        switch ($status){
+            case self::STATUS_SUCCESS:
+                $this->reservation->opera_sync = 1;
+                $log_message = 'Opera Sync Success';
+                break;
+            case self::STATUS_ERROR:
+
+                $this->reservation->opera_sync = 0;
+
+                if(empty($this->responseBody['Status'])){
+                    if(!empty($this->errors)){
+                        $log_message = $this->errors[0];
+                    }
+                }else{
+
+                    if(!empty($this->responseBody['Packages'])){
+                        foreach($this->responseBody['Packages'] as $package){
+                            if(!empty($package['ErrorList'])){
+                                $log_message = $package['ErrorList'][0];
+                            }
+                        }
+                    }
+
+                    if(!empty($this->responseBody['ErrorList'])){
+                        $log_message = $this->responseBody['ErrorList'][0];
+                    }
+                }
+                break;
+        }
+
+        $this->reservation->save();
+
+        \DB::insert('insert into opera_sync_log (log_message,reservation_id, opera_request,opera_response,sync_status,updated_by,updated_at) values (?, ?, ?, ?, ?, ?, ?)',
+            [
+                $log_message,
+                $this->reservation->id,
+                json_encode($this->request),
+                json_encode($this->responseBody),
+                $status,
+                auth()->user()->id,
+                \Carbon\Carbon::now()->toDateTimeString()]
+        );
+
+    }
+
+    /**
+     * @param $reservation_id Reservation ID
+     * @return void array Log Data
+     */
+    static function getSyncOperaLog($reservation_id){
+
+        $log = \DB::table('opera_sync_log')
+            ->where('reservation_id','=',$reservation_id)
+            ->orderBy('id','desc')
+            ->limit(1)
+            ->get();
+
+        if(!empty($log)){
+
+            $log = $log[0];
+
+            $log->opera_request = json_decode($log->opera_request,true);
+            $log->opera_response = json_decode($log->opera_response,true);
+        }
+
+        return json_decode(json_encode($log),true);
+    }
+}
