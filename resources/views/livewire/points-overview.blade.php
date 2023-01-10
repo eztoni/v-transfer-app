@@ -11,7 +11,6 @@
             <th>Name</th>
             <th>Internal Name</th>
             <th class="text-center">Update</th>
-            <th class="text-center">Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -24,14 +23,7 @@
                     <x-button.circle primary wire:click="updatePoint({{$p->id}})" icon="pencil">
                     </x-button.circle>
                 </td>
-                <td class="text-center">
-                    <x-button
-                        wire:click="openSoftDeleteModal({{$p->id}})"
-                        rounded
-                        rose icon="trash"
-                        target="_blank"
-                    />
-                </td>
+
 
             </tr>
         @empty
@@ -119,22 +111,7 @@
 
     </x-modal.card>
 
-    <x-modal.card blur wire:model.defer="softDeleteModal" title="Delete Point - {{$this->point->name}}">
 
-        <p>You are about to delete <b>{{$this->point->name}}</b> are you sure you want to do that?</p>
-        <p class="text-rose-500">CAREFUL - This action will delete the point!</p>
-
-        <x-slot name="footer">
-
-            <div class="float-right">
-
-                <x-button wire:click="closeSoftDeleteModal()" label="Close" rose/>
-                <x-button wire:click="softDelete()" label="Delete" positive/>
-            </div>
-
-        </x-slot>
-
-    </x-modal.card>
     <x-modal.card blur max-width="6xl" wire:model="importPoint" title="Import point">
 
         @if($this->valamarPropertiesFromApi)
@@ -177,7 +154,6 @@
         <x-slot name="footer">
             <div class="float-right">
                 <x-button wire:click="$set('importPoint',false)" label="Close" />
-                <x-button wire:click="softDelete()" label="Import data" positive/>
             </div>
 
         </x-slot>

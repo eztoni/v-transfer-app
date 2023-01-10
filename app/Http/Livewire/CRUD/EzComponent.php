@@ -67,7 +67,8 @@ abstract class EzComponent extends \Livewire\Component
 
     private function getNestedProperty($property, $object)
     {
-        return $object->{$property};
+
+        return $object?->{$property};
     }
 
     public function __construct($id = null)
