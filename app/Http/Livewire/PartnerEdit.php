@@ -11,11 +11,15 @@ use WireUi\Traits\Actions;
 
 class PartnerEdit extends Component
 {
-use Actions;
+    use Actions;
 
     public Partner $partner;
     public $selectedDestinations = [];
     public $partnerDestinations;
+
+
+
+
 
     public function mount(){
 

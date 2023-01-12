@@ -7,10 +7,14 @@ use App\Scopes\OwnerScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Translatable\HasTranslations;
 
 class Route extends Model
 {
     use HasFactory;
+    use HasTranslations;
+
+    public array $translatable = ['name'];
 
     protected $fillable = [
         'name',

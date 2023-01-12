@@ -172,28 +172,6 @@ class ExtrasEdit extends Component
         $this->setModelPrices();
     }
 
-    private function setModelPricesOld(){
-
-        if( !empty($this->extraId) && !empty($this->partnerId)) {
-            $this->extra = Extra::with(['partner' => function ($q) {
-                $q->where('partner_id', $this->partnerId);
-            }])->find($this->extraId);
-
-            $extra_partner = $this->extra->partner->first();
-
-            $this->extraPrice = \EzMoney::format($extra_partner->pivot->price); // 1,99;
-            $this->extraCalculationType = $extra_partner->pivot->calculation_type;
-            $this->extraTaxLevel = $extra_partner->pivot->tax_level;
-            $this->extraDateFrom = Carbon::make($extra_partner->pivot->date_from)?->format('d.m.Y') ?? '';
-            $this->extraDateTo = Carbon::make($extra_partner->pivot->date_to)?->format('d.m.Y') ?? '';
-            $this->extraCommissionPercentage = $extra_partner->pivot->commission?: 0;
-            $this->extraDiscountPercentage = $extra_partner->pivot->discount ?: 0;
-            $this->extraPriceWithDiscount = \App\Facades\EzMoney::format(GetExtraDiscount::run($this->extra,$this->partnerId));
-            $this->extraPriceCommission= \App\Facades\EzMoney::format(GetExtraCommission::run($this->extra,$this->partnerId));
-
-        }
-    }
-
     public function updatedExtraId(){
         $this->partnerId = Partner::first()?->id;
         $this->setModelPrices();

@@ -3,7 +3,9 @@
 namespace App\Http\Livewire\CRUD;
 
 use App\Models\Destination;
+use App\Models\Language;
 use App\Models\Point;
+use App\Models\Route;
 use App\View\Components\Form\EzSelect;
 use App\View\Components\Form\EzTextInput;
 use Illuminate\Support\Collection;
@@ -14,18 +16,43 @@ class RoutesOverview extends EzComponent
 {
 
     public $userDestinationId = '';
+    public $companyLanguages = ['en'];
+    public $routeName = [
+        'en' => null
+    ];
+
 
     public array $fieldRuleNames=[
-        'model.name' => 'name',
         'model.destination_id' => 'destination',
         'model.ending_point_id' => 'ending point',
         'model.starting_point_id' => 'starting point',
         'model.pms_code'=>'his code',
+        'routeName.*' => 'extra name',
+
     ];
 
     public function mount(){
         parent::mount();
         $this->userDestinationId = Auth::user()->destination_id;
+        $this->instantiateComponentValues();
+    }
+
+    private function instantiateComponentValues(): void
+    {
+        $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
+        foreach ($this->companyLanguages as $lang) {
+            $this->routeName[$lang] = $this->model->getTranslation('name', $lang, false);
+        }
+    }
+    public function updateModel($modelId):void
+    {
+        parent::updateModel($modelId);
+        $this->instantiateComponentValues();
+    }
+
+    public function updatedRouteName()
+    {
+        $this->model->setTranslations('name', $this->routeName);
     }
 
     public function setModelClass(): string
@@ -74,6 +101,7 @@ class RoutesOverview extends EzComponent
     protected function beforeSave(){
         $this->model->owner_id = \Auth::user()->owner_id;
         $this->model->destination_id = $this->userDestinationId;
+        $this->model->setTranslations('name', $this->routeName);
         return true;
     }
 
@@ -84,11 +112,19 @@ class RoutesOverview extends EzComponent
 
     protected function rules(): array
     {
-       return [
-           'model.name' => 'required|min:3',
+        $ruleArray= [
            'model.ending_point_id' => 'required',
            'model.starting_point_id' => 'required',
            'model.pms_code'=>'nullable',
+           'routeName.en' => 'required|min:3',
+
        ];
+        foreach ($this->companyLanguages as $lang) {
+            if ($lang !== 'en') {
+                $ruleArray['routeName.' . $lang] = 'nullable|min:3';
+            }
+        }
+
+        return $ruleArray;
     }
 }
