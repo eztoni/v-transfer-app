@@ -86,11 +86,13 @@ use Actions;
 
         $this->validate();
 
-        if(!Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN))
+        if(!Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN)) {
             return;
+        }
 
-        if($this->user->exists && $this->user->company_id != Auth::user()->company_id )
+        if($this->user->exists && $this->user->company_id != Auth::user()->company_id ) {
             return;
+        }
 
 
 
@@ -123,11 +125,21 @@ use Actions;
     {
 
         $currentUser = Auth::user();
-        $users = User::with('roles')->where('company_id','=',Auth::user()->company_id)->get();
+        $users = User::with('roles')
+            ->where('company_id','=',Auth::user()->company_id)
+            ->whereDoesntHave('roles',function ($q){
+                $q->where('name','super-admin');
+            })
+            ->get();
+
+        // One more check :)
         $users = $users->reject(function ($user, $key) {
             return $user->hasRole(User::ROLE_SUPER_ADMIN);
         });
+
+
         $roles = \Spatie\Permission\Models\Role::where('name','!=','super-admin')->get();
+
         $owners = Owner::all()->mapWithKeys(function ($i) {
             return [$i->id => $i->name];
         })->toArray();

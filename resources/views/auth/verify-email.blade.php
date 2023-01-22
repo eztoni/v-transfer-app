@@ -34,7 +34,7 @@
 
             <div class="flex flex-col items-center w-full mt-18  md:my-48">
 
-                <h1 class="font-bold text-4xl text-center  my-8">Verify Email for <span class="text-primary">EZ Booker</span>
+                <h1 class="font-bold text-4xl text-center  my-8">Verify Email for <span class="text-primary">Valamar</span>
                 </h1>
 
                 <div class="mb-4 text-sm text-center text-gray-600">

@@ -7,6 +7,7 @@ use App\Http\Livewire\ActivityLogDashboard;
 use App\Http\Livewire\AgeGroupCategories;
 use App\Http\Livewire\AgeGroupOverview;
 use App\Http\Livewire\BookingOverview;
+use App\Http\Livewire\CompanyDashboard;
 use App\Http\Livewire\CompanyOverview;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\Destinations;
@@ -43,79 +44,33 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::middleware(
         ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN . '|' . User::ROLE_USER]
     )->group(callback: function () {
-#------------------------------------------------------------------------------------------EVERYONE AUTHENTICATED
-        Route::get('/', Dashboard::class)->name('dashboard');
-        Route::get('/master-data', Dashboard::class)->name('master-data');
-        Route::get('/selling', Dashboard::class)->name('selling');
-        Route::get('/bookings', BookingOverview::class)->name('bookings');
+        /*
+            |--------------------------------------------------------------------------
+            | User routes
+            |--------------------------------------------------------------------------
+        */
+        include_once 'role-user.php';
 
-        Route::get('/reservation-details/{reservation}', \App\Http\Livewire\ReservationDetails::class)->name('reservation-details');
-
-        Route::get('/reports', \App\Http\Livewire\DestinationReport::class)->name('reports');
-        Route::get('/partner-reports', \App\Http\Livewire\DestinationReport::class)->name('partner-reports');
-
-
-        Route::get('/mail', function () {
-            return new App\Mail\ConfirmationMail(1);
-        });
-
-
-        //Age Groups
-        Route::get('/age-groups', AgeGroupOverview::class)->name('age-groups');
-        Route::get('/age-group-categories/{ageGroup}', AgeGroupCategories::class)->name('age-group-categories');
-        //Routes
-        Route::get('/routes-overview', \App\Http\Livewire\CRUD\RoutesOverview::class)->name('routes-overview');
-        Route::get('/owner-overview', \App\Http\Livewire\CRUD\OwnerOverview::class)->name('owner-overview');
-        //Extras
-        Route::get('/extras-overview', ExtrasOverview::class)->name('extras-overview');
-        Route::get('/extras-edit/{extraId}', ExtrasEdit::class)->name('extras-edit');
-        //Vehicles
-        Route::get('/vehicle-overview', VehicleOverview::class)->name('vehicle-overview');
-        Route::get('/vehicle-edit/{vehicleId}', VehicleEdit::class)->name('vehicle-edit');
-
-        Route::get('/transfer-overview', TransferOverview::class)->name('transfer-overview');
-        Route::get('/transfer-edit/{transferId}', \App\Http\Livewire\TransferEdit::class)->name('transfer-edit');
-
-        Route::get('/internal-reservation', InternalReservation::class)->name('internal-reservation');
-
-        Route::get('/transfer-prices', \App\Http\Livewire\NewTransferPrices::class)->name('transfer-prices');
-
-#------------------------------------------------------------------------------------------EVERYONE AUTHENTICATED END
         Route::middleware(
             ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN]
         )->group(function () {
-#------------------------------------------------------------------------------------------ADMINS
-            Route::prefix('admin')->name('admin.')->group(function () {
-                Route::get('/points-overview', PointsOverview::class)->name('points-overview');
-                Route::get('/company-overview', CompanyOverview::class)->name('company-overview');
-                Route::get('/destinations', Destinations::class)->name('destinations');
-                Route::get('/user-overview', UserOverview::class)->name('user-overview');
-                Route::post('/upload-images', [UploadImageController::class, 'store'])->name('upload-images');
-                Route::get('/company-dashboard', \App\Http\Livewire\CompanyDashboard::class)->name('company-dashboard');
+            /*
+                |--------------------------------------------------------------------------
+                | Admin routes
+                |--------------------------------------------------------------------------
+            */
+            include_once 'role-admin.php';
 
-                Route::get('/partners-overview', PartnersOverview::class)->name('partners-overview');
-                Route::get('/partner-edit/{partner}', PartnerEdit::class)->name('partner-edit');
-            });
-#------------------------------------------------------------------------------------------ADMINS END
+
             Route::middleware(
                 ['role:' . User::ROLE_SUPER_ADMIN]
             )->group(function () {
-#------------------------------------------------------------------------------------------SUPERADMINS
-
-                Route::get('/phpinfo', function () {
-                    return view('phpini');
-                })->name('phpinfo');
-
-
-
-                Route::get('laravel-logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('laravel-logs');
-                Route::get('super-admin-dashboard', [SuperAdminDashboardController::class, 'show'])->name('super-admin-dashboard');
-                Route::get('/language-overview', \App\Http\Livewire\LanguageOverview::class)->name('language-overview');
-                Route::get('edit-user/{user}', [EditUserController::class, 'showUser'])->name('edit-user');
-                Route::get('/company-overview', \App\Http\Livewire\CompanyOverview::class)->name('company-overview');
-                Route::get('activity-log-dashboard', ActivityLogDashboard::class)->name('activity-log-dashboard');
-#------------------------------------------------------------------------------------------SUPERADMINS END
-
+                /*
+                    |--------------------------------------------------------------------------
+                    | SUPER  ADMIN ONLY ROUTES
+                    |--------------------------------------------------------------------------
+                */
+                include_once 'role-super-admin.php';
             });
         });
     });
@@ -123,14 +78,11 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
 
 // For development only
-if (!App::isProduction()){
-
+if (!App::isProduction()) {
     Route::middleware(
-        ['role:' . User::ROLE_SUPER_ADMIN ]
+        ['role:' . User::ROLE_SUPER_ADMIN]
     )->group(function () {
         Route::get('/dev-mail-preview', \App\Http\Livewire\DevMailPreview::class)->name('dev-mail-preview');
-
-        Route::get('/res-mail-render/{type}/{id}', [\App\Http\Controllers\MailRenderingController::class,'renderReservationMail'])->name('res-mail-render');
-
+        Route::get('/res-mail-render/{type}/{id}', [\App\Http\Controllers\MailRenderingController::class, 'renderReservationMail'])->name('res-mail-render');
     });
 }

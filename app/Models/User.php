@@ -125,7 +125,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     }
 
-
+    //CURRENT DESTINATION IN WHICH USER IS IN (DESTIONATION SELECTOR)
     public function destination()
     {
         return $this->belongsTo(Destination::class);

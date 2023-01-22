@@ -84,7 +84,7 @@
                 </x-select>
             @endif
 
-            @if($this->user->id > 0)
+            @if(!$this->user->id)
                 <x-input label="Password:" wire:model="user.set_password"/>
                 <x-input label="Password Confirmation:" wire:model="user.set_password_confirmation"/>
             @endif

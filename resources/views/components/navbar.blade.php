@@ -23,7 +23,7 @@
     </div>
     @endhasanyrole
 
-    @hasanyrole(\App\Models\User::ROLE_SUPER_ADMIN.'|'.\App\Models\User::ROLE_ADMIN.'|'.\App\Models\User::ROLE_USER)
+    @hasanyrole(\App\Models\User::ROLE_SUPER_ADMIN.'|'.\App\Models\User::ROLE_ADMIN)
     <div class="flex-none hidden px-2 mx-2 lg:flex">
         <livewire:destination-switcher></livewire:destination-switcher>
     </div>

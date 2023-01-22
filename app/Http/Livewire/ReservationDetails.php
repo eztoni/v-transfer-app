@@ -51,6 +51,7 @@ use Actions;
     }
 
     public function cancelCompleted(){
+        
         $this->redirect(route('reservation-details', $this->reservation->id));
     }
 

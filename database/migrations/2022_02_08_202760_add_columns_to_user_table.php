@@ -9,13 +9,13 @@ class AddColumnsToUserTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('city')->default('Area 52');
-            $table->string('zip')->default('52');
-            $table->string('oib')->unique();
+            $table->string('city')->default('Area 52')->after('password');
+            $table->string('zip')->default('52')->after('city');
+            $table->string('oib')->unique()->after('zip');
 
-            $table->foreignIdFor(\App\Models\Company::class)->constrained();
-            $table->foreignIdFor(\App\Models\Owner::class)->nullable();
-            $table->foreignIdFor(\App\Models\Destination::class)->nullable();
+            $table->foreignIdFor(\App\Models\Company::class)->constrained()->after('id');
+            $table->foreignIdFor(\App\Models\Owner::class)->nullable()->after('company_id');
+            $table->foreignIdFor(\App\Models\Destination::class)->nullable()->after('owner_id');
 
         });
     }

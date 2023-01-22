@@ -11,43 +11,42 @@ class MainDrawer extends Component
 
     public function render()
     {
-
         $menuItems = [
             [
                 'icon' => 'fas fa-database',
                 'text' => 'Master Data',
-                'href' => route('master-data'),
-                'show' => true,
+                'href' => route('dashboard'),
+                'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN),
                 'items' => [
                     [
                         'text' => 'Transfers',
                         'active' => request()->routeIs('transfer-overview'),
                         'href' => route('transfer-overview'),
-                        'show' => true,
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN),
                     ],
                     [
                         'text' => 'Transfer Prices',
                         'active' => request()->routeIs('transfer-prices'),
                         'href' => route('transfer-prices'),
-                        'show' => true,
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN),
                     ],
                     [
                         'text' => 'Routes',
                         'active' => request()->routeIs('routes-overview'),
                         'href' => route('routes-overview'),
-                        'show' => true,
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN),
                     ],
                     [
                         'text' => 'Extras',
                         'active' => request()->routeIs('extras-overview'),
                         'href' => route('extras-overview'),
-                        'show' => true,
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN),
                     ],
                     [
                         'text' => 'Vehicles',
                         'active' => request()->routeIs('vehicle-overview'),
                         'href' => route('vehicle-overview'),
-                        'show' => true,
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN),
                     ],
 
 
@@ -70,7 +69,7 @@ class MainDrawer extends Component
             [
                 'icon' => 'fas fa-chart-bar',
                 'text' => 'Reports',
-                'show' => true,
+                'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN),
                 'items' => [
                     [
                         'text' => 'Reservation Report',
@@ -90,7 +89,7 @@ class MainDrawer extends Component
             [
                 'icon' => 'fas fa-tools',
                 'text' => 'Administration',
-                'show' => true,
+                'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN),
                 'items' => [
                     [
                         'text' => 'User Overview',
@@ -103,7 +102,7 @@ class MainDrawer extends Component
                         'text' => 'Partners',
                         'active' => request()->routeIs('admin.partners-overview'),
                         'href' => route('admin.partners-overview'),
-                        'show' => true,
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN),
                     ],
                     [
                         'text' => 'Destinations',
