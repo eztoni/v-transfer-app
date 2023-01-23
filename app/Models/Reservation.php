@@ -34,6 +34,7 @@ class Reservation extends Model
         'hr' => 'Hrvatski',
         'de' => 'German',
         'fr' => 'French',
+        'it' => 'Italian',
     ];
 
     public const TRAVELLER_TITLES = [

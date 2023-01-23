@@ -1,2 +1,50 @@
 <?php
-return [];
+return [
+    'dear' => 'Poštovani/na ',
+    'thank_you_message'=>'Zahvaljujemo na rezervaciji transfera. Sačuvajte ovu rezervaciju za svoje putovanje.',
+    'transfer_reservation'=>'Zahvaljujemo na rezervaciji transfera. Sačuvajte ovu rezervaciju za svoje putovanje.',
+    'reservation_number'=>'Broj vaše rezervacije transfera',
+    'name'=>'Ime i prezime',
+    'contact_phone'=>'Telefonski broj za kontakt',
+    'direction'=>'Smjer',
+    'transfer_itinerary'=>'Plan puta vašeg transfera	',
+    'pickup_address'=>'Mjesto preuzimanja',
+    'dropoff_address'=>'Mjesto dolaska',
+    'pickup_date'=>'Datum',
+    'pickup_time'=>'Vrijeme',
+    'flight_number'=>'Broj leta',
+    'remark'=>'Napomena',
+    'please_note_round_trip'=>'Imajte na umu da je ovo putovanje rezervirano za <b>dvosmjerni</b> prijevoz. Informacije o povratnom putovanju su u nastavku:',
+    'rt_pickup'=>'Mjesto preuzimanja',
+    'rt_dropoff'=>'Mjesto dolaska',
+    'rt_date'=>'Datum',
+    'adults'=>'Odrasli',
+    'children'=>'Djeca',
+    'infants'=>'Mala djeca',
+    'luggage'=>'Potvrđena maksimalna dopuštena prtljaga',
+    'transfer_price_breakdown'=>'Cijene transfera',
+    'total_price'=>'Ukupna cijena',
+    'valamar_transfer_service'=>'Valamar Transfer Service',
+    'not_fiscalized'=>'Ovo nije fiskalizirani račun.',
+
+    'your_res_modified'=>'Vaša rezervacija je modificirana',
+    'this_email_is_modification'=>'Ovaj email je izmjena rezervacije. Sačuvajte ovu rezervaciju za svoje putovanje.',
+    'extra'=>'Dodatak',
+    'transfer_price'=>'Cijena transfera',
+    'vehicle_type'=>'Tip vozila',
+
+    'important_notes'=>'Važne napomene o vašoj rezervaciji transfera, izmjenama i otkazivanju',
+    'important_note_1' => 'Spremite svoju rezervaciju kako biste ju pokazali svojem vozaču (putem mobilnog telefona ili tiskane verzije) i kako biste potvrdili da ste stigli na pravi rezervirani transfer prema rasporedu.',
+
+    'pickup_and_meeting_point'=>'Vrijeme preuzimanja i mjesto okupljanja',
+    'li_1_1'=>'Vrijeme preuzimanja u zračnoj luci i mjesto okupljanja pri dolasku: vozač će vas čekati izvan prostora za preuzimanje prtljage na izlazu koji je dodijeljen navedenom broju leta, a držat će znak s imenom putnika. Navedeni vremenski okvir odnosi se na vrijeme čekanja kada je let po rasporedu. U slučaju kašnjenja leta vrijeme čekanja se produljuje. U slučaju da ne možete identificirati svoj transfer na određenoj lokaciji, kontaktirajte ',
+    'li_1_2'=>'Vrijeme preuzimanja u hotelu i mjesto okupljanja pri polasku: vrijeme povratnog transfera može se prilagoditi uvjetima na cesti. Potvrdite vrijeme preuzimanja i mjesto okupljanja na recepciji dan prije polaska.',
+    'li_1_3'=>'Molimo, dođite na mjesto okupljanja najmanje 10 minuta prije vremena polaska određenog za povratni transfer. ',
+    'li_2'=>'•	U slučaju da trebate izmijeniti ili otkazati svoju rezervaciju prije putovanja, kontaktirajte',
+    'li_3'=>'Poštujte sljedeća pravila u vozilu: ',
+    'li_3_1'=>'Pušenje nije dopušteno.',
+    'li_3_2'=>'Sigurnosni pojasevi moraju biti vezani cijelo vrijeme.',
+
+
+
+];
