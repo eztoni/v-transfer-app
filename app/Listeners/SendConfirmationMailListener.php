@@ -26,7 +26,7 @@ class SendConfirmationMailListener
     public function handle(ReservationCreatedEvent $event)
     {
 
-        if(Arr::get($event->config,ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM)){
+        if(false && Arr::get($event->config,ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM) ){
 
             $reservation = $event->reservation;
 

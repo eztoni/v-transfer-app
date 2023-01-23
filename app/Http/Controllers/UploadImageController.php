@@ -37,8 +37,6 @@ class UploadImageController extends Controller
         $optimizerChain->setTimeout(4)->optimize(Storage::path($path));
         $model->addMedia(Storage::path($path))->toMediaCollection($request->mediaCollectionName);
 
-
-
         return Response::json('success', 200);
     }
 }
