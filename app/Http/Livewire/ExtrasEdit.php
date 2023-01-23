@@ -113,8 +113,10 @@ class ExtrasEdit extends Component
         if($this->extraId){
             $this->extra = Extra::find($this->extraId);
         }
+
         $this->partnerId = $this->partner->id;
         $this->setModelPrices();
+        $this->instantiateComponentValues();
     }
 
     private function setModelPrices(){
