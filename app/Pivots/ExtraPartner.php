@@ -46,7 +46,7 @@ class ExtraPartner extends \Illuminate\Database\Eloquent\Relations\Pivot
     {
         $money = new Money($this->price,new Currency('EUR'));
         $commissions =  $money->allocate([$this->commission,100 - $this->commission]);
-        return (int) $money->getAmount() + (int) $commissions[0]->getAmount();
+        return  (int) $commissions[0]->getAmount();
 
     }
 

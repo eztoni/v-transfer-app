@@ -143,6 +143,8 @@ class NewTransferPrices extends Component
         if (Str::contains($property, [
             'price',
             'price_round_trip',
+            'discount',
+            'commission',
         ])) {
             $routeId = explode('.', $property)[1];
             $this->validateOnly($property,$this->ruless($routeId), [], $this->fieldNames($routeId));
