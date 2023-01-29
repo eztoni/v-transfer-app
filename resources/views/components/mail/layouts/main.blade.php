@@ -6,10 +6,20 @@
     </title>
     <!--[if !mso]><!-->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <!--<![endif]-->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        @page { margin: 0; }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <style type="text/css">
+        .page-break {
+            page-break-after: always;
+        }
         #outlook a {
             padding: 0;
         }
@@ -40,7 +50,17 @@
         p {
             display: block;
             margin: 0px;
+            font-weight: normal!important;
         }
+
+         *{
+             font-family:"Source Sans Pro",Roboto,"DeJaVu Sans";
+             line-height: 14px;
+             color: #363636;
+         }
+
+        @slot('head_after')
+
     </style>
     <!--[if mso]>
     <noscript>

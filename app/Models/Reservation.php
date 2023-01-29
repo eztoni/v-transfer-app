@@ -43,6 +43,8 @@ class Reservation extends Model
         'ms' => 'Ms',
     ];
 
+
+
     public function isCancelled(){
         return $this->status === self::STATUS_CANCELLED;
     }
@@ -117,12 +119,12 @@ class Reservation extends Model
 
     public function pickupLocation()
     {
-        return $this->hasOne(Point::class, 'id', 'pickup_location');
+        return $this->belongsTo(Point::class, 'pickup_location','id');
     }
 
     public function dropoffLocation()
     {
-        return $this->hasOne(Point::class, 'id', 'dropoff_location');
+        return $this->belongsTo(Point::class, 'dropoff_location','id' );
     }
 
     public function returnReservation()

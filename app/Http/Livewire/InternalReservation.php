@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Mail\ConfirmationMail;
+use App\Mail\GuestConfirmationMail;
 use App\Models\Destination;
 use App\Models\Extra;
 use App\Models\Partner;

@@ -39,7 +39,6 @@ class GetExtraCommission
         }
 
         $list = list($my_cut, $investors_cut) = $money->allocate([$commission, 100 - $commission]);
-
         return $list[0]->getAmount();
 
     }

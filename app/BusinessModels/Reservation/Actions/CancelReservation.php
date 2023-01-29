@@ -3,6 +3,7 @@
 namespace App\BusinessModels\Reservation\Actions;
 
 use App\Events\ReservationCancelledEvent;
+use App\Events\ReservationCreatedEvent;
 use App\Models\Reservation;
 use App\Services\Api\ValamarOperaApi;
 
@@ -20,7 +21,9 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
                 $roundTripReservation->status =  Reservation::STATUS_CANCELLED;
                 $roundTripReservation->save();
 
-                ReservationCancelledEvent::dispatch($roundTripReservation);
+                ReservationCancelledEvent::dispatch($roundTripReservation,[
+                    ReservationCancelledEvent::SEND_MAIL_CONFIG_PARAM => true
+                ]);
             }
 
         }
@@ -35,7 +38,9 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
         $api = new ValamarOperaApi();
         $api->syncReservationWithOpera($this->model->id);
 
-        ReservationCancelledEvent::dispatch($this->model);
+        ReservationCancelledEvent::dispatch($this->model,[
+            ReservationCancelledEvent::SEND_MAIL_CONFIG_PARAM => true
+        ]);
 
     }
 }

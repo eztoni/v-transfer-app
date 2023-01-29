@@ -5,13 +5,13 @@ namespace App\Providers;
 use App\Events\ReservationCancelledEvent;
 use App\Events\ReservationCreatedEvent;
 use App\Events\ReservationUpdatedEvent;
-use App\Listeners\SendCancelMailListener;
-use App\Listeners\SendConfirmationMailListener;
-use App\Listeners\SendUpdateMailListener;
+use App\Listeners\Email\SendCancellationMailToGuest;
+use App\Listeners\Email\SendCancellationMailToGuestListener;
+use App\Listeners\Email\SendConfirmationMailToGuestListener;
+use App\Listeners\Email\SendModificationMailToGuestListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -25,23 +25,23 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         ReservationCreatedEvent::class => [
-            SendConfirmationMailListener::class,
+
+            SendConfirmationMailToGuestListener::class,
+
         ],
+
         ReservationUpdatedEvent::class => [
-            SendUpdateMailListener::class,
+
+            SendModificationMailToGuestListener::class,
+
         ],
+
         ReservationCancelledEvent::class => [
-            SendCancelMailListener::class,
+
+            SendCancellationMailToGuestListener::class,
+
         ],
     ];
 
-    /**
-     * Register any events for your application.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
-    }
+
 }

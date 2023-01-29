@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Guest\GuestReservationConfirmationMail;
+
 class MailRenderingController extends Controller
 {
     public function renderReservationMail($type,$id)
     {
         switch ($type){
             case 'CONFIRMATION':
-               return  new \App\Mail\ConfirmationMail($id);
+               return  new GuestReservationConfirmationMail($id);
                 break;
             case 'MODIFY':
-                return  new \App\Mail\ModificationMail($id);
+                return  new \App\Mail\Guest\GuestReservationCancellationMail($id);
+                break;
+            case 'CANCEL':
                 break;
         }
 

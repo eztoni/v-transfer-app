@@ -44,5 +44,99 @@ return [
     'li_3_2'=>'Sicherheitsgurte müssen jederzeit angelegt werden.',
 
 
+    'terms_and_conditions' => 'BEDINGUNGEN:',
+
+    'guest' => [
+        'confirmation_mail' => [
+            'subject' => 'Ihre Buchungsbestätigung ',
+            'body' => [
+                'thank_you' => 'Vielen Dank für Ihren Kauf und Ihr Vertrauen!',
+                'body' => '
+Im Anhang befindet sich die Buchungsbestätigung.
+Bei dem erfolgreichen Kauf wurde der unten aufgeführte Kaufvertrag zu dem/den angegebenen Preis/Preisen und Kosten abgeschlossen.
+Teil dieses Vertrages sind die Allgemeinen Kaufbedingungen, in denen Ihre Rechte und Pflichten im Detail erklärt werden.
+',
+                'your_valamar_team' => 'Ihr ValamarTeam'
+            ]
+        ],
+        'modification_mail' => [
+            'subject' => 'Bestätigung Ihrer Überweisungsänderung',
+            'body' => [
+                'thank_you' => 'Vielen Dank für die Übertragungsänderung.',
+                'body' => '
+Im Anhang befindet sich die Buchungsbestätigung.
+Bei dem erfolgreichen Kauf wurde der unten aufgeführte Kaufvertrag zu dem/den angegebenen Preis/Preisen und Kosten abgeschlossen.
+Teil dieses Vertrages sind die Allgemeinen Kaufbedingungen, in denen Ihre Rechte und Pflichten im Detail erklärt werden.
+',
+                'your_valamar_team' => 'Ihr Valamar Tim'
+            ]
+        ],
+        'cancellation_mail' => [
+            'subject' => 'Your reservation cancellation ',
+            'body' => [
+                'thank_you' => 'Anbei erhalten Sie die Bestätigung über die Stornierung Ihrer Buchung.',
+                'body' => '
+Im Falle von besonderen Forderungen Ihrerseits, können Sie diese im Nachgang zu dieser E-Mail Nachricht einbringen.
+',
+                'your_valamar_team' => 'Ihr Valamar Tim'
+            ]
+        ],
+
+        'footer' => [
+            'valamar' => 'Handelsgericht Pazin, Matrikelnummer des Subjekts (MBS): 040020883, persönliche
+Identifikationsnummer (OIB): 36201212847; Firmenwortlaut: Valamar Riviera dioničko društvo za
+turizam (Aktiengesellschaft für Tourismus); Kurzfassung: Valamar Riviera d.d. (AG); 1.672.021.210,00
+kn/221.915.350,72 €* Stammkapital, zur Gänze eingezahlt; 126.027.524 ausgestellte Aktien;
+Matrikelnummer 3474771; Konten ADDIKO BANK d.d. Zagreb IBAN HR 2625000091101024767,
+SWIFT: HAABHR22; ZAGREBAČKA BANKA d.d. Zagreb IBAN: HR 4123600001101319202, SWIFT:
+ZABAHR2X, ERSTE&amp;STEIERMӒRKISCHE BANK d.d. Rijeka IBAN: HR 062402006110038945
+SWIFT: ES- BCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb IBAN: HR 4723400091100153498,
+SWIFT: PBZGHR2X; RAIFFEISEN BANK AUSTRIA d.d. Zagreb IBAN: HR 1624840081102134625,
+SWIFT: RZBHHR2X; NOVA HRVATSKA BANKA d.d. Zagreb IBAN: HR 9025030071100039991,
+SWIFT: VBCRHR22; ISTARSKA KREDITNA BANKA UMAG d.d. Umag IBAN: HR
+7423800061110009020, SWIFT: ISKBHR2X; OTP BANKA d.d. Zadar IBAN: HR
+4724070001100365752, SWIFT: OTPVHR2X; HRVATSKA POŠTANSKA BANKA d.d. Zagreb IBAN:
+HR1123900011101322250, SWIFT: HPBZHR2X;
+www.valamar-riviera.com Vorstandsvorsitzender: Željko Kukurin, Vorstandsmitglieder: Marko Čižmek
+und Ivana Budin Arhanić; Vorsitzender des Aufsichtsrats: Gustav Wurmböck
+*Die Höhe des Stammkapitals in EUR wird zu Informationszwecken mit einem festen
+Umrechnungskurs von 7,53450 angegeben, bis zur Durchführung der Anpassung und Registrierung
+des Stammkapitals in EUR-Währung gemäß dem Gesetz zur Änderung des Aktiengesetzes
+(&quot;Amtsblatt &quot; Nr. 114/22.)',
+            'imperial' => 'Handelsgericht in Rijeka; Standesnummer (MBS): 040000124; persönliche Identifikationsnummer
+(OIB): 90896496260; Stammkapital: 1.516.434.188,42 HRK/201.265.404,26 EUR*, zur Gänze
+entrichtet, in 2.279.473 Aktien geteilt; Konten: ERSTE &amp; STEIERMÄRKISCHE BANK d.d. Rijeka,
+IBAN: HR8124020061100210497, SWIFT:ESBCHR22; PRIVREDNA BANKA
+ZAGREB d.d. Zagreb, IBAN: HR5023400091117030474, SWIFT:PBZGHR2X; ZAGREBAČKA BANKA
+d.d. Zagreb, IBAN: HR1923600001101686064, SWIFT:SWHR2X; OTP
+banka d.d., IBAN: HR1224070001100234074, SWIFT: OTPVHR2X. Vorstandsvorsitzender: Alen
+Benković; Vorstandsmitglied: Sebastian Palma; Vorsitzender des
+Aufsichtsrates: Boris Galić.
+*Die Höhe des Stammkapitals in EUR wird zu Informationszwecken mit einem festen
+Umrechnungskurs von 7,53450 angegeben, bis zur Durchführung der Anpassung und Registrierung
+des Stammkapitals in EUR-Währung gemäß dem Gesetz zur Änderung des Aktiengesetzes
+(&quot;Amtsblatt &quot; Nr. 114/22.)',
+            'helios_faros' => 'HELIOS FAROS d.d., Stari Grad, Helios Nr. 5, Handelsgericht in Split, Standesnummer (MBS):
+060213634, persönliche Identifikationsnummer (OIB): 48594515409, PRIVREDNA BANKA ZAGREB
+d.d., Zagreb, Radnička cesta 50, IBAN: HR3323400091111074980; OTP Banka d.d., Split,
+Domovinskog rata 61, IBAN: HR8824070001100628757, Stammkapital: 235.957.660,00 kuna zur
+Gänze entrichtet, Anzahl der Aktien 23.595.766; Vorsitzender des Aufsichtsrates: Mirko Herceg,
+Vorstandsvorsitzender: V. Bunić'
+        ],
+
+    ],
+
+
+    'booking_confirmation' => [
+        'terms_and_conditions' => 'Dieses Paket ist jetzt gebucht und zu Ihrer Reservierung der Unterkunft hinzugefügt. Sollte die
+Unterkunftsreservierung zum Zeitpunkt der Buchung von Zusatzleistungen bereits in Rechnung gestellt
+werden, bezahlen Sie diese beim Check-in im Objekt Ihres Aufenthaltes.',
+    ],
+
+    'no' => 'Laufende
+    Nummer',
+    'code' => 'Code',
+    'service_name' => 'Servicename',
+    'total' => 'Insgesmt',
 
 ];

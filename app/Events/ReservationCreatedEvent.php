@@ -4,22 +4,26 @@ namespace App\Events;
 
 use App\Models\Reservation;
 use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Support\Arr;
 
 class ReservationCreatedEvent
 {
     use Dispatchable;
 
-    const SEND_MAIL_CONFIG_PARAM = 'send_mail';
 
-    public $reservation;
-    public $config;
+    // THIS PARAMETER DETERMINES IF THE MAIL WILL BE SENT
+    public const SEND_MAIL_CONFIG_PARAM = 'send_mail';
 
 
-    public function __construct(Reservation $reservation,array $config = [])
+    public function __construct(public Reservation $reservation, public array $config = [])
     {
 
-        $this->reservation = $reservation;
-        $this->config = $config;
-
     }
+
+
+    public function shouldSendMail():bool
+    {
+        return Arr::get($this->config,self::SEND_MAIL_CONFIG_PARAM)??false;
+    }
+
 }

@@ -5,11 +5,8 @@ namespace App\Http\Livewire;
 use App\BusinessModels\Reservation\Actions\UpdateReservation;
 use App\Models\Reservation;
 use Carbon\Carbon;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use WireUi\Traits\Actions;
-use App\Mail\ModificationMail;
 
 
 class EditTransferReservation extends Component
