@@ -22,7 +22,7 @@
 
             <div class="" style="padding-top: 40px;"></div>
 
-            {{ __('mail.dear')}}, <strong> {{$reservation->leadTraveller?->full_name}}</strong>
+            {{ __('mail.dear')}}, <strong> {{ucwords($reservation->leadTraveller?->full_name)}}</strong>
         </x-mail.row>
         <x-mail.row>
 
@@ -34,7 +34,7 @@
         <x-mail.divider></x-mail.divider>
         <x-mail.row>
             <p style="font-size: 14px"><b>{{__('mail.reservation_number')}}:</b> #{{$reservation->id}}</p>
-            <p style="font-size: 14px"><b>{{__('mail.name')}}:</b> {{$reservation->leadTraveller?->full_name}}</p>
+            <p style="font-size: 14px"><b>{{__('mail.name')}}:</b> {{ucwords($reservation->leadTraveller?->full_name)}}</p>
             @if($reservation->leadTraveller->phone)
                 <p style="font-size: 14px"><b>{{__('mail.contact_phone')}}:</b> {{$reservation->leadTraveller->phone}}</p>
             @endif
