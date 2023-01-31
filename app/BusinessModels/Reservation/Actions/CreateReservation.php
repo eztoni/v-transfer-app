@@ -24,16 +24,18 @@ class CreateReservation extends Reservation
         int        $adults,
         int        $children,
         int        $infants,
-        int        $partnerId,
-        Money      $price,
-        string     $confirmationLanguage,
-        Collection $extras,
-        Transfer   $transfer,
-        array $priceBreakdown,
-        string     $remark='',
-        string     $flightNumber ='',
-        array      $childSeats = [],
-        int        $luggage = 0,
+        int             $partnerId,
+        Money           $price,
+        string          $confirmationLanguage,
+        Collection      $extras,
+        Transfer        $transfer,
+        array           $priceBreakdown,
+        string          $remark='',
+        string          $flightNumber ='',
+        array           $childSeats = [],
+        int             $luggage = 0,
+        int|string|null $pickupAddressId = null,
+        int|string|null $dropoffAddressId= null,
 
     ): void
     {
@@ -56,6 +58,8 @@ class CreateReservation extends Reservation
         $this->extras = $extras;
         $this->model->luggage = $luggage;
         $this->model->confirmation_language = $confirmationLanguage;
+        $this->model->pickup_address_id = $pickupAddressId;
+        $this->model->dropoff_address_id = $dropoffAddressId;
 
     }
     public function saveReservation(): int

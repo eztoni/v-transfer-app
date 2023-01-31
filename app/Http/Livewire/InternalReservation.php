@@ -34,6 +34,8 @@ class InternalReservation extends Component
         'endingPointId' => null,
         'dropoffAddress' => null,
         'pickupAddress' => null,
+        'pickupAddressId' => null,
+        'dropoffAddressId' => null,
         'dateTime' => null,
         'returnDateTime' => null,
         'returnTime' => null,
@@ -277,6 +279,8 @@ class InternalReservation extends Component
             $this->stepTwoFields['arrivalFlightNumber'] ?? '',
             $this->stepTwoFields['seats'],
             $this->stepOneFields['luggage'],
+            $this->stepOneFields['pickupAddressId'],
+            $this->stepOneFields['dropoffAddressId'],
 
         );
 
@@ -655,6 +659,34 @@ class InternalReservation extends Component
     public function isTransferPartnerPairSelected($pId,$tId)
     {
         return $this->selectedTransfer === $tId && $this->selectedPartner === $pId;
+    }
+
+
+    public function setPickupAddress($address): void
+    {
+        $this->stepOneFields['pickupAddressId'] = null;
+        if(is_numeric($address)){
+            if($addressPoint = Point::find($address)){
+                $this->stepOneFields['pickupAddress'] = $addressPoint->name. ' ' . $addressPoint->address;
+                $this->stepOneFields['pickupAddressId'] = $addressPoint->id;
+
+                return;
+            }
+        }
+        $this->stepOneFields['pickupAddress'] = $address;
+    }
+
+    public function setDropoffAddress($address): void
+    {
+        $this->stepOneFields['dropoffAddressId'] = null;
+        if(is_numeric($address)){
+            if($addressPoint = Point::find($address)){
+                $this->stepOneFields['dropoffAddress'] = $addressPoint->name. ' ' . $addressPoint->address;
+                $this->stepOneFields['dropoffAddressId'] = $addressPoint->id;
+                return;
+            }
+        }
+        $this->stepOneFields['pickupAddress'] = $address;
     }
 
 

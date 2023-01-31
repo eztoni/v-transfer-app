@@ -127,6 +127,16 @@ class Reservation extends Model
         return $this->belongsTo(Point::class, 'dropoff_location','id' );
     }
 
+    public function pickupAddress()
+    {
+        return $this->belongsTo(Point::class, 'pickup_address_id','id');
+    }
+
+    public function dropoffAddress()
+    {
+        return $this->belongsTo(Point::class, 'dropoff_address_id','id' );
+    }
+
     public function returnReservation()
     {
         return $this->hasOne(Reservation::class, 'id', 'round_trip_id')->where('is_main', false);

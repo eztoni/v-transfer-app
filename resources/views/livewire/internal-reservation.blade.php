@@ -162,21 +162,15 @@
                                         placeholder: 'Select or type pickup address',
                                         }
                                         ).on('change', function (e) {
-                                        @this.
-                                        set('stepOneFields.pickupAddress', $('#pickupSelect').select2('val'))
+                                          $wire.setPickupAddress($('#pickupSelect').val())
                                         })
 
                                         ">
                                             <option></option>
-
                                             @php
                                                 $itemSelected = false;
                                             @endphp
-
                                             @foreach($this->pickupAddressPoints as $pickupAddressPoint)
-
-
-
                                                 <option
                                                     @if($this->stepOneFields['pickupAddress'] === $pickupAddressPoint->name. ' ' . $pickupAddressPoint->address)
                                                     selected
@@ -186,7 +180,7 @@
                                                     @endphp
 
                                                     @endif
-                                                    value="{{$pickupAddressPoint->name. ' ' . $pickupAddressPoint->address}}">{{$pickupAddressPoint->internal_name}}</option>
+                                                    value="{{$pickupAddressPoint->id}}">{{$pickupAddressPoint->internal_name}}</option>
 
                                             @endforeach
 
@@ -239,8 +233,7 @@
                                                       placeholder: 'Select or type dropoff address',
                                                 }
                                             ).on('change', function (e) {
-                                                @this.
-                                                set('stepOneFields.dropoffAddress', $('#dropoffSelect').val())
+                                                 $wire.setDropoffAddress($('#dropoffSelect').val())
                                             })
                                             ">
                                             <option></option>
@@ -257,7 +250,7 @@
                                                     @endphp
 
                                                     @endif
-                                                    value="{{$dropoffAddressPoint->name . ' ' . $dropoffAddressPoint->address}}">{{$dropoffAddressPoint->internal_name}}</option>
+                                                    value="{{$dropoffAddressPoint->id}}">{{$dropoffAddressPoint->internal_name}}</option>
                                             @endforeach
                                             @if($itemSelected === false)
                                                 <option
