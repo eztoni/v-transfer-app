@@ -17,7 +17,7 @@ class ValamarOperaApi{
     private array $auth_credentials = array();
     private Reservation $reservation;
     private string $reservation_opera_id = '';
-    private string $dropoffLocationPMSCode = '';
+    private string $resortPMSCode = '';
     private array $errors;
     private Traveller $lead_traveller;
     private array $request = array();
@@ -98,12 +98,32 @@ class ValamarOperaApi{
 
         $return = false;
 
-        $dropoff_location = Point::find($this->reservation->dropoff_location);
 
-        if($dropoff_location->pms_code != null){
+        #Check Dropoff First
+        if($this->reservation->dropoff_address_id > 0) {
+            $location = Point::find($this->reservation->dropoff_address_id);
 
-            $this->dropoffLocationPMSCode = $dropoff_location->pms_code;
-            $return = true;
+            if ($location->type == 'accommodation') {
+
+                if ($location->pms_code != null) {
+
+                    $this->resortPMSCode = $location->pms_code;
+                    return true;
+                }
+            }
+        }
+
+        #Check Pickup Address
+        if($this->reservation->pickup_address_id > 0){
+            $location = Point::find($this->reservation->pickup_address_id);
+
+            if ($location->type == 'accommodation') {
+
+                if ($location->pms_code != null) {
+                    $this->resortPMSCode = $location->pms_code;
+                    return true;
+                }
+            }
         }
 
         return $return;
@@ -170,7 +190,7 @@ class ValamarOperaApi{
         #Auth Credentials
         $this->request = $this->auth_credentials;
         #Resort - Point Destination Code
-        $this->request['Resort'] = $this->dropoffLocationPMSCode;
+        $this->request['Resort'] = $this->resortPMSCode;
         #PMSReservationID - Reservation Number
         $this->request['PMSReservationID'] = $this->reservation_opera_id;
         #Transaction ID - Internal Booking ID
