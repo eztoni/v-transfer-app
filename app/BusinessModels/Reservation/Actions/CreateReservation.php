@@ -36,6 +36,7 @@ class CreateReservation extends Reservation
         int             $luggage = 0,
         int|string|null $pickupAddressId = null,
         int|string|null $dropoffAddressId= null,
+        bool $includedInAccommodationReservation= false,
 
     ): void
     {
@@ -60,6 +61,7 @@ class CreateReservation extends Reservation
         $this->model->confirmation_language = $confirmationLanguage;
         $this->model->pickup_address_id = $pickupAddressId;
         $this->model->dropoff_address_id = $dropoffAddressId;
+        $this->model->included_in_accommodation_reservation = $includedInAccommodationReservation;
 
     }
     public function saveReservation(): int

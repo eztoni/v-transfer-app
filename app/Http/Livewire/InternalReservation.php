@@ -73,6 +73,7 @@ class InternalReservation extends Component
         'stepTwoFields.otherTravellers' => 'other travellers',
         'stepTwoFields.otherTravellers.*.firstName' => 'first name',
         'stepTwoFields.otherTravellers.*.lastName' => 'last naem',
+        'stepTwoFields.includedInAccommodationReservation' => 'last naem',
 
     ];
 
@@ -112,6 +113,7 @@ class InternalReservation extends Component
             'stepTwoFields.leadTraveller.reservationOperaConfirmation' => 'nullable|string',
             'stepTwoFields.leadTraveller.email' => 'nullable|string|email',
             'stepTwoFields.leadTraveller.phone' => 'required|string',
+            'stepTwoFields.includedInAccommodationReservation' => 'boolean',
         ];
 
         if ($this->activateOtherTravellersInput ) {
@@ -149,6 +151,7 @@ class InternalReservation extends Component
         'otherTravellers' => [
 
         ],
+        'includedInAccommodationReservation'=>false
     ];
 
 
@@ -167,10 +170,9 @@ class InternalReservation extends Component
             'pullDataFields.resId'=>      'required_without:pullDataFields.property',
             'pullDataFields.fName'=>      'string|nullable',
             'pullDataFields.lName'=>      'string|nullable',
-            'pullDataFields.dFrom'=>      'date|nullable',
-            'pullDataFields.dTo' =>       'date|nullable|sometimes|before:'.Carbon::createFromFormat('d.m.Y',$this->pullDataFields['dFrom']??now()->format('d.m.Y'))->addYear()->format('d.m.Y'),
+            'pullDataFields.dFrom'=>      'required_without:pullDataFields.resId|date|nullable',
+            'pullDataFields.dTo' =>       'required_without:pullDataFields.resId|date|nullable|sometimes|before:'.Carbon::createFromFormat('d.m.Y',$this->pullDataFields['dFrom']?:now()->format('d.m.Y'))->addYear()->format('d.m.Y'),
             'pullDataFields.property' =>  'required_without:pullDataFields.resId',
-
         ];
     }
 
@@ -281,7 +283,7 @@ class InternalReservation extends Component
             $this->stepOneFields['luggage'],
             $this->stepOneFields['pickupAddressId'],
             $this->stepOneFields['dropoffAddressId'],
-
+            $this->stepTwoFields['includedInAccommodationReservation']
         );
 
         $businessModel->addLeadTraveller($traveller);

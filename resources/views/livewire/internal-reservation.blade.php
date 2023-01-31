@@ -50,12 +50,11 @@
                                     option-key-value
                                     :searchable="true"
                                     min-items-for-search="2"
+                                    class="w-80"
                                     wire:model.defer="pullDataFields.property"
-                                    :options="$this->pointsAccomodation->pluck('name','pms_code')->toArray()"
+                                    :options="$this->pointsAccomodation->pluck('name','pms_code')->mapWithKeys(fn($i,$k) =>[$k=>$k.' - '.$i])->toArray()"
                                     label="Property"
                                 />
-
-
                             </div>
                         @endif
 
@@ -824,6 +823,12 @@
                         <div class="my-2">
                             <x-card>
 
+                                <x-toggle
+                                    lg
+                                    wire:model.defer="stepTwoFields.includedInAccommodationReservation"
+                                label="Price Included in Accommodation Reservation"
+                                ></x-toggle>
+                            <hr class="my-4">
                                 <x-select
                                     label="Confirmation language"
                                     wire:model="stepTwoFields.confirmationLanguage"
