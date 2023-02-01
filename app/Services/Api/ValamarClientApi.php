@@ -87,7 +87,7 @@ class ValamarClientApi{
         $this->reservationsList = array();
 
         $this->configureReservationListFilters();
-        
+
         if($this->isReservationListFilterDefined()) {
 
             $this->setCallURL('reservations');
@@ -109,8 +109,11 @@ class ValamarClientApi{
      */
     private function validateReservationList() : void
     {
+
+
         if(!empty($this->responseBody)){
             foreach($this->responseBody as $reservation){
+
 
                 #Format CheckIn and Checkout
                 $reservation['checkIn'] = substr(trim($reservation['checkIn']),0,10);
@@ -119,9 +122,14 @@ class ValamarClientApi{
                 if(empty($reservation['reservationHolderData']['mobile'])){
                     $reservation['reservationHolderData']['mobile'] = "";
                 }
+
                 #Set Associative Array - Reservation Code - key based
                 if(!empty($reservation['reservationPhobsCode'])){
                     $this->reservationsList[$reservation['reservationPhobsCode']] = $reservation;
+                }else{
+                    if(!empty($reservation['OPERA']['RESV_NAME_ID'])){
+                        $this->reservationsList[$reservation['OPERA']['RESV_NAME_ID']] = $reservation;
+                    }
                 }
 
             }

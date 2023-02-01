@@ -69,6 +69,7 @@
                                         <th>#Res. Code</th>
                                         <th>#Opera ID</th>
                                         <th>#Opera Conf.</th>
+                                        <th>RatePlan</th>
                                         <th>First Name</th>
                                         <th>Lastname</th>
                                         <th>Email</th>
@@ -88,6 +89,7 @@
                                             <th>{{$k}}</th>
                                             <th>{{\Illuminate\Support\Arr::get($r,'OPERA.RESV_NAME_ID')}}</th>
                                             <th>{{\Illuminate\Support\Arr::get($r,'OPERA.CONFIRMATION_NO')}}</th>
+                                            <th>{{\Illuminate\Support\Arr::get($r,'rateCode')}}</th>
                                             <th>{{\Illuminate\Support\Str::title( \Illuminate\Support\Arr::get($r,'reservationHolderData.firstName')??'-')}}</th>
                                             <th>{{\Illuminate\Support\Str::title(\Illuminate\Support\Arr::get($r,'reservationHolderData.lastName')??'-')}}</th>
                                             <th>{{\Illuminate\Support\Arr::get($r,'reservationHolderData.email')??'-'}}</th>
