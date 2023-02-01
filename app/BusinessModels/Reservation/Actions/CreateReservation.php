@@ -81,7 +81,7 @@ class CreateReservation extends Reservation
                 $this->saveRoundTrip();
             }
 
-            $this->sendReservationToOpera($this->model->id);
+            //$this->sendReservationToOpera($this->model->id);
 
             ReservationCreatedEvent::dispatch($this->model,[
                 ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail
