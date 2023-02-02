@@ -412,7 +412,6 @@ class InternalReservation extends Component
         }
         if ($this->pullDataFields['dTo']) {
             $api->setCheckOutFilter(Carbon::create( $this->pullDataFields['dTo']));
-
         }
 
 
@@ -441,8 +440,12 @@ class InternalReservation extends Component
         $this->stepOneFields['children'] = Arr::get($data,'children');
         $this->stepOneFields['luggage'] = Arr::get($data,'adults');
 
+
+        $this->stepOneFields['dateTime'] =  Carbon::make(Arr::get($data,'checkIn') ?? now())?->format('d.m.Y H:i') ;
+
         $this->roundTrip = true;
-        $this->stepOneFields['returnDateTime'] = Carbon::make(Arr::get($data,'checkOut') ?? now())?->format('d.m.Y H:i') ;
+        $this->stepOneFields['returnDateTime'] = Carbon::make(Arr::get($data,'checkOut'))?->format('d.m.Y H:i') ;
+
 
         $point =  Point::query()
             ->where('type',Point::TYPE_ACCOMMODATION)

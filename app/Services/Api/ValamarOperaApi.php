@@ -208,7 +208,7 @@ class ValamarOperaApi{
                 $this->request['Packages'][] = $this->buildReservationPackage($returnReservation);
             }
         }
-
+        
         return true;
     }
 
@@ -243,10 +243,13 @@ class ValamarOperaApi{
         $dropoff_location = Point::find($reservation->dropoff_location);
 
         #Route
-        $return .= 'From: '.$pickup_location->name.' To: '.$dropoff_location->name.' ';
+        $return .= ' From: '.$pickup_location->name.' To: '.$dropoff_location->name.' ';
 
         #Flight Number
-        $return .= 'Flight Number: '.$reservation->flight_number.' ';
+        if($reservation->flight_number){
+            $return .= 'Flight Number: '.$reservation->flight_number.' ';
+        }
+
 
         #Comment
         if($this->reservation->remark){
