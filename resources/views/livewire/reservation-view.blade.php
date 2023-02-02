@@ -159,7 +159,8 @@
                     title="Main traveller">
 
                 <x-slot name="action">
-                    <x-button wire:click="openTravellerModal({{$this->reservation->leadTraveller->id}},'leadTraveller')" icon="pencil" />
+                    <x-button wire:click="openTravellerModal({{$this->reservation->leadTraveller->id}},'leadTraveller')"
+                              icon="pencil"/>
                 </x-slot>
 
 
@@ -190,6 +191,16 @@
                     <tr>
                         <td class="font-bold">Email:</td>
                         <td>{{$this->reservation->leadTraveller->email}}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="font-bold">Opera ID:</td>
+                        <td>{{$this->reservation->leadTraveller->reservation_opera_id}}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="font-bold">Opera Confirmation Number:</td>
+                        <td>{{$this->reservation->leadTraveller->reservation_opera_confirmation}}</td>
                     </tr>
 
 
@@ -354,22 +365,30 @@
 
             @if($this->leadTravellerEdit)
                 <x-input
-                    wire:model="traveller.reservation_number"
+                    wire:model.defer="traveller.reservation_number"
                     label="Reservation Number:"
                 ></x-input>
 
                 <x-input
-                    wire:model="traveller.phone"
+                    wire:model.defer="traveller.phone"
                     label="Phone:"
                 ></x-input>
 
                 <x-input
-                    wire:model="traveller.email"
+                    wire:model.defer="traveller.email"
                     label="Email:"
+                ></x-input>
+                <x-input
+                    wire:model.defer="traveller.reservation_opera_id"
+                    label="Reservation opera id:"
+                ></x-input>
+                <x-input
+                    wire:model.defer="traveller.reservation_opera_confirmation"
+                    label="Reservation opera confirmation:"
                 ></x-input>
             @else
                 <x-input
-                    wire:model="otherTravellerComment"
+                    wire:model.defer="otherTravellerComment"
                     label="Comment:"
                 ></x-input>
             @endif

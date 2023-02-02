@@ -30,6 +30,8 @@ use Actions;
             'traveller.first_name'=>'required|max:50|min:2',
             'traveller.last_name'=>'required|max:50|min:2',
             'traveller.title'=>'required|max:50|min:2',
+            'traveller.reservation_opera_confirmation'=>'string|max:200',
+            'traveller.reservation_opera_id'=>'string|max:200',
             'otherTravellerComment'=>'nullable|max:100',
         ];
 
@@ -53,19 +55,17 @@ use Actions;
     }
 
     //MODAL
-    public function openTravellerModal($travellerId,$travellerModel){
-
-        if($travellerModel == 'leadTraveller'){
-            $this->leadTravellerEdit = true;
-        }else{
-            $this->leadTravellerEdit = false;
-        }
+    public function openTravellerModal($travellerId){
 
         $this->travellerModal = true;
 
         $this->traveller = Traveller::findOrFail($travellerId);
+        if($this->reservation->leadTraveller->id === $this->traveller->id){
+            $this->leadTravellerEdit = true;
+        }else{
+            $this->leadTravellerEdit = false;
+        }
         $this->otherTravellerComment = $this->reservation?->otherTravellers->where('id',$travellerId)->first()?->pivot->comment;
-
     }
 
     public function closeTravellerModal(){
