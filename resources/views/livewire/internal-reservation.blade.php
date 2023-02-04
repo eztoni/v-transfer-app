@@ -836,6 +836,7 @@
                                     wire:model="stepTwoFields.confirmationLanguage"
                                     :options="$this->confirmationLanguagesArray"
                                     option-key-value
+                                    :clearable="false"
                                 />
                                 <div class="my-4 flex justify-end">
 

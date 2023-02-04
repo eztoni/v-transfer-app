@@ -40,7 +40,7 @@ return [
     'li_1_1' => 'Heure de ramassage à l\'aéroport et point de rendez-vous à l\'arrivée : le conducteur sera en attente à l\'extérieur de la zone de récupération des bagages à la porte affectée au numéro de vol spécifié, tenant un panneau de ramassage avec le nom du passager. La durée de l\'attente est celle prévue lorsque le vol est à l\'heure. En cas de retard, le temps d\'attente est prolongé en conséquence. Si vous ne pouvez pas identifier votre transfert à l\'emplacement désigné, veuillez contacter',
     'li_1_2' => 'Heure de ramassage à l\'hôtel et point de rendez-vous à la départ : le temps de retour peut être ajusté en fonction des conditions de route. Veuillez confirmer votre heure de ramassage et votre point de rendez-vous à la réception la veille du départ.',
     'li_1_3' => 'Veuillez prévoir d\'arriver au moins 10 minutes avant l\'heure de départ de votre transfert.',
-    'li_2' => 'En cas de besoin de modification ou d\'annulation de votre réservation avant le voyage, veuillez contacter rezervacijski centar e-mail i broj telefona.',
+    'li_2' => 'En cas de besoin de modification ou d\'annulation de votre réservation avant le voyage, veuillez contacter ',
     'li_3' => 'Veuillez respecter les règles suivantes dans le véhicule',
     'li_3_1' => 'Fumer n\'est pas autorisé',
     'li_3_2' => 'La ceinture de sécurité doit être portée en tout temps.',

@@ -3,6 +3,7 @@
 namespace App\Actions\Breakdown;
 
 use App\Facades\EzMoney;
+use App\Models\Route;
 use App\Models\Transfer;
 use Illuminate\Support\Collection;
 
@@ -21,7 +22,17 @@ class GetPriceBreakdownItemLabel
                 return __('mail.extra'). ' - '.\Arr::get($breakdownItem,'model')?->name;
                 break;
             default:
-                return __('mail.transfer_price');
+                $label = __('mail.transfer_price');
+
+                $route = \Arr::get($breakdownItem,'price_data.route_id');
+
+                if($route = Route::find($route)){
+                    $label = $route->name;
+                }
+
+
+
+                return $label;
                 break;
         }
 

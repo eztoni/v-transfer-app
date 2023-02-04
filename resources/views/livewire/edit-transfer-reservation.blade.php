@@ -8,38 +8,45 @@
         :class="$reservation->isDirty('date_time')?'border-success':''"
         label="Date & time:"
         :default-date="$this->date"
-        wire:model.defer="date"
+        wire:model.defer.defer="date"
     ></x-flatpickr>
 
 
     <x-input :class="$reservation->isDirty('adults')?'border-success':''"
-                          wire:model="reservation.adults"
+                          wire:model.defer="reservation.adults"
+             type="number"
                           label="Adults"
     />
     <x-input
         :class="$reservation->isDirty('children')?'border-success':''"
-        wire:model="reservation.children"
-                          label="Children"
+        wire:model.defer="reservation.children"
+        type="number"
+
+        label="Children"
     />
     <x-input
         :class="$reservation->isDirty('infants')?'border-success':''"
-        wire:model="reservation.infants"
-                          label="Infants"
+        wire:model.defer="reservation.infants"
+        type="number"
+
+        label="Infants"
     />
     <x-input
         :class="$reservation->isDirty('luggage')?'border-success':''"
-        wire:model="reservation.luggage"
-                          label="Luggage"
+        wire:model.defer="reservation.luggage"
+        type="number"
+
+        label="Luggage"
     />
     <x-input
         :class="$reservation->isDirty('flight_number')?'border-success':''"
-        wire:model="reservation.flight_number"
+        wire:model.defer="reservation.flight_number"
                           label="Flight number"
     />
 
     <x-textarea
         label="Remark:"
-        wire:model="reservation.remark"
+        wire:model.defer="reservation.remark"
     />
 
     <x-native-select
@@ -50,7 +57,7 @@
         ]"
         option-label="name"
         option-value="id"
-        wire:model="sendModifyMail"
+        wire:model.defer="sendModifyMail"
     />
 
 

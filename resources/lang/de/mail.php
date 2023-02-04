@@ -38,7 +38,7 @@ return [
     'li_1_1'=>'Abholzeit und Treffpunkt am Flughafen: Der Fahrer wird außerhalb des Gepäckbereichs am Tor, das dem angegebenen Flugnummer zugewiesen ist, warten und ein Schild mit dem Namen des Passagiers halten. Der Zeitrahmen bezieht sich auf die Wartezeit, wenn der Flug planmäßig ist. Bei Verspätungen wird die Wartezeit entsprechend verlängert. Wenn Sie Ihren Transfer an der vorgesehenen Stelle nicht erkennen können, wenden Sie sich bitte an',
     'li_1_2'=>'Abholzeit und Treffpunkt im Hotel bei Abreise: Die Zeit für die Rückfahrt kann je nach Straßenverhältnissen angepasst werden. Bitte bestätigen Sie die Abholzeit und den Treffpunkt am Tag vor der Abreise an der Rezeption.',
     'li_1_3'=>'Bitte planen Sie, mindestens 10 Minuten vor Abfahrtszeit des Transfers anzukommen.',
-    'li_2'=>'Wenn Sie Ihre Buchung vor der Reise ändern oder stornieren müssen, wenden Sie sich bitte an rezervacijski centar e-mail i broj telefona.',
+    'li_2'=>'Wenn Sie Ihre Buchung vor der Reise ändern oder stornieren müssen, wenden Sie sich bitte an ',
     'li_3'=>'Bitte beachten Sie die folgenden Regeln im Fahrzeug',
     'li_3_1'=>'Rauchen ist nicht erlaubt.',
     'li_3_2'=>'Sicherheitsgurte müssen jederzeit angelegt werden.',
@@ -138,5 +138,9 @@ werden, bezahlen Sie diese beim Check-in im Objekt Ihres Aufenthaltes.',
     'code' => 'Code',
     'service_name' => 'Servicename',
     'total' => 'Insgesmt',
+    'included_in_accommodation_reservation'=>'Dieser Transfer ist im Übernachtungsaufenthalt enthalten',
+    'reservation_holder'=>'Reservierungsinhaber',
+    'created_at'=>'Erstellt am',
+
 
 ];

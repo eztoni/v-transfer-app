@@ -3,7 +3,7 @@
 namespace App\Listeners\Email;
 
 use App\Events\ReservationCreatedEvent;
-use App\Mail\Guest\GuestReservationConfirmationMail;
+use App\Mail\Guest\ReservationConfirmationMail;
 use Illuminate\Support\Facades\Mail;
 
 class SendConfirmationMailToGuestListener
@@ -13,7 +13,7 @@ class SendConfirmationMailToGuestListener
 
     public function sendConfirmationMail($userEmails,$resId, $locale = null): void
     {
-        Mail::to($userEmails)->locale($locale)->send(new GuestReservationConfirmationMail($resId,$locale??'en'));
+        Mail::to($userEmails)->locale($locale)->send(new ReservationConfirmationMail($resId,$locale??'en'));
     }
 
     public function handle(ReservationCreatedEvent $event): void

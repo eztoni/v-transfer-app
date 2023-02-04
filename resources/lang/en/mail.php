@@ -42,7 +42,7 @@ return [
     'li_1_1' => 'Airport pick up time and meeting point on arrival: the driver will be waiting outside the baggage claim area at the gate assigned to the specified flight number, holding a pickup sign with passenger name. Time frame refers to the waiting time when flight is on schedule. In case of delays, waiting time is prolonged accordingly. In case you cannot identify your transfer at the designated location, please contact ',
     'li_1_2' => 'Hotel pick up time and meeting point on departure: timing of return transfer may be adjusted according to road conditions. Please confirm your pick up time and meeting point at the reception the day before the departure.',
     'li_1_3' => 'Kindly plan to arrive at least 10 minutes before your transfer departure time. ',
-    'li_2' => 'In case you need to modify or cancel your booking before travel, please contact rezervacijski centar e-mail i broj telefona.',
+    'li_2' => 'In case you need to modify or cancel your booking before travel, please contact ',
     'li_3' => 'Please respect the following rules in the vehicle',
     'li_3_1' => 'Smoking is not allowed',
     'li_3_2' => 'Seat belts must be worn at all times.',
@@ -120,6 +120,36 @@ If you have any special requests, feel free to reply to this e-mail.
 
     ],
 
+    'partner'=>[
+        'confirmation_mail' => [
+            'subject' => 'Your Booking Confirmation',
+            'body' => [
+                'thank_you' => 'Thank you for your purchase and trust.',
+                'body' => '  Please find attached booking confirmation. Upon successful purchases, a contract is concluded for the product(s) listed in the booking confirmation at the indicated rate(s) and cost(s).
+                    The General Terms and Conditions of Purchase explain your rights and obligations in detail, and are an integral part of this contract.',
+                'your_valamar_team' => 'Your Valamar Team'
+            ]
+        ],
+        'modification_mail' => [
+            'subject' => 'Confirmation of your transfer modification',
+            'body' => [
+                'thank_you' => 'Thank you for the transfer modification.',
+                'body' => ' Please find attached booking confirmation. Upon successful purchases, a contract is concluded for the product(s) listed in the booking confirmation at the indicated rate(s) and cost(s). The General Terms and Conditions of Purchase explain your rights and obligations in detail, and are an integral part of this contract.',
+                'your_valamar_team' => 'Your Valamar Team'
+            ]
+        ],
+        'cancellation_mail' => [
+            'subject' => 'Your reservation cancellation ',
+            'body' => [
+                'thank_you' => 'You can find the confirmation on reservation cancellation below.',
+                'body' => '
+If you have any special requests, feel free to reply to this e-mail.
+',
+                'your_valamar_team' => 'Your Valamar Team'
+            ]
+        ],
+    ],
+
 
     'booking_confirmation' => [
         'terms_and_conditions' => '
@@ -133,5 +163,7 @@ If you have any special requests, feel free to reply to this e-mail.
     'service_name' => 'Service Name',
     'total' => 'Total',
 
-
+    'included_in_accommodation_reservation'=>'This transfer is included in accommodation reservation',
+    'reservation_holder'=>'Reservation holder',
+    'created_at'=>'Created at',
 ];

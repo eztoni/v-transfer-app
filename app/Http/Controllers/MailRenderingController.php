@@ -2,22 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\Guest\GuestReservationConfirmationMail;
+use App\Mail\Guest\ReservationConfirmationMail;
+use App\Models\Reservation;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MailRenderingController extends Controller
 {
-    public function renderReservationMail($type,$id)
+    public function renderReservationMail($type, $id)
     {
-        switch ($type){
+        $res = Reservation::find($id);
+
+        switch ($type) {
             case 'CONFIRMATION':
-               return  new GuestReservationConfirmationMail($id);
+                return new ReservationConfirmationMail($id,$res->confirmation_language);
                 break;
             case 'MODIFY':
-                return  new \App\Mail\Guest\GuestReservationCancellationMail($id);
+                return new \App\Mail\Guest\ReservationCancellationMail($id,$res->confirmation_language);
                 break;
             case 'CANCEL':
                 break;
+            case 'ATTACHMENT_VOUCHER':
+                return PDF::loadView('attachments.voucher', ['reservation'=>Reservation::find($id)])->outputHtml();
+                break;
+            case 'ATTACHMENT_CONFIRMATION':
+                return  PDF::loadView('attachments.booking_confirmation', ['reservation'=>Reservation::find($id)])->outputHtml();
+                break;
+
         }
 
     }
+
+
 }

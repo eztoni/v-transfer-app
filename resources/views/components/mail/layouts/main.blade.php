@@ -54,7 +54,7 @@
         }
 
          *{
-             font-family:"Source Sans Pro",Roboto,"DeJaVu Sans";
+             font-family:"Source Sans Pro",'Roboto-bold',"DeJaVu Sans";
              line-height: 14px;
              color: #363636;
          }

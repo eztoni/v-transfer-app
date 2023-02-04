@@ -74,7 +74,7 @@ class InternalReservation extends Component
         'stepTwoFields.otherTravellers.*.firstName' => 'first name',
         'stepTwoFields.otherTravellers.*.lastName' => 'last naem',
         'stepTwoFields.includedInAccommodationReservation' => 'last naem',
-
+        'stepTwoFields.confirmationLanguage' => 'Confirmation language',
     ];
 
     private function stepOneRules()
@@ -114,6 +114,7 @@ class InternalReservation extends Component
             'stepTwoFields.leadTraveller.email' => 'nullable|string|email',
             'stepTwoFields.leadTraveller.phone' => 'required|string',
             'stepTwoFields.includedInAccommodationReservation' => 'boolean',
+            'stepTwoFields.confirmationLanguage' => 'required',
         ];
 
         if ($this->activateOtherTravellersInput ) {

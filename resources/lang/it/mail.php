@@ -42,7 +42,7 @@ return [
     'li_1_1' => 'Orario di partenza e punto di incontro in aeroporto all\'arrivo: l\'autista ti aspetterà fuori dall\'area ritiro bagagli alla porta assegnata al numero di volo specificato, con un cartello di raccolta con il nome del passeggero. Il lasso di tempo si riferisce al tempo di attesa quando il volo è in orario. In caso di ritardi, il tempo di attesa viene prolungato di conseguenza. In caso tu non possa identificare il tuo trasferimento alla posizione designata, ti preghiamo di contattare',
     'li_1_2' => 'Orario di partenza e punto di incontro in albergo alla partenza: l\'orario del trasferimento di ritorno può essere regolato in base alle condizioni stradali. Ti preghiamo di confermare il tuo orario di partenza e il punto di incontro alla reception il giorno prima della partenza.',
     'li_1_3' => 'Ti preghiamo di pianificare di arrivare almeno 10 minuti prima dell\'orario di partenza del trasferimento.',
-    'li_2' => 'In caso tu abbia bisogno di modificare o cancellare la tua prenotazione prima del viaggio, ti preghiamo di contattare rezervacijski centar e-mail i broj telefona.',
+    'li_2' => 'In caso tu abbia bisogno di modificare o cancellare la tua prenotazione prima del viaggio, ti preghiamo di contattare ',
     'li_3' => 'Ti preghiamo di rispettare le seguenti regole all\'interno del veicolo',
     'li_3_1' => 'Fumare non è consentito',
     'li_3_2' => 'Le cinture di sicurezza devono essere indossate sempre.',
@@ -143,5 +143,7 @@ momento del check-in presso la struttura in cui soggiornate.',
     'code' => 'Codice',
     'service_name' => 'Nome del servizio',
     'total' => 'Totale',
-
+    'included_in_accommodation_reservation'=>"Questo trasferimento è incluso nella prenotazione dell'alloggio",
+    'reservation_holder'=>'Titolare della prenotazione',
+    'created_at'=>'Creato il',
 ];

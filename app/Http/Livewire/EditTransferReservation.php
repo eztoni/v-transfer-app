@@ -27,10 +27,10 @@ use Actions;
     {
         $rules = [
             'date' => 'required|date|after_or_equal:' . Carbon::now()->format('d.m.Y') ,
-            'reservation.adults' => 'required|integer|integer|min:1|max:50',
-            'reservation.children' => 'required|numeric|integer|max:50',
-            'reservation.infants' => 'required|numeric|integer|max:50',
-            'reservation.luggage' => 'required|numeric|integer|max:50',
+            'reservation.adults' => 'required|numeric|integer',
+            'reservation.children' => 'required|numeric|integer',
+            'reservation.infants' => 'required|numeric|integer',
+            'reservation.luggage' => 'required|numeric|integer',
             'reservation.remark' => 'nullable|string',
             'reservation.flight_number' => 'nullable|string',
         ];
@@ -59,10 +59,7 @@ use Actions;
         'reservation.flight_number' => 'remark',
     ];
 
-    public function updated($property)
-    {
-        $this->validateOnly($property,$this->rules(),[],$this->fieldNames);
-    }
+
 
     public function cancel()
     {
@@ -89,8 +86,8 @@ use Actions;
 
     public function save(): void
     {
-
         $this->validate($this->rules(),[],$this->fieldNames);
+
         $this->reservation->date_time = $this->date;
         $updater = new UpdateReservation($this->reservation);
         $updater->setSendMailBool($this->sendModifyMail);

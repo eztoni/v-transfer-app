@@ -6,7 +6,7 @@ use App\Models\Reservation;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Mail\Mailable;
 
-class GuestReservationModificationMail extends Mailable
+class ReservationCancellationMail extends Mailable
 {
 
     public $reservation;
@@ -15,9 +15,10 @@ class GuestReservationModificationMail extends Mailable
     public function __construct($reservation_id, $locale)
     {
         $this->reservation = Reservation::findOrFail($reservation_id);
+
         \App::setLocale($locale);
 
-        $this->subject(__('mail.guest.modification_mail.subject'));
+        $this->subject(__('mail.guest.cancellation_mail.subject'));
 
         $pdf = PDF::loadView('attachments.voucher', ['reservation'=>$this->reservation]);
         $this->attachData($pdf->output(),'Voucher.pdf');
@@ -28,6 +29,6 @@ class GuestReservationModificationMail extends Mailable
 
     public function build()
     {
-        return $this->view('emails.guest.modification');
+        return $this->view('emails.guest.cancellation');
     }
 }

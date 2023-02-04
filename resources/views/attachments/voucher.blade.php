@@ -8,7 +8,8 @@
                 font-weight: normal;
 
             }
-            p{
+
+            p {
                 font-weight: normal !important;
             }
         </style>
@@ -17,6 +18,7 @@
 
     <x-mail.body>
         <x-mail.logo></x-mail.logo>
+
 
         <x-mail.row>
 
@@ -34,9 +36,11 @@
         <x-mail.divider></x-mail.divider>
         <x-mail.row>
             <p style="font-size: 14px"><b>{{__('mail.reservation_number')}}:</b> #{{$reservation->id}}</p>
-            <p style="font-size: 14px"><b>{{__('mail.name')}}:</b> {{ucwords($reservation->leadTraveller?->full_name)}}</p>
+            <p style="font-size: 14px"><b>{{__('mail.name')}}:</b> {{ucwords($reservation->leadTraveller?->full_name)}}
+            </p>
             @if($reservation->leadTraveller->phone)
-                <p style="font-size: 14px"><b>{{__('mail.contact_phone')}}:</b> {{$reservation->leadTraveller->phone}}</p>
+                <p style="font-size: 14px"><b>{{__('mail.contact_phone')}}:</b> {{$reservation->leadTraveller->phone}}
+                </p>
             @endif
 
             <p style="font-size: 14px"><b>{{__('mail.direction')}}:</b>
@@ -47,7 +51,6 @@
 
 
         <x-mail.row>
-
 
 
             <h3 style="font-weight: bold; margin-top: 0; margin-bottom: 1%"> <span
@@ -100,44 +103,36 @@
 
                 @if($reservation->adults)
                     <span
-                        style="font-size: 14px;margin-right: 15px;">{{__('mail.adults')}}: <b>{{$reservation->adults}}</b>|</span>
+                        style="font-size: 14px;margin-right: 3px;">{{__('mail.adults')}}: <b>{{$reservation->adults}}</b> |</span>
                 @endif
                 @if($reservation->children)
                     <span
-                        style="font-size: 14px;margin-right: 15px">{{__('mail.children')}}: <b>{{$reservation->children}}</b>|</span>
+                        style="font-size: 14px;margin-right: 3px">{{__('mail.children')}}: <b>{{$reservation->children}}</b> |</span>
                 @endif
                 @if($reservation->infants)
                     <span
-                        style="font-size: 14px;margin-right: 15px">{{__('mail.infants')}}: <b>{{$reservation->infants}}</b>|</span>
+                        style="font-size: 14px;margin-right: 3px">{{__('mail.infants')}}: <b>{{$reservation->infants}}</b> |</span>
                 @endif
 
                 <span
-                    style="font-size: 14px;margin-right: 15px">{{__('mail.luggage')}}: <b>{{$reservation->luggage}}</b></span>
+                    style="font-size: 14px;margin-right: 3px">{{__('mail.luggage')}}: <b>{{$reservation->luggage}}</b></span>
             </div>
         </x-mail.row>
 
 
-        <x-mail.divider></x-mail.divider>
+        @if($reservation->included_in_accommodation_reservation)
+            <x-mail.divider></x-mail.divider>
+            <x-mail.row>
+
+                <h3 style="font-weight: bold; margin-top: 5px; margin-bottom: 1%"> <span
+                        style="color: #3498DB; text-decoration: none;">
+                    {{__('mail.included_in_accommodation_reservation')}}</span>
+                </h3>
+            </x-mail.row>
+
+        @endif
 
 
-        <x-mail.row>
-
-
-            <h3 style="font-weight: bold; margin-top: 0; margin-bottom: 1%"> <span
-                    style="color: #3498DB; text-decoration: none;">
-                    {{__('mail.transfer_price_breakdown')}}</span>
-            </h3>
-
-            @foreach($reservation->price_breakdown as $pbItem)
-                <p style="font-size: 14px; margin-bottom: 10px;">{{$loop->index+1}}
-                    . {{\App\Actions\Breakdown\GetPriceBreakdownItemLabel::run($pbItem)}}
-                    : {{Arr::get($pbItem,'amount.formatted')}}</p>
-            @endforeach
-
-            <p style="font-size: 18px"><b>{{__('mail.total_price')}}: </b>
-                <b>{{\Cknow\Money\Money::EUR($reservation->price)}}</b></p>
-
-        </x-mail.row>
 
 
         @if($reservation->partner->terms)
@@ -150,8 +145,8 @@
             </x-mail.row>
         @endif
         <x-mail.row>
-        <div class="" style="padding-top: 40px;"></div>
-        <p style="margin-bottom:15px;text-align: right">1/2</p>
+            <div class="" style="padding-top: 40px;"></div>
+            <p style="margin-bottom:15px;text-align: right">1/2</p>
 
         </x-mail.row>
 
@@ -175,11 +170,11 @@
             <ul>
                 <li>{{__('mail.pickup_and_meeting_point')}}:</li>
                 <ul>
-                    <li>{{__('mail.li_1_1')}} {{$reservation->partner->email}} {{$reservation->partner->phone}}</li>
+                    <li>{{__('mail.li_1_1')}} <b>{{$reservation->partner->email}} {{$reservation->partner->phone}}</b></li>
                     <li>{{__('mail.li_1_2')}}</li>
                     <li>{{__('mail.li_1_3')}}</li>
                 </ul>
-                <li>{{__('mail.li_2')}} {{$reservation->partner->email}} {{$reservation->partner->phone}}</li>
+                <li>{{__('mail.li_2')}} <b style="font-weight: 700;">reservation@valamar.com   +385 (0)52 465 000</b></li>
                 <li>{{__('mail.li_3')}}:</li>
                 <ul>
                     <li>{{__('mail.li_3_1')}}</li>

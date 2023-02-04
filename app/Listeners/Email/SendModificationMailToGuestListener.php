@@ -4,8 +4,8 @@ namespace App\Listeners\Email;
 
 use App\Events\ReservationCreatedEvent;
 use App\Events\ReservationUpdatedEvent;
-use App\Mail\Guest\GuestReservationCancellationMail;
-use App\Mail\Guest\GuestReservationModificationMail;
+use App\Mail\Guest\ReservationCancellationMail;
+use App\Mail\Guest\ReservationModificationMail;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 
@@ -16,7 +16,7 @@ class SendModificationMailToGuestListener
 
 
     public function sendConfirmationMail($userEmails ,$resId, $locale = null){
-        Mail::to($userEmails)->locale($locale??'en')->send(new GuestReservationModificationMail($resId,$locale??'en'));
+        Mail::to($userEmails)->locale($locale??'en')->send(new ReservationModificationMail($resId,$locale??'en'));
     }
 
     public function handle(ReservationUpdatedEvent $event)

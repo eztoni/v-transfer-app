@@ -32,8 +32,22 @@
             </div>
 
         </x-mail.logo>
-        <div class="" style="padding-top: 40px;"></div>
+        <div class="" style="padding-top: 20px;"></div>
 
+        <x-mail.row>
+            <div class="" style="padding: 3px 0 0 0; text-align: right ;width: 100%; margin-bottom: 25px">
+                <p style="width: 100%">
+                    {{__('mail.created_at')}}: {{$reservation->created_at->format('d.m.Y H:i')}}
+                    <br>
+                    {{__('mail.reservation_holder')}}: {{$reservation->lead_traveller->full_name}}
+                    <br>
+                    <b>{{__('mail.reservation_number')}}:</b> #{{$reservation->id}}
+                    <br>
+
+                </p>
+
+            </div>
+        </x-mail.row>
 
         <x-mail.row>
 
@@ -42,21 +56,21 @@
 
             <table style="  border-collapse: unset ;border: 1px solid #363636; width: 100%">
                 <thead>
-                <tr style="border: 1px solid black;">
-                    <td style="border: 1px solid black;">{{__('mail.no')}}</td>
-                    <td style="border: 1px solid black;">{{__('mail.code')}}</td>
-                    <td style="border: 1px solid black;">{{__('mail.service_name')}}</td>
-                    <td style="border: 1px solid black;text-align: right">{{__('mail.total')}}</td>
+                <tr style="border: 1px solid black;font-weight: 700;">
+                    <td style="border: 1px solid black;padding:5px 5px">{{__('mail.no')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.code')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.service_name')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;text-align: right">{{__('mail.total')}}</td>
                 </tr>
                 </thead>
 
                 <tbody>
                 @foreach($reservation->price_breakdown as $pbItem)
                     <tr style="border: 1px solid black;">
-                        <td style="border: 1px solid black;">{{$loop->index}}</td>
-                        <td style="border: 1px solid black;">EXTRA-{{Arr::get($pbItem,'opera_package_id')}}</td>
-                        <td style="border: 1px solid black;">{{\App\Actions\Breakdown\GetPriceBreakdownItemLabel::run($pbItem)}} </td>
-                        <td style="border: 1px solid black;text-align: right"><b>{{Arr::get($pbItem,'amount.formatted')}}</b></td>
+                        <td style="padding:5px 5px;border: 1px solid black;">{{$loop->index}}</td>
+                        <td style="padding:5px 5px;border: 1px solid black;">EXTRA-{{Arr::get($pbItem,'opera_package_id')}}</td>
+                        <td style="padding:5px 5px;border: 1px solid black;">{{\App\Actions\Breakdown\GetPriceBreakdownItemLabel::run($pbItem)}} </td>
+                        <td style="padding:5px 5px;border: 1px solid black;text-align: right"><b>{{Arr::get($pbItem,'amount.formatted')}}</b></td>
                     </tr>
                 @endforeach
 
@@ -64,10 +78,10 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                    <td colspan="3" style="border: 1px solid black; text-align: right">
+                    <td colspan="3" style="border: 1px solid black; text-align: right;padding:5px 5px">
                         <b>{{__('mail.total_price')}}: </b>
                     </td>
-                    <td style="border: 1px solid black;">
+                    <td style="border: 1px solid black;text-align: right;padding:5px 5px">
                         <b>{{\Cknow\Money\Money::EUR($reservation->price)}}</b>
                     </td>
                 </tr>
@@ -81,10 +95,11 @@
         <div class="" style="padding-top: 40px;"></div>
 
 
-        <x-mail.row>
+        <x-mail.row >
             <p><b>{{__('mail.terms_and_conditions')}}</b></p>
             <br>
             <p>{{__('mail.booking_confirmation.terms_and_conditions')}}</p>
+
         </x-mail.row>
         <div class="" style="padding-top: 40px;"></div>
 
@@ -99,9 +114,12 @@
     <x-mail.footer-below>
         {{__('mail.not_fiscalized')}}
         <div class="" style="padding-top: 40px;"></div>
+        <div style="position: fixed;max-width: 600px;padding-bottom: 25px; bottom: 0;">
+
         <p style="text-align: justify; font-size: 8px">
             {{__('mail.guest.footer.valamar')}}
         </p>
+        </div>
     </x-mail.footer-below>
 
 </x-mail.layouts.main>
