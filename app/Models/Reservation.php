@@ -161,7 +161,7 @@ class Reservation extends Model
         $commission =Money::EUR(0);
 
         if($total && $totalWithCommission){
-            $commission=Money::EUR($totalWithCommission - $total);
+            $commission=Money::EUR($totalWithCommission );
         }
 
         return $commission;
@@ -189,7 +189,7 @@ class Reservation extends Model
             $total = (int) \Arr::get($extraArray,'amount.amount');
             $totalWithCommission = (int) \Arr::get($extraArray,'price_data.price_with_commission');
             if($total && $totalWithCommission){
-                $extraCommission =Money::EUR($totalWithCommission - $total);
+                $extraCommission =Money::EUR($totalWithCommission );
                 $commission = $commission->add($extraCommission);
             }
         }
