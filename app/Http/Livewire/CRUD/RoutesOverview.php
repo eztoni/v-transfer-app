@@ -89,11 +89,13 @@ class RoutesOverview extends EzComponent
     public function getStartingPointsProperty(){
         return Point::whereDestinationId($this->userDestinationId )
             ->where('id','!=',$this->model->ending_point_id)
+            ->cityOnly()
             ->get()->pluck('name','id')->toArray();
     }
 
     public function getEndingPointsProperty(){
         return Point::whereDestinationId($this->userDestinationId )
+           ->cityOnly()
             ->where('id','!=',$this->model->starting_point_id)
             ->get()->pluck('name','id')->toArray();
     }

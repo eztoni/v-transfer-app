@@ -62,6 +62,13 @@ class Point extends Model
         return $vale?: $this->name;
     }
 
+    public function scopeCityOnly($q){
+        return  $q->where('type',Point::TYPE_CITY);
+    }
+    public function scopeNotCity($q){
+        return  $q->where('type','!=',Point::TYPE_CITY);
+    }
+
     protected static function booted()
     {
         static::addGlobalScope(new ActiveScope());

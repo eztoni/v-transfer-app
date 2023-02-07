@@ -528,6 +528,7 @@ class InternalReservation extends Component
     public function getPickupAddressPointsProperty()
     {
         return Point::query()
+            ->notCity()
             ->whereNotIn('id', [
                 (int)$this->stepOneFields['startingPointId'],
                 (int)$this->stepOneFields['endingPointId'],
@@ -538,6 +539,7 @@ class InternalReservation extends Component
     public function getDropoffAddressPointsProperty()
     {
         return Point::query()
+            ->notCity()
             ->whereNotIn('id', [
                 (int)$this->stepOneFields['startingPointId'],
                 (int)$this->stepOneFields['endingPointId'],

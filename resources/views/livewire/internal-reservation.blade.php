@@ -9,12 +9,12 @@
 
                 <x-card>
                     <x-slot name="action">
-                        <x-button sm label="Pull data" wire:click="$set('pullModal',true)"
+                        <x-button sm label="Pull data"  wire:click="$set('pullModal',true)"
                                   icon="cloud-download"></x-button>
                     </x-slot>
 
 
-                    <x-modal.card max-width="6xl" wire:model="pullModal" lg title="Pull data from Opera">
+                    <x-modal.card max-width="8xl" wire:model="pullModal" lg title="Pull data from Opera">
                         @if($this->pullModal)
                             <div class="flex gap-4   flex-wrap">
                                 <x-input
@@ -99,7 +99,7 @@
                                             <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkOut'))->format('d.m.Y')}}</th>
 
                                             <td>
-                                                <x-button.circle sm wire:click="pullRes('{{$k}}')"
+                                                <x-button.circle sm positive wire:click="pullRes('{{$k}}')"
                                                                  icon="cloud-download"/>
                                             </td>
                                         </tr>
