@@ -3,10 +3,12 @@
 namespace App\Http\Livewire;
 
 
+use App\Mail\Guest\ReservationConfirmationMail;
 use App\Models\Reservation;
 use App\Models\Traveller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use WireUi\Traits\Actions;
@@ -21,7 +23,7 @@ use Actions;
     public $leadTravellerEdit = false;
     public $otherTravellerComment;
     public $travellerModal;
-
+    public $sentAgain = false;
 
     protected function rules()
     {
@@ -108,6 +110,38 @@ use Actions;
 
     public function getPickupLocationStringProperty(){
         return "{$this->reservation->pickupLocation->name} {$this->reservation->date} @ {$this->reservation->time} - Address: {$this->reservation->pickup_address}";
+    }
+
+    public function sendAgainConfirmationDialog(){
+        $this->dialog()->confirm([
+            'title'       => 'You are about to send a reservation confirmation email again',
+            'description' => 'Proceed with this action?',
+            'icon'        => 'question',
+            'accept'      => [
+                'label'  => 'Yes, send',
+                'method' => 'sendAgain',
+            ],
+            'reject' => [
+                'label'  => 'No, cancel',
+            ],
+        ]);
+    }
+
+    public function sendAgain(): void
+    {
+
+        if (!$this->reservation->is_main){
+            return;
+        }
+
+        // Add email to email list
+        if($travellerMail = $this->reservation->leadTraveller?->email){
+            Mail::to($travellerMail)->locale($this->reservation->confirmation_language)->send(new ReservationConfirmationMail($this->reservation->id,$this->reservation->confirmation_language??'en'));
+        }
+
+        $this->notification()->success('Sent!','Reservation confirmation sent');
+
+        $this->sentAgain = true;
     }
 
     public function render()
