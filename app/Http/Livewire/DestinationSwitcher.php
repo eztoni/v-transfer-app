@@ -36,7 +36,6 @@ use Actions;
         if(Auth::user()->hasAnyRole([User::ROLE_USER]))
             $destinations = Auth::user()->availableDestinations()->get();
 
-
         $userDestinationName = 'Destinations';
         if($destinations->isNotEmpty())
             $userDestinationName = $destinations->where('id','=',Auth::user()->destination_id)->first()->name;

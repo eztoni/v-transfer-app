@@ -17,14 +17,22 @@
     </x-slot>
 
     <x-mail.body>
-        <x-mail.logo></x-mail.logo>
+        <x-mail.logo>
+            <div class="" style="padding: 3px 25px 0 0; text-align: right ;width: 100%">
+                <p style="width: 100%">
+                    #{{$reservation->id}}
+                </p>
+
+            </div>
+
+        </x-mail.logo>
 
 
         <x-mail.row>
 
             <div class="" style="padding-top: 40px;"></div>
 
-            {{ __('mail.dear')}}, <strong> {{ucwords($reservation->leadTraveller?->full_name)}}</strong>
+            {{ __('mail.dear')}}, <strong> {{ucwords($reservation->leadTraveller?->full_name)}}</strong>,
         </x-mail.row>
         <x-mail.row>
 
@@ -189,11 +197,9 @@
 
     </x-mail.body>
     <x-mail.footer>
-        {{__('mail.valamar_transfer_service')}}
+
     </x-mail.footer>
 
-    <x-mail.footer-below>
-        {{__('mail.not_fiscalized')}}
-    </x-mail.footer-below>
+
 
 </x-mail.layouts.main>

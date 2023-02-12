@@ -343,7 +343,7 @@
     </div>
 
     @if($travellerModal)
-        <x-modal.card wire:model="travellerModal" title="Update other traveller data">
+        <x-modal.card wire:model="travellerModal" title="Update traveller data">
 
             <x-select
                 wire:model="traveller.title"

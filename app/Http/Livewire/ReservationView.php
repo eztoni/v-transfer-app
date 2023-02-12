@@ -34,11 +34,10 @@ use Actions;
             'traveller.reservation_opera_id'=>'string|max:200',
             'otherTravellerComment'=>'nullable|max:100',
         ];
-
         if ($this->leadTravellerEdit) {
             $rules['traveller.reservation_number'] = 'required';
             $rules['traveller.phone'] = 'required|numeric';
-            $rules['traveller.email'] = 'required|email';
+            $rules['traveller.email'] = 'required|email|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
         }
 
         return $rules;

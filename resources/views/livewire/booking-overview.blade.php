@@ -3,7 +3,16 @@
         <x-card title="Booking overview:">
                 <div class="flex md:flex-row flex-col gap-4">
                     <div class="flex md:flex-row flex-col flex-warp flex-grow gap-4">
-                        <x-input  label="Booking number"/>
+                        <div class="w-20">
+                        <x-input wire:model.defer="bookingId"
+                                 placeholder="554"
+
+                                 label="Booking ID" />
+                        </div>
+                        <x-input wire:model.defer="search"
+                                 placeholder="Search..."
+
+                                 label="Search"/>
                         <x-select
                             label="Destination"
                             option-key-value
@@ -17,20 +26,25 @@
                             wire:model.defer="partnerId"
                             :options="$partners->pluck('name','id')"
                         />
+                        <x-select
+                            label="Object"
+                            option-key-value
+                            wire:model.defer="pointId"
+                            :options="$points->pluck('name','id')"
+                        />
                         <x-datetime-picker
                             without-time
                             label="Date from"
-                            wire:model.defer="dateRange.0"
+                            wire:model.defer="from"
                         />
                         <x-datetime-picker
                             without-time
                             label="Date to"
-                            wire:model.defer="dateRange.1"
+                            wire:model.defer="to"
                         />
 
-
                     </div>
-                    <x-button primary >Search</x-button>
+                    <x-button primary wire:click="search" >Search</x-button>
 
                     <x-button success href="{{route('internal-reservation')}}">+ Add Booking </x-button>
                 </div>

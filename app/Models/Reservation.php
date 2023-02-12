@@ -121,6 +121,10 @@ class Reservation extends Model
     {
         return $this->belongsTo(Point::class, 'pickup_location','id');
     }
+    public function destination()
+    {
+        return $this->belongsTo(Destination::class);
+    }
 
     public function dropoffLocation()
     {

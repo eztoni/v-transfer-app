@@ -1,31 +1,8 @@
 <?php
 
-use App\Http\Controllers\SuperAdminDashboardController;
-use App\Http\Controllers\EditUserController;
-use App\Http\Controllers\UploadImageController;
-use App\Http\Livewire\ActivityLogDashboard;
-use App\Http\Livewire\AgeGroupCategories;
-use App\Http\Livewire\AgeGroupOverview;
-use App\Http\Livewire\BookingOverview;
-use App\Http\Livewire\CompanyDashboard;
-use App\Http\Livewire\CompanyOverview;
-use App\Http\Livewire\Dashboard;
-use App\Http\Livewire\Destinations;
-use App\Http\Livewire\ExtrasEdit;
-use App\Http\Livewire\ExtrasOverview;
-use App\Http\Livewire\InternalReservation;
-use App\Http\Livewire\PartnerEdit;
-use App\Http\Livewire\PartnersOverview;
-use App\Http\Livewire\PointsOverview;
-use App\Http\Livewire\ReservationView;
-use App\Http\Livewire\RoutesOverview;
-use App\Http\Livewire\TransferOverview;
-use App\Http\Livewire\UserOverview;
-use App\Http\Livewire\VehicleEdit;
-use App\Http\Livewire\VehicleOverview;
+
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Validation\ValidationException;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,7 +59,11 @@ if (!App::isProduction()) {
     Route::middleware(
         ['role:' . User::ROLE_SUPER_ADMIN]
     )->group(function () {
+        Route::get('preview_partner_mail_list',function (){
+            return  \App\Actions\Attachments\GenerateTransferOverviewPDF::generate(\Carbon\Carbon::make('2023-02-01'), now()->addDay(),\App\Models\Reservation::all())->download();
 
+
+        });
 
     });
 }
