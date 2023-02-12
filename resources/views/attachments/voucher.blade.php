@@ -194,11 +194,11 @@
 
         </x-mail.row>
 
+        <x-mail.footer>
 
+        </x-mail.footer>
     </x-mail.body>
-    <x-mail.footer>
 
-    </x-mail.footer>
 
 
 

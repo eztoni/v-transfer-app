@@ -139,4 +139,11 @@ boravite.',
     'included_in_accommodation_reservation'=>'Ovaj prijevoz je uključen u rezervaciju smještaja',
     'reservation_holder'=>'Vlasnik rezervacije',
     'created_at'=>'Kreirano u',
+
+    'without_vat'=>'Bez PDV-a',
+    'vat'=>'PDV',
+    'vat_amount'=>'Iznos PDV-a',
+    'tax_recapitulation'=>'Rekapitulacija poreza',
+    'mail.tax_group'=>'Porezna grupa',
+    'base'=>'Osnovica',
 ];

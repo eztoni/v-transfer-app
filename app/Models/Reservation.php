@@ -81,9 +81,17 @@ class Reservation extends Model
         return $this->leadTraveller()->first();
     }
 
-    public function getPrice()
+    public function getPrice(): Money
     {
         return Money::EUR($this->price);
+    }
+    public function getVatAmount()
+    {
+        return Money::EUR($this->price)->multiply($this->included_in_accommodation_reservation ?'0':'0.25');
+    }
+    public function getPriceWithoutVat()
+    {
+        return Money::EUR($this->price)->multiply($this->included_in_accommodation_reservation ?'1':'0.75');
     }
 
     public function leadTraveller()

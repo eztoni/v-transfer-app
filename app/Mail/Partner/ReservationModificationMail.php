@@ -18,7 +18,7 @@ class ReservationModificationMail extends Mailable
         $this->subject('Potvrda modifikacije transfera #'.$reservation_id);
 
         $pdf = PDF::loadView('attachments.voucher', ['reservation'=>$this->reservation]);
-        $this->attachData($pdf->output(),'Voucher.pdf');
+        $this->attachData($pdf->output(),"Voucher_{$reservation_id}.pdf");
 
     }
 
