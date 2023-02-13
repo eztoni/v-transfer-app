@@ -41,6 +41,8 @@ class ValamarClientApi{
 
         $this->getBearerToken();
 
+        $this->authHeaders['Authorization'] = 'Bearer '.$this->bearer_token;
+
         $this->propertiesList = array();
 
         $this->setCallURL('properties');
@@ -114,7 +116,7 @@ class ValamarClientApi{
 
         #Return Empty Result set in case no filters are set - optimize by avoiding the call
         $this->reservationsList = array();
-        
+
         $this->configureReservationListFilters();
 
         if($this->isReservationListFilterDefined()) {
