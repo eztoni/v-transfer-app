@@ -14,6 +14,7 @@ class ValamarClientApi{
     private int $reservationSearchTimeout = 20;
     private array $propertiesList;
     private array $reservationsList;
+    private string $bearer_token;
 
     private string $firstName;
     private string $lastName;
@@ -38,6 +39,8 @@ class ValamarClientApi{
     public function getPropertiesList() : array
     {
 
+        $this->getBearerToken();
+
         $this->propertiesList = array();
 
         $this->setCallURL('properties');
@@ -47,6 +50,29 @@ class ValamarClientApi{
             ->validatePropertyList();
 
         return $this->propertiesList;
+    }
+
+    private function getBearerToken(){
+
+        $this->setLoginCallURL('token');
+
+        $bearerLogin = array(
+            'clientId' => config('valamar.valamar_client_id'),
+            'clientSecret' => config('valamar.valamar_client_secret')
+        );
+
+
+        $this->validateResponse(
+            Http::withHeaders($this->authHeaders)->post($this->callURL,$bearerLogin))->validateBearerToken();
+    }
+
+    private function validateBearerToken() : void
+    {
+        if(!empty($this->responseBody)){
+            if(!empty($this->responseBody['token'])){
+                $this->bearer_token = $this->responseBody['token'];
+            }
+        }
     }
 
     /**
@@ -82,15 +108,19 @@ class ValamarClientApi{
      */
     public function getReservationList() : array
     {
+        $this->getBearerToken();
+
+        $this->authHeaders['Authorization'] = 'Bearer '.$this->bearer_token;
 
         #Return Empty Result set in case no filters are set - optimize by avoiding the call
         $this->reservationsList = array();
-
+        
         $this->configureReservationListFilters();
 
         if($this->isReservationListFilterDefined()) {
 
             $this->setCallURL('reservations');
+
 
             $this->validateResponse(
                 Http::withHeaders($this->authHeaders)
@@ -109,7 +139,6 @@ class ValamarClientApi{
      */
     private function validateReservationList() : void
     {
-
 
         if(!empty($this->responseBody)){
             foreach($this->responseBody as $reservation){
@@ -209,6 +238,15 @@ class ValamarClientApi{
     }
 
     /**
+     * @param $method String - allowed methods properties|reservations
+     * @return void
+     */
+    private function setLoginCallURL($method) : void
+    {
+       $this->callURL = config('valamar.valamar_api_login_url')."/".$method;
+    }
+
+    /**
      * @param \Illuminate\Http\Client\Response $response The Curl Response
      * @return ValamarClientApi
      * @throws \Illuminate\Http\Client\RequestException Throw Exception with the appropriate error
@@ -221,6 +259,7 @@ class ValamarClientApi{
             if($response->serverError()){
                 $response->throw($response->serverError());
             }else{
+
                 $response->throw($response->clientError());
             }
 

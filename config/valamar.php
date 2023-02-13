@@ -5,6 +5,9 @@ use Illuminate\Support\Str;
 return [
     'google_maps_api_key' => env('GOOGLE_MAPS_API_KEY', ''),
     'valamar_client_api_key' => env('VALAMAR_CLIENT_API_KEY',''),
+    'valamar_client_id' => env('VALAMAR_CLIENT_ID',''),
+    'valamar_client_secret' => env('VALAMAR_CLIENT_SECRET',''),
+    'valamar_api_login_url' => env('VALAMAR_CLIENT_API_LOGIN_URL',''),
     'valamar_client_api_url' => env('VALAMAR_CLIENT_API_URL',''),
     'valamar_opera_api_user' => env('VARLAMAR_OPERA_API_USER',''),
     'valamar_opera_api_pass' => env('VALAMAR_OPERA_API_PASS',''),
