@@ -206,7 +206,9 @@
 
                     </tbody>
                 </table>
-
+                @if($this->reservation->status === \App\Models\Reservation::STATUS_CONFIRMED && !$this->sentAgain && $this->reservation->is_main)
+                    <x-button xs wire:click="sendAgainConfirmationDialog" class="float-right">Send confirmation again</x-button>
+                @endif
 
             </x-card>
 
@@ -343,7 +345,7 @@
     </div>
 
     @if($travellerModal)
-        <x-modal.card wire:model="travellerModal" title="Update other traveller data">
+        <x-modal.card wire:model="travellerModal" title="Update traveller data">
 
             <x-select
                 wire:model="traveller.title"

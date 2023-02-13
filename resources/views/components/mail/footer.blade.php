@@ -1,5 +1,5 @@
 <!-- VALAMAR TRANSFER SERVICE FOOTER -->
-<div style="background:#d5dde4;background-color:#d5dde4;margin:0px auto;max-width:600px;">
+<div style="background:#d5dde4;background-color:#d5dde4;margin:0px auto;max-width:auto;">
     <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
            style="background:#d5dde4;background-color:#d5dde4;width:100%;">
         <tbody>

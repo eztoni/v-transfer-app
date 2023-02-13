@@ -142,5 +142,10 @@ werden, bezahlen Sie diese beim Check-in im Objekt Ihres Aufenthaltes.',
     'reservation_holder'=>'Reservierungsinhaber',
     'created_at'=>'Erstellt am',
 
-
+    'without_vat'=>'Ohne USt.',
+    'vat'=>'USt.',
+    'vat_amount'=>'USt.-Betrag',
+    'tax_recapitulation'=>'Steueraufstellung',
+    'mail.tax_group'=>'Steuergruppe',
+    'base'=>'Grundlage',
 ];

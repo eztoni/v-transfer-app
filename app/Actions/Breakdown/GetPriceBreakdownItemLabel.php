@@ -30,8 +30,6 @@ class GetPriceBreakdownItemLabel
                     $label = $route->name;
                 }
 
-
-
                 return $label;
                 break;
         }

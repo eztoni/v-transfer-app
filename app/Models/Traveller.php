@@ -8,7 +8,7 @@ class Traveller extends Model
 {
 
     public function getFullNameAttribute(){
-        return "{$this->title} {$this->first_name} {$this->last_name}";
+        return "{$this->first_name} {$this->last_name}";
     }
 
 

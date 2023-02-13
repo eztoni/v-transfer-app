@@ -487,12 +487,7 @@
                 <x-card title="Lead traveller details">
                     <div class="grid grid-cols-3 gap-4">
 
-                        <x-select
-                            wire:model="stepTwoFields.leadTraveller.title"
-                            label="Title"
-                            :options="\App\Models\Reservation::TRAVELLER_TITLES"
-                            option-key-value
-                        />
+
 
                         <x-input label="First name"
                                  wire:model="stepTwoFields.leadTraveller.firstName"
@@ -660,12 +655,7 @@
                                     <p class="font-bold">Traveller #{{$i}}:</p>
                                 </div>
 
-                                <x-select
-                                    wire:model="stepTwoFields.otherTravellers.{{$i}}.title"
-                                    label="Title"
-                                    option-key-value
-                                    :options="\App\Models\Reservation::TRAVELLER_TITLES"
-                                ></x-select>
+
                                 <x-input label="First name"
                                          wire:model="stepTwoFields.otherTravellers.{{$i}}.firstName"
                                 ></x-input>
@@ -748,16 +738,15 @@
                             @endif
                             @if(!empty($this->stepOneFields['dateTime']))
                                 <p>Date:
-                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['dateTime'])->format('d.m.Y H:i')}}</b>
+                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['dateTime'])->format('d.m.Y @ H:i')}}</b>
                                 </p>
 
                             @endif
 
-                            @if(!empty($this->stepOneFields['returnDateTime']))
-                                <p>Time from:
-                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['returnDateTime'])->format('d.m.Y H:i')}}</b>
+                            @if(!empty($this->stepOneFields['returnDateTime']) && $this->roundTrip)
+                                <p>Return date:
+                                    <b>{{\Carbon\Carbon::make($this->stepOneFields['returnDateTime'])->format('d.m.Y @ H:i')}}</b>
                                 </p>
-
                             @endif
 
                             <p>Passengers: <b>{{$this->totalPassengers}}</b></p>

@@ -16,6 +16,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    @vite('resources/css/app.css')
+    @vite('resources/css/styles.scss')
+
     <style type="text/css">
         .page-break {
             page-break-after: always;
@@ -104,7 +108,7 @@
     </style>
 </head>
 
-<body style="word-spacing:normal;background-color:#F4F4F4;padding-top: 40px;">
+<body style="word-spacing:normal;background-color:#F4F4F4;padding-top: 40px;padding-bottom: 40px">
 {{$slot}}
 </body>
 

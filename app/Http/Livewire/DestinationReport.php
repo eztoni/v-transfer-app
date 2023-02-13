@@ -122,8 +122,15 @@ class DestinationReport extends Component
                 ->when($this->destination != 'All', function ($q) {
                     $q->where('destination_id', $this->destination);
                 })
-                ->whereDate('created_at', '>=', Carbon::createFromFormat('d.m.Y', $this->dateFrom))
-                ->whereDate('created_at', '<=', Carbon::createFromFormat('d.m.Y', $this->dateTo))
+                ->where(function ($q)  {
+                    $q->where(function ($q) {
+                        $q->whereDate('date_time', '>=', Carbon::createFromFormat('d.m.Y', $this->dateFrom))
+                            ->whereDate('date_time', '<=', Carbon::createFromFormat('d.m.Y', $this->dateTo));
+                    })->orWHereHas('returnReservation',function ($q){
+                        $q->whereDate('date_time', '>=', Carbon::createFromFormat('d.m.Y', $this->dateFrom))
+                            ->whereDate('date_time', '<=', Carbon::createFromFormat('d.m.Y', $this->dateTo));
+                    });
+                })
                 ->when($this->partner != 0, function ($q) {
                     $q->where('partner_id', $this->partner);
                 })

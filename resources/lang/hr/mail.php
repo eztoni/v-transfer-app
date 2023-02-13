@@ -1,6 +1,6 @@
 <?php
 return [
-    'dear' => 'Poštovani/na ',
+    'dear' => 'Poštovani/na',
     'thank_you_message'=>'Zahvaljujemo na rezervaciji transfera. Sačuvajte ovu rezervaciju za svoje putovanje.',
     'transfer_reservation'=>'Zahvaljujemo na rezervaciji transfera. Sačuvajte ovu rezervaciju za svoje putovanje.',
     'reservation_number'=>'Broj vaše rezervacije transfera',
@@ -41,7 +41,7 @@ return [
     'li_1_2'=>'Vrijeme preuzimanja u hotelu i mjesto okupljanja pri polasku: vrijeme povratnog transfera može se prilagoditi uvjetima na cesti. Potvrdite vrijeme preuzimanja i mjesto okupljanja na recepciji dan prije polaska.',
     'li_1_3'=>'Molimo, dođite na mjesto okupljanja najmanje 10 minuta prije vremena polaska određenog za povratni transfer. ',
     'li_2'=>'•	U slučaju da trebate izmijeniti ili otkazati svoju rezervaciju prije putovanja, kontaktirajte ',
-    'li_3'=>'Poštujte sljedeća pravila u vozilu: ',
+    'li_3'=>'Poštujte sljedeća pravila u vozilu',
     'li_3_1'=>'Pušenje nije dopušteno.',
     'li_3_2'=>'Sigurnosni pojasevi moraju biti vezani cijelo vrijeme.',
 
@@ -139,4 +139,11 @@ boravite.',
     'included_in_accommodation_reservation'=>'Ovaj prijevoz je uključen u rezervaciju smještaja',
     'reservation_holder'=>'Vlasnik rezervacije',
     'created_at'=>'Kreirano u',
+
+    'without_vat'=>'Bez PDV-a',
+    'vat'=>'PDV',
+    'vat_amount'=>'Iznos PDV-a',
+    'tax_recapitulation'=>'Rekapitulacija poreza',
+    'mail.tax_group'=>'Porezna grupa',
+    'base'=>'Osnovica',
 ];

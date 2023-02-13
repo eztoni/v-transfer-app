@@ -1,7 +1,6 @@
 <div>
 
 
-    <x-dialog z-index="z-50" blur="md" align="end" />
 
     <div class="divider"></div>
     <x-flatpickr

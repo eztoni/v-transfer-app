@@ -146,4 +146,12 @@ momento del check-in presso la struttura in cui soggiornate.',
     'included_in_accommodation_reservation'=>"Questo trasferimento è incluso nella prenotazione dell'alloggio",
     'reservation_holder'=>'Titolare della prenotazione',
     'created_at'=>'Creato il',
+
+
+    'without_vat'=>'Senza IVA',
+    'vat'=>'IVA',
+    'vat_amount'=>'Importo IVA',
+    'tax_recapitulation'=>'Riepilogo fiscale',
+    'mail.tax_group'=>'Gruppo fiscale',
+    'base'=>'Base',
 ];

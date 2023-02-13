@@ -41,9 +41,11 @@
         @include('components.navbar')
         <div class="container" >
             {{ $slot }}
+
         </div>
     </main>
 
+    <x-dialog z-index="z-50" blur="md" align="center" />
 
 </div>
 <div class="notif-wrapper">

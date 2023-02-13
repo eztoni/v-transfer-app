@@ -19,7 +19,9 @@ trait ReservationDevTools
         $this->stepOneFields['endingPointId']= $this->endingPoints->first()?->id;
 
         $this->stepOneFields['pickupAddress'] = $this->pickupAddressPoints->first()?->name;
+        $this->stepOneFields['pickupAddressId'] = $this->pickupAddressPoints->first()?->id;
         $this->stepOneFields['dropoffAddress'] = $this->dropoffAddressPoints->first()?->name;
+        $this->stepOneFields['dropoffAddressId'] = $this->dropoffAddressPoints->first()?->id;
     }
 
     private function populateDates()
@@ -50,7 +52,6 @@ trait ReservationDevTools
     private function populatePasseneger()
     {
         $this->stepTwoFields['leadTraveller']=[
-            'title' => 'Mr.',
             'firstName' => 'John',
             'lastName' => 'Doe',
             'reservationNumber' => '21673',
