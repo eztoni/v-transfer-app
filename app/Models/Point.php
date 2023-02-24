@@ -11,11 +11,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Translatable\HasTranslations;
 
 class Point extends Model
 {
     use HasFactory;
     use LogsActivity;
+    use HasTranslations;
+
+    public array $translatable = ['name'];
 
     const TYPE_AIRPORT = 'airport';
     const TYPE_ACCOMMODATION = 'accommodation';

@@ -1,3 +1,4 @@
+<div x-data="{selectedLanguage:'en'}">
 <x-card title="{{$destination->name}} - Pickup & Dropoff Points">
     <x-slot name="action" >
         <x-button wire:click="addPoint" positive>Add Point</x-button>
@@ -48,9 +49,26 @@
     <x-modal.card wire:model="pointModal" title="{{  !empty($this->point->exists) ? 'Updating':'Adding' }} point">
         <div class="">
 
-            <x-input label="Name:" wire:model="point.name"
-            hint="Official name/address. This name will be showed to guests and drivers."
-            />
+
+            <div class="ds-tabs">
+                @foreach($this->companyLanguages as $languageIso)
+                    <a @click="selectedLanguage='{{$languageIso}}'" class="ds-tab ds-tab-bordered "
+                       x-bind:class="selectedLanguage ==='{{$languageIso}}'?'ds-tab-active':''">
+                        {{Str::upper($languageIso)}}
+                    </a>
+                @endforeach
+            </div>
+            @foreach($this->companyLanguages as $languageIso)
+                <div :key="{{$languageIso}}" class="mb-4" x-show="selectedLanguage ==='{{$languageIso}}'" x-transition:enter>
+                    <div class="form-control">
+                        <x-input label="Name ({{Str::upper($languageIso)}}):" wire:model="pointName.{{$languageIso}}"
+                        />
+                    </div>
+                </div>
+            @endforeach
+
+
+
             <x-input label="Internal Name:" wire:model="point.internal_name"
             hint="This name will be shown in the system to the users."
             />
@@ -166,3 +184,4 @@
 
 </x-card>
 
+</div>

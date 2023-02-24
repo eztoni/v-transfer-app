@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Company;
 use App\Models\Destination;
+use App\Models\Language;
 use App\Models\Point;
 use App\Models\Transfer;
 use App\Models\User;
@@ -32,17 +33,26 @@ use Actions;
     public bool $importPoint = false;
     public $valamarPropertiesFromApi;
 
+    public $companyLanguages = ['en'];
+    public $pointName = [
+        'en' => null
+    ];
+
     public function mount()
     {
         $this->point = new Point();
         $this->destinationId = Auth::user()->destination_id;
         $this->destination = Auth::user()->destination;
+        $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
+        $this->setPointInitialTranslations();
+
     }
 
     protected function rules()
     {
 
         $ruleArray = [
+            'pointName.en' => 'required|min:3',
             'point.name'=>'required|max:255|min:2',
             'point.internal_name'=>'max:255|min:2',
             'point.description'=>'nullable|min:3',
@@ -56,11 +66,19 @@ use Actions;
             'point.pms_code' => 'nullable|required_if:point.type,'.\App\Models\Point::TYPE_ACCOMMODATION,
 
         ];
+        foreach ($this->companyLanguages as $lang) {
+            if ($lang !== 'en') {
+                $ruleArray['pointName.' . $lang] = 'nullable|min:3';
+            }
+        }
 
         return $ruleArray;
     }
 
-
+    public function updatedPointName()
+    {
+        $this->point->setTranslations('name', $this->pointName);
+    }
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
@@ -76,13 +94,25 @@ use Actions;
     }
 
     public function updatePoint($pointId){
+
         $this->openPointModal();
         $this->point = Point::find($pointId);
+       $this->setPointInitialTranslations();
+    }
+
+    private function setPointInitialTranslations()
+    {
+        foreach ($this->companyLanguages as $lang) {
+            $this->pointName[$lang] = $this->point->getTranslation('name', $lang, false);
+        }
     }
 
     public function addPoint(){
+
         $this->openPointModal();
         $this->point = new Point();
+        $this->setPointInitialTranslations();
+
     }
 
     public function savePointData(){
@@ -92,6 +122,7 @@ use Actions;
 
         $this->validate();
 
+        $this->point->setTranslations('name', $this->pointName);
 
         if($this->point->type == Point::TYPE_ACCOMMODATION){
             if (Point::wherePmsClass($this->point->pms_class)->wherePmsCode($this->point->pms_code)->where('id', '!=', $this->point->id)->exists()){
