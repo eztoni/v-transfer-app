@@ -163,6 +163,10 @@ use Actions;
 
         if ($dataFromApi = Arr::get($this->valamarPropertiesFromApi,$key)){
 
+            foreach($this->companyLanguages as $lang){
+                $this->pointName[$lang] = Arr::get($dataFromApi,'name')?:'';
+            }
+
             $this->point->type = Point::TYPE_ACCOMMODATION;
             $this->point->pms_code = Arr::get($dataFromApi,'propertyOperaCode')?:'';
             $this->point->name = Arr::get($dataFromApi,'name')?:'';
