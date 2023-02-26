@@ -20,6 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 });
 
+Route::post('/reservation-notify',[\App\Http\Controllers\NotifyController::class,'update']);
+
 // LOG CONTROLLER
 Route::get('/logs', [\App\Http\Controllers\LogController::class, 'show'])->name('logs');
 
