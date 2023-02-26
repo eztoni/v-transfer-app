@@ -101,8 +101,6 @@ class InternalReservation extends Component
     private function stepTwoRules()
     {
         $rules = [
-            'stepTwoFields.arrivalFlightNumber' => 'nullable|string',
-            'stepTwoFields.departureFlightNumber' => 'nullable|string',
             'stepTwoFields.remark' => 'nullable|string',
             'stepTwoFields.leadTraveller.firstName' => 'required|string',
             'stepTwoFields.leadTraveller.lastName' => 'required|string',
@@ -114,6 +112,24 @@ class InternalReservation extends Component
             'stepTwoFields.includedInAccommodationReservation' => 'boolean',
             'stepTwoFields.confirmationLanguage' => 'required',
         ];
+
+        if($this->roundTrip){
+            if(is_numeric($this->stepOneFields['pickupAddressId']) && Point::find($this->stepOneFields['pickupAddressId'])->type == Point::TYPE_AIRPORT ||
+                is_numeric($this->stepOneFields['dropoffAddressId']) && POINT::find($this->stepOneFields['dropoffAddressId'])->type == Point::TYPE_AIRPORT){
+                $rules['stepTwoFields.arrivalFlightNumber'] = 'required|string';
+                $rules['stepTwoFields.departureFlightNumber'] = 'required|string';
+            }else{
+                $rules['stepTwoFields.arrivalFlightNumber'] = 'nullable|string';
+                $rules['stepTwoFields.departureFlightNumber'] = 'nullable|string';
+            }
+        }else{
+            if(is_numeric($this->stepOneFields['pickupAddressId']) && Point::find($this->stepOneFields['pickupAddressId'])->type == Point::TYPE_AIRPORT ||
+                is_numeric($this->stepOneFields['dropoffAddressId']) && POINT::find($this->stepOneFields['dropoffAddressId'])->type == Point::TYPE_AIRPORT){
+                $rules['stepTwoFields.arrivalFlightNumber'] = 'required|string';
+            }else{
+                $rules['stepTwoFields.arrivalFlightNumber'] = 'nullable|string';
+            }
+        }
 
         if ($this->activateOtherTravellersInput) {
             $rules['stepTwoFields.otherTravellers'] = 'array';
@@ -235,8 +251,7 @@ class InternalReservation extends Component
     {
 
         $this->validate($this->stepTwoRules(), [], $this->fieldNames);
-
-
+        
         $traveller = new Traveller();
 
         $traveller->first_name = $this->stepTwoFields['leadTraveller']['firstName'];
