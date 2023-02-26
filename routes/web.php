@@ -15,6 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('test',function(){
+    $api = new \App\Services\Api\ValamarClientApi();
+    $api->setReservationCodeFilter('ph14903279');
+
+    dd($api->getReservationList());
+});
+
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 

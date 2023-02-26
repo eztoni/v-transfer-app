@@ -89,6 +89,7 @@ use Actions;
         $this->validate($this->rules(),[],$this->fieldNames);
 
         $this->reservation->date_time = $this->date;
+
         $updater = new UpdateReservation($this->reservation);
         $updater->setSendMailBool($this->sendModifyMail);
 

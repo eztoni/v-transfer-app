@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\BusinessModels\Reservation\Actions\UpdateReservation;
 use App\Services\Api\ValamarClientApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -126,14 +127,23 @@ class NotifyController extends Controller
                         if($current_accommodation_checkout != $reservation_date){
 
                             $reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$reservation_time)->toDateTimeString();
-                            $reservation->save();
+
+                            $updater = new UpdateReservation($reservation);
+                            $updater->setSendMailBool(true);
+
+                            $updater->updateReservation();
                             $change = true;
                         }
                     }elseif($res_type == 'incoming'){
 
                         if($current_accommodation_checkin != $reservation_date){
                             $reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$reservation_time)->toDateTimeString();
-                            $reservation->save();
+
+                            $updater = new UpdateReservation($reservation);
+                            $updater->setSendMailBool(true);
+
+                            $updater->updateReservation();
+
                             $change = true;
                         }
                     }
@@ -154,14 +164,21 @@ class NotifyController extends Controller
 
                         if($res_type == 'outgoing'){
                             if($current_accommodation_checkout != $return_reservation_date){
-                                $reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$return_reservation_time)->toDateTimeString();
-                                $return_reservation->save();
+                                $return_reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$return_reservation_time)->toDateTimeString();
+                                $updater = new UpdateReservation($return_reservation);
+                                $updater->setSendMailBool(true);
+
+                                $updater->updateReservation();
                                 $change = true;
                             }
                         }elseif($res_type == 'incoming'){
                             if($current_accommodation_checkin != $return_reservation_date){
                                 $return_reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$return_reservation_time)->toDateTimeString();
-                                $return_reservation->save();
+
+                                $updater = new UpdateReservation($return_reservation);
+                                $updater->setSendMailBool(true);
+
+                                $updater->updateReservation();
                                 $change = true;
                             }
                         }
