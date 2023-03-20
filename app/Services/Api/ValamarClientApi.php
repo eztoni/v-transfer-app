@@ -123,6 +123,8 @@ class ValamarClientApi{
 
             $this->setCallURL('reservations');
 
+            echo $this->callURL;die();
+            
             $this->validateResponse(
                 Http::withHeaders($this->authHeaders)
                         ->timeout($this->reservationSearchTimeout)
