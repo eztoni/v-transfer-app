@@ -46,7 +46,7 @@ class ValamarClientApi{
         $this->propertiesList = array();
 
         $this->setCallURL('properties');
-
+        echo $this->callURL;die();
         $this->validateResponse(
             Http::withHeaders($this->authHeaders)->get($this->callURL))
             ->validatePropertyList();
@@ -123,8 +123,8 @@ class ValamarClientApi{
 
             $this->setCallURL('reservations');
 
-            echo $this->callURL;die();
-            
+
+
             $this->validateResponse(
                 Http::withHeaders($this->authHeaders)
                         ->timeout($this->reservationSearchTimeout)
