@@ -208,7 +208,7 @@ class ValamarOperaApi{
                 $this->request['Packages'][] = $this->buildReservationPackage($returnReservation);
             }
         }
-        
+
         return true;
     }
 
@@ -416,12 +416,21 @@ class ValamarOperaApi{
             ->limit(1)
             ->get();
 
-        if(!empty($log)){
+        if(!empty($log) && isset($log[0])){
+
 
             $log = $log[0];
 
             $log->opera_request = json_decode($log->opera_request,true);
             $log->opera_response = json_decode($log->opera_response,true);
+        }else{
+            $log = array(
+                'id' => '0',
+                'updated_at' => 'test',
+                'log_message' => 'No Log',
+                'opera_request' => 'No Request Body',
+                'opera_response' => 'No Response Body',
+            );
         }
 
         return json_decode(json_encode($log),true);

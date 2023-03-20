@@ -123,7 +123,6 @@ class ValamarClientApi{
 
             $this->setCallURL('reservations');
 
-
             $this->validateResponse(
                 Http::withHeaders($this->authHeaders)
                         ->timeout($this->reservationSearchTimeout)
@@ -236,7 +235,7 @@ class ValamarClientApi{
      */
     private function setCallURL($method) : void
     {
-       $this->callURL = config('valamar.valamar_client_api_url')."/".$method;
+       $this->callURL = config('valamar.valamar_client_api_url').$method;
     }
 
     /**
@@ -255,6 +254,8 @@ class ValamarClientApi{
      */
     private function validateResponse(\Illuminate\Http\Client\Response $response) : ValamarClientApi
     {
+
+
 
         if(!$response->successful()){
 

@@ -20,6 +20,15 @@ return [
     'valamar_fiskalizacija_demo_cert_pw' => env('VALAMAR_FISKALIZACIJA_DEMO_CERT_PW',''),
     'valamar_opera_fiskalizacija_active' => env('VALAMAR_FISKALIZACIJA_OPERA_ACTIVE',''),
 
+    #Fiskalizacija Valamar
+    'valamar_fiskalizacija_valamar_oib' => env('VALAMAR_FISKALIZACIJA_VALAMAR_OIB',''),
+    'valamar_fiskalizacija_valamar_cert' => env('VALAMAR_FISKALIZACIJA_VALAMAR_CERT',''),
+    'valamar_fiskalizacija_valamar_pw' => env('VALAMAR_FISKALIZACIJA_VALAMAR_PW',''),
+
+    #Fiskalizacija Imperial Rab
+    'valamar_fiskalizacija_imperial_oib' => env('VALAMAR_FISKALIZACIJA_IMPERIAL_OIB',''),
+    'valamar_fiskalizacija_imperial_cert' => env('VALAMAR_FISKALIZACIJA_IMPERIAL_CERT',''),
+    'valamar_fiskalizacija_imperial_pw' => env('VALAMAR_FISKALIZACIJA_IMPERIAL_PW',''),
 
     'ez_dev_tools' => env('EZ_DEV_TOOLS_ENABLED',false)
 ];

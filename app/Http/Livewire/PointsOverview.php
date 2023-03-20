@@ -64,6 +64,7 @@ use Actions;
             ],
             'point.pms_class' => 'nullable|required_if:point.type,'.\App\Models\Point::TYPE_ACCOMMODATION,
             'point.pms_code' => 'nullable|required_if:point.type,'.\App\Models\Point::TYPE_ACCOMMODATION,
+            'point.fiskal_id' => 'required|integer'
 
         ];
         foreach ($this->companyLanguages as $lang) {
@@ -94,10 +95,9 @@ use Actions;
     }
 
     public function updatePoint($pointId){
-
         $this->openPointModal();
         $this->point = Point::find($pointId);
-       $this->setPointInitialTranslations();
+        $this->setPointInitialTranslations();
     }
 
     private function setPointInitialTranslations()
@@ -120,7 +120,7 @@ use Actions;
         if(!Auth::user()->hasRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN]))
             return;
 
-        $this->validate();
+        //$this->validate();
 
         $this->point->setTranslations('name', $this->pointName);
 
@@ -131,9 +131,9 @@ use Actions;
             }
         }
 
-
         $this->point->destination_id = $this->destinationId;
         $this->point->owner_id = Auth::user()->owner_id;
+
         $this->point->save();
         $this->notification()->success('Saved','Point Saved');
         $this->closePointModal();

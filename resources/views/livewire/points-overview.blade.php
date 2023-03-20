@@ -88,20 +88,22 @@
                 <x-input label="Reception Email:" wire:model="point.reception_email"/>
 
                 <x-input label="PMS Class:" wire:model="point.pms_class"/>
-
+                <x-input label="PMS code:" wire:model="point.pms_code"/>
                 <x-native-select
                     wire:model="point.fiskal_id"
                     label="Invoice Certificate ( Fiskalizacija )"
                     :options="[
                                 ['name' => 'Demo Certificate',  'id' => 0],
+                                ['name' => 'Valamar Certifikat',  'id' => 1],
+                                ['name' => 'Imperial Certifikat',  'id' => 2],
                             ]"
                     option-label="name"
                     option-value="id"
                 />
-
+            @else
+                <x-input label="PMS code:" wire:model="point.pms_code"/>
             @endif
 
-            <x-input label="PMS code:" wire:model="point.pms_code"/>
             <br>
             <x-errors only="not_unique" />
             <x-slot name="footer">

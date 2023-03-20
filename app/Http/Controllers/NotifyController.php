@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\BusinessModels\Reservation\Actions\CancelReservation;
 use App\BusinessModels\Reservation\Actions\UpdateReservation;
 use App\Services\Api\ValamarClientApi;
 use Illuminate\Http\Request;
@@ -13,7 +14,22 @@ use DB;
 
 class NotifyController extends Controller
 {
+
+    const RESERVATION_STATUS_ARRAY = array(
+        'NEW',
+        'RESERVED',
+        'CANCEL',
+        'CHECKED OUT',
+        'CHECKED IN',
+        'NO SHOW'
+    );
+
     private $api_handler;
+
+    function __construct()
+    {
+        $this->api_handler = new ValamarClientApi();
+    }
 
     public function update(Request $request){
 
@@ -33,8 +49,6 @@ class NotifyController extends Controller
 
         #If there are bookings to be changed
         if(!empty($reservation_change)){
-
-            $this->api_handler = new ValamarClientApi();
 
             foreach($reservation_change as $reservation_data){
 
@@ -66,7 +80,7 @@ class NotifyController extends Controller
         return Response::json($response, 200);
     }
 
-    private function update_reservation($opera_id,$opera_confirmation){
+    public function update_reservation($opera_id,$opera_confirmation){
 
         $return = true;
 
@@ -104,6 +118,28 @@ class NotifyController extends Controller
 
                 if(!empty($valamar_res_data[$result->reservation_number])){
 
+                    #Check Reservation Status Change
+                    if($reservation->status == Reservation::STATUS_CONFIRMED){
+
+                        $opera_res_status = 'CANCEL';
+
+                        switch ($opera_res_status){
+
+                            case 'CANCEL':
+                            case 'NO SHOW':
+
+                                $reservation->status = Reservation::STATUS_CANCELLED;
+
+                                $cancel = new CancelReservation($reservation);
+                                $cancel->cancelReservation();
+
+                                $change = true;
+
+                                return true;
+                                break;
+                        }
+                    }
+
                     $change = false;
 
                     #Compare Data with the existing booking
@@ -138,7 +174,6 @@ class NotifyController extends Controller
 
                         if($current_accommodation_checkin != $reservation_date){
                             $reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$reservation_time)->toDateTimeString();
-
                             $updater = new UpdateReservation($reservation);
                             $updater->setSendMailBool(true);
 

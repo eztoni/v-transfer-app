@@ -41,6 +41,7 @@ class Point extends Model
         'reception_email',
         'longitude',
         'type',
+        'fiskal_id',
         'pms_code',
         'pms_class',
         'active',

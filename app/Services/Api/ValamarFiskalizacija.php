@@ -41,7 +41,9 @@ class ValamarFiskalizacija{
 
     public function __construct($reservation_id)
     {
+
         $this->reservation_id = $reservation_id;
+
         $this->reservation = Reservation::findOrFail($this->reservation_id);
 
     }
@@ -49,10 +51,20 @@ class ValamarFiskalizacija{
     public function fiskalReservation(){
 
         #Get End Location
-        $end_location = Point::findOrFail($this->reservation->dropoff_location);
+        $owner_location = false;
+
+        if($this->reservation->pickup_address_id > 0){
+            $owner_location = Point::findOrFail($this->reservation->pickup_address_id);
+
+            if($owner_location->type != 'accommodation'){
+                $owner_location = Point::findOrFail($this->reservation->dropoff_address_id);
+            }
+        }else{
+            $owner_location = Point::findOrFail($this->reservation->dropoff_address_id);
+        }
 
         #Get Owner - Fetch OIB
-        $owner = Owner::findOrFail($end_location->owner_id);
+        $owner = Owner::findOrFail($owner_location->owner_id);
 
         if($owner->oib){
 
@@ -62,7 +74,7 @@ class ValamarFiskalizacija{
                 1,
                 01,
                 02,
-                number_format($this->reservation->price/100,2));
+                number_format($this->reservation->price/100,2),$owner_location);
 
             $response = Fiskal::Fiskal(
                 $this->reservation_id,
@@ -72,15 +84,17 @@ class ValamarFiskalizacija{
                 01,
                 01,
                 number_format($this->reservation->price/100,2),
-                $zki
+                $zki,
+                false,
+                $owner_location
             );
 
             if(!empty($response)){
+
                 if($response['success'] == true && !empty($response['jir'])){
 
                     $this->zki = $zki;
                     $this->jir = $response['jir'];
-
 
                     $lead_traveller = $this->reservation->getLeadTravellerAttribute('id');
                     $lead_traveller->jir = $this->jir;

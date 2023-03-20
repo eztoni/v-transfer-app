@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Point;
 use App\Services\Api\ValamarFiskalizacija;
 use DateTime;
 use DOMDocument;
@@ -13,13 +14,15 @@ use XMLWriter;
 
 class Fiskal
 {
-    public static function Fiskal(int $reservation_id, DateTime $time, string $oib, int $sequence, string $location, string $device, string $amount, string $zki, bool $late_delivery = false): array
+    public static function Fiskal(int $reservation_id, DateTime $time, string $oib, int $sequence, string $location, string $device, string $amount, string $zki, bool $late_delivery = false,Point $point): array
     {
         if (config('valamar.valamar_fiskalizacija_demo_mode')) {
             $oib = config('valamar.valamar_fiskalizacija_demo_oib');
+        }else{
+
         }
 
-        $certificate_data = Fiskal::GetCertificate();
+        $certificate_data = Fiskal::GetCertificate($point->fiskal_id);
 
         if ($certificate_data === false) {
 
@@ -306,9 +309,8 @@ class Fiskal
         return $dec;
     }
 
-    public static function GenerateZKI(DateTime $time, string $oib, int $sequence, string $location, string $device, float $amount): string|null
+    public static function GenerateZKI(DateTime $time, string $oib, int $sequence, string $location, string $device, float $amount,Point $point): string|null
     {
-
 
         $zki_unsigned = $oib
             . $time->format('d.m.Y H:i:s')
@@ -318,7 +320,7 @@ class Fiskal
             . $amount;
 
         $zki_signature = null;
-        $certificate_data = Fiskal::GetCertificate();
+        $certificate_data = Fiskal::GetCertificate($point->fiskal_id);
 
         if ($certificate_data === false) {
             return null;
@@ -329,7 +331,7 @@ class Fiskal
         return md5($zki_signature);
     }
 
-    private static function GetCertificate(): array|bool
+    private static function GetCertificate($fiskal_id): array|bool
     {
         $certificate_password = '';
         $certificate_file = '';
@@ -339,10 +341,18 @@ class Fiskal
             $certificate_file = storage_path().'/certificates/'. config('valamar.valamar_fiskalizacija_demo_cert');
 
         } else {
-            $client = Client::Find(1);
-            $certificate_password = $client->fiskal_password;
-            $upload = Upload::Find($client->fiskal_certificate['id']);
-            $certificate_file = storage_path().'/certificates/' . $upload->real_name;
+
+            switch ($fiskal_id){
+                #Valamar
+                case 1:
+                    $certificate_password = config('valamar.valamar_fiskalizacija_valamar_pw');
+                    $certificate_file = storage_path().'/certificates/'. config('valamar.valamar_fiskalizacija_valamar_cert');
+                    break;
+                #Imperial Rab
+                case 2:
+                    $certificate_password = config('valamar.valamar_fiskalizacija_imperial_pw');
+                    $certificate_file = storage_path().'/certificates/'. config('valamar.valamar_fiskalizacija_imperial_cert');
+            }
         }
 
         if ($certificate_file != '') {
