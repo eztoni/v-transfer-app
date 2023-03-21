@@ -92,10 +92,15 @@ class NotifyController extends Controller
 
             if(!empty($res_traveller_data)){
 
-                $reservation = Reservation::find($res_traveller_data->reservation_id);
+                $reservation = Reservation::findOrFail($res_traveller_data->reservation_id);
+
                 $return_reservation = false;
 
                 $is_round_trip = false;
+
+                if(!$reservation){
+                    return "No reservation with OperaID: ".$opera_id.' \ Opera Confirmation: '.$opera_confirmation;
+                }
 
                 if(is_numeric($reservation->round_trip_id)){
                     $is_round_trip = true;
@@ -114,6 +119,7 @@ class NotifyController extends Controller
 
                 $valamar_res_data = $this->api_handler->getReservationList();
 
+
                 $is_round_trip = false;
 
                 if(!empty($valamar_res_data[$result->reservation_number])){
@@ -121,7 +127,7 @@ class NotifyController extends Controller
                     #Check Reservation Status Change
                     if($reservation->status == Reservation::STATUS_CONFIRMED){
 
-                        $opera_res_status = 'CANCEL';
+                        $opera_res_status = $valamar_res_data[$result->reservation_number]['status'];
 
                         switch ($opera_res_status){
 

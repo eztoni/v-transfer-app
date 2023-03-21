@@ -45,8 +45,8 @@ class ValamarClientApi{
 
         $this->propertiesList = array();
 
-        $this->setCallURL('properties');
-        echo $this->callURL;die();
+        $this->setCallURL('Property');
+    
         $this->validateResponse(
             Http::withHeaders($this->authHeaders)->get($this->callURL))
             ->validatePropertyList();
@@ -62,7 +62,6 @@ class ValamarClientApi{
             'clientId' => config('valamar.valamar_client_id'),
             'clientSecret' => config('valamar.valamar_client_secret')
         );
-
 
         $this->validateResponse(
             Http::withHeaders($this->authHeaders)->post($this->callURL,$bearerLogin))->validateBearerToken();
@@ -121,9 +120,7 @@ class ValamarClientApi{
 
         if($this->isReservationListFilterDefined()) {
 
-            $this->setCallURL('reservations');
-
-
+            $this->setCallURL('Reservation');
 
             $this->validateResponse(
                 Http::withHeaders($this->authHeaders)
