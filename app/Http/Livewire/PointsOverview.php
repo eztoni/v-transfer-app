@@ -58,13 +58,15 @@ use Actions;
             'point.description'=>'nullable|min:3',
             'point.reception_email' => 'exclude_unless:point.type,'.\App\Models\Point::TYPE_ACCOMMODATION.'|required|email',
             'point.address'=>'nullable|min:3',
+            'point.fiskal_invoice_no' => 'integer|min:1',
+            'point.fiskal_establishment' => 'integer|min:1',
+            'point.fiskal_device' => 'integer|min:1',
             'point.type'=>[
                 'required',
                 Rule::in(Point::TYPE_ARRAY),
             ],
             'point.pms_class' => 'nullable|required_if:point.type,'.\App\Models\Point::TYPE_ACCOMMODATION,
             'point.pms_code' => 'nullable|required_if:point.type,'.\App\Models\Point::TYPE_ACCOMMODATION,
-            'point.fiskal_id' => 'required|integer'
 
         ];
         foreach ($this->companyLanguages as $lang) {

@@ -42,6 +42,8 @@ class Point extends Model
         'longitude',
         'type',
         'fiskal_id',
+        'fiskal_invoice_no',
+        'fiskal_estalishment',
         'pms_code',
         'pms_class',
         'active',

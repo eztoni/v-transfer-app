@@ -16,11 +16,11 @@
                     <x-button primary wire:click="openOperaSyncModal({{$reservation->id}})">{{$reservation->isSyncedWithOpera()?'Re-Sync':'Sync'}}</x-button>
                     <x-button sm icon="external-link" wire:click="openOperaSyncLogModal({{$reservation->id}})">View Sync Log</x-button>
                     <br/>
-                    <span class="font-extrabold text-info">&nbsp;ZKI: <span class="text-info font-normal">{{$reservation->lead_traveller?->zki ? $reservation->lead_traveller?->zki:'-'}}</span></span>
+                    <span class="font-extrabold text-info">&nbsp;Invoice: <span class="text-info font-normal">{{$reservation->invoices[0]?->zki ? $reservation->invoices[0]->invoice_id.'-'.$reservation->invoices[0]->invoice_establishment.'-'.$reservation->invoices[0]->invoice_device : '-'}}</span></span>
                     <br/>
-                    <span class="font-extrabold text-info">&nbsp;JIR: <span class="text-info font-normal">{{$reservation->lead_traveller?->jir ? $reservation->lead_traveller?->jir:'-'}}</span></span>
-
-
+                    <span class="font-extrabold text-info">&nbsp;ZKI: <span class="text-info font-normal">{{$reservation->invoices[0]?->zki ? $reservation->invoices[0]?->zki:'-'}}</span></span>
+                    <br/>
+                    <span class="font-extrabold text-info">&nbsp;JIR: <span class="text-info font-normal">{{$reservation->invoices[0]?->jir ? $reservation->invoices[0]?->jir:'-'}}</span></span>
             </div>
 
             <x-button href="{{route('bookings')}}"><i class="fas fa-angle-left mr-2"></i> Back</x-button>

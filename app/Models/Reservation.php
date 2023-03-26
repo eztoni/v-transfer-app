@@ -99,6 +99,10 @@ class Reservation extends Model
         return $this->belongsToMany(Traveller::class, 'reservation_traveller')->withPivot(['lead', 'comment'])->where('lead', '=', true);
     }
 
+    public function invoices(){
+        return $this->hasMany(Invoice::class);
+    }
+
     public function travellers()
     {
         return $this->belongsToMany(Traveller::class)->withPivot(['lead', 'comment']);
@@ -123,7 +127,6 @@ class Reservation extends Model
     {
         return $this->belongsToMany(Extra::class);
     }
-
 
     public function pickupLocation()
     {

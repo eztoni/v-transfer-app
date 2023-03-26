@@ -18,8 +18,6 @@ class Fiskal
     {
         if (config('valamar.valamar_fiskalizacija_demo_mode')) {
             $oib = config('valamar.valamar_fiskalizacija_demo_oib');
-        }else{
-
         }
 
         $certificate_data = Fiskal::GetCertificate($point->fiskal_id);
@@ -209,9 +207,10 @@ class Fiskal
             $dom_response = new DOMDocument();
             $dom_response->loadXML($response);
 
-
             if ($code === 200) {
+
                 $Jir = $dom_response->getElementsByTagName('Jir')->item(0);
+
                 if ($Jir) {
 
                     $return =  [
@@ -298,7 +297,6 @@ class Fiskal
     }
 
 
-
     private static function bchexdec($hex)
     {
         $dec = 0;
@@ -320,7 +318,23 @@ class Fiskal
             . $amount;
 
         $zki_signature = null;
-        $certificate_data = Fiskal::GetCertificate($point->fiskal_id);
+
+
+        $fiskal_id = 0;
+
+        switch ($point->owner_id){
+            #Valamar
+            case '1':
+                $fiskal_id = 1;
+                break;
+
+            #Imperial Rab
+            case '2':
+                $fiskal_id = 2;
+                break;
+        }
+
+        $certificate_data = Fiskal::GetCertificate($fiskal_id);
 
         if ($certificate_data === false) {
             return null;
@@ -335,6 +349,7 @@ class Fiskal
     {
         $certificate_password = '';
         $certificate_file = '';
+
 
         if (config('valamar.valamar_fiskalizacija_demo_mode')) {
             $certificate_password = config('valamar.valamar_fiskalizacija_demo_cert_pw');

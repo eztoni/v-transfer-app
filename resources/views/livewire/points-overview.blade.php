@@ -89,17 +89,9 @@
 
                 <x-input label="PMS Class:" wire:model="point.pms_class"/>
                 <x-input label="PMS code:" wire:model="point.pms_code"/>
-                <x-native-select
-                    wire:model="point.fiskal_id"
-                    label="Invoice Certificate ( Fiskalizacija )"
-                    :options="[
-                                ['name' => 'Demo Certificate',  'id' => 0],
-                                ['name' => 'Valamar Certifikat',  'id' => 1],
-                                ['name' => 'Imperial Certifikat',  'id' => 2],
-                            ]"
-                    option-label="name"
-                    option-value="id"
-                />
+                <x-input type="number" label="Current Invoice no.:" wire:model="point.fiskal_invoice_no" editable="false"/>
+                <x-input  type="number" label="Business Establishment:" wire:model="point.fiskal_establishment" readolny />
+                <x-input  type="number" label="Device:" wire:model="point.fiskal_device" readolny />
             @else
                 <x-input label="PMS code:" wire:model="point.pms_code"/>
             @endif
