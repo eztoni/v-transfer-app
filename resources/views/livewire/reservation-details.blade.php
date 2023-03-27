@@ -21,6 +21,11 @@
                     <span class="font-extrabold text-info">&nbsp;ZKI: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[0]?->zki:'-'}}</span></span>
                     <br/>
                     <span class="font-extrabold text-info">&nbsp;JIR: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[0]?->jir:'-'}}</span></span>
+
+                @if(empty($reservation->invoices[0]))
+                        <br/>
+                        <x-button sm icon="external-link" wire:click="openFiskalSyncModal({{$reservation->id}})">Issue Invoice ( Fiskalizacija )</x-button>
+                @endif
             </div>
 
             <x-button href="{{route('bookings')}}"><i class="fas fa-angle-left mr-2"></i> Back</x-button>
@@ -125,6 +130,12 @@
         </x-modal.card>
     @endif
 
+    @if($fiskalSyncModal)
 
+        <x-modal.card wire:model="fiskalSyncModal" title="Issue Invoice for reservation">
+            <livewire:issue-reservation-invoice :reservation="$this->reservation"/>
+        </x-modal.card>
+
+    @endif
 
 </div>

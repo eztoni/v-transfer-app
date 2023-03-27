@@ -19,12 +19,15 @@ use Actions;
     public bool $editModal = false;
     public bool $operaSyncModal = false;
     public bool $operaSyncLogModal = false;
+    public bool $fiskalSyncModal = false;
+
     public array $syncLog;
 
     public $rules = [
         'editReservations'=>'nullable',
         'cancelReservation'=>'nullable',
     ];
+
 
     protected $listeners = [
         'updateCancelled' => 'closeUpdateModal',
@@ -33,7 +36,9 @@ use Actions;
         'cancelCompleted' => 'cancelCompleted',
         'syncCompleted'   => 'closeSyncModal',
         'syncCancelled'   => 'closeSyncModal',
-        'syncLogClosed'   => 'closeSyncLogModal'
+        'syncLogClosed'   => 'closeSyncLogModal',
+        'cancelIssueInvoice' => 'closeIssueInvoice',
+        'invoiceIssueCompleted' => 'closeIssueInvoice'
     ];
 
     public function mount()
@@ -71,6 +76,11 @@ use Actions;
         $this->render();
     }
 
+    public function closeIssueInvoice(){
+        $this->fiskalSyncModal = false;
+        $this->render();
+    }
+
     public function openUpdateModal($id)
     {
         $this->editModal = true;
@@ -80,6 +90,11 @@ use Actions;
 
     public function openOperaSyncModal($id){
         $this->operaSyncModal = true;
+        $this->reservation = Reservation::findOrFail($id);
+    }
+
+    public function openFiskalSyncModal($id){
+        $this->fiskalSyncModal = true;
         $this->reservation = Reservation::findOrFail($id);
     }
 

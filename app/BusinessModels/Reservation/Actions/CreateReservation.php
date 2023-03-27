@@ -86,9 +86,7 @@ class CreateReservation extends Reservation
                 ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail
             ]);
 
-            $this->sendReservationToOpera($this->model->id);
 
-            $this->fiskalInvoice($this->model->id);
 
         });
 
