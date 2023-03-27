@@ -87,8 +87,9 @@
                 <div class="flex">
                     <div class="m-0 divider"></div>
                     <span class="font-extrabold text-info">Opera Status: <span class="ds-badge ds-badge-{{$reservation->isSyncedWithOpera()?'success':'error'}}">{{$reservation->isSyncedWithOpera()?'Synced':'Not Synced'}}</span></span>
-                    <span class="font-extrabold text-info">&nbsp;ZKI: <span class="text-info font-normal">{{$reservation->lead_traveller?->zki ? $reservation->lead_traveller?->zki:'-'}}</span></span>
-                    <span class="font-extrabold text-info">&nbsp;JIR: <span class="text-info font-normal">{{$reservation->lead_traveller?->jir ? $reservation->lead_traveller?->jir:'-'}}</span></span>
+                    <span class="font-extrabold text-info">&nbsp;ZKI: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[0]?->zki:'-'}}</span></span>
+                    <span class="font-extrabold text-info">&nbsp;JIR: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[0]?->jir:'-'}}</span></span>
+                    <span class="font-extrabold text-info">&nbsp;Invoice: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[0]->invoice_id.'-'.$reservation->invoices[0]->invoice_establishment.'-'.$reservation->invoices[0]->invoice_device : '-'}}</span></span>
                 </div>
             </div>
         </x-card>

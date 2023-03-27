@@ -51,11 +51,15 @@ class ValamarFiskalizacija{
 
     public function fiskalReservation(){
 
+
         #Get End Location
         $owner_location = false;
 
-
         $reservation = Reservation::findOrFail($this->reservation_id);
+
+        if($reservation->included_in_accommodation_reservation == 1){
+            return true;
+        }
 
         $traveller_info = $reservation->getLeadTravellerAttribute();
 
@@ -92,6 +96,13 @@ class ValamarFiskalizacija{
 
                     $next_invoice = ($owner_location->fiskal_invoice_no+1);
 
+
+                    $amount = number_format($this->reservation->price/100,2);
+
+                    if($reservation->status == Reservation::STATUS_CANCELLED){
+                        $amount = '-'.$amount;
+                    }
+
                     $response = Fiskal::Fiskal(
                         $this->reservation_id,
                         Carbon::now(),
@@ -99,7 +110,7 @@ class ValamarFiskalizacija{
                         $next_invoice,
                         $owner_location->fiskal_establishment,
                         $owner_location->fiskal_device,
-                        number_format($this->reservation->price/100,2),
+                        $amount,
                         $zki,
                         false,
                         $owner_location
@@ -122,10 +133,10 @@ class ValamarFiskalizacija{
                             $invoice->jir = $this->jir;
                             $invoice->invoice_id = $next_invoice;
                             $invoice->invoice_establishment = $owner_location->fiskal_establishment;
-                            $invoice->invoice_device = $owner_location->fiska_device;
+                            $invoice->invoice_device = $owner_location->fiskal_device;
 
                             $invoice->save();
-
+                            dd("saved");
                             if(config('valamar.valamar_opera_fiskalizacija_active')){
                                 $this->setAuthenticationHeaders();
                                 if($this->validateReservationNumber() && $this->validatePMSCode()){
