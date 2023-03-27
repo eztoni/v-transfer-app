@@ -26,6 +26,9 @@ class ValamarFiskalizacija{
     private string $dropoffLocationPMSCode;
     private $zki;
     private $jir;
+    private $invoice;
+    private $amount;
+    private $oib;
 
     const LOG_TYPE_ARRAY = array(
       'fiskal',
@@ -55,7 +58,7 @@ class ValamarFiskalizacija{
         #Get End Location
         $owner_location = false;
 
-        $reservation = Reservation::findOrFail($this->reservation_id);
+        $reservation = $this->reservation;
 
         if($reservation->included_in_accommodation_reservation == 1){
             return true;
@@ -72,6 +75,7 @@ class ValamarFiskalizacija{
 
         #Fetch the reservation from Opera
         if(!empty($opera_res_data[$reservation_code])){
+
             $acc_opera_code = $opera_res_data[$reservation_code]['propertyOperaCode'];
             $acc_opera_class = $opera_res_data[$reservation_code]['propertyOperaClass'];
 
@@ -80,10 +84,15 @@ class ValamarFiskalizacija{
 
             if($owner_location){
 
+                #Set Property Code
+                $this->dropoffLocationPMSCode = $owner_location->pms_code;
+
                 #Get Owner - Fetch OIB
                 $owner = Owner::findOrFail($owner_location->owner_id);
 
                 if($owner->oib){
+
+                    $this->oib = $owner->oib;
 
                     $zki =   Fiskal::GenerateZKI(
                         Carbon::now(),
@@ -96,12 +105,13 @@ class ValamarFiskalizacija{
 
                     $next_invoice = ($owner_location->fiskal_invoice_no+1);
 
-
                     $amount = number_format($this->reservation->price/100,2);
 
                     if($reservation->status == Reservation::STATUS_CANCELLED){
-                        $amount = '-'.$amount;
+                     //   $amount = '-'.$amount;
                     }
+
+                    $this->amount = $amount;
 
                     $response = Fiskal::Fiskal(
                         $this->reservation_id,
@@ -110,7 +120,7 @@ class ValamarFiskalizacija{
                         $next_invoice,
                         $owner_location->fiskal_establishment,
                         $owner_location->fiskal_device,
-                        $amount,
+                        $this->amount,
                         $zki,
                         false,
                         $owner_location
@@ -136,7 +146,9 @@ class ValamarFiskalizacija{
                             $invoice->invoice_device = $owner_location->fiskal_device;
 
                             $invoice->save();
-                        
+
+                            $this->invoice = $invoice;
+
                             if(config('valamar.valamar_opera_fiskalizacija_active')){
                                 $this->setAuthenticationHeaders();
                                 if($this->validateReservationNumber() && $this->validatePMSCode()){
@@ -189,11 +201,11 @@ class ValamarFiskalizacija{
         #JIR
         $this->request['JIR'] = $this->jir;
         #DocumentID
-        $this->request['DocumentID'] = '22/33/11';
+        $this->request['DocumentID'] = $this->invoice->invoice_id.'/'.$this->invoice->invoice_establishment.'/'.$this->invoice->invoice_device;
         #OIB
-        $this->request['OIB'] = '12421523465342';
+        $this->request['OIB'] = $this->oib;
         #Total
-        $this->request['Total'] = number_format($this->reservation->price/100,2);
+        $this->request['Total'] = $this->amount;
         #Timestamp
         $this->request['TimeStamp'] = Carbon::now()->toDateTimeString();
 
@@ -215,6 +227,7 @@ class ValamarFiskalizacija{
      */
     private function validateResponse(\Illuminate\Http\Client\Response $response) : ValamarFiskalizacija
     {
+
         if(!$response->successful()){
 
             if($response->serverError()){
@@ -248,8 +261,6 @@ class ValamarFiskalizacija{
         }else{
 
             $this->responseBody = $response->json();
-
-
 
             if($this->responseBody['Status'] == 'ERR'){
 
@@ -306,11 +317,7 @@ class ValamarFiskalizacija{
 
         $return = false;
 
-        $dropoff_location = Point::find($this->reservation->dropoff_location);
-
-        if($dropoff_location->pms_code != null){
-
-            $this->dropoffLocationPMSCode = $dropoff_location->pms_code;
+        if($this->dropoffLocationPMSCode != null){
             $return = true;
         }
 
