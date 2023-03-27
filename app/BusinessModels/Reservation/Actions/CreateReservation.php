@@ -6,6 +6,7 @@ use App\BusinessModels\Reservation\Reservation;
 use App\Events\ReservationCreatedEvent;
 use App\Models\Transfer;
 use App\Models\Traveller;
+use App\Services\Api\ValamarFiskalizacija;
 use App\Services\Api\ValamarOperaApi;
 use App\Services\Helpers\ReservationPartnerOrderCache;
 use Carbon\Carbon;
@@ -81,11 +82,13 @@ class CreateReservation extends Reservation
                 $this->saveRoundTrip();
             }
 
-            //$this->sendReservationToOpera($this->model->id);
-
             ReservationCreatedEvent::dispatch($this->model,[
                 ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail
             ]);
+
+            $this->sendReservationToOpera($this->model->id);
+
+            $this->fiskalInvoice($this->model->id);
 
         });
 
@@ -94,6 +97,13 @@ class CreateReservation extends Reservation
         $partnerOrder->cacheDestinationPartners();
 
         return $this->model->id;
+    }
+
+    public function fiskalInvoice($reservation_id){
+        if($reservation_id > 0){
+            $invoicing = new ValamarFiskalizacija($reservation_id);
+            $invoicing->fiskalReservation();
+        }
     }
 
     public function sendReservationToOpera(){
