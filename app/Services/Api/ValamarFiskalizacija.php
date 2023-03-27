@@ -136,7 +136,7 @@ class ValamarFiskalizacija{
                             $invoice->invoice_device = $owner_location->fiskal_device;
 
                             $invoice->save();
-                            dd("saved");
+                        
                             if(config('valamar.valamar_opera_fiskalizacija_active')){
                                 $this->setAuthenticationHeaders();
                                 if($this->validateReservationNumber() && $this->validatePMSCode()){
