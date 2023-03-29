@@ -32,7 +32,7 @@
 
             <div class="" style="padding-top: 40px;"></div>
 
-            {{ __('mail.dear')}}, <strong> {{ucwords($reservation->leadTraveller?->full_name)}}</strong>,
+            {{ __('mail.dear')}} <strong> {{ucwords($reservation->leadTraveller?->full_name)}}</strong>,
         </x-mail.row>
         <x-mail.row>
 
