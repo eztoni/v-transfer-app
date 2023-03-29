@@ -42,7 +42,7 @@ class NotifyController extends Controller
         \DB::insert('insert into opera_sync_log (log_message,reservation_id, opera_request,opera_response,sync_status,updated_by,updated_at) values (?, ?, ?, ?, ?, ?, ?)',
             [
                 'Reservation Update Event',
-                $this->reservation->id,
+                0,
                 json_encode($request->all()),
                 json_encode(array()),
                 'success',
