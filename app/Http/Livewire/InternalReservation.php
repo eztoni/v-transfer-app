@@ -251,7 +251,7 @@ class InternalReservation extends Component
     {
 
         $this->validate($this->stepTwoRules(), [], $this->fieldNames);
-        
+
         $traveller = new Traveller();
 
         $traveller->first_name = $this->stepTwoFields['leadTraveller']['firstName'];
@@ -469,18 +469,7 @@ class InternalReservation extends Component
 
             $this->stepOneFields['dateTime'] = $checkInDate->format('d.m.Y H:i');
         }
-
-
-        $point = Point::query()
-            ->where('type', Point::TYPE_ACCOMMODATION)
-            ->wherePmsClass(Arr::get($data, 'propertyOperaClass'))
-            ->wherePmsCode(Arr::get($data, 'propertyOperaCode'))->first();
-
-        if ($point) {
-            $this->stepOneFields['dropoffAddress'] = $point->name . ' ' . $point->address;
-        }
-
-
+        
         $this->stepTwoFields['leadTraveller']['firstName'] = Str::title(Arr::get($data, 'reservationHolderData.firstName'));
         $this->stepTwoFields['leadTraveller']['lastName'] = Str::title(Arr::get($data, 'reservationHolderData.lastName'));
         $this->stepTwoFields['leadTraveller']['email'] = Arr::get($data, 'reservationHolderData.email');
