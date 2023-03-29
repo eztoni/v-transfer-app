@@ -70,6 +70,19 @@ class NotifyController extends Controller
                         'status' => 'success',
                         'message' => 'Reservation Updated Successfully: '.$reservation_data['resvNameId'].' - Confirmation:'.$reservation_data['confirmationno'],
                     );
+
+
+                    \DB::insert('insert into opera_sync_log (log_message,reservation_id, opera_request,opera_response,sync_status,updated_by,updated_at) values (?, ?, ?, ?, ?, ?, ?)',
+                        [
+                            'Reservation Updated '.$reservation_data['resvNameId'],
+                            0,
+                            json_encode($request->all()),
+                            json_encode($response),
+                            'success',
+                            0,
+                            \Carbon\Carbon::now()->toDateTimeString()]
+                    );
+
                 }else{
 
                     if(empty($update_response)){
@@ -79,6 +92,17 @@ class NotifyController extends Controller
                     $response[$reservation_data['resvNameId']] = array(
                         'status' => 'error',
                         'message' => $update_response,
+                    );
+
+                    \DB::insert('insert into opera_sync_log (log_message,reservation_id, opera_request,opera_response,sync_status,updated_by,updated_at) values (?, ?, ?, ?, ?, ?, ?)',
+                        [
+                            'Reservation Not Update '.$reservation_data['resvNameId'],
+                            0,
+                            json_encode($request->all()),
+                            json_encode($response),
+                            'error',
+                            0,
+                            \Carbon\Carbon::now()->toDateTimeString()]
                     );
                 }
 
