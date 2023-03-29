@@ -105,10 +105,14 @@ class ValamarFiskalizacija{
 
                     $next_invoice = ($owner_location->fiskal_invoice_no+1);
 
+                    if(strlen($next_invoice) == 1){
+                        $next_invoice = '0'.$next_invoice;
+                    }
+
                     $amount = number_format($this->reservation->price/100,2);
 
                     if($reservation->status == Reservation::STATUS_CANCELLED){
-                     //   $amount = '-'.$amount;
+                        $amount = '-'.$amount;
                     }
 
                     $this->amount = $amount;
