@@ -39,6 +39,17 @@ class NotifyController extends Controller
 
         $changed_bookings = $request->all();
 
+        \DB::insert('insert into opera_sync_log (log_message,reservation_id, opera_request,opera_response,sync_status,updated_by,updated_at) values (?, ?, ?, ?, ?, ?, ?)',
+            [
+                'Reservation Update Event',
+                $this->reservation->id,
+                json_encode($request->all()),
+                json_encode(array()),
+                'success',
+                0,
+                \Carbon\Carbon::now()->toDateTimeString()]
+        );
+
         if(!empty($changed_bookings['reservations'])){
             foreach($changed_bookings['reservations'] as $data){
                $reservation_change[] = $data;
@@ -118,7 +129,6 @@ class NotifyController extends Controller
                 $this->api_handler->setReservationCodeFilter($result->reservation_number);
 
                 $valamar_res_data = $this->api_handler->getReservationList();
-
 
                 $is_round_trip = false;
 
