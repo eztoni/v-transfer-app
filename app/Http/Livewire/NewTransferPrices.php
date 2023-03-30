@@ -42,9 +42,11 @@ class NewTransferPrices extends Component
     ];}
 
     public function ruless($rId){
-        return [
+
+
+
+        $rules = [
             "modelPrices.$rId.price" => 'required|min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
-            "modelPrices.$rId.price_round_trip" => 'min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
             "modelPrices.$rId.round_trip" => 'boolean|nullable',
             "modelPrices.$rId.date_from" => "required|date_format:d.m.Y|before_or_equal:modelPrices.$rId.date_to",
             "modelPrices.$rId.date_to" => "required|date_format:d.m.Y|after_or_equal:modelPrices.$rId.date_from",
@@ -53,6 +55,14 @@ class NewTransferPrices extends Component
             "modelPrices.$rId.commission" => 'required|integer|min:0|max:100',
             "modelPrices.$rId.discount" => 'required|integer|min:0|max:100',
         ];
+
+        if($this->modelPrices[$rId]['round_trip']){
+            $rules["modelPrices.$rId.price_round_trip"] = 'required|min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX;
+        }else{
+            $rules["modelPrices.$rId.price_round_trip"] = 'min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX;
+        }
+
+        return $rules;
     }
 
 
