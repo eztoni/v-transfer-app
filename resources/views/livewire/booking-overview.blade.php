@@ -54,7 +54,7 @@
 
     @foreach($this->reservations as $reservation)
 
-        <x-card cardClasses="mb-4" title="Transfer #{{$reservation->id}}">
+        <x-card cardClasses="mb-4" title="Transfer #{{$reservation->id}} - {{ucfirst($reservation->status)}}">
 
                 <x-slot name="action">
                     <div class="flex gap-4 items-center">
