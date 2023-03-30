@@ -148,5 +148,6 @@ werden, bezahlen Sie diese beim Check-in im Objekt Ihres Aufenthaltes.',
     'tax_recapitulation'=>'Steueraufstellung',
     'tax_group'=>'Steuergruppe',
     'extras' => 'Extras',
+    'cancelled_at' => 'Abgesagt um',
     'base'=>'Grundlage',
 ];

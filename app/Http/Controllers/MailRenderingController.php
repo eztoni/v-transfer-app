@@ -27,6 +27,9 @@ class MailRenderingController extends Controller
             case 'ATTACHMENT_CONFIRMATION':
                 return  PDF::loadView('attachments.booking_confirmation', ['reservation'=>Reservation::find($id)])->outputHtml();
                 break;
+            case 'ATTACHMENT_CANCELLATION':
+                return  PDF::loadView('attachments.booking_cancellation', ['reservation'=>Reservation::find($id)])->outputHtml();
+                break;
 
         }
 

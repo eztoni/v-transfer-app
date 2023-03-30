@@ -146,5 +146,6 @@ boravite.',
     'tax_recapitulation'=>'Rekapitulacija poreza',
     'tax_group'=>'Porezna grupa',
     'extras' => 'Dodaci',
+    'cancelled_at' => 'Otkazano',
     'base'=>'Osnovica',
 ];

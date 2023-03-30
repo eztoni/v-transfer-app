@@ -70,7 +70,7 @@ return [
         'cancellation_mail' => [
             'subject' => 'Your reservation cancellation ',
             'body' => [
-                'thank_you' => 'You can find the confirmation on reservation cancellation below.',
+                'thank_you' => 'You can find the confirmation of reservation cancellation below.',
                 'body' => '
 If you have any special requests, feel free to reply to this e-mail.
 ',
@@ -141,7 +141,7 @@ If you have any special requests, feel free to reply to this e-mail.
         'cancellation_mail' => [
             'subject' => 'Your reservation cancellation ',
             'body' => [
-                'thank_you' => 'You can find the confirmation on reservation cancellation below.',
+                'thank_you' => 'You can find the confirmation of reservation cancellation below.',
                 'body' => '
 If you have any special requests, feel free to reply to this e-mail.
 ',
@@ -174,5 +174,6 @@ If you have any special requests, feel free to reply to this e-mail.
     'tax_recapitulation'=>'Tax recapitulation',
     'tax_group'=>'Tax group',
     'extras' => 'Extras',
+    'cancelled_at' => 'Cancelled at',
     'base'=>'Base',
 ];

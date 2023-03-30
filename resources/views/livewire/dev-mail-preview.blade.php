@@ -4,7 +4,7 @@
         <x-native-select
             label="Type:"
             placeholder="Select text level"
-            :options="['CONFIRMATION', 'MODIFY','ATTACHMENT_VOUCHER','ATTACHMENT_CONFIRMATION']"
+            :options="['CONFIRMATION', 'MODIFY','ATTACHMENT_VOUCHER','ATTACHMENT_CONFIRMATION','ATTACHMENT_CANCELLATION']"
             wire:model="mailType"
         />
         <x-select
