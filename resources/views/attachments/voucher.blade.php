@@ -195,8 +195,9 @@
                         <li>{{__('mail.li_1_1')}} <b>{{$reservation->partner->email}} {{$reservation->partner->phone}}</b></li>
                         <li>{{__('mail.li_1_2')}}</li>
                         <li>{{__('mail.li_1_3')}}</li>
+                        <li>{{__('mail.li_2')}} <b style="font-weight: 700;">reservation@valamar.com   +385 (0)52 465 000</b></li>
                     </ul>
-                    <li>{{__('mail.li_2')}} <b style="font-weight: 700;">reservation@valamar.com   +385 (0)52 465 000</b></li>
+
                 </li>
 
                 <li>{{__('mail.li_3')}}:
