@@ -81,6 +81,11 @@
                         : </b> {{$reservation->transfer->vehicle->type}}</p>
             @endif
 
+            @if(count($reservation->extras) > 0)
+                <p style="font-size: 14px"><b>{{__('mail.extras')}}
+                        : </b> {{$reservation->get_extras_list()}}</p>
+            @endif
+
             @if($reservation->remark)
                 <p style="font-size: 14px"><b>{{__('mail.remark')}}:</b> {{$reservation->remark}}</p>
             @endif

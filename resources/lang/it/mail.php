@@ -152,6 +152,7 @@ momento del check-in presso la struttura in cui soggiornate.',
     'vat'=>'IVA',
     'vat_amount'=>'Importo IVA',
     'tax_recapitulation'=>'Riepilogo fiscale',
-    'mail.tax_group'=>'Gruppo fiscale',
+    'tax_group'=>'Gruppo fiscale',
+    'extras'=>'Extras',
     'base'=>'Base',
 ];

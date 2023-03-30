@@ -144,6 +144,7 @@ boravite.',
     'vat'=>'PDV',
     'vat_amount'=>'Iznos PDV-a',
     'tax_recapitulation'=>'Rekapitulacija poreza',
-    'mail.tax_group'=>'Porezna grupa',
+    'tax_group'=>'Porezna grupa',
+    'extras' => 'Dodaci',
     'base'=>'Osnovica',
 ];

@@ -146,6 +146,7 @@ werden, bezahlen Sie diese beim Check-in im Objekt Ihres Aufenthaltes.',
     'vat'=>'USt.',
     'vat_amount'=>'USt.-Betrag',
     'tax_recapitulation'=>'Steueraufstellung',
-    'mail.tax_group'=>'Steuergruppe',
+    'tax_group'=>'Steuergruppe',
+    'extras' => 'Extras',
     'base'=>'Grundlage',
 ];

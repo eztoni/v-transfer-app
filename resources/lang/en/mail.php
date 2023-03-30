@@ -173,5 +173,6 @@ If you have any special requests, feel free to reply to this e-mail.
     'vat_amount'=>'VAT amount',
     'tax_recapitulation'=>'Tax recapitulation',
     'tax_group'=>'Tax group',
+    'extras' => 'Extras',
     'base'=>'Base',
 ];

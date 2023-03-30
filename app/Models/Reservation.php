@@ -194,6 +194,19 @@ class Reservation extends Model
             return $log;
     }
 
+    public function get_extras_list(){
+
+        $extras = array();
+
+        if($this->extras){
+            foreach($this->extras as $extra){
+                $extras[] = (string)$extra->name;
+            }
+        }
+
+        return implode(',',$extras);
+    }
+
     protected function getExtrasSummedCommissionAttribute(): Money
     {
         $commission =Money::EUR(0);
