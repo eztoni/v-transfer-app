@@ -110,7 +110,7 @@
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
                         <b>{{$reservation->getVatAmount()}}</b></td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>{{$reservation->getPrice()}}</b></td>
+                        <b>{{$reservation->getPrice()}} / {{$reservation->getPriceHRK()}}</b></td>
 
                 </tr>
                 </tfoot>
@@ -164,7 +164,7 @@
                         <b>{{__('mail.total')}}: </b>
                     </td>
                     <td style="border: 1px solid black;text-align: right;padding:5px 5px">
-                        <b>{{$reservation->getPrice()}}</b>
+                        <b>{{$reservation->getPrice()}} / {{$reservation->getPriceHRK()}}</b>
                     </td>
                 </tr>
                 </tfoot>
@@ -178,10 +178,11 @@
 
 
         <x-mail.row>
+            <div class="" style="padding-top: 20px;"></div>
             <p><b>{{__('mail.terms_and_conditions')}}</b></p>
             <br>
             <p>{{__('mail.booking_confirmation.terms_and_conditions')}}</p>
-
+            <div class="" style="padding-bottom: 20px;"></div>
         </x-mail.row>
         <div class="" style="padding-top: 40px;"></div>
 

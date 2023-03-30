@@ -110,7 +110,7 @@
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
                         <b>-{{$reservation->getVatAmount()}}</b></td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>-{{$reservation->getPrice()}}</b></td>
+                        <b>-{{$reservation->getPrice()}} / -{{$reservation->getPriceHRK()}}</b></td>
 
                 </tr>
                 </tfoot>
@@ -164,7 +164,7 @@
                         <b>{{__('mail.total')}}: </b>
                     </td>
                     <td style="border: 1px solid black;text-align: right;padding:5px 5px">
-                        <b>-{{$reservation->getPrice()}}</b>
+                        <b>-{{$reservation->getPrice()}} / -{{$reservation->getPriceHRK()}}</b>
                     </td>
                 </tr>
                 </tfoot>

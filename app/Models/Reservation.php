@@ -85,6 +85,13 @@ class Reservation extends Model
     {
         return Money::EUR($this->price);
     }
+
+    public function getPriceHRK(): Money
+    {
+        $price = $this->price*7.53450;
+        return Money::HRK($price);
+    }
+
     public function getVatAmount()
     {
         return Money::EUR($this->price)->multiply($this->included_in_accommodation_reservation ?'0':'0.25');
