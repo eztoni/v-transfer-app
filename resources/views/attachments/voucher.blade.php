@@ -166,13 +166,19 @@
         <x-mail.logo></x-mail.logo>
 
         <x-mail.row>
-
+            <style>
+                li {
+       
+                    list-style-type: circle;
+                }
+            </style>
 
             <br>
             <br>
 
             <b>{{__('mail.important_notes')}}</b>
             <p style="font-weight: normal!important;">{{__('mail.important_note_1')}}</p>
+            <br/>
 
 
             <ul>
@@ -198,8 +204,5 @@
 
         </x-mail.footer>
     </x-mail.body>
-
-
-
 
 </x-mail.layouts.main>
