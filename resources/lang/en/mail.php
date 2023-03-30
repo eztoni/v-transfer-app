@@ -172,6 +172,6 @@ If you have any special requests, feel free to reply to this e-mail.
     'vat'=>'VAT',
     'vat_amount'=>'VAT amount',
     'tax_recapitulation'=>'Tax recapitulation',
-    'mail.tax_group'=>'Tax group',
-    'base'=>'Tax group',
+    'tax_group'=>'Tax group',
+    'base'=>'Tax Amount',
 ];
