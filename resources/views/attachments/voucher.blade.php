@@ -168,8 +168,9 @@
         <x-mail.row>
             <style>
                 li {
-       
-                    list-style-type: circle;
+
+                    list-style-type: disc;
+                    margin:5px;
                 }
             </style>
 
