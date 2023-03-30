@@ -172,6 +172,14 @@
                     list-style-type: disc;
                     margin:5px;
                 }
+
+                ul > li{
+                    padding-left:10px;
+                }
+
+                ul{
+                    padding-left:10px;
+                }
             </style>
 
             <br>
@@ -181,20 +189,22 @@
             <p style="font-weight: normal!important;">{{__('mail.important_note_1')}}</p>
             <br/>
 
-
             <ul>
-                <li>{{__('mail.pickup_and_meeting_point')}}:</li>
-                <ul>
-                    <li>{{__('mail.li_1_1')}} <b>{{$reservation->partner->email}} {{$reservation->partner->phone}}</b></li>
-                    <li>{{__('mail.li_1_2')}}</li>
-                    <li>{{__('mail.li_1_3')}}</li>
-                </ul>
-                <li>{{__('mail.li_2')}} <b style="font-weight: 700;">reservation@valamar.com   +385 (0)52 465 000</b></li>
-                <li>{{__('mail.li_3')}}:</li>
-                <ul>
-                    <li>{{__('mail.li_3_1')}}</li>
-                    <li>{{__('mail.li_3_2')}}</li>
-                </ul>
+                <li>{{__('mail.pickup_and_meeting_point')}}:
+                    <ul>
+                        <li>{{__('mail.li_1_1')}} <b>{{$reservation->partner->email}} {{$reservation->partner->phone}}</b></li>
+                        <li>{{__('mail.li_1_2')}}</li>
+                        <li>{{__('mail.li_1_3')}}</li>
+                    </ul>
+                    <li>{{__('mail.li_2')}} <b style="font-weight: 700;">reservation@valamar.com   +385 (0)52 465 000</b></li>
+                </li>
+
+                <li>{{__('mail.li_3')}}:
+                    <ul>
+                        <li>{{__('mail.li_3_1')}}</li>
+                        <li>{{__('mail.li_3_2')}}</li>
+                    </ul>
+                </li>
             </ul>
             <p style="margin-bottom:15px;text-align: right">2/2</p>
 
