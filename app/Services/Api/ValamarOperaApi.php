@@ -98,34 +98,18 @@ class ValamarOperaApi{
 
         $return = false;
 
+        if($this->reservation->getLeadTravellerAttribute()->reservation_number){
+           $api = new ValamarClientApi();
+           $api->setReservationCodeFilter($this->reservation->getLeadTravellerAttribute()->reservation_number);
 
-        #Check Dropoff First
-        if($this->reservation->dropoff_address_id > 0) {
-            $location = Point::find($this->reservation->dropoff_address_id);
+           $res_result = $api->getReservationList();
 
-            if ($location->type == 'accommodation') {
-
-                if ($location->pms_code != null) {
-
-                    $this->resortPMSCode = $location->pms_code;
-                    return true;
-                }
-            }
+           if(!empty($res_result[$this->reservation->getLeadTravellerAttribute()->reservation_number])){
+               $this->resortPMSCode = $res_result[$this->reservation->getLeadTravellerAttribute()->reservation_number]['propertyOperaCode'];
+               return true;
+           }
         }
-
-        #Check Pickup Address
-        if($this->reservation->pickup_address_id > 0){
-            $location = Point::find($this->reservation->pickup_address_id);
-
-            if ($location->type == 'accommodation') {
-
-                if ($location->pms_code != null) {
-                    $this->resortPMSCode = $location->pms_code;
-                    return true;
-                }
-            }
-        }
-
+        
         return $return;
     }
 
