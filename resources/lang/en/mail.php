@@ -103,7 +103,7 @@ If you have any special requests, feel free to reply to this e-mail.
                             accounts: ERSTE &amp; STEIERMÄRKISCHE BANK d.d. Rijeka, IBAN: HR8124020061100210497,
                             SWIFT:ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb, IBAN:
                             HR5023400091117030474, SWIFT:PBZGHR2X; ZAGREBAČKA BANKA d.d. Zagreb, IBAN:
-                            HR1923600001101686064, SWIFT:SWHR2X; OTP banka d.d., IBAN:
+                            HR1923600001101686064, SWIFT:ZABAHR2X; OTP banka d.d., IBAN:
                             HR1224070001100234074, SWIFT: OTPVHR2X. President of the Board: Alen Benković; Member of
                             the Board: Sebastian Palma; President of the Supervisory Board: Boris
                             Galić.

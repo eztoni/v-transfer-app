@@ -108,7 +108,7 @@ kuna/201.265.404,26 eura*, uplaćen u cijelosti, podijeljen na 2.279.473 dionice
 STEIERMÄRKISCHE BANK d.d. Rijeka, IBAN: HR8124020061100210497, SWIFT:ESBCHR22;
 PRIVREDNA BANKA ZAGREB d.d. Zagreb, IBAN: HR5023400091117030474,
 SWIFT:PBZGHR2X; ZAGREBAČKA BANKA d.d. Zagreb, IBAN: HR1923600001101686064,
-SWIFT:SWHR2X; OTP banka d.d., IBAN: HR1224070001100234074, SWIFT:
+SWIFT:ZABAHR2X; OTP banka d.d., IBAN: HR1224070001100234074, SWIFT:
 OTPVHR2X. Predsjednik Uprave: Alen Benković; član Uprave: Sebastian Palma; Predsjednik
 Nadzornog odbora: Boris Galić
 *iznos temeljnog kapitala u EUR valuti informativno je prikazan po fiksnom tečaju konverzije 7.53450,
