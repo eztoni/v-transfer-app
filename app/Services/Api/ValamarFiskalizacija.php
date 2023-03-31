@@ -54,7 +54,6 @@ class ValamarFiskalizacija{
 
     public function fiskalReservation(){
 
-
         #Get End Location
         $owner_location = false;
 
@@ -82,6 +81,10 @@ class ValamarFiskalizacija{
             $owner_location = Point::where('pms_code','=',$acc_opera_code)
                                     ->where('pms_class','=',$acc_opera_class)->get()->first();
 
+            if(!$owner_location){
+                $owner_location = Point::where('pms_code','=',$acc_opera_code)->get()->first();
+            }
+            
             if($owner_location){
 
                 #Set Property Code
@@ -130,6 +133,7 @@ class ValamarFiskalizacija{
                         $owner_location
                     );
 
+
                     if(!empty($response)){
 
                         if($response['success'] == true && !empty($response['jir'])){
@@ -152,6 +156,8 @@ class ValamarFiskalizacija{
                             $invoice->save();
 
                             $this->invoice = $invoice;
+
+
 
                             if(config('valamar.valamar_opera_fiskalizacija_active')){
                                 $this->setAuthenticationHeaders();
