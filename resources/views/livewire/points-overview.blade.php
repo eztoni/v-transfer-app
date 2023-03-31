@@ -87,8 +87,8 @@
 
                 <x-input label="Reception Email:" wire:model="point.reception_email"/>
 
-                <x-input label="PMS Class:" wire:model="point.pms_class"/>
                 <x-input label="PMS code:" wire:model="point.pms_code"/>
+                <x-input label="PMS Class:" wire:model="point.pms_class"/>
                 <x-input type="number" label="Current Invoice no.:" wire:model="point.fiskal_invoice_no" editable="false"/>
                 <x-input  type="number" label="Business Establishment:" wire:model="point.fiskal_establishment" readolny />
                 <x-input  type="number" label="Device:" wire:model="point.fiskal_device" readolny />
