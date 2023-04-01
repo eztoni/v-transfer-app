@@ -98,19 +98,12 @@ If you have any special requests, feel free to reply to this e-mail.
                             7.53450, pending the implementation of the adjustment and registration of share capital in EUR
                             currency in accordance with the Act on Amendments to the Companies Act (&quot;Official Gazette&quot; No.
                             114/22.)',
-            'imperial' => 'Commercial Court in Rijeka; Company Reg. No.: 040000124; PIN: 90896496260; share capital:
-                            1,516,434,188.42 HRK/201.265.404,26 EUR*, paid in full, divided into 2,279,473 shares; Bank
-                            accounts: ERSTE &amp; STEIERMÄRKISCHE BANK d.d. Rijeka, IBAN: HR8124020061100210497,
-                            SWIFT:ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb, IBAN:
-                            HR5023400091117030474, SWIFT:PBZGHR2X; ZAGREBAČKA BANKA d.d. Zagreb, IBAN:
-                            HR1923600001101686064, SWIFT:ZABAHR2X; OTP banka d.d., IBAN:
-                            HR1224070001100234074, SWIFT: OTPVHR2X. President of the Board: Alen Benković; Member of
-                            the Board: Sebastian Palma; President of the Supervisory Board: Boris
+            'imperial' => 'Commercial Court in Rijeka; Company Reg. No.: 040000124; PIN: 90896496260; share capital: 1,516,434,188.42 HRK/201.265.404,26 EUR*, paid in full, divided into 2,279,473 shares; Bank
+                            accounts: ERSTE & STEIERMÄRKISCHE BANK d.d. Rijeka, IBAN: HR8124020061100210497, SWIFT:ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb, IBAN:
+                            HR5023400091117030474, SWIFT:PBZGHR2X; ZAGREBAČKA BANKA d.d. Zagreb, IBAN: HR1923600001101686064, SWIFT: ZABAHR2X; OTP banka d.d., IBAN:
+                            HR1224070001100234074, SWIFT: OTPVHR2X. President of the Board: Alen Benković; Member of the Board: Sebastian Palma; President of the Supervisory Board: Boris
                             Galić.
-                            *the amount of share capital in EUR currency is presented for information at a fixed conversion rate of
-                            7.53450, pending the implementation of the adjustment and registration of share capital in EUR
-                            currency in accordance with the Act on Amendments to the Companies Act (&quot;Official Gazette&quot; No.
-                            114/22.)',
+                            *the amount of share capital in EUR currency is presented for information at a fixed conversion rate of 7.53450, pending the implementation of the adjustment and registration of share capital in EUR currency in accordance with the Act on Amendments to the Companies Act ("Official Gazette" No. 114/22.)',
             'helios_faros' => 'HELIOS FAROS d.d., Stari Grad, Helios no. 5, Commercial Court in Split, PIN 060213634, OIB
                             48594515409, PRIVREDNA BANKA ZAGREB d.d., Zagreb, Radnička cesta 50, , IBAN:
                             HR3323400091111074980; ; OTP Banka d.d., Split, Domovinskog rata 61, IBAN:

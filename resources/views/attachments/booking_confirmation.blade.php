@@ -198,7 +198,18 @@
         <div style="position: fixed;max-width: 600px;padding-bottom: 25px; bottom: 0;">
 
             <p style="text-align: justify; font-size: 8px">
-                {{__('mail.guest.footer.valamar')}}
+
+                @if($reservation->destination->owner_id == 1)
+                    {{__('mail.guest.footer.valamar')}}
+                @endif
+
+                @if($reservation->destination->owner_id == 2)
+                    {{__('mail.guest.footer.imperial')}}
+                @endif
+
+                @if($reservation->destination->owner_id == 3){
+                    {{__('mail.guest.footer.helios_faros')}}
+                @endif
             </p>
         </div>
     </x-mail.footer-below>

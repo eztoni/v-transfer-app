@@ -103,17 +103,11 @@ Budin Arhanić; Predsjednik Nadzornog odbora: Gustav Wurmböck
 *iznos temeljnog kapitala u EUR valuti informativno je prikazan po fiksnom tečaju konverzije 7.53450,
 a do provedbe usklađenja i upisa temeljnog kapitala u EUR valuti sukladno Zakonu o izmjenama
 Zakona o trgovačkim društvima (&quot;Narodne novine&quot; broj 114/22.)',
-            'imperial' => 'Trgovački sud u Rijeci; MBS: 040000124; OIB: 90896496260; temeljni kapital: 1.516.434.188,42
-kuna/201.265.404,26 eura*, uplaćen u cijelosti, podijeljen na 2.279.473 dionice; Računi: ERSTE &amp;
-STEIERMÄRKISCHE BANK d.d. Rijeka, IBAN: HR8124020061100210497, SWIFT:ESBCHR22;
-PRIVREDNA BANKA ZAGREB d.d. Zagreb, IBAN: HR5023400091117030474,
-SWIFT:PBZGHR2X; ZAGREBAČKA BANKA d.d. Zagreb, IBAN: HR1923600001101686064,
-SWIFT:ZABAHR2X; OTP banka d.d., IBAN: HR1224070001100234074, SWIFT:
-OTPVHR2X. Predsjednik Uprave: Alen Benković; član Uprave: Sebastian Palma; Predsjednik
-Nadzornog odbora: Boris Galić
-*iznos temeljnog kapitala u EUR valuti informativno je prikazan po fiksnom tečaju konverzije 7.53450,
-a do provedbe usklađenja i upisa temeljnog kapitala u EUR valuti sukladno Zakonu o izmjenama
-Zakona o trgovačkim društvima (&quot;Narodne novine&quot; broj 114/22.)',
+            'imperial' => 'Trgovački sud u Rijeci; MBS: 040000124; OIB: 90896496260; temeljni kapital: 1.516.434.188,42 kuna/201.265.404,26 eura*, uplaćen u cijelosti, podijeljen na 2.279.473 dionice; Računi: ERSTE &
+STEIERMÄRKISCHE BANK d.d. Rijeka, IBAN: HR8124020061100210497, SWIFT:ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb, IBAN: HR5023400091117030474,
+SWIFT:PBZGHR2X; ZAGREBAČKA BANKA d.d. Zagreb, IBAN: HR1923600001101686064, SWIFT: ZABAHR2X; OTP banka d.d., IBAN: HR1224070001100234074, SWIFT:
+OTPVHR2X. Predsjednik Uprave: Alen Benković; član Uprave: Sebastian Palma; Predsjednik Nadzornog odbora: Boris Galić
+*iznos temeljnog kapitala u EUR valuti informativno je prikazan po fiksnom tečaju konverzije 7.53450, a do provedbe usklađenja i upisa temeljnog kapitala u EUR valuti sukladno Zakonu o izmjenama Zakona o trgovačkim društvima ("Narodne novine" broj 114/22.)',
             'helios_faros' => 'HELIOS FAROS d.d., Stari Grad, Naselje Helios br. 5, Trgovački sud u Splitu, MBS 060213634, OIB
 48594515409
 

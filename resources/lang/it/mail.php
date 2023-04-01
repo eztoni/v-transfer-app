@@ -108,20 +108,12 @@ Presidente del Consiglio di Sorveglianza: Gustav Wurmböck
 fisso di 7,53450, in attesa dell&#39;attuazione dell&#39;adeguamento e della registrazione del capitale sociale in
 valuta EUR in conformità con la legge sulle modifiche alla legge sulle società (&quot;Gazzetta ufficiale &quot; N.
 114/22.)',
-            'imperial' => 'Tribunale commerciale di Rijeka (Fiume); N. identificativo dell&#39;impresa: (MBS): 040000124; Codice
-OIB: 90896496260; Capitale sociale: dell&#39;importo di 1.516.434.188,42 kuna/201.265.404,26 euro*,
-interamente versato, diviso in 2.279.473 azioni; Conti presso la banca: ERSTE &amp;
-STEIERMÄRKISCHE BANK d.d. Rijeka, IBAN: HR8124020061100210497,
-SWIFT:ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb, IBAN: HR5023400091117030474,
-SWIFT:PBZGHR2X; ZAGREBAČKA BANKA d.d. Zagreb, IBAN:
-HR1923600001101686064, SWIFT:ZABAHR2X; OTP banka d.d., IBAN: HR1224070001100234074,
-SWIFT: OTPVHR2X. Presidente del Consiglio di Gestione: Alen Benković;
-Membro del Consiglio di Gestione: Sebastian Palma; Presidente del Consiglio di Sorveglianza: Boris
-Galić.
-*l&#39;importo del capitale sociale in valuta EUR è presentato per informazione a un tasso di conversione
-fisso di 7,53450, in attesa dell&#39;attuazione dell&#39;adeguamento e della registrazione del capitale sociale in
-valuta EUR in conformità con la legge sulle modifiche alla legge sulle società (&quot;Gazzetta ufficiale &quot; N.
-114/22.)',
+            'imperial' => 'Tribunale commerciale di Rijeka (Fiume); N. identificativo dell\'impresa: (MBS): 040000124; Codice OIB: 90896496260; Capitale sociale: dell\'importo di 1.516.434.188,42 kuna/201.265.404,26 euro*,
+interamente versato, diviso in 2.279.473 azioni; Conti presso la banca: ERSTE & STEIERMÄRKISCHE BANK d.d. Rijeka, IBAN: HR8124020061100210497,
+SWIFT:ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb, IBAN: HR5023400091117030474, SWIFT:PBZGHR2X; ZAGREBAČKA BANKA d.d. Zagreb, IBAN:
+HR1923600001101686064, SWIFT: ZABAHR2X; OTP banka d.d., IBAN: HR1224070001100234074, SWIFT: OTPVHR2X. Presidente del Consiglio di Gestione: Alen Benković;
+Membro del Consiglio di Gestione: Sebastian Palma; Presidente del Consiglio di Sorveglianza: Boris Galić.
+*l\'importo del capitale sociale in valuta EUR è presentato per informazione a un tasso di conversione fisso di 7,53450, in attesa dell\'attuazione dell\'adeguamento e della registrazione del capitale sociale in valuta EUR in conformità con la legge sulle modifiche alla legge sulle società ("Gazzetta ufficiale " N. 114/22.)',
             'helios_faros' => 'HELIO FAROS d.d., Stari Grad, Naselje Helios n. 5, Tribunale commerciale di Split, N. identificativo
 dell&#39;impresa (MBS): 060213634, Codice OIB: 48594515409, PRIVREDNA BANKA ZAGREB d.d.,
 Zagreb, Radnička cesta 50, IBAN: HR3323400091111074980; OTP Banka d.d., Split, Domovinskog
@@ -131,8 +123,6 @@ Presidente del Consiglio di Gestione: V. Bunić'
         ],
 
     ],
-
-
     'booking_confirmation' => [
         'terms_and_conditions' => 'Questo pacchetto è ora prenotato e aggiunto alla prenotazione del tuo allogio. Se avete pagato
 l’alloggio al momento della prenotazione dei servizi aggiuntivi, questi ultimi vi verranno addebitati al
