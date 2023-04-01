@@ -39,16 +39,16 @@ class NotifyController extends Controller
 
         $changed_bookings = $request->all();
 
-        \DB::insert('insert into opera_sync_log (log_message,reservation_id, opera_request,opera_response,sync_status,updated_by,updated_at) values (?, ?, ?, ?, ?, ?, ?)',
-            [
-                'Reservation Update Event',
-                0,
-                json_encode($request->all()),
-                json_encode(array()),
-                'success',
-                0,
-                \Carbon\Carbon::now()->toDateTimeString()]
-        );
+//        \DB::insert('insert into opera_sync_log (log_message,reservation_id, opera_request,opera_response,sync_status,updated_by,updated_at) values (?, ?, ?, ?, ?, ?, ?)',
+//            [
+//                'Reservation Update Event',
+//                0,
+//                json_encode($request->all()),
+//                json_encode(array()),
+//                'success',
+//                0,
+//                \Carbon\Carbon::now()->toDateTimeString()]
+//        );
 
         if(!empty($changed_bookings['reservations'])){
             foreach($changed_bookings['reservations'] as $data){
@@ -66,6 +66,7 @@ class NotifyController extends Controller
                 $update_response = $this->update_reservation($reservation_data['resvNameId'],$reservation_data['confirmationno']);
 
                 if($update_response === true){
+
                     $response[$reservation_data['resvNameId']] = array(
                         'status' => 'success',
                         'message' => 'Reservation Updated Successfully: '.$reservation_data['resvNameId'].' - Confirmation:'.$reservation_data['confirmationno'],
@@ -94,16 +95,16 @@ class NotifyController extends Controller
                         'message' => $update_response,
                     );
 
-                    \DB::insert('insert into opera_sync_log (log_message,reservation_id, opera_request,opera_response,sync_status,updated_by,updated_at) values (?, ?, ?, ?, ?, ?, ?)',
-                        [
-                            'Reservation Not Update '.$reservation_data['resvNameId'],
-                            0,
-                            json_encode($request->all()),
-                            json_encode($response),
-                            'error',
-                            0,
-                            \Carbon\Carbon::now()->toDateTimeString()]
-                    );
+//                    \DB::insert('insert into opera_sync_log (log_message,reservation_id, opera_request,opera_response,sync_status,updated_by,updated_at) values (?, ?, ?, ?, ?, ?, ?)',
+//                        [
+//                            'Reservation Not Updated '.$reservation_data['resvNameId'],
+//                            0,
+//                            json_encode($request->all()),
+//                            json_encode($response),
+//                            'error',
+//                            0,
+//                            \Carbon\Carbon::now()->toDateTimeString()]
+//                    );
                 }
 
 
@@ -210,6 +211,7 @@ class NotifyController extends Controller
                             $updater->updateReservation();
                             $change = true;
                         }
+
                     }elseif($res_type == 'incoming'){
 
                         if($current_accommodation_checkin != $reservation_date){
