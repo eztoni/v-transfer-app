@@ -45,8 +45,17 @@ class GetMailHeaderAddressAndName
                 break;
             case 2:
                 return "Imperial Riviera d.d.
-                    <br>
-                    Ul. Jurja Barakovića 2, 51280, Rab, Croatia";
+                <br/>
+                    J. Barakovića2
+                    <br/>
+                    51280 Rab, Croatia
+                    <br/>
+                    HR-AB-51-040000124
+                    <br/>
+                    OIB: 90896496260
+                    <br/>
+                    IBAN: HR8124020061100210497
+                    ";
         }
 
         return  "Valamar Riviera d.d.
