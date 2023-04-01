@@ -6,6 +6,7 @@ use App\BusinessModels\Reservation\Reservation;
 use App\Events\ReservationCreatedEvent;
 use App\Models\Transfer;
 use App\Models\Traveller;
+use App\Services\Api\ValamarClientApi;
 use App\Services\Api\ValamarFiskalizacija;
 use App\Services\Api\ValamarOperaApi;
 use App\Services\Helpers\ReservationPartnerOrderCache;
@@ -82,12 +83,17 @@ class CreateReservation extends Reservation
                 $this->saveRoundTrip();
             }
 
+            #Send Reservation To Opera
+            $OperaAPI = new ValamarOperaApi();
+            $OperaAPI->syncReservationWithOpera($this->model->id);
+
+            #Send To Invoicing
+            $fiskalAPI = new ValamarFiskalizacija($this->model->id);
+            $fiskalAPI->fiskalReservation();
+
             ReservationCreatedEvent::dispatch($this->model,[
                 ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail
             ]);
-
-
-
         });
 
         //Cache the order

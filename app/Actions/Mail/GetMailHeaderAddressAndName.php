@@ -58,7 +58,10 @@ class GetMailHeaderAddressAndName
 
         return  "Valamar Riviera d.d.
                     <br>
-                   Stancija Kaligari 1 52440 Poreč, Croatia";
+                   Stancija Kaligari 1 52440 Poreč, Croatia
+                   <br>
+                   OIB: 36201212847
+                   ";
 
     }
 
