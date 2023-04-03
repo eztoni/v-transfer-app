@@ -39,7 +39,14 @@ class GetMailHeaderAddressAndName
             case 1:
                 return  "Valamar Riviera d.d.
                     <br>
-                   Stancija Kaligari 1 52440 Poreč, Croatia";
+                   Stancija Kaligari 1 52440 Poreč, Croatia
+                   <br/>
+                   HR-AB-52-040020883
+                   <br/>
+                   OIB: 36201212847
+                   <br/>
+                   IBAN: HR412360000-1101319202
+                   ";
                 break;
             case 2:
                 return "Imperial Riviera d.d.
@@ -61,6 +68,7 @@ class GetMailHeaderAddressAndName
                    Stancija Kaligari 1 52440 Poreč, Croatia
                    <br>
                    OIB: 36201212847
+                   <br/>
                    ";
 
     }
