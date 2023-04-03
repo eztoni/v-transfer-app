@@ -151,11 +151,15 @@
                     <th>Vehicle</th>
                     @if($this->isPartnerReporting)
                         <th>Tax lvl</th>
-                        <th>Comm. %</th>
-                        <th>Comm.</th>
+                        <th>Gross Income</th>
+                        <th>Comm</th>
+                        <th>Invoice Expense</th>
+                        <th>Gross Revenue</th>
+                        <th>PDV</th>
+                    @else
+                        <th>Price</th>
                     @endif
                     <th class="text-center">Status</th>
-                    <th class="text-right">Price</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -206,10 +210,18 @@
                         @if($this->isPartnerReporting)
 
                             <td>{{Arr::get($reservation,'tax_level')}}</td>
-                            <td>{{Arr::get($reservation,'commission')}} %</td>
-                            <td>{{Arr::get($reservation,'commission_amount')}}</td>
+                            <td>{{Arr::get($reservation,'price_eur')}}</td>
+                            <td align="center">{{Arr::get($reservation,'commission')}} %</td>
+                            <td align="center">{{Arr::get($reservation,'invoice_charge')}}</td>
+                            <td align="center">{{Arr::get($reservation,'commission_amount')}}</td>
+                            <td align="center">{{Arr::get($reservation,'pdv')}}</td>
+                        @else
+                            <td class="text-right">
+                                <span class="font-bold"> {{Arr::get($reservation,'price_eur')}}</span>
 
+                            </td>
                         @endif
+
                         <td class="text-center ">
 
                             @switch(Arr::get($reservation,'status'))
@@ -224,10 +236,7 @@
                                     @break
                             @endswitch
                         </td>
-                        <td class="text-right">
-                            <span class="font-bold"> {{Arr::get($reservation,'price_eur')}}</span>
 
-                        </td>
 
                     </tr>
                 @endforeach

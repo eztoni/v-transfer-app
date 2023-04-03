@@ -153,6 +153,12 @@ class DestinationReport extends Component
                         $this->totalCommission = $this->totalCommission->add($i->total_commission_amount);
                     }
 
+                    $inv = $priceEur->subtract($i->total_commission_amount)->getMoney();
+
+                    $invEur = \Cknow\Money\Money::EUR($inv->getAmount());
+
+                    $pdv = $inv->multiply('0.20');
+                    $pdv = \Cknow\Money\Money::EUR($pdv->getAmount());
 
                     return [
                         'id' => $i->id,
@@ -171,6 +177,8 @@ class DestinationReport extends Component
                         'tax_level'=>  \Arr::get($i->transfer_price_state,'price_data.tax_level'),
                         'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
                         'commission_amount'=>  (string) $i->total_commission_amount,
+                        'invoice_charge' => (string) $invEur,
+                        'pdv' => (string) $pdv,
                     ];
                 })->toArray();
 
