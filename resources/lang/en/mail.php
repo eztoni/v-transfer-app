@@ -151,6 +151,7 @@ If you have any special requests, feel free to reply to this e-mail.
             the facility you are staying at.',
     ],
 
+    'invoice_no' => 'Invoice Number',
     'no' => 'No.',
     'code' => 'Code',
     'service_name' => 'Service Name',

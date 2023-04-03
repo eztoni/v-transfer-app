@@ -126,6 +126,7 @@ naplaćena u trenutku rezerviranja dodatnih usluga, iste ćete platiti prilikom 
 boravite.',
     ],
 
+    'invoice_no' => 'Broj Računa',
     'no' => 'Redni broj',
     'code' => 'Šifra',
     'service_name' => 'Naziv usluge',

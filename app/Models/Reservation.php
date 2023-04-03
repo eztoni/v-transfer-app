@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Cknow\Money\Money;
+use Illuminate\Validation\Rules\In;
 
 class Reservation extends Model
 {
@@ -230,6 +231,29 @@ class Reservation extends Model
         }
 
         return $commission;
+    }
+
+    public function getInvoiceData($param){
+
+        $invoice_data = \DB::table('invoices')->where('reservation_id','=',$this->id)->first();
+
+        $return = '';
+
+        if(!empty($invoice_data)){
+            switch ($param){
+                case 'invoice_number':
+                    $return = $invoice_data->invoice_id.'/'.$invoice_data->invoice_establishment.'/'.$invoice_data->invoice_device;
+                    break;
+                case 'zki':
+                    $return = $invoice_data->zki;
+                    break;
+                case 'jir':
+                    $return = $invoice_data->jir;
+                    break;
+            }
+        }
+
+        return $return;
     }
 
     public function getExtrasPriceStatesAttribute(){

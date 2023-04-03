@@ -126,6 +126,7 @@ Unterkunftsreservierung zum Zeitpunkt der Buchung von Zusatzleistungen bereits i
 werden, bezahlen Sie diese beim Check-in im Objekt Ihres Aufenthaltes.',
     ],
 
+    'invoice_no' => 'Rechnungsnummer',
     'no' => 'Laufende
     Nummer',
     'code' => 'Code',

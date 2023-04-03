@@ -129,6 +129,7 @@ l’alloggio al momento della prenotazione dei servizi aggiuntivi, questi ultimi
 momento del check-in presso la struttura in cui soggiornate.',
     ],
 
+    'invoice_no' => 'Numero di fattura',
     'no' => 'N. ord.',
     'code' => 'Codice',
     'service_name' => 'Nome del servizio',
