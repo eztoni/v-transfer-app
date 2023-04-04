@@ -41,7 +41,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
 
             $data_array = array();
 
-            if (!$this->isPartnerReport) {
+            if ($this->isPartnerReport) {
 
                 $data_array['partner'] = $item['name'];
                 $data_array['kontigent'] = $item['transfer'];
