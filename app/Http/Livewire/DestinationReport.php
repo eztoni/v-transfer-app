@@ -173,6 +173,24 @@ class DestinationReport extends Component
                         $invoice_number = $invoice_data->invoice_id.'/'.$invoice_data->invoice_establishment.'/'.$invoice_data->invoice_device;
                     }
 
+
+
+                    $net_profit = (string)$net_profit;
+                    $net_profit = preg_replace('!€!','',$net_profit);
+
+                    $priceEur = (string)$priceEur;
+                    $priceEur = preg_replace('!€!','',$priceEur);
+
+                    $total_comm = (string)$i->total_commission_amount;
+                    $total_comm= preg_replace('!€!','',$total_comm);
+             
+                    $invEur = (string)$invEur;
+                    $invEur = preg_replace('!€!','',$invEur);
+
+
+                    $pdv = (string)$pdv;
+                    $pdv = preg_replace('!€!','',$pdv);
+
                     return [
                         'id' => $i->id,
                         'name' => $i->leadTraveller?->first()->full_name,
@@ -184,17 +202,17 @@ class DestinationReport extends Component
                         'transfer' => $i->transfer?->name,
                         'vehicle' => $i->transfer?->vehicle?->type,
                         'status' => $i->status,
-                        'price_eur' => (string)$priceEur,
+                        'price_eur' => $priceEur,
                         'round_trip' => $i->is_round_trip,
                         'round_trip_date' => $i->returnReservation?->date_time?->format('d.m.Y @ H:i'),
                         'voucher_date' => $i->created_at->toDateString(),
                         'tax_level'=>  \Arr::get($i->transfer_price_state,'price_data.tax_level'),
                         'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
-                        'commission_amount'=>  (string) $i->total_commission_amount,
-                        'net_income' => (string)$net_profit,
-                        'invoice_charge' => (string) $invEur,
+                        'commission_amount'=>  $total_comm,
+                        'net_income' => $net_profit,
+                        'invoice_charge' =>  $invEur,
                         'invoice_number' => (string) $invoice_number,
-                        'pdv' => (string) $pdv,
+                        'pdv' => $pdv,
                     ];
                 })->toArray();
 

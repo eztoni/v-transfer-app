@@ -51,7 +51,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
                 $data_array['porezna_grupa'] = $item['tax_level'];
                 $data_array['datum_prodaje'] = $item['voucher_date'];
                 $data_array['bruto_prihod'] = $item['price_eur'];
-                $data_array['ugovorena_provizija'] = $item['commission'];
+                $data_array['ugovorena_provizija'] = $item['commission'].'%';
                 $data_array['trošak_ulaznog_računa'] = $item['invoice_charge'];
                 $data_array['bruto_profit'] = $item['commission_amount'];
                 $data_array['pdv'] = $item['pdv'];
@@ -69,7 +69,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
                 $data_array['bruto_prihod'] = $item['price_eur'];
                 $data_array['trošak_ulaznog_računa'] = $item['invoice_charge'];
                 $data_array['bruto_profit'] = $item['commission_amount'];
-                $data_array['ugovorena_provizija'] = $item['commission'];
+                $data_array['ugovorena_provizija'] = $item['commission'].'%';
                 $data_array['vrsta_proizvoda'] = 'Transfer';
             }
             return $data_array;
