@@ -138,113 +138,78 @@
 
             </div>
 
-            <table class="ds-table ds-table-compact w-full">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>Guest</th>
-                    <th>R.t.</th>
-                    <th>Date</th>
-                    <th>Partner</th>
-                    <th>People</th>
-                    <th>Transfer</th>
-                    <th>Vehicle</th>
+            <table class="ds-table max-w-full ds-table-compact">
+                <tr  style="font-size: 10px !important">
                     @if($this->isPartnerReporting)
-                        <th>Tax lvl</th>
-                        <th>Gross Income</th>
-                        <th>Comm</th>
-                        <th>Invoice Expense</th>
-                        <th>Gross Revenue</th>
+                        <th>Partner</th>
+                        <th>Prozivod</th>
+                        <th>Kontigent</th>
+                        <th>Prodajno Mjesto</th>
+                        <th>Vrsta Plaćanja</th>
+                        <th>Broj Računa</th>
+                        <th>Porezna Grupa</th>
+                        <th>Datum Prodaje</th>
+                        <th>Bruto Prihod</th>
+                        <th>Ugovorena Provizija</th>
+                        <th>Trošak Ulaznog Računa</th>
+                        <th>Bruto Profit</th>
                         <th>PDV</th>
+                        <th>Neto Profit</th>
                     @else
-                        <th>Price</th>
+                        <th>Partner</th>
+                        <th>Kontigent</th>
+                        <th>Datum Vouchera</th>
+                        <th>Prodajno Mjesto</th>
+                        <th>Voucher ID</th>
+                        <th>Nositelj vouchera</th>
+                        <th>Broj Odraslih</th>
+                        <th>Broj Djece</th>
+                        <th>Bruto Prihod</th>
+                        <th>Trošak Ulaznog Računa</th>
+                        <th>Bruto Profit</th>
+                        <th>Ugovorena Provizija</th>
+                        <th>Vrsta Proizvoda</th>
                     @endif
-                    <th class="text-center">Status</th>
                 </tr>
                 </thead>
-                <tbody>
-
+                <tbody  style="font-size: 10px !important">
                 @foreach($this->filteredReservations as $reservation)
                     <tr>
-                        <th>{{Arr::get($reservation,'id')}}</th>
-                        <td>{{Arr::get($reservation,'name')}}</td>
-                        <td>
-                            @if(Arr::get($reservation,'round_trip'))
-                                <x-icon name="check-circle" class="w-5 h-5 text-success"/>
-                            @else
-                                <x-icon name="x-circle" class="w-5 h-5 text-negative-500"/>
-
-                            @endif
-                        </td>
-                        <td>
-                            <p class="flex gap-2">
-                                <x-icon name="arrow-right" class="w-5 h-5"/>
-                                <label>{{Arr::get($reservation,'date_time')}}</label>
-                            </p>
-                            @if(Arr::get($reservation,'round_trip'))
-
-                                <p class="flex gap-2">
-                                    <x-icon name="arrow-left" class="w-5 h-5"/>
-                                    <label>{{Arr::get($reservation,'round_trip_date')}}</label>
-                                </p>
-                            @endif
-
-                        </td>
-                        <td>{{Arr::get($reservation,'partner')}}</td>
-                        <td>
-                            <span>A: {{Arr::get($reservation,'adults')}}</span>
-
-                            @if(Arr::get($reservation,'children'))
-                                <br>
-                                <span>C: {{Arr::get($reservation,'children')}}</span>
-
-                            @endif
-                            @if(Arr::get($reservation,'infants'))
-                                <br>
-                                <span>I: {{Arr::get($reservation,'infants')}}</span>
-                            @endif
-
-                        </td>
-                        <td>{{Arr::get($reservation,'transfer')}}</td>
-                        <td>{{Arr::get($reservation,'vehicle')}}</td>
+                        <!-- Partner Reporting -->
                         @if($this->isPartnerReporting)
-
+                            <td>{{Arr::get($reservation,'partner')}}</td>
+                            <td>{{Arr::get($reservation,'transfer')}}</td>
+                            <td>{{Arr::get($reservation,'transfer')}}</td>
+                            <td>VEC Valamar</td>
+                            <td>-</td>
+                            <td>{{Arr::get($reservation,'invoice_number')}}</td>
                             <td>{{Arr::get($reservation,'tax_level')}}</td>
+                            <td>{{Arr::get($reservation,'voucher_date')}}</td>
                             <td>{{Arr::get($reservation,'price_eur')}}</td>
                             <td align="center">{{Arr::get($reservation,'commission')}} %</td>
                             <td align="center">{{Arr::get($reservation,'invoice_charge')}}</td>
                             <td align="center">{{Arr::get($reservation,'commission_amount')}}</td>
                             <td align="center">{{Arr::get($reservation,'pdv')}}</td>
+                            <td align="center">{{Arr::get($reservation,'net_income')}}</td>
                         @else
-                            <td class="text-right">
-                                <span class="font-bold"> {{Arr::get($reservation,'price_eur')}}</span>
-
-                            </td>
+                            <td>{{Arr::get($reservation,'partner')}}</td>
+                            <td>{{Arr::get($reservation,'transfer')}}</td>
+                            <td>{{Arr::get($reservation,'voucher_date')}}</td>
+                            <td>VEC Valamar</td>
+                            <td>{{Arr::get($reservation,'id')}}</td>
+                            <td>{{Arr::get($reservation,'name')}}</td>
+                            <td>{{Arr::get($reservation,'adults')}}</td>
+                            <td>{{Arr::get($reservation,'children')+Arr::get($reservation,'infants')}}</td>
+                            <td>{{Arr::get($reservation,'price_eur')}}</td>
+                            <td align="center">{{Arr::get($reservation,'invoice_charge')}}</td>
+                            <td align="center">{{Arr::get($reservation,'commission_amount')}}</td>
+                            <td align="center">{{Arr::get($reservation,'commission')}} %</td>
+                            <td align="center">Transfer</td>
                         @endif
-
-                        <td class="text-center ">
-
-                            @switch(Arr::get($reservation,'status'))
-                                @case(\App\Models\Reservation::STATUS_PENDING)
-                                    <x-icon name="question-mark-circle" class="text-warning-600 w-5 h-5 mx-auto"/>
-                                    @break
-                                @case(\App\Models\Reservation::STATUS_CONFIRMED)
-                                    <x-icon name="check-circle" class="text-success w-5 h-5 mx-auto"/>
-                                    @break
-                                @case(\App\Models\Reservation::STATUS_CANCELLED)
-                                    <x-icon name="x-circle" class="text-negative-500 w-5 h-5 mx-auto"/>
-                                    @break
-                            @endswitch
-                        </td>
-
-
                     </tr>
                 @endforeach
-
-
                 </tbody>
             </table>
-
 
         </x-card>
     @else

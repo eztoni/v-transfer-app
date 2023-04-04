@@ -160,6 +160,19 @@ class DestinationReport extends Component
                     $pdv = $inv->multiply('0.20');
                     $pdv = \Cknow\Money\Money::EUR($pdv->getAmount());
 
+                    $invoice_data = \DB::table('invoices')->where('reservation_id','=',$i->id)->first();
+
+                    $net_profit = $i->total_commission_amount->subtract($pdv)->getMoney();
+
+                    $net_profit = \Cknow\Money\Money::EUR($net_profit->getAmount());
+
+
+                    $invoice_number = '-';
+
+                    if(!empty($invoice_data)) {
+                        $invoice_number = $invoice_data->invoice_id.'/'.$invoice_data->invoice_establishment.'/'.$invoice_data->invoice_device;
+                    }
+
                     return [
                         'id' => $i->id,
                         'name' => $i->leadTraveller?->first()->full_name,
@@ -174,10 +187,13 @@ class DestinationReport extends Component
                         'price_eur' => (string)$priceEur,
                         'round_trip' => $i->is_round_trip,
                         'round_trip_date' => $i->returnReservation?->date_time?->format('d.m.Y @ H:i'),
+                        'voucher_date' => $i->created_at->toDateString(),
                         'tax_level'=>  \Arr::get($i->transfer_price_state,'price_data.tax_level'),
                         'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
                         'commission_amount'=>  (string) $i->total_commission_amount,
+                        'net_income' => (string)$net_profit,
                         'invoice_charge' => (string) $invEur,
+                        'invoice_number' => (string) $invoice_number,
                         'pdv' => (string) $pdv,
                     ];
                 })->toArray();

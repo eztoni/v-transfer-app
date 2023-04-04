@@ -34,21 +34,45 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
 
     private function format()
     {
+
+
+
         $this->data =  $this->data->map(function ($item) {
+
+            $data_array = array();
+
             if (!$this->isPartnerReport) {
-                unset($item['tax_level']);
-                unset($item['commission']);
-                unset($item['commission_amount']);
+
+                $data_array['partner'] = $item['name'];
+                $data_array['kontigent'] = $item['transfer'];
+                $data_array['prodajno_mjesto'] = 'VEC';
+                $data_array['vrsta_plaćanja'] = '-';
+                $data_array['broj_računa'] = $item['invoice_number'];
+                $data_array['porezna_grupa'] = $item['tax_level'];
+                $data_array['datum_prodaje'] = $item['voucher_date'];
+                $data_array['bruto_prihod'] = $item['price_eur'];
+                $data_array['ugovorena_provizija'] = $item['commission'];
+                $data_array['trošak_ulaznog_računa'] = $item['invoice_charge'];
+                $data_array['bruto_profit'] = $item['commission_amount'];
+                $data_array['pdv'] = $item['pdv'];
+                $data_array['neto_profit'] = $item['net_income'];
+
+            }else{
+                $data_array['partner'] = $item['name'];
+                $data_array['kontigent'] = $item['transfer'];
+                $data_array['datum_vouchera'] = $item['voucher_date'];
+                $data_array['prodajno_mjesto'] = 'VEC';
+                $data_array['voucher_id'] = $item['id'];
+                $data_array['nosite_vouchera'] = $item['name'];
+                $data_array['odrasli'] = $item['adults'];
+                $data_array['djeca'] = (int)$item['children']+(int)$item['infants'];
+                $data_array['bruto_prihod'] = $item['price_eur'];
+                $data_array['trošak_ulaznog_računa'] = $item['invoice_charge'];
+                $data_array['bruto_profit'] = $item['commission_amount'];
+                $data_array['ugovorena_provizija'] = $item['commission'];
+                $data_array['vrsta_proizvoda'] = 'Transfer';
             }
-
-            foreach ($item as $key => $value) {
-                if (!$value) {
-                    $item[$key] = '0';
-                }
-            }
-
-
-            return $item;
+            return $data_array;
         });
     }
 
@@ -61,7 +85,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
         }
 
         return [
-            ['Date from', 'Date to', 'Partner', 'Destination','Total Revenue','Total commission'],
+            ['Datum Od', 'Datum Do', 'Partner', 'Destinacija','Ukupni Prihodi','Ukupna Provizija'],
             $this->filterData,
             [],
             $headings
