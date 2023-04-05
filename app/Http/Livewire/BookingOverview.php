@@ -40,8 +40,10 @@ use Actions;
                 return $q->where('destination_id',$this->destinationId);
             })
             ->when($this->pointId,function ($q){
-                return $q->where('dropoff_address_id',$this->pointId)
-                         ->orWhere('pickup_address_id',$this->pointId);
+                return $q->where(function($q){
+                    $q->where('dropoff_address_id',$this->pointId)
+                        ->orWhere('pickup_address_id',$this->pointId);
+                });
             })
             ->when($this->bookingId,function ($q){
                 return $q->where('id', '=',  $this->bookingId );
