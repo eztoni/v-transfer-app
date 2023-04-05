@@ -385,7 +385,6 @@ class InternalReservation extends Component
 
         }
 
-
     }
 
     public function resetAdresses()
@@ -396,6 +395,8 @@ class InternalReservation extends Component
 
     public function setOtherTravellers()
     {
+
+        
         $this->stepTwoFields['otherTravellers'] = [];
         for ($i = 0; $i < $this->getTotalPassengersProperty() - 1; $i++) {
             $this->stepTwoFields['otherTravellers'][] = [
@@ -457,11 +458,10 @@ class InternalReservation extends Component
         $this->stepOneFields['children'] = Arr::get($data, 'children');
         $this->stepOneFields['luggage'] = Arr::get($data, 'adults');
 
-
         $checkInDate = Carbon::make(Arr::get($data, 'checkIn') ?? now());
 
         $this->stepOneFields['returnDateTime'] = Carbon::make(Arr::get($data, 'checkOut'))?->format('d.m.Y').' '.substr($this->stepOneFields['returnDateTime'],11,5);
-        
+
         if ($checkInDate?->isPast()) {
             $this->stepOneFields['dateTime'] = $this->stepOneFields['returnDateTime'];
         } else {
@@ -478,6 +478,9 @@ class InternalReservation extends Component
         $this->stepTwoFields['leadTraveller']['reservationOperaConfirmation'] = Arr::get($data, 'OPERA.CONFIRMATION_NO');
 
         $this->notification()->success('Data pulled');
+
+        $this->setOtherTravellers();
+
         $this->closePullModal();
     }
 
