@@ -46,9 +46,10 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
                 $data_array['partner'] = $item['name'];
                 $data_array['kontigent'] = $item['transfer'];
                 $data_array['prodajno_mjesto'] = 'VEC';
-                $data_array['vrsta_plaćanja'] = '-';
+                $data_array['vrsta_plaćanja'] = 'REZERVACIJA NA SOBU';
                 $data_array['broj_računa'] = $item['invoice_number'];
                 $data_array['porezna_grupa'] = $item['tax_level'];
+                $data_array['postupak'] = $item['status'] == 'confirmed' ? 'RP' : 'CF';
                 $data_array['datum_prodaje'] = $item['voucher_date'];
                 $data_array['bruto_prihod'] = $item['price_eur'];
                 $data_array['ugovorena_provizija'] = $item['commission'].'%';
@@ -63,6 +64,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
                 $data_array['datum_vouchera'] = $item['voucher_date'];
                 $data_array['prodajno_mjesto'] = 'VEC';
                 $data_array['voucher_id'] = $item['id'];
+                $data_array['porezna_grupa'] = $item['tax_level'];
                 $data_array['nosite_vouchera'] = $item['name'];
                 $data_array['odrasli'] = $item['adults'];
                 $data_array['djeca'] = (int)$item['children']+(int)$item['infants'];

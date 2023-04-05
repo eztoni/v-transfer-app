@@ -157,7 +157,7 @@ class DestinationReport extends Component
 
                     $invEur = \Cknow\Money\Money::EUR($inv->getAmount());
 
-                    $pdv = $inv->multiply('0.20');
+                    $pdv = $i->total_commission_amount->multiply('0.20');
                     $pdv = \Cknow\Money\Money::EUR($pdv->getAmount());
 
                     $invoice_data = \DB::table('invoices')->where('reservation_id','=',$i->id)->first();
@@ -173,8 +173,6 @@ class DestinationReport extends Component
                         $invoice_number = $invoice_data->invoice_id.'/'.$invoice_data->invoice_establishment.'/'.$invoice_data->invoice_device;
                     }
 
-
-
                     $net_profit = (string)$net_profit;
                     $net_profit = preg_replace('!€!','',$net_profit);
 
@@ -183,7 +181,7 @@ class DestinationReport extends Component
 
                     $total_comm = (string)$i->total_commission_amount;
                     $total_comm= preg_replace('!€!','',$total_comm);
-             
+
                     $invEur = (string)$invEur;
                     $invEur = preg_replace('!€!','',$invEur);
 
@@ -261,7 +259,13 @@ class DestinationReport extends Component
 
         ]);
 
-        return Excel::download($export,"{$owner}_{$destination}_{$partner}_{$this->dateFrom}.xlsx");
+        if($this->isPartnerReporting){
+            $fileName = "reporting_".gmdate('dmy').'_PPOM';
+        }else{
+            $fileName = "reporting_".gmdate('dmy').'partner_voucher';
+        }
+
+        return Excel::download($export,"$fileName.xlsx");
     }
 
     public function getAdminDestinationsProperty()

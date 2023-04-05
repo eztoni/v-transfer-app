@@ -148,6 +148,7 @@
                         <th>Vrsta Plaćanja</th>
                         <th>Broj Računa</th>
                         <th>Porezna Grupa</th>
+                        <th>Porezna Postupak</th>
                         <th>Datum Prodaje</th>
                         <th>Bruto Prihod</th>
                         <th>Ugovorena Provizija</th>
@@ -161,6 +162,7 @@
                         <th>Datum Vouchera</th>
                         <th>Prodajno Mjesto</th>
                         <th>Voucher ID</th>
+                        <th>Porezna Grupa</th>
                         <th>Nositelj vouchera</th>
                         <th>Broj Odraslih</th>
                         <th>Broj Djece</th>
@@ -181,9 +183,10 @@
                             <td>{{Arr::get($reservation,'transfer')}}</td>
                             <td>{{Arr::get($reservation,'transfer')}}</td>
                             <td>VEC Valamar</td>
-                            <td>-</td>
+                            <td>REZERVACIJA NA SOBU</td>
                             <td>{{Arr::get($reservation,'invoice_number')}}</td>
                             <td>{{Arr::get($reservation,'tax_level')}}</td>
+                            <td>{{Arr::get($reservation,'status') == 'confirmed' ? 'RP' : 'CF'}}</td>
                             <td>{{Arr::get($reservation,'voucher_date')}}</td>
                             <td>{{Arr::get($reservation,'price_eur')}}</td>
                             <td align="center">{{Arr::get($reservation,'commission')}} %</td>
@@ -197,6 +200,7 @@
                             <td>{{Arr::get($reservation,'voucher_date')}}</td>
                             <td>VEC Valamar</td>
                             <td>{{Arr::get($reservation,'id')}}</td>
+                            <td>{{Arr::get($reservation,'tax_level')}}</td>
                             <td>{{Arr::get($reservation,'name')}}</td>
                             <td>{{Arr::get($reservation,'adults')}}</td>
                             <td>{{Arr::get($reservation,'children')+Arr::get($reservation,'infants')}}</td>
