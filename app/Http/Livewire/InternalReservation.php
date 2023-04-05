@@ -460,15 +460,13 @@ class InternalReservation extends Component
 
         $checkInDate = Carbon::make(Arr::get($data, 'checkIn') ?? now());
 
-
-        $this->stepOneFields['returnDateTime'] = Carbon::make(Arr::get($data, 'checkOut'))?->format('d.m.Y H:i');
-
+        $this->stepOneFields['returnDateTime'] = Carbon::make(Arr::get($data, 'checkOut'))?->format('d.m.Y').' '.substr($this->stepOneFields['returnDateTime'],11,5);
+        
         if ($checkInDate?->isPast()) {
             $this->stepOneFields['dateTime'] = $this->stepOneFields['returnDateTime'];
         } else {
             $this->roundTrip = true;
-
-            $this->stepOneFields['dateTime'] = $checkInDate->format('d.m.Y H:i');
+            $this->stepOneFields['dateTime'] = $checkInDate->format('d.m.Y').' '.substr($this->stepOneFields['dateTime'],11,5);
         }
 
         $this->stepTwoFields['leadTraveller']['firstName'] = Str::title(Arr::get($data, 'reservationHolderData.firstName'));
