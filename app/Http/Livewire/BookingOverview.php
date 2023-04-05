@@ -51,9 +51,9 @@ use Actions;
                     $q->where('pickup_address', 'LIKE', '%' . $this->search . '%')
                         ->where('dropoff_address', 'LIKE', '%' . $this->search . '%')
                         ->orWhereHas('leadTraveller', function ($q){
-                            //Mozda virtualni column u bazi dodat za ful name?
                             $q->where('first_name', 'LIKE', '%' . $this->search . '%')
                                 ->orWhere('last_name', 'LIKE', '%' . $this->search . '%')
+                                ->orWhere('full_name', 'LIKE', '%' . $this->search . '%')
                                 ->orWhere('email', 'LIKE', '%' . $this->search . '%')
                                 ->orWhere('reservation_number', 'LIKE', '%' . $this->search . '%')
                                 ->orWhere('reservation_opera_confirmation', 'LIKE', '%' . $this->search . '%')

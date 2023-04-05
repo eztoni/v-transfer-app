@@ -256,6 +256,7 @@ class InternalReservation extends Component
 
         $traveller->first_name = $this->stepTwoFields['leadTraveller']['firstName'];
         $traveller->last_name = $this->stepTwoFields['leadTraveller']['lastName'];
+        $traveller->full_name = $traveller->first_name.' '.$traveller->last_name;
         $traveller->email = $this->stepTwoFields['leadTraveller']['email'];
         $traveller->reservation_number = $this->stepTwoFields['leadTraveller']['reservationNumber'];
         $traveller->reservation_opera_id = $this->stepTwoFields['leadTraveller']['reservationOperaID'];
@@ -308,7 +309,7 @@ class InternalReservation extends Component
 
                 $traveller->first_name = $tr['firstName'];
                 $traveller->last_name = $tr['lastName'];
-
+                $traveller->full_name = $traveller->first_name.' '.$traveller->last_name;
                 $businessModel->addOtherTraveller($traveller, $tr['comment']);
             }
         }
@@ -469,7 +470,7 @@ class InternalReservation extends Component
 
             $this->stepOneFields['dateTime'] = $checkInDate->format('d.m.Y H:i');
         }
-        
+
         $this->stepTwoFields['leadTraveller']['firstName'] = Str::title(Arr::get($data, 'reservationHolderData.firstName'));
         $this->stepTwoFields['leadTraveller']['lastName'] = Str::title(Arr::get($data, 'reservationHolderData.lastName'));
         $this->stepTwoFields['leadTraveller']['email'] = Arr::get($data, 'reservationHolderData.email');
