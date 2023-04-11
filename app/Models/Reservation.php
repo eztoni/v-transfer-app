@@ -233,6 +233,21 @@ class Reservation extends Model
         return $commission;
     }
 
+    public function getFormattedOtherTravellers(){
+
+        $return = array();
+
+        if($this->otherTravellers()){
+            foreach ($this->otherTravellers as $traveller){
+                $return[] = $traveller->full_name;
+            }
+        }
+
+        $return = implode(',',$return);
+
+        return $return;
+    }
+
     public function getInvoiceData($param){
 
         $invoice_data = \DB::table('invoices')->where('reservation_id','=',$this->id)->first();

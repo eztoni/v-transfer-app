@@ -143,4 +143,5 @@ boravite.',
     'extras' => 'Dodaci',
     'cancelled_at' => 'Otkazano',
     'base'=>'Osnovica',
+    'other_travellers' => 'Ostali Putnici'
 ];

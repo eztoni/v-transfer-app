@@ -147,4 +147,5 @@ momento del check-in presso la struttura in cui soggiornate.',
     'extras' => 'Extras',
     'cancelled_at' => 'Cancellato alle',
     'base'=>'Base',
+    'other_travellers' => 'Altri Viaggiatori'
 ];

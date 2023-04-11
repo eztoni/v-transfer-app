@@ -144,4 +144,5 @@ werden, bezahlen Sie diese beim Check-in im Objekt Ihres Aufenthaltes.',
     'extras' => 'Extras',
     'cancelled_at' => 'Abgesagt um',
     'base'=>'Grundlage',
+    'other_travellers' => 'Andere Reisende'
 ];

@@ -46,9 +46,15 @@
             <p style="font-size: 14px"><b>{{__('mail.reservation_number')}}:</b> #{{$reservation->id}}</p>
             <p style="font-size: 14px"><b>{{__('mail.name')}}:</b> {{ucwords($reservation->leadTraveller?->full_name)}}
             </p>
+
             @if($reservation->leadTraveller->phone)
                 <p style="font-size: 14px"><b>{{__('mail.contact_phone')}}:</b> {{$reservation->leadTraveller->phone}}
                 </p>
+            @endif
+
+            @if($reservation->otherTravellers)
+                <p style="font-size: 14px"><b>{{__('mail.other_travellers')}}:</b>{{ $reservation->getFormattedOtherTravellers() }}</p>
+
             @endif
 
             <p style="font-size: 14px"><b>{{__('mail.direction')}}:</b>

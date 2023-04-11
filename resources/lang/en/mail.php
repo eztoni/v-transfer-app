@@ -170,4 +170,5 @@ If you have any special requests, feel free to reply to this e-mail.
     'extras' => 'Extras',
     'cancelled_at' => 'Cancelled at',
     'base'=>'Base',
+    'other_travellers' => 'Other Travellers'
 ];
