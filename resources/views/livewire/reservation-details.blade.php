@@ -4,7 +4,7 @@
             <div>
                 <p class=" text-xl font-bold">Transfer #{{$reservation->id}}: </p>
                 <p><strong>Created by:</strong> {{$reservation->createdBy->name}}
-                    <strong>@</strong> {{ $reservation->created_at->format('d.m.Y H:i') }}</p>
+                    <strong>@</strong> {{\Carbon\Carbon::parse($reservation->created_at->format('d.m.Y H:i'))->addHour()->format('d.m.Y H:i')}}</p>
                 @if($reservation->updated_by)
                     <p><strong>Updated by:</strong> {{$reservation->updatedBy->name}}
                         <strong>@</strong> {{ $reservation->updated_at->format('d.m.Y H:i') }}</p>
