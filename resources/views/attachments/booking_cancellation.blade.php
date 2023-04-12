@@ -39,7 +39,7 @@
         <x-mail.row>
             <div class="" style="padding: 3px 0 0 0; text-align: right ;width: 100%; margin-bottom: 25px">
                 <p style="width: 100%">
-                    {{__('mail.cancelled_at')}}: {{$reservation->updated_at->format('d.m.Y H:i')}}
+                    {{__('mail.cancelled_at')}}: {{\Carbon\Carbon::parse($reservation->updated_at->format('d.m.Y H:i'))->addHour()->format('d.m.Y H:i')}}
                     <br>
                     {{__('mail.reservation_holder')}}: {{$reservation->lead_traveller->full_name}}
                     <br>
