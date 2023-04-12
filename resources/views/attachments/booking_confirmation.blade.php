@@ -202,7 +202,7 @@
 
     <x-mail.footer-below>
 
-        <div class="" style="padding-top: 40px;"></div>
+        <div class="" style="padding-top: 90px;"></div>
         <div style="position: fixed;max-width: 600px;padding-bottom: 25px; bottom: 0;">
 
             <p style="text-align: justify; font-size: 8px">
