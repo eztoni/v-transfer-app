@@ -25,7 +25,7 @@
                 <p style="width: 100%">
                     {!! \App\Actions\Mail\GetMailHeaderAddressAndName::run($reservation) !!}
                     <br>
-                    Fax: +385 (0) 52 451 206
+                    Phone: +385 (0) 52 451 206
                     <br>
 
                     E-mail: reservations@valamar.com
@@ -59,12 +59,12 @@
                 <tr style="border: 1px solid black;font-weight: 700;">
                     <td style="border: 1px solid black;padding:5px 5px">{{__('mail.no')}}</td>
                     <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.code')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.service_name')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.transfer')}}</td>
 
-                    <td style="padding:5px 5px;border: 1px solid black;text-align: right">{{__('mail.without_vat')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;text-align: right">{{__('mail.amount')}}</td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">{{__('mail.vat')}}%</td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">{{__('mail.vat_amount')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;text-align: right">{{__('mail.total')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;text-align: right">{{__('mail.price')}}</td>
                 </tr>
                 </thead>
 
@@ -126,7 +126,7 @@
                     <td style="border: 1px solid black;padding:5px 5px">{{__('mail.tax_group')}}</td>
                     <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.base')}}</td>
                     <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.vat')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.total')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.price')}}</td>
 
                 </tr>
                 </thead>
@@ -158,18 +158,19 @@
                     <b>{{$reservation->getPrice()}}</b>
                 </td>
                 </tbody>
+
                 <tfoot>
                 <tr>
                     <td colspan="3" style="border: 1px solid black; text-align: right;padding:5px 5px">
-                        <b>{{__('mail.total')}}: </b>
+                        <b>{{__('mail.price')}}: </b>
                     </td>
                     <td style="border: 1px solid black;text-align: right;padding:5px 5px">
                         <b>{{$reservation->getPrice()}} / {{$reservation->getPriceHRK()}}</b>
                     </td>
                 </tr>
                 </tfoot>
-            </table>
-
+            </table><br>
+            <p style="float: right;font-style: italic;font-site:10px">{{__('mail.price_info')}}</p>
 
         </x-mail.row>
 
@@ -193,13 +194,14 @@
         <div class="" style="padding-top: 40px;"></div>
 
         <x-mail.footer>
-            {{__('mail.valamar_transfer_service')}}
+            {{__('mail.valamar_transfer_service')}}<br>
+            {{__('mail.not_fiscalized')}}
         </x-mail.footer>
     </x-mail.body>
 
 
     <x-mail.footer-below>
-        {{__('mail.not_fiscalized')}}
+
         <div class="" style="padding-top: 40px;"></div>
         <div style="position: fixed;max-width: 600px;padding-bottom: 25px; bottom: 0;">
 

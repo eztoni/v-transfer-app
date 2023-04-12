@@ -44,6 +44,8 @@ return [
     'li_3' => 'Veuillez respecter les règles suivantes dans le véhicule',
     'li_3_1' => 'Fumer n\'est pas autorisé',
     'li_3_2' => 'La ceinture de sécurité doit être portée en tout temps.',
-    'other_travellers' => 'Autres Voyageurs'
+    'other_travellers' => 'Autres Voyageurs',
+    'price' => 'Prix',
+    'transfer' => 'Transfer'
 
 ];
