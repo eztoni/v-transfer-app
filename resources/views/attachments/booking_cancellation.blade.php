@@ -188,14 +188,13 @@
             {{__('mail.not_fiscalized')}}
         </x-mail.footer>
     </x-mail.body>
-
-
     <x-mail.footer-below>
 
-        <div class="" style="padding-top: 40px;"></div>
-        <div style="position: fixed;max-width: 600px;padding-bottom: 25px; bottom: 0;">
+        <div class="" style="padding-top: 10px;"></div>
+        <div style="position: relative;max-width: 600px;padding-bottom: 25px; bottom: 0">
 
             <p style="text-align: justify; font-size: 8px">
+
                 @if($reservation->destination->owner_id == 1)
                     {{__('mail.guest.footer.valamar')}}
                 @endif
