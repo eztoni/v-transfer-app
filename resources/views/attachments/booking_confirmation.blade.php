@@ -39,7 +39,7 @@
         <x-mail.row>
             <div class="" style="padding: 3px 0 0 0; text-align: right ;width: 100%; margin-bottom: 25px">
                 <p style="width: 100%">
-                    {{__('mail.created_at')}}: {{$reservation->created_at->format('d.m.Y H:i')}}
+                    {{__('mail.created_at')}}: {{$reservation->created_at->setTimezone('Europe/Zagreb')->format('d.m.Y H:i')}}
                     <br>
                     {{__('mail.reservation_holder')}}: {{$reservation->lead_traveller->full_name}}
                     <br>
