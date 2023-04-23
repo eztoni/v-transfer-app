@@ -38,13 +38,13 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
         }
 
         $this->model->save();
-/*
+
         $api = new ValamarOperaApi();
         $api->syncReservationWithOpera($this->model->id);
 
         ReservationCancelledEvent::dispatch($this->model,[
             ReservationCancelledEvent::SEND_MAIL_CONFIG_PARAM => true
         ]);
-*/
+
     }
 }
