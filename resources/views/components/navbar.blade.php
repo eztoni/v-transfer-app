@@ -17,7 +17,7 @@
     </div>
     @endrole
 
-    @hasanyrole(\App\Models\User::ROLE_SUPER_ADMIN.'|'.\App\Models\User::ROLE_ADMIN)
+    @hasanyrole(\App\Models\User::ROLE_SUPER_ADMIN.'|'.\App\Models\User::ROLE_ADMIN.'|'.\App\Models\User::ROLE_USER)
     <div class="flex-none hidden px-2 mx-2 lg:flex">
         <livewire:owner-switcher></livewire:owner-switcher>
     </div>
