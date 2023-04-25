@@ -32,9 +32,9 @@ use Actions;
 
         $destinations = Destination::all();
 
-
-        if(Auth::user()->hasAnyRole([User::ROLE_USER]))
-            $destinations = Auth::user()->availableDestinations()->get();
+        # Stefano Pitao da se izbjegne filtracija korisnik\destinacija
+        #if(Auth::user()->hasAnyRole([User::ROLE_USER]))
+          #  $destinations = Auth::user()->availableDestinations()->get();
 
         $userDestinationName = 'Destinations';
         if($destinations->isNotEmpty())
