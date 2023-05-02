@@ -31,7 +31,7 @@ use Actions;
         $rules = [
             'traveller.first_name'=>'required|max:50|min:2',
             'traveller.last_name'=>'required|max:50|min:2',
-            'traveller.title'=>'required|max:50|min:2',
+            'traveller.title'=>'max:500',
             'traveller.reservation_opera_confirmation'=>'string|max:200',
             'traveller.reservation_opera_id'=>'string|max:200',
             'otherTravellerComment'=>'nullable|max:100',
@@ -74,8 +74,8 @@ use Actions;
     }
 
     public function saveTravellerData(){
-        if(!Auth::user()->hasRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN]))
-            return;
+        #if(!Auth::user()->hasRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN]))
+            #return;
 
         $this->validate();
 

@@ -6,7 +6,7 @@
 
 
         <div style="padding: 25px 0">
-        <p>Poštovani,</p>
+        <p>Postovani,</p>
             <br>
         <p>
             U prilogu nalazi se potvrda rezervacije transfera.
@@ -14,7 +14,7 @@
             </p>
             <br>
 
-            <p>Vaš Valamar tim</p>
+            <p>Vas Valamar tim</p>
         </div>
     </x-mail.row>
     </x-mail.body>

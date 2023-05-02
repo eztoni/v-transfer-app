@@ -107,7 +107,7 @@ class InternalReservation extends Component
             'stepTwoFields.leadTraveller.reservationNumber' => 'nullable|string',
             'stepTwoFields.leadTraveller.reservationOperaID' => 'nullable|string',
             'stepTwoFields.leadTraveller.reservationOperaConfirmation' => 'nullable|string',
-            'stepTwoFields.leadTraveller.email' => 'nullable|string|email',
+            'stepTwoFields.leadTraveller.email' => 'required|string|email',
             'stepTwoFields.leadTraveller.phone' => 'required|string',
             'stepTwoFields.includedInAccommodationReservation' => 'boolean',
             'stepTwoFields.confirmationLanguage' => 'required',
@@ -396,7 +396,7 @@ class InternalReservation extends Component
     public function setOtherTravellers()
     {
 
-        
+
         $this->stepTwoFields['otherTravellers'] = [];
         for ($i = 0; $i < $this->getTotalPassengersProperty() - 1; $i++) {
             $this->stepTwoFields['otherTravellers'][] = [
