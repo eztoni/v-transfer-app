@@ -25,6 +25,10 @@ class PartnersOverview extends Component
     public $softDeleteModal;
     public $deleteId = '';
     public $selectedDestinations = [];
+    public $cf_types = array(
+        'nominal' => 'Nominal ( € )',
+        'percent' => 'Percentage ( % )'
+    );
 
     public $copyTermsModal = false;
 
@@ -68,6 +72,10 @@ class PartnersOverview extends Component
             'partner.address'=>'required|min:3',
             'selectedDestinations'=>'required',
             'partner.phone'=>'required|max:255',
+            'partner.cancellation_package_id' => 'required|int',
+            'partner.cf_amount_12' => 'required|int|min:3',
+            'partner.cf_amount_24' => 'required|int',
+            'partner.cf_type' => 'required'
         ];
 
         foreach ($this->companyLanguages as $lang) {

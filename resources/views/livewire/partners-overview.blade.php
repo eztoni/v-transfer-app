@@ -156,7 +156,18 @@
                               wire:click="openCopyTermsModal"
                               label="Copy terms from another partner" class="float-right"></x-button>
                 @endif
+
             </div>
+            <br/>
+            <x-input label="Cancellation Opera Package ID" wire:model="partner.cancellation_package_id"></x-input>
+            <x-native-select
+                wire:model="partner.cf_type"
+                label="Cancellation Fee Type:"
+                option-key-value
+                :options="$cf_types"
+            />
+            <x-input label="Cancellation Fee < 12 hours" wire:model="partner.cf_amount_12"></x-input>
+            <x-input label="Cancellation Fee < 24 hours" wire:model="partner.cf_amount_24"></x-input>
             <x-slot name="footer">
                 <div class="flex justify-between">
 
