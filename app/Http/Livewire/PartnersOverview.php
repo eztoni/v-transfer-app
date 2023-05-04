@@ -26,8 +26,8 @@ class PartnersOverview extends Component
     public $deleteId = '';
     public $selectedDestinations = [];
     public $cf_types = array(
-        'nominal' => 'Nominal ( € )',
-        'percent' => 'Percentage ( % )'
+        'percent' => 'Percentage ( % )',
+        'nominal' => 'Nominal ( € )'
     );
 
     public $copyTermsModal = false;
@@ -73,7 +73,7 @@ class PartnersOverview extends Component
             'selectedDestinations'=>'required',
             'partner.phone'=>'required|max:255',
             'partner.cancellation_package_id' => 'required|int',
-            'partner.cf_amount_12' => 'required|int|min:3',
+            'partner.cf_amount_12' => 'required|int',
             'partner.cf_amount_24' => 'required|int',
             'partner.cf_type' => 'required'
         ];
@@ -113,7 +113,6 @@ class PartnersOverview extends Component
         foreach ($this->companyLanguages as $lang) {
             $this->terms[$lang] = $this->partner->getTranslation('terms', $lang, false);
         }
-
     }
 
 
@@ -126,6 +125,15 @@ class PartnersOverview extends Component
         $this->terms = [];
         $this->openPartnerModal();
         $this->partner = new Partner();
+
+        #Set Default Cancellation Fee Type to be percentage
+        $this->partner->cancellation_fee_type = 'percent';
+        #Set Default Value of Cancellation Fee Amount for < 12 hours
+        $this->partner->cf_amount_12 = 100;
+        #Set Default Value of Cancellation Fee Amount for < 24 hours
+        $this->partner->cf_amount_24 = 50;
+
+
         $this->selectedDestinations = [];
     }
 

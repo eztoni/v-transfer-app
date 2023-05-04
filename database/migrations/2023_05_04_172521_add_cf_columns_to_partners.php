@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::table('partners', function (Blueprint $table) {
             $table->integer('cancellation_package_id');
             $table->enum('cf_type', ['nominal', 'percent'])->default('percent');
-            $table->integer('cf_amount_12')->default(50);
-            $table->integer('cf_amount_24')->default(100);
+            $table->integer('cf_amount_12')->default(100);
+            $table->integer('cf_amount_24')->default(50);
         });
     }
 
