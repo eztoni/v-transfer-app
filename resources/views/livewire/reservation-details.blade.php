@@ -126,7 +126,7 @@
     @if($cancelReservation)
 
         <x-modal.card wire:model="cancelModal" title="Cancel reservation #{{$this->cancelReservation->id}}">
-            <livewire:cancel-transfer-reservation :reservation="$this->cancelReservation"/>
+            <livewire:cancel-transfer-reservation :reservation="$this->cancelReservation" :partnerID="$this->reservation->partner_id"/>
         </x-modal.card>
     @endif
 
