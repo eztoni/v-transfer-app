@@ -54,19 +54,16 @@
 
     @foreach($this->reservations as $reservation)
 
-        <x-card cardClasses="mb-4" title="Transfer #{{$reservation->id}} - {{ucfirst($reservation->status)}}">
-
+        <x-card cardClasses="mb-4" title="Transfer #{{$reservation->id}}">
                 <x-slot name="action">
                     <div class="flex gap-4 items-center">
 {{--                        Div below is used to compile these dynamic classes    --}}
                     <span class="ds-badge-primary ds-badge-info ds-badge-warning ds-badge-accent hidden"></span>
-                    <span class="ds-badge ds-badge-{{$reservation->isRoundTrip()?'accent':'primary'}}">{{$reservation->isRoundTrip()?'Round trip':'One way'}}</span>
-                    <x-button sm icon="external-link" target="_blank" href="{{route('reservation-details',$reservation->id)}}">View</x-button>
+                    <span class="ds-badge sm ds-badge-{{$reservation->isRoundTrip()?'accent':'primary'}}">{{$reservation->isRoundTrip()?'Round trip':'One way'}}</span>
+                        <span class="ds-badge ds-badge-{{$reservation->status == 'confirmed' ? 'success':'error'}}">{{ucfirst($reservation->status)}}</span>
+                        <x-button sm icon="external-link" target="_blank" href="{{route('reservation-details',$reservation->id)}}">View</x-button>
                     </div>
                 </x-slot>
-
-
-
 
                 <div class="flex flex-col w-full">
                     <div class="flex gap-4 md:flex-row flex-col basis-2/3">
