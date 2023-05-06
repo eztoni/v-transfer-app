@@ -29,7 +29,7 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
         }
     }
 
-    public function cancelReservation($cancellationdate = false)
+    public function cancelReservation($cancellationdate = false,$cancellation_type = 'cancellation',$cancellation_fee = 0)
     {
         $this->model->status = Reservation::STATUS_CANCELLED;
 
@@ -37,14 +37,19 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
             $this->model->setUpdatedAt($cancellationdate);
         }
 
+        $this->model->cancellation_type = $cancellation_type;
+        $this->model->cancellation_fee = $cancellation_fee;
+        $this->model->cancelled_at = $cancellationdate;
+
         $this->model->save();
 
+        /*
         $api = new ValamarOperaApi();
         $api->syncReservationWithOpera($this->model->id);
 
         ReservationCancelledEvent::dispatch($this->model,[
             ReservationCancelledEvent::SEND_MAIL_CONFIG_PARAM => true
         ]);
-
+*/
     }
 }

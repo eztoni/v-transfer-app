@@ -43,10 +43,9 @@ use Actions;
     }
 
     protected function getRules(){
-
         $rules = [
             "cancellation_fee_percent" => 'required|integer|min:0|max:100',
-            //"cancellation_fee_nominal" => 'required|min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
+            #"cancellation_fee_nominal" => 'required|numeric|min:1|max:'.(int)$this->reservation->getPrice()->formatByDecimal().'|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
         ];
 
         return $rules;
@@ -55,11 +54,16 @@ use Actions;
     {
 
         if(!$this->cancellationDate){
-            $this->cancellationDate = Carbon::now()->format('Y-m-d H:i:ss');
+            $this->cancellationDate = Carbon::now()->format('Y-m-d H:i:s');
         }
 
         $cancelAction = new CancelReservation($this->reservation);
-        $cancelAction->cancelReservation($this->cancellationDate);
+
+        $cancelAction->cancelReservation(
+            $this->cancellationDate,
+            $this->cancellationType,
+            $this->cancellation_fee_nominal
+        );
 
         if($this->cancelRoundTrip){
 
@@ -83,6 +87,8 @@ use Actions;
                 $this->cancellation_fee_nominal = number_format($this->cancellation_fee_nominal,2);
                 break;
         }
+
+        $this->cancellationDate = Carbon::now()->addHour()->format('Y-m-d H:i:s');
 
     }
 
