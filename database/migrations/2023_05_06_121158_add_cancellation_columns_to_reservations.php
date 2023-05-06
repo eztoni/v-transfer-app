@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('reservations', function (Blueprint $table) {
-            $table->decimal('cancellation_fee',10,2);
+            $table->decimal('cancellation_fee',10,2)->nullable();
             $table->enum('cancellation_type', ['cancellation', 'refund'])->default('cancellation');
             $table->timestamp('cancelled_at');
         });
