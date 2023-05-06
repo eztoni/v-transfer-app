@@ -13,6 +13,8 @@
     <div class="ds-divider"></div>
     <b class="text">{{$partnerName}} - Cancellation Fee Conditions</b>
     <div class="ds-divider"></div>
+    <p class="text">Reservation Total: {{$this->reservation->getPrice()}}</p>
+    <div class="ds-divider"></div>
 
     <x-native-select
         wire:model="cancellationType"
