@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\BusinessModels\Reservation\Actions\CancelReservation;
 use App\BusinessModels\Reservation\Actions\UpdateReservation;
+use App\Facades\EzMoney;
 use App\Models\Partner;
 use App\Models\Reservation;
 use Carbon\Carbon;
@@ -18,10 +19,10 @@ use Actions;
     public Reservation $reservation;
     public $cancellationDate;
     public bool $cancelRoundTrip = true;
-    public $cancellation_fee_percent = 50;
+    public $cancellation_fee_percent = 0;
     public $cancellation_fee_nominal = 0;
     public $partnerID;
-    public $infoMessage = 'asd';
+    public $infoMessage = '';
     public $partnerName = 'Partner';
 
     public $cancellationTypeOptions = array(
@@ -37,6 +38,19 @@ use Actions;
         $this->emit('cancelCancelled');
     }
 
+    public function mount(){
+        $this->loadPartnerCommissionDetails();
+    }
+
+    protected function getRules(){
+
+        $rules = [
+            "cancellation_fee_percent" => 'required|integer|min:0|max:100',
+            //"cancellation_fee_nominal" => 'required|min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
+        ];
+
+        return $rules;
+    }
     public function cancelReservation()
     {
 
@@ -55,11 +69,25 @@ use Actions;
         $this->emit('cancelCompleted');
     }
 
+    public function updated($property){
 
+        $this->validate($this->getRules());
+        $reservationTotal = $this->reservation->getPrice();
+
+        switch ($property){
+            case 'cancellation_fee_percent':
+                $this->cancellation_fee_nominal = number_format($reservationTotal->formatByDecimal()*($this->cancellation_fee_percent/100),2);
+                break;
+            case 'cancellation_fee_nominal':
+                $this->cancellation_fee_percent = number_format(($this->cancellation_fee_nominal*$reservationTotal->formatByDecimal())/100);
+                $this->cancellation_fee_nominal = number_format($this->cancellation_fee_nominal,2);
+                break;
+        }
+
+    }
 
     public function render()
     {
-        $this->loadPartnerCommissionDetails();
         return view('livewire.cancel-transfer-reservation');
     }
 
@@ -82,7 +110,6 @@ use Actions;
 
             $cancel_type = 0;
             $hours_difference = 24;
-
 
 
             switch ($hours_difference){

@@ -21,7 +21,7 @@
         :options="$cancellationTypeOptions"
     />
 
-    <x-input type="number" label="Cancellation Fee %" wire:model="cancellation_fee_percent"></x-input>
+    <x-input type="number" min="1" max="100" label="Cancellation Fee %" wire:model="cancellation_fee_percent"></x-input>
     <x-input  type="number" label="Cancellation Fee €" wire:model="cancellation_fee_nominal"></x-input>
     <br/>
     <label style="font-size: 80%" primary class="flex justify-end">{{$infoMessage}}</label>
