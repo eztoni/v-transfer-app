@@ -172,7 +172,55 @@ class NotifyController extends Controller
                                 $reservation->status = Reservation::STATUS_CANCELLED;
 
                                 $cancel = new CancelReservation($reservation);
-                                $cancel->cancelReservation();
+
+                                $partner = Partner::findOrFail($reservation->partner_id);
+
+                                $now = Carbon::now();
+
+                                $cancellationDate = $now->addHour();
+
+                                $transferDateTime = $reservation->date_time;
+
+                                #Calculate Hours Difference
+                                $hours_difference = $transferDateTime->diffInHours($now);
+
+
+                                $cancel_type = 0;
+
+
+                                switch ($hours_difference){
+                                    case $hours_difference > 24:
+                                        $cancellation_fee_nominal = 0;
+                                        $cancellation_fee_percent = 0;
+                                        break;
+                                    default:
+                                        if($hours_difference >= 12){
+                                            $cancel_type = 24;
+                                        }
+
+                                        if($hours_difference < 12){
+                                            $cancel_type = 12;
+                                        }
+
+                                        $cancellation_fee_type = $partner->cf_type;
+
+                                        if($cancellation_fee_type == 'percent'){
+
+                                            $reservationTotal = $reservation->getPrice();
+
+                                            if($cancel_type == 24){
+                                                $cf_calc_amount = $partner->cf_amount_24;
+                                            }elseif ($cancel_type == 12){
+                                                $cf_calc_amount = $partner->cf_amount_12;
+                                            }
+
+                                            $cf_amount = number_format($reservationTotal->formatByDecimal()*($cf_calc_amount/100),2);
+
+                                            $cancellation_fee_nominal = $cf_amount;
+                                        }
+                                }
+
+                                $cancel->cancelReservation(false,'cancellation',$cancellation_fee_nominal);
 
                                 $change = true;
 
