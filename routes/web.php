@@ -18,14 +18,15 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
     Route::middleware(
-        ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN . '|' . User::ROLE_USER]
+        ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN . '|' . User::ROLE_USER.'|'.User::ROLE_RECEPTION]
     )->group(callback: function () {
         /*
             |--------------------------------------------------------------------------
             | User routes
             |--------------------------------------------------------------------------
         */
-        include_once 'role-user.php';
+
+        include 'role-user.php';
 
         Route::middleware(
             ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN]
@@ -50,7 +51,6 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
             });
         });
     });
-
 
 });
 
