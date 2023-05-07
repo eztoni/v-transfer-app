@@ -54,6 +54,21 @@ class ValamarOperaApi{
         }
     }
 
+    public function syncReservationCFWithOpera($reservation_id,$cancellation_fee){
+
+        $this->reservation = Reservation::findOrFail($reservation_id);
+
+        if($this->validateCFReservationMapping()){
+            if($this->buildCFRequestStruct($cancellation_fee)){
+                $this->sendOperaRequest();
+            }
+        }else{
+            $this->request = $this->errors;
+            $this->writeCommunicationLog(self::STATUS_ERROR);
+        }
+
+    }
+
     private function setAuthenticationHeaders() : void{
         $this->auth_credentials = array(
             'SysUser' =>  config('valamar.valamar_opera_api_user'),
@@ -89,6 +104,34 @@ class ValamarOperaApi{
 
         return $return;
     }
+    /**
+     * Function used to validate whether all the parameters have been set
+     * @return bool Returns true if all the properties for the reqest have the valid mapping structure
+     */
+    private function validateCFReservationMapping() : bool{
+
+        $return = true;
+
+        #PMS Code Validation
+        if(!$this->validatePMSCode()){
+            $return = false;
+            $this->errors[] = 'No Mapped PMS code for the destination';
+        }
+
+        #Reservation Number Validation
+        if(!$this->validateReservationNumber()){
+            $return = false;
+            $this->errors[] = 'No reservation number for this reservation';
+        }
+
+        #Validate Cancellation PackageID - Route PMS Code
+        if(!$this->validateCancellationPackageID()){
+            $return = false;
+            $this->errors[] = 'Missing Route Opera Package ID';
+        }
+
+        return $return;
+    }
 
     /**
      * Function used to validate that the PMS code for the dropoff location has been set
@@ -109,7 +152,7 @@ class ValamarOperaApi{
                return true;
            }
         }
-        
+
         return $return;
     }
 
@@ -164,6 +207,25 @@ class ValamarOperaApi{
 
         return $return;
     }
+    /**
+     * Function used to validate that the reservation number has been set for this reservation
+     * @return bool True if the reservation number has been set for this reservation, false otherwise
+     */
+    private function validateCancellationPackageID() : bool{
+
+        $return = false;
+
+        $partner = Partner::finrOrFail($this->reservation->partner_id);
+
+        if(!empty($partner)){
+            if($partner->cancellation_package_id){
+                $this->packageID = $partner->cancellation_package_id;
+                return true;
+            }
+        }
+
+        return $return;
+    }
 
     /**
      * Function used to prepare the request needed to be sent towards Opera API Interface
@@ -195,6 +257,26 @@ class ValamarOperaApi{
 
         return true;
     }
+    /**
+     * Function used to prepare the request needed to be sent towards Opera API Interface
+     * @return void
+     */
+    private function buildCFRequestStruct($cancellation_fee): bool{
+
+        #Auth Credentials
+        $this->request = $this->auth_credentials;
+        #Resort - Point Destination Code
+        $this->request['Resort'] = $this->resortPMSCode;
+        #PMSReservationID - Reservation Number
+        $this->request['PMSReservationID'] = $this->reservation_opera_id;
+        #Transaction ID - Internal Booking ID
+        $this->request['TransactionID'] = $this->reservation->id;
+
+        #Build Packages
+        $this->request['Packages'][] = $this->buildCFPackage($this->reservation,$cancellation_fee);
+
+        return true;
+    }
 
     private function buildReservationPackage(\App\Models\Reservation $reservation) : array{
 
@@ -209,6 +291,22 @@ class ValamarOperaApi{
             'StartDate' => Carbon::parse($reservation->date_time)->toDateString(),
             'EndDate' => Carbon::parse($reservation->date_time)->toDateString(),
             'Comment' => $this->buildPackageComment($reservation),
+        );
+    }
+
+    private function buildCFPackage(\App\Models\Reservation $reservation,$cancellation_fee) : array{
+
+        return array(
+            #1 if booking is active - 0 if cancelled
+            'Quantity' => 1,
+            'PackageID' => $this->packageID,
+            'PricePerUnit' => $cancellation_fee,
+            'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
+            'ExternalCartID' => $reservation->id,
+            'ExternalCartItemID' => $reservation->id,
+            'StartDate' => Carbon::parse($reservation->date_time)->toDateString(),
+            'EndDate' => Carbon::parse($reservation->date_time)->toDateString(),
+            'Comment' => 'Cancellation Fee',
         );
     }
     /**

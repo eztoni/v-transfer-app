@@ -84,7 +84,7 @@ class ValamarFiskalizacija{
             if(!$owner_location){
                 $owner_location = Point::where('pms_code','=',$acc_opera_code)->get()->first();
             }
-            
+
             if($owner_location){
 
                 #Set Property Code
@@ -172,9 +172,129 @@ class ValamarFiskalizacija{
             }
         }
 
+        }
+
+    }
+
+    public function fiskalReservationCF($cancellation_fee){
+
+        #Get End Location
+        $owner_location = false;
+
+        $reservation = $this->reservation;
+
+        if($reservation->included_in_accommodation_reservation == 1){
+            return true;
+        }
+
+        $traveller_info = $reservation->getLeadTravellerAttribute();
+
+        $reservation_code = $traveller_info->reservation_number;
+
+        $valamar_api = new ValamarClientApi();
+        $valamar_api->setReservationCodeFilter($reservation_code);
+
+        $opera_res_data = $valamar_api->getReservationList();
+
+        #Fetch the reservation from Opera
+        if(!empty($opera_res_data[$reservation_code])){
+
+            $acc_opera_code = $opera_res_data[$reservation_code]['propertyOperaCode'];
+            $acc_opera_class = $opera_res_data[$reservation_code]['propertyOperaClass'];
+
+            $owner_location = Point::where('pms_code','=',$acc_opera_code)
+                                    ->where('pms_class','=',$acc_opera_class)->get()->first();
+
+            if(!$owner_location){
+                $owner_location = Point::where('pms_code','=',$acc_opera_code)->get()->first();
+            }
+
+            if($owner_location){
+
+                #Set Property Code
+                $this->dropoffLocationPMSCode = $owner_location->pms_code;
+
+                #Get Owner - Fetch OIB
+                $owner = Owner::findOrFail($owner_location->owner_id);
+
+                if($owner->oib){
+
+                    $this->oib = $owner->oib;
+
+                    $zki =   Fiskal::GenerateZKI(
+                        Carbon::now(),
+                        $owner->oib,
+                        1,
+                        01,
+                        02,
+                        number_format($cancellation_fee/100,2),$owner_location);
+
+
+                    $next_invoice = ($owner_location->fiskal_invoice_no+1);
+
+                    if(strlen($next_invoice) == 1){
+                        $next_invoice = '0'.$next_invoice;
+                    }
+
+                    $amount = number_format($cancellation_fee/100,2);
+
+                    if($reservation->status == Reservation::STATUS_CANCELLED){
+                        $amount = '-'.$amount;
+                    }
+
+                    $this->amount = $amount;
+
+                    $response = Fiskal::Fiskal(
+                        $this->reservation_id,
+                        Carbon::now(),
+                        $owner->oib,
+                        $next_invoice,
+                        $owner_location->fiskal_establishment,
+                        $owner_location->fiskal_device,
+                        $this->amount,
+                        $zki,
+                        false,
+                        $owner_location
+                    );
+
+
+                    if(!empty($response)){
+
+                        if($response['success'] == true && !empty($response['jir'])){
+
+                            $this->zki = $zki;
+                            $this->jir = $response['jir'];
+
+                            #Update Invoice Order Number
+                            $owner_location->fiskal_invoice_no = $next_invoice;
+                            $owner_location->save();
+
+                            $invoice = new Invoice();
+                            $invoice->reservation_id = $this->reservation_id;
+                            $invoice->zki = $this->zki;
+                            $invoice->jir = $this->jir;
+                            $invoice->invoice_id = $next_invoice;
+                            $invoice->invoice_establishment = $owner_location->fiskal_establishment;
+                            $invoice->invoice_device = $owner_location->fiskal_device;
+
+                            $invoice->save();
+
+                            $this->invoice = $invoice;
 
 
 
+                            if(config('valamar.valamar_opera_fiskalizacija_active')){
+                                $this->setAuthenticationHeaders();
+                                if($this->validateReservationNumber() && $this->validatePMSCode()){
+                                    $this->buildRequestStruct();
+                                    $this->sendOperaRequest();
+                                }
+                            }
+                        }
+
+                    }
+            }
+        }
 
         }
 
