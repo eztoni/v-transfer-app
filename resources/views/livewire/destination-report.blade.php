@@ -140,76 +140,106 @@
 
             <table class="ds-table max-w-full ds-table-compact">
                 <tr  style="font-size: 10px !important">
-                    @if($this->isPartnerReporting)
-                        <th>Partner</th>
-                        <th>Prozivod</th>
+                    @if($this->isPPOMReporting)
                         <th>Kontigent</th>
                         <th>Prodajno Mjesto</th>
                         <th>Vrsta Plaćanja</th>
-                        <th>Broj Računa</th>
-                        <th>Porezna Grupa</th>
-                        <th>Porezna Postupak</th>
+                        <th>Porezna grupa</th>
+                        <th>Vezani Račun Id</th>
                         <th>Datum Prodaje</th>
+                        <th>Postupak</th>
                         <th>Bruto Prihod</th>
                         <th>Ugovorena Provizija</th>
                         <th>Trošak Ulaznog Računa</th>
                         <th>Bruto Profit</th>
                         <th>PDV</th>
-                        <th>Neto Profit</th>
-                    @else
+                        <th>Neto profit</th>
+                    @endif
+
+                    @if($this->isRPOReporting)
                         <th>Partner</th>
                         <th>Kontigent</th>
+                        <th>Prodajno Mjesto</th>
+                        <th>Postupak</th>
+                        <th>Datum Prodaje</th>
+                        <th>Datum Vouchera</th>
+                        <th>Broj Računa</th>
+                        <th>Proizvod</th>
+                        <th>Porezna grupa</th>
+                        <th>Vezani račun Id</th>
+                        <th>Količina</th>
+                        <th>Bruto prihod</th>
+                        <th>Bruto profit</th>
+                        <th>Trošak ulaznog računa</th>
+                        <th>Ugovorena Provizija</th>
+                    @endif
+
+                    @if($this->isPartnerReporting)
                         <th>Datum Vouchera</th>
                         <th>Prodajno Mjesto</th>
                         <th>Voucher ID</th>
-                        <th>Porezna Grupa</th>
-                        <th>Nositelj vouchera</th>
+                        <th>Nositelj Vouchera</th>
+                        <th>Postupak</th>
                         <th>Broj Odraslih</th>
                         <th>Broj Djece</th>
                         <th>Bruto Prihod</th>
-                        <th>Trošak Ulaznog Računa</th>
-                        <th>Bruto Profit</th>
+                        <th>Trošak Ulaznog računa</th>
+                        <th>Bruto profit</th>
                         <th>Ugovorena Provizija</th>
-                        <th>Vrsta Proizvoda</th>
+                        <th>Vrsta proizvoda</th>
                     @endif
+
+                    @if($this->isAgentReporting)
+                        <th>Prodajni Agent</th>
+                        <th>Kontigent</th>
+                        <th>Količina</th>
+                        <th>Bruto Prihod</th>
+                        <th>Trošak Ulaznog Računa</th>
+                        <th>Ugovorena provizija</th>
+                        <th>Bruto profit</th>
+                        <th>PDV</th>
+                        <th>Neto Profit</th>
+                        @endif
                 </tr>
                 </thead>
                 <tbody  style="font-size: 10px !important">
                 @foreach($this->filteredReservations as $reservation)
                     <tr>
-                        <!-- Partner Reporting -->
-                        @if($this->isPartnerReporting)
-                            <td>{{Arr::get($reservation,'partner')}}</td>
-                            <td>{{Arr::get($reservation,'transfer')}}</td>
+                        @if($this->isPPOMReporting)
                             <td>{{Arr::get($reservation,'transfer')}}</td>
                             <td>VEC Valamar</td>
                             <td>REZERVACIJA NA SOBU</td>
-                            <td>{{Arr::get($reservation,'invoice_number')}}</td>
                             <td>{{Arr::get($reservation,'tax_level')}}</td>
-                            <td>{{Arr::get($reservation,'status') == 'confirmed' ? 'RP' : 'CF'}}</td>
+                            <td>{{Arr::get($reservation,'invoice_number')}}</td>
                             <td>{{Arr::get($reservation,'voucher_date')}}</td>
+                            <td>{{Arr::get($reservation,'status') == 'confirmed' ? 'RP' : 'CF'}}</td>
                             <td>{{Arr::get($reservation,'price_eur')}}</td>
                             <td align="center">{{Arr::get($reservation,'commission')}} %</td>
                             <td align="center">{{Arr::get($reservation,'invoice_charge')}}</td>
                             <td align="center">{{Arr::get($reservation,'commission_amount')}}</td>
                             <td align="center">{{Arr::get($reservation,'pdv')}}</td>
                             <td align="center">{{Arr::get($reservation,'net_income')}}</td>
-                        @else
-                            <td>{{Arr::get($reservation,'partner')}}</td>
-                            <td>{{Arr::get($reservation,'transfer')}}</td>
-                            <td>{{Arr::get($reservation,'voucher_date')}}</td>
-                            <td>VEC Valamar</td>
-                            <td>{{Arr::get($reservation,'id')}}</td>
-                            <td>{{Arr::get($reservation,'tax_level')}}</td>
-                            <td>{{Arr::get($reservation,'name')}}</td>
-                            <td>{{Arr::get($reservation,'adults')}}</td>
-                            <td>{{Arr::get($reservation,'children')+Arr::get($reservation,'infants')}}</td>
-                            <td>{{Arr::get($reservation,'price_eur')}}</td>
-                            <td align="center">{{Arr::get($reservation,'invoice_charge')}}</td>
-                            <td align="center">{{Arr::get($reservation,'commission_amount')}}</td>
-                            <td align="center">{{Arr::get($reservation,'commission')}} %</td>
-                            <td align="center">Transfer</td>
                         @endif
+
+                        @if($this->isRPOReporting)
+                                <td>{{Arr::get($reservation,'partner')}}</td>
+                                <td>{{Arr::get($reservation,'transfer')}}</td>
+                                <td>VEC Valamar</td>
+                                <td>{{Arr::get($reservation,'status') == 'confirmed' ? 'RP' : 'CF'}}</td>
+                                <td>{{Arr::get($reservation,'voucher_date')}}</td>
+                                <td>{{Arr::get($reservation,'voucher_date')}}</td>
+                                <td>{{Arr::get($reservation,'invoice_number')}}</td>
+                                <td>{{Arr::get($reservation,'transfer')}}</td>
+                                <td>{{Arr::get($reservation,'tax_level')}}</td>
+                                <td>-</td>
+                                <td>1</td>
+                                <td>{{Arr::get($reservation,'price_eur')}}</td>
+                                <td align="center">{{Arr::get($reservation,'commission_amount')}}</td>
+                                <td align="center">{{Arr::get($reservation,'invoice_charge')}}</td>
+                                <td align="center">{{Arr::get($reservation,'commission')}} %</td>
+
+                        @endif
+
                     </tr>
                 @endforeach
                 </tbody>

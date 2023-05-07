@@ -25,7 +25,7 @@
                 <p style="width: 100%">
                     {!! \App\Actions\Mail\GetMailHeaderAddressAndName::run($reservation) !!}
                     <br>
-                    Phone: +385 (0) 52 451 206
+                    Phone: +385 (0) 52 465 000
                     <br>
 
                     E-mail: reservations@valamar.com
@@ -126,7 +126,7 @@
                     <td style="border: 1px solid black;padding:5px 5px">{{__('mail.tax_group')}}</td>
                     <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.base')}}</td>
                     <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.vat')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.price')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.total_price')}}</td>
 
                 </tr>
                 </thead>
