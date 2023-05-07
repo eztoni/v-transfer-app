@@ -30,8 +30,11 @@ use App\Http\Livewire\VehicleOverview;
 
 
 // Reports
-Route::get('/reports', DestinationReport::class)->name('reports');
-Route::get('/partner-reports', DestinationReport::class)->name('partner-reports');
+Route::get('/partner-report', DestinationReport::class)->name('partner-report');
+Route::get('/ppom-report', DestinationReport::class)->name('ppom-report');
+Route::get('/rpo-report', DestinationReport::class)->name('rpo-report');
+Route::get('/agent-report', DestinationReport::class)->name('agent-report');
+
 //Routes
 Route::get('/routes-overview', RoutesOverview::class)->name('routes-overview');
 //Owner

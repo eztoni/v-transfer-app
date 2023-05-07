@@ -115,7 +115,6 @@ use Actions;
             $hours_difference = $transferDateTime->diffInHours($now);
 
             $cancel_type = 0;
-            $hours_difference = 24;
 
 
             switch ($hours_difference){

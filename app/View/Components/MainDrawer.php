@@ -72,17 +72,29 @@ class MainDrawer extends Component
                 'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN),
                 'items' => [
                     [
-                        'text' => 'Reservation Report',
-                        'active' => request()->routeIs('reports'),
-                        'href' => route('reports'),
-                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN)
+                        'text' => 'Partner Report',
+                        'active' => request()->routeIs('partner-report'),
+                        'href' => route('partner-report'),
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER)
                     ],
                     [
-                        'text' => 'Partner Reporting',
-                        'active' => request()->routeIs('partner-reports'),
-                        'href' => route('partner-reports'),
-                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN)
+                        'text' => 'PPOM Report',
+                        'active' => request()->routeIs('ppom-report'),
+                        'href' => route('ppom-report'),
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER)
                     ],
+                    [
+                        'text' => 'RPO Report',
+                        'active' => request()->routeIs('rpo-report'),
+                        'href' => route('rpo-report'),
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER)
+                    ],
+                    [
+                        'text' => 'Agent Efficiency Report',
+                        'active' => request()->routeIs('agent-report'),
+                        'href' => route('agent-report'),
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER)
+                    ]
 
                 ]
             ],

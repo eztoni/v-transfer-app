@@ -40,6 +40,8 @@ class DestinationReport extends Component
 
     public bool $isPartnerReporting = false;
 
+    public $reportType = 'partner';
+
 
     protected $rules = [
         'destination' => 'required',
@@ -60,10 +62,25 @@ class DestinationReport extends Component
         $this->dateTo = Carbon::now()->endOfMonth()->format('d.m.Y');
         $this->filteredReservations = [];
 
+        #Partner Report
+        if(request()?->routeIs('partner-report')){
+            $this->reportType = 'partner-report';
+        }
 
+        #PPOM Report
+        if(request()?->routeIs('ppom-report')){
+            $this->reportType = 'ppom-report';
+        }
 
+        #RPO Report
+        if(request()?->routeIs('rpo-report')){
+            $this->reportType = 'rpo-report';
+        }
 
-        $this->isPartnerReporting = request()?->routeIs('partner-reports');
+        #Agent Report
+        if(request()?->routeIs('agent-report')){
+            $this->reportType = 'agent-report';
+        }
 
         if($this->isPartnerReporting){
             $p = Partner::first();
@@ -71,6 +88,8 @@ class DestinationReport extends Component
                 $this->partner = $p->id;
             }
         }
+
+        dd($this->reportType);
     }
 
 
@@ -259,10 +278,21 @@ class DestinationReport extends Component
 
         ]);
 
-        if($this->isPartnerReporting){
-            $fileName = "reporting_".gmdate('dmy').'_PPOM';
-        }else{
-            $fileName = "reporting_".gmdate('dmy').'partner_voucher';
+        switch($this->reportType){
+            case 'partner-report':
+                $fileName = "reporting_".gmdate('dmy').'_partner_voucher';
+                break;
+
+            case 'ppom-report':
+                break;
+                $fileName = "reporting_".gmdate('dmy').'_PPOM';
+            case 'rpo-report':
+                $fileName = "reporting_".gmdate('dmy').'_RPO';
+                break;
+
+            case 'agent-report':
+                $fileName = "reporting_".gmdate('dmy').'_agent_efficiency';
+                break;
         }
 
         return Excel::download($export,"$fileName.xlsx");
