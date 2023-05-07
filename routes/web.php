@@ -51,16 +51,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         });
     });
 
-    Route::middleware(
-        ['role:' . User::ROLE_RECEPTION]
-    )->group(callback: function () {
-        /*
-            |--------------------------------------------------------------------------
-            | RECEPTION ONLY ROUTES
-            |--------------------------------------------------------------------------
-        */
-        include_once 'role-reception.php';
-    });
+
 });
 
 
