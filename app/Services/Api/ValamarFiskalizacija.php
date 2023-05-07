@@ -238,10 +238,6 @@ class ValamarFiskalizacija{
 
                     $amount = number_format($cancellation_fee/100,2);
 
-                    if($reservation->status == Reservation::STATUS_CANCELLED){
-                        $amount = '-'.$amount;
-                    }
-
                     $this->amount = $amount;
 
                     $response = Fiskal::Fiskal(

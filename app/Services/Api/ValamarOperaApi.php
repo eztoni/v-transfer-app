@@ -6,6 +6,7 @@ use App\Models\Reservation;
 use App\Models\Route;
 use App\Models\Transfer;
 use App\Models\Traveller;
+use App\Models\Partner;
 use Carbon\Carbon;
 use Exchanger\Exception\Exception;
 use Illuminate\Support\Facades\Http;
@@ -215,7 +216,7 @@ class ValamarOperaApi{
 
         $return = false;
 
-        $partner = Partner::finrOrFail($this->reservation->partner_id);
+        $partner = Partner::findOrFail($this->reservation->partner_id);
 
         if(!empty($partner)){
             if($partner->cancellation_package_id){

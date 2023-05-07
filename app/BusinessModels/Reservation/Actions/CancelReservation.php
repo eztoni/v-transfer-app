@@ -52,7 +52,7 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
             $api->syncReservationCFWithOpera($this->model->id,$cancellation_fee);
 
             $valamarFisk = new ValamarFiskalizacija($this->model->id);
-            $valamarFisk->fiskalReservationCF();
+            $valamarFisk->fiskalReservationCF($cancellation_fee);
         }
 
         ReservationCancelledEvent::dispatch($this->model,[
