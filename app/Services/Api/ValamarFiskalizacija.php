@@ -227,7 +227,7 @@ class ValamarFiskalizacija{
                         1,
                         01,
                         02,
-                        number_format($cancellation_fee/100,2),$owner_location);
+                        number_format($cancellation_fee,2),$owner_location);
 
 
                     $next_invoice = ($owner_location->fiskal_invoice_no+1);
@@ -236,7 +236,7 @@ class ValamarFiskalizacija{
                         $next_invoice = '0'.$next_invoice;
                     }
 
-                    $amount = number_format($cancellation_fee/100,2);
+                    $amount = number_format($cancellation_fee,2);
 
                     $this->amount = $amount;
 
@@ -276,9 +276,7 @@ class ValamarFiskalizacija{
                             $invoice->save();
 
                             $this->invoice = $invoice;
-
-
-
+                            
                             if(config('valamar.valamar_opera_fiskalizacija_active')){
                                 $this->setAuthenticationHeaders();
                                 if($this->validateReservationNumber() && $this->validatePMSCode()){

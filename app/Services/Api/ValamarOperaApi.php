@@ -128,7 +128,7 @@ class ValamarOperaApi{
         #Validate Cancellation PackageID - Route PMS Code
         if(!$this->validateCancellationPackageID()){
             $return = false;
-            $this->errors[] = 'Missing Route Opera Package ID';
+            $this->errors[] = 'Missing Cancellation Opera Package ID';
         }
 
         return $return;
@@ -406,7 +406,7 @@ class ValamarOperaApi{
             $this->responseBody = $response->json();
 
 
-            if($this->responseBody['Status'] == 'ERR'){
+            if($this->responseBody['Status'] != 'OK'){
 
                 $this->writeCommunicationLog(self::STATUS_ERROR);
                 $response->throw('An Error Has occured');
