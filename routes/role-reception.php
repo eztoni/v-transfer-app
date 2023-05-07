@@ -12,7 +12,6 @@ use App\Http\Livewire\ReservationDetails;
      |  - SUPER-ADMIN
      |  - ADMIN
      |  - USER
-        - RECEPTION
  */
 
 

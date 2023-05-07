@@ -26,6 +26,18 @@
                         <br/>
                         <x-button sm icon="external-link" wire:click="openFiskalSyncModal({{$reservation->id}})">Issue Invoice ( Fiskalizacija )</x-button>
                 @endif
+
+                @if($reservation->status == 'cancelled')
+                    <br/>
+                    <br/>
+                    <p><b>Cancellation DateTime: </b>{{$reservation->cancelled_at}}</p>
+                    @if($reservation->cancellation_fee > 0)
+                    <p><b>Cancellation Fee Applied: </b>{{$reservation->cancellation_fee}} € ( {{$reservation->cancellation_type}} ) </p>
+                    @else
+                    <p><b>Cancellation Fee:</b> No cancellation fee applied</p>
+                @endif
+                @endif
+
             </div>
 
             <x-button href="{{route('bookings')}}"><i class="fas fa-angle-left mr-2"></i> Back</x-button>
