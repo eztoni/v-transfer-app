@@ -39,6 +39,9 @@ class DestinationReport extends Component
     public $totalCommission;
 
     public bool $isPartnerReporting = false;
+    public bool $isPPOMReporting = false;
+    public bool $isRPOReporting = false;
+    public bool $isAgentReporting = false;
 
     public $reportType = 'partner';
 
@@ -64,23 +67,24 @@ class DestinationReport extends Component
 
         #Partner Report
         if(request()?->routeIs('partner-report')){
-            $this->reportType = 'partner-report';
+            $this->isPartnerReporting = true;
         }
 
         #PPOM Report
         if(request()?->routeIs('ppom-report')){
-            $this->reportType = 'ppom-report';
+            $this->isPPOMReporting = true;
         }
 
         #RPO Report
         if(request()?->routeIs('rpo-report')){
-            $this->reportType = 'rpo-report';
+            $this->isRPOReporting = true;
         }
 
         #Agent Report
         if(request()?->routeIs('agent-report')){
-            $this->reportType = 'agent-report';
+            $this->isAgentReporting = true;
         }
+
 
         if($this->isPartnerReporting){
             $p = Partner::first();
@@ -89,7 +93,7 @@ class DestinationReport extends Component
             }
         }
 
-        dd($this->reportType);
+
     }
 
 
