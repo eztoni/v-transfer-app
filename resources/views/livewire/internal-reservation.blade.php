@@ -77,6 +77,7 @@
                                         <th>Children</th>
                                         <th>Check in</th>
                                         <th>Check out</th>
+                                        <th>Status</th>
                                         <th>Pull</th>
 
                                     </tr>
@@ -87,6 +88,7 @@
 
                                         <tr>
                                             <th>{{$k}}</th>
+
                                             <th>{{\Illuminate\Support\Arr::get($r,'OPERA.RESV_NAME_ID')}}</th>
                                             <th>{{\Illuminate\Support\Arr::get($r,'OPERA.CONFIRMATION_NO')}}</th>
                                             <th>{{\Illuminate\Support\Arr::get($r,'rateCode')}}</th>
@@ -97,10 +99,15 @@
                                             <th>{{\Illuminate\Support\Arr::get($r,'children')}}</th>
                                             <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkIn'))->format('d.m.Y')}}</th>
                                             <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkOut'))->format('d.m.Y')}}</th>
-
+                                            <th>{{\Illuminate\Support\Arr::get($r,'status')}}</th>
                                             <td>
+                                                @if(\Illuminate\Support\Arr::get($r,'status') == 'CANCEL')
+                                                    <x-button.circle sm negative disabled wire:click=""
+                                                                     icon="cloud-download"/>
+                                                @else
                                                 <x-button.circle sm positive wire:click="pullRes('{{$k}}')"
                                                                  icon="cloud-download"/>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
