@@ -240,6 +240,21 @@
 
                         @endif
 
+                        @if($this->isPartnerReporting)
+                                <td>{{Arr::get($reservation,'voucher_date')}}</td>
+                                <td>VEC Valamar</td>
+                                <td>{{Arr::get($reservation,'id')}}</td>
+                                <td>{{Arr::get($reservation,'name')}}</td>
+                                <td>{{Arr::get($reservation,'status') == 'confirmed' ? 'RP' : 'CF'}}</td>
+                                <td>{{Arr::get($reservation,'adults')}}</td>
+                                <td>{{Arr::get($reservation,'children')}}</td>
+                                <td>{{Arr::get($reservation,'price_eur')}}</td>
+                                <td align="center">{{Arr::get($reservation,'invoice_charge')}}</td>
+                                <td align="center">{{Arr::get($reservation,'commission_amount')}}</td>
+                                <td align="center">{{Arr::get($reservation,'commission')}} %</td>
+                                <td>Transfer</td>
+                        @endif
+
                     </tr>
                 @endforeach
                 </tbody>

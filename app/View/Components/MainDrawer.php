@@ -89,12 +89,6 @@ class MainDrawer extends Component
                         'href' => route('rpo-report'),
                         'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER)
                     ],
-                    [
-                        'text' => 'Agent Efficiency Report',
-                        'active' => request()->routeIs('agent-report'),
-                        'href' => route('agent-report'),
-                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER)
-                    ]
 
                 ]
             ],

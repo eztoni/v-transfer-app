@@ -24,7 +24,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
 
     private Collection $data;
 
-    public function __construct(private array $array, private bool $isPartnerReport)
+    public function __construct(private array $array, private string $reportType)
     {
 
         $this->data =  collect($array);
@@ -35,12 +35,26 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
     private function format()
     {
 
-
-
         $this->data =  $this->data->map(function ($item) {
 
             $data_array = array();
 
+            if($this->reportType == 'partner-report'){
+                $data_array['datum_vouchera'] = $item['voucher_date'];
+                $data_array['prodajno_mjesto'] = 'VEC Valamar';
+                $data_array['voucher_id'] = $item['id'];
+                $data_array['nositelj_vouchera'] = $item['name'];
+                $data_array['postupak'] = $item['status'] == 'confirmed' ? 'RP' : 'CF';
+                $data_array['odrasli'] = $item['adults'];
+                $data_array['djeca'] = (int)$item['children']+(int)$item['infants'];
+                $data_array['bruto_prihod'] = $item['price_eur'];
+                $data_array['trošak_ulaznog_računa'] = $item['invoice_charge'];
+                $data_array['bruto_profit'] = $item['commission_amount'];
+                $data_array['ugovorena_provizija'] = $item['commission'].'%';
+                $data_array['vrsta_proizvoda'] = 'Transfer';
+            }
+
+/*
             if ($this->isPartnerReport) {
 
                 $data_array['partner'] = $item['name'];
@@ -74,6 +88,8 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
                 $data_array['ugovorena_provizija'] = $item['commission'].'%';
                 $data_array['vrsta_proizvoda'] = 'Transfer';
             }
+
+*/
             return $data_array;
         });
     }
@@ -81,6 +97,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
     public function headings(): array
     {
         $headings = [];
+
         //get the first because all of them have all of the keys
         foreach (array_keys($this->data->first()) as $key) {
             $headings[] = Str::of($key)->replace('_', ' ')->ucfirst()->value();
@@ -92,6 +109,8 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
             [],
             $headings
         ];
+
+
     }
 
     public function collection()

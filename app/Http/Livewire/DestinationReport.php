@@ -68,21 +68,25 @@ class DestinationReport extends Component
         #Partner Report
         if(request()?->routeIs('partner-report')){
             $this->isPartnerReporting = true;
+            $this->reportType = 'partner-report';
         }
 
         #PPOM Report
         if(request()?->routeIs('ppom-report')){
             $this->isPPOMReporting = true;
+            $this->reportType = 'ppom-report';
         }
 
         #RPO Report
         if(request()?->routeIs('rpo-report')){
             $this->isRPOReporting = true;
+            $this->reportType = 'rpo-report';
         }
 
         #Agent Report
         if(request()?->routeIs('agent-report')){
             $this->isAgentReporting = true;
+            $this->reportType = 'agent-report';
         }
 
 
@@ -269,7 +273,7 @@ class DestinationReport extends Component
         $partner = Partner::find($this->partner)?->name;
         $owner = \Auth::user()->owner->name;
 
-        $export = new DestinationExport($this->filteredReservations,$this->isPartnerReporting);
+        $export = new DestinationExport($this->filteredReservations,$this->reportType);
 
         $export->setFilterData([
 
@@ -286,7 +290,6 @@ class DestinationReport extends Component
             case 'partner-report':
                 $fileName = "reporting_".gmdate('dmy').'_partner_voucher';
                 break;
-
             case 'ppom-report':
                 break;
                 $fileName = "reporting_".gmdate('dmy').'_PPOM';
