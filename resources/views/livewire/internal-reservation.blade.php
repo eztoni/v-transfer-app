@@ -101,7 +101,7 @@
                                             <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkOut'))->format('d.m.Y')}}</th>
                                             <th>{{\Illuminate\Support\Arr::get($r,'status')}}</th>
                                             <td>
-                                                @if(\Illuminate\Support\Arr::get($r,'status') == 'CANCEL')
+                                                @if(\Illuminate\Support\Arr::get($r,'status') == 'CANCELx')
                                                     <x-button.circle sm negative disabled wire:click=""
                                                                      icon="cloud-download"/>
                                                 @else
@@ -520,6 +520,22 @@
                         <x-input label="Phone"
                                  wire:model="stepTwoFields.leadTraveller.phone"
                         ></x-input>
+                        <x-flatpickr
+                            label="Check In:"
+                            min-date=""
+                            date-format="d.m.Y"
+                            :enable-time="false"
+                            wire:model.defer="stepTwoFields.leadTraveller.check_in"
+                        />
+
+                        <x-flatpickr
+                            label="Check Out"
+                            min-date=""
+                            date-format="d.m.Y"
+                            :enable-time="false"
+                            wire:model.defer="stepTwoFields.leadTraveller.check_out"
+                        />
+
                     </div>
                 </x-card>
 

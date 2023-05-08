@@ -69,6 +69,8 @@ class InternalReservation extends Component
         'stepTwoFields.leadTraveller.reservationOperaConfirmation' => ' opera confirmation number',
         'stepTwoFields.leadTraveller.email' => ' email',
         'stepTwoFields.leadTraveller.phone' => ' phone',
+        'stepTwoFields.leadTraveller.check_in' => ' check in',
+        'stepTwoFields.leadTraveller.check_out' => ' check out',
         'stepTwoFields.otherTravellers' => 'other travellers',
         'stepTwoFields.otherTravellers.*.firstName' => 'first name',
         'stepTwoFields.otherTravellers.*.lastName' => 'last naem',
@@ -109,6 +111,8 @@ class InternalReservation extends Component
             'stepTwoFields.leadTraveller.reservationOperaConfirmation' => 'nullable|string',
             'stepTwoFields.leadTraveller.email' => 'required|string|email',
             'stepTwoFields.leadTraveller.phone' => 'required|string',
+            'stepTwoFields.leadTraveller.check_in' => 'required',
+            'stepTwoFields.leadTraveller.check_out' => 'required',
             'stepTwoFields.includedInAccommodationReservation' => 'boolean',
             'stepTwoFields.confirmationLanguage' => 'required',
         ];
@@ -153,6 +157,8 @@ class InternalReservation extends Component
             'reservationOperaConfirmation' => null,
             'email' => null,
             'phone' => null,
+            'check_in' => null,
+            'check_out' => null,
         ],
         'confirmationLanguage' => 'en',
         'sendMail' => true,
@@ -263,6 +269,12 @@ class InternalReservation extends Component
         $traveller->reservation_opera_confirmation = $this->stepTwoFields['leadTraveller']['reservationOperaConfirmation'];
 
         $traveller->phone = $this->stepTwoFields['leadTraveller']['phone'];
+
+        $check_in =  Carbon::make($this->stepTwoFields['leadTraveller']['check_in']);
+        $check_out =  Carbon::make($this->stepTwoFields['leadTraveller']['check_out']);
+
+        $traveller->reservation_check_in = $check_in->format('Y-m-d');
+        $traveller->reservation_check_out = $check_out->format('Y-m-d');
 
         $route = $this->selectedRoute;
 
@@ -459,6 +471,7 @@ class InternalReservation extends Component
         $this->stepOneFields['luggage'] = Arr::get($data, 'adults');
 
         $checkInDate = Carbon::make(Arr::get($data, 'checkIn') ?? now());
+        $checkOutDate = Carbon::make(Arr::get($data, 'checkOut') ?? now());
 
         $this->stepOneFields['returnDateTime'] = Carbon::make(Arr::get($data, 'checkOut'))?->format('d.m.Y').' '.substr($this->stepOneFields['returnDateTime'],11,5);
 
@@ -477,6 +490,8 @@ class InternalReservation extends Component
         $this->stepTwoFields['leadTraveller']['reservationOperaID'] = Arr::get($data, 'OPERA.RESV_NAME_ID');
         $this->stepTwoFields['leadTraveller']['reservationOperaConfirmation'] = Arr::get($data, 'OPERA.CONFIRMATION_NO');
 
+        $this->stepTwoFields['leadTraveller']['check_in'] = $checkInDate->format('d.m.Y');
+        $this->stepTwoFields['leadTraveller']['check_out'] = $checkOutDate->format('d.m.Y');
         $this->notification()->success('Data pulled');
 
         $this->setOtherTravellers();
