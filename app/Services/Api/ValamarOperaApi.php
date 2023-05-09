@@ -244,17 +244,7 @@ class ValamarOperaApi{
         $this->request['TransactionID'] = $this->reservation->id;
 
         #Build Packages
-        $this->request['Packages'][] = $this->buildReservationPackage($this->reservation);
-
-        #If there is a return transfer
-        if((int)$this->reservation->round_trip_id > 0){
-
-            $returnReservation = Reservation::findOrFail($this->reservation->round_trip_id);
-
-            if($returnReservation){
-                $this->request['Packages'][] = $this->buildReservationPackage($returnReservation);
-            }
-        }
+        $this->request['Packages'] = $this->buildReservationPackage($this->reservation);
 
         return true;
     }
@@ -281,18 +271,57 @@ class ValamarOperaApi{
 
     private function buildReservationPackage(\App\Models\Reservation $reservation) : array{
 
-        return array(
-            #1 if booking is active - 0 if cancelled
-            'Quantity' => $reservation->status == Reservation::STATUS_CONFIRMED ? 1 : 0,
-            'PackageID' => $this->packageID,
-            'PricePerUnit' => $this->parsePackagePrice($reservation),
-            'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
-            'ExternalCartID' => $reservation->id,
-            'ExternalCartItemID' => $reservation->id,
-            'StartDate' => Carbon::parse($reservation->date_time)->toDateString(),
-            'EndDate' => Carbon::parse($reservation->date_time)->toDateString(),
-            'Comment' => $this->buildPackageComment($reservation),
-        );
+        if($reservation->round_trip_id){
+
+            $return = array();
+
+            $return[] = array(
+                #1 if booking is active - 0 if cancelled
+                'Quantity' => $reservation->status == Reservation::STATUS_CONFIRMED ? 1 : 0,
+                'PackageID' => $this->packageID,
+                'PricePerUnit' => $this->parsePackagePrice($reservation,1),
+                'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
+                'ExternalCartID' => $reservation->id,
+                'ExternalCartItemID' => $reservation->id,
+                'StartDate' => Carbon::parse($reservation->date_time)->toDateString(),
+                'EndDate' => Carbon::parse($reservation->date_time)->toDateString(),
+                'Comment' => $this->buildPackageComment($reservation),
+            );
+
+
+            $rtrip = Reservation::findOrFail($reservation->round_trip_id);
+
+
+            $return[] = array(
+                #1 if booking is active - 0 if cancelled
+                'Quantity' => $rtrip->status == Reservation::STATUS_CONFIRMED ? 1 : 0,
+                'PackageID' => $this->packageID,
+                'PricePerUnit' => $this->parsePackagePrice($reservation,2),
+                'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
+                'ExternalCartID' => $rtrip->id,
+                'ExternalCartItemID' => $rtrip->id,
+                'StartDate' => Carbon::parse($rtrip->date_time)->toDateString(),
+                'EndDate' => Carbon::parse($rtrip->date_time)->toDateString(),
+                'Comment' => $this->buildPackageComment($rtrip),
+            );
+
+            return $return;
+        }else{
+            return array(
+                #1 if booking is active - 0 if cancelled
+                'Quantity' => $reservation->status == Reservation::STATUS_CONFIRMED ? 1 : 0,
+                'PackageID' => $this->packageID,
+                'PricePerUnit' => $this->parsePackagePrice($reservation),
+                'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
+                'ExternalCartID' => $reservation->id,
+                'ExternalCartItemID' => $reservation->id,
+                'StartDate' => Carbon::parse($reservation->date_time)->toDateString(),
+                'EndDate' => Carbon::parse($reservation->date_time)->toDateString(),
+                'Comment' => $this->buildPackageComment($reservation),
+            );
+        }
+
+        dd("nije roundtrip");
     }
 
     private function buildCFPackage(\App\Models\Reservation $reservation,$cancellation_fee) : array{
@@ -346,16 +375,38 @@ class ValamarOperaApi{
      * Get the package price from the Reservation List
      * @return string Price of the package
      */
-    private function parsePackagePrice(\App\Models\Reservation $reservation) : String{
+    private function parsePackagePrice(\App\Models\Reservation $reservation,$direction = 0) : String{
 
         $total = 0;
 
-        #Get total of all items on the data list
-        if(!empty($reservation->price_breakdown)){
-            foreach($reservation->price_breakdown as $price_item){
-                $total += $price_item['amount']['amount'];
+        if($direction == 0){
+            #Get total of all items on the data list
+            if(!empty($reservation->price_breakdown)){
+                foreach($reservation->price_breakdown as $price_item){
+                    $total += $price_item['amount']['amount'];
+                }
             }
         }
+
+
+
+        if($direction == 1 || $direction == 2){
+            if(!empty($reservation->price_breakdown)){
+                foreach($reservation->price_breakdown as $price_item){
+                  if($price_item['item'] == 'transfer_price'){
+                      if($direction == 1){
+                          $total += $price_item['price_data']['price'];
+                      }
+
+                      if($direction == 2){
+                          $total += ($price_item['price_data']['price_round_trip']-$price_item['price_data']['price']);
+                      }
+                  }
+                }
+            }
+
+        }
+
 
         $money = new Money($total,new Currency('EUR'));
 
