@@ -101,7 +101,7 @@
                                             <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkOut'))->format('d.m.Y')}}</th>
                                             <th>{{\Illuminate\Support\Arr::get($r,'status')}}</th>
                                             <td>
-                                                @if(\Illuminate\Support\Arr::get($r,'status') == 'CANCELx')
+                                                @if(\Illuminate\Support\Arr::get($r,'status') == 'CANCEL')
                                                     <x-button.circle sm negative disabled wire:click=""
                                                                      icon="cloud-download"/>
                                                 @else
