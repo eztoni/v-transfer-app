@@ -81,13 +81,7 @@
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right">
                                 <b>{{$reservation->getCancellationFeeAmount()}} €</b></td>
 
-                            <td style="padding:5px 5px;border: 1px solid black;text-align: right"><b>
-                                    @if($reservation->included_in_accommodation_reservation)
-                                        0
-                                    @else
-                                        25%
-
-                                    @endif</b></td>
+                            <td style="padding:5px 5px;border: 1px solid black;text-align: right"><b>{{$reservation->getCancellationVatPercentage()}}</b></td>
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right">
                                 <b>{{$reservation->getCancellationVatAmount()}} €</b></td>
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right">
@@ -110,7 +104,7 @@
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
                         <b>{{$reservation->getCancellationVatAmount()}} €</b></td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>{{$reservation->getCancellationFeeAmount()}} € / -{{$reservation->getCancellationFeeAmountHRK()}} HRK</b></td>
+                        <b>{{$reservation->getCancellationFeeAmount()}} € / {{$reservation->getCancellationFeeAmountHRK()}} HRK</b></td>
 
                 </tr>
                 </tfoot>
@@ -135,7 +129,7 @@
                         @if($reservation->included_in_accommodation_reservation)
                             PPO
                         @else
-                            {{__("mail.vat")}} 25%
+                            {{__("mail.vat")}} {{$reservation->getCancellationVATPercentage()}}%
 
                         @endif
                     </b></td>
@@ -164,7 +158,7 @@
                         <b>{{__('mail.price')}}: </b>
                     </td>
                     <td style="border: 1px solid black;text-align: right;padding:5px 5px">
-                        <b>{{$reservation->getCancellationFeeAmount()}} € / -{{$reservation->getCancellationFeeAmountHRK()}} HRK</b>
+                        <b>{{$reservation->getCancellationFeeAmount()}} € / {{$reservation->getCancellationFeeAmountHRK()}} HRK</b>
                     </td>
                 </tr>
                 </tfoot>

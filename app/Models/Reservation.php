@@ -94,6 +94,19 @@ class Reservation extends Model
         return number_format($price,2);
     }
 
+    public function hasCancellationFee() : bool{
+
+        $return = false;
+
+        if($this->status == Reservation::STATUS_CANCELLED){
+            if($this->cancellation_fee > 0){
+                $return = true;
+            }
+        }
+
+        return $return;
+    }
+
     public function getPriceHRK(): Money
     {
         $price = $this->price*7.53450;
@@ -260,22 +273,44 @@ class Reservation extends Model
     }
 
     public function getCancellationVatAmount(){
-        return number_format($this->getCancellationFeeAmount()*(0.25),2);
+        if($this->getCancellationVATPercentage() > 0){
+            return number_format($this->getCancellationFeeAmount()*($this->getCancellationVATPercentage()),2);
+        }else{
+            return 0;
+        }
+
     }
 
     public function getCancellationWithoutVat(){
-        return number_format($this->getCancellationFeeAmount()-$this->getCancellationVatAmount(),2);
+        if($this->getCancellationVATPercentage() > 0){
+            return number_format($this->getCancellationFeeAmount()-$this->getCancellationVatAmount(),2);
+        }else{
+            return number_format($this->getCancellationFeeAmount(),2);
+        }
+
     }
 
     public function getCancellationPackageId(){
         return $this->partner->cancellation_package_id;
     }
 
+    public function getCancellationVATPercentage(){
+
+
+        if($this->included_in_accommodation_reservation){
+            return 0;
+        }else{
+            if($this->hasCancellationFee()){
+                return 0;
+            }
+            return 25;
+        }
+    }
+
     public function getCancellationPercentage(){
 
         $return = 0;
-
-        #Calculate Percentage Label
+        #Calculate Percentage
         $percentage = ($this->cancellation_fee/$this->getPrice()->formatByDecimal())*100;
         $percentage = (int)$percentage;
 
