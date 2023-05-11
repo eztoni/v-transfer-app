@@ -174,5 +174,6 @@ If you have any special requests, feel free to reply to this e-mail.
     'price' => 'Price',
     'transfer' => 'Transfer',
     'price_info' => 'The amount will be charged in Euros. Price in Croatian kunas in informative at fixed conversion rate of EUR 1 = HRK 7.5340',
-    'amount' => 'Amount'
+    'amount' => 'Amount',
+    'reservation_cancellation' => 'Reservation Cancellation'
 ];

@@ -24,10 +24,15 @@ use Actions;
     public $partnerID;
     public $infoMessage = '';
     public $partnerName = 'Partner';
+    public $partnerConditions = '';
+
+    public $cfpDisabled = 1;
+    public $cfnDisabled = 1;
 
     public $cancellationTypeOptions = array(
-        'cancellation' => 'Cancellation',
-        'refund' => 'Refund'
+        'cancellation' => 'Cancel - Cancellation',
+        'refund' => 'Cancel - Refund',
+        'no_show' => 'No Show'
     );
 
 
@@ -90,6 +95,14 @@ use Actions;
 
         $this->cancellationDate = Carbon::now()->addHour()->format('Y-m-d H:i:s');
 
+        if($this->cancellationType == 'no_show'){
+            $this->cfnDisabled = 0;
+            $this->cfpDisabled = 0;
+        }else{
+            $this->cfnDisabled = 1;
+            $this->cfpDisabled = 1;
+        }
+
     }
 
     public function render()
@@ -115,6 +128,15 @@ use Actions;
             $hours_difference = $transferDateTime->diffInHours($now);
 
             $cancel_type = 0;
+
+            switch($partner->cf_type){
+                case 'percent':
+                    $this->partnerConditions = $partner->cf_amount_24.'% for all cancellations under 24 hours. '.$partner->cf_amount_12.'% for all cancellations under 12 hours.';
+                    break;
+                case 'nominal':
+                    $this->partnerConditions = $partner->cf_amount_24.'€ for all cancellations under 24 hours. '.$partner->cf_amount_12.'€ for all cancellations under 12 hours.';
+                    break;
+            }
 
 
             switch ($hours_difference){

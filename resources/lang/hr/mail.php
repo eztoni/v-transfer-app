@@ -147,5 +147,6 @@ boravite.',
     'price' => 'Cijena',
     'transfer' => 'Transfer',
     'price_info' => 'Iznos će biti naplaćen u EURima. Cijena iskazana u kunama je informativnog karaktera, koristeći fiksnu konverziju EUR 1 = HRK 7.5340',
-    'amount' => 'Iznos'
+    'amount' => 'Iznos',
+    'reservation_cancellation' => 'Otkaz rezervacije'
 ];

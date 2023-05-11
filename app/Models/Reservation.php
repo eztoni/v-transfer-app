@@ -87,6 +87,13 @@ class Reservation extends Model
         return Money::EUR($this->price);
     }
 
+    public function getCancellationFeeAmountHRK() {
+
+        $price = $this->getCancellationFeeAmount()*7.53450;
+
+        return number_format($price,2);
+    }
+
     public function getPriceHRK(): Money
     {
         $price = $this->price*7.53450;
@@ -244,6 +251,35 @@ class Reservation extends Model
         }
 
         $return = implode(',',$return);
+
+        return $return;
+    }
+
+    public function getCancellationFeeAmount(){
+        return number_format($this->cancellation_fee,2);
+    }
+
+    public function getCancellationVatAmount(){
+        return number_format($this->getCancellationFeeAmount()*(0.25),2);
+    }
+
+    public function getCancellationWithoutVat(){
+        return number_format($this->getCancellationFeeAmount()-$this->getCancellationVatAmount(),2);
+    }
+
+    public function getCancellationPackageId(){
+        return $this->partner->cancellation_package_id;
+    }
+
+    public function getCancellationPercentage(){
+
+        $return = 0;
+
+        #Calculate Percentage Label
+        $percentage = ($this->cancellation_fee/$this->getPrice()->formatByDecimal())*100;
+        $percentage = (int)$percentage;
+
+        $return = $percentage;
 
         return $return;
     }

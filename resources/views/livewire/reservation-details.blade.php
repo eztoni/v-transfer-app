@@ -51,11 +51,12 @@
            :class="{ 'ds-tab-active': tab === 'reservation' }"
            x-on:click.prevent="tab = 'reservation'" href="#">
             @if(!$reservation->isCancelled())
+
                 <x-button x-show="tab === 'reservation'"
                           icon="x"
                           class=" absolute left-2"
                           wire:click="openCancelModal({{$reservation->id}})"
-                />
+                >Cancel \ No Show</x-button>
             @endif
 
             <strong>Reservation</strong>

@@ -75,11 +75,11 @@
                             <td style="padding:5px 5px;border: 1px solid black;">{{$loop->index + 1}}</td>
 
                             <td style="padding:5px 5px;border: 1px solid black;">
-                                {{Arr::get($pbItem,'price_data.opera_package_id')}}
+                                {{$reservation->getCancellationPackageId()}}
                             </td>
-                            <td style="padding:5px 5px;border: 1px solid black;">{{\App\Actions\Breakdown\GetPriceBreakdownItemLabel::run($pbItem)}} </td>
+                            <td style="padding:5px 5px;border: 1px solid black;">{{__("mail.reservation_cancellation")}} ({{$reservation->getCancellationPercentage()}}%) - {{\App\Actions\Breakdown\GetPriceBreakdownItemLabel::run($pbItem)}} </td>
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                                <b>-{{$reservation->getPriceWithoutVat()}}</b></td>
+                                <b>{{$reservation->getCancellationFeeAmount()}} €</b></td>
 
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right"><b>
                                     @if($reservation->included_in_accommodation_reservation)
@@ -89,9 +89,9 @@
 
                                     @endif</b></td>
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                                <b>-{{$reservation->getVatAmount()}}</b></td>
+                                <b>{{$reservation->getCancellationVatAmount()}} €</b></td>
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                                <b>-{{$reservation->getPrice()}}</b></td>
+                                <b>{{$reservation->getCancellationFeeAmount()}}</b> €</td>
                         </tr>
                     @endif
 
@@ -104,20 +104,20 @@
                         <b>{{__('mail.total_price')}}: </b>
                     </td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>-{{$reservation->getPriceWithoutVat()}}</b></td>
+                        <b>{{$reservation->getCancellationWithoutVat()}} €</b></td>
 
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right"><b></b></td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>-{{$reservation->getVatAmount()}}</b></td>
+                        <b>{{$reservation->getCancellationVatAmount()}} €</b></td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>-{{$reservation->getPrice()}} / -{{$reservation->getPriceHRK()}}</b></td>
+                        <b>{{$reservation->getCancellationFeeAmount()}} € / -{{$reservation->getCancellationFeeAmountHRK()}} HRK</b></td>
 
                 </tr>
                 </tfoot>
 
             </table>
 
-
+            <br>
             <p style="margin-bottom: 25px;margin-top: 25px;">{{__("mail.tax_recapitulation")}}</p>
 
             <table style="  border-collapse: unset ;border: 1px solid #363636; width: 100%;font-size: 11px">
@@ -143,19 +143,19 @@
                 <td style="padding:5px 5px;border: 1px solid black;text-align: left"><b>
                         @if(!$reservation->included_in_accommodation_reservation)
 
-                            -{{$reservation->getPriceWithoutVat()}}
+                            {{$reservation->getCancellationWithoutVat()}} €
                         @endif
                     </b></td>
 
                 <td style="padding:5px 5px;border: 1px solid black;text-align: left"><b>
                         @if(!$reservation->included_in_accommodation_reservation)
 
-                            -{{$reservation->getVatAmount()}}
+                            {{$reservation->getCancellationVatAmount()}} €
                         @endif
 
                     </b></td>
                 <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                    <b>-{{$reservation->getPrice()}}</b>
+                    <b>{{$reservation->getCancellationFeeAmount()}} €</b>
                 </td>
                 </tbody>
                 <tfoot>
@@ -164,11 +164,12 @@
                         <b>{{__('mail.price')}}: </b>
                     </td>
                     <td style="border: 1px solid black;text-align: right;padding:5px 5px">
-                        <b>-{{$reservation->getPrice()}} / -{{$reservation->getPriceHRK()}}</b>
+                        <b>{{$reservation->getCancellationFeeAmount()}} € / -{{$reservation->getCancellationFeeAmountHRK()}} HRK</b>
                     </td>
                 </tr>
                 </tfoot>
             </table>
+            <br>
             <p style="float: right;font-style: italic;font-site:10px">{{__('mail.price_info')}}</p>
         </x-mail.row>
 

@@ -151,5 +151,6 @@ momento del check-in presso la struttura in cui soggiornate.',
     'price' => 'Prezzo',
     'transfer' => 'Transfer',
     'price_info' => 'L\'importo sarà addebitato in EUR. Prezzo in kune croate in informativo al tasso di conversione fisso di EUR 1 = HRK 7.5340',
-    'amount' => 'Quantità'
+    'amount' => 'Quantità',
+    'reservation_cancellation' => 'Cancellazione della prenotazione'
 ];
