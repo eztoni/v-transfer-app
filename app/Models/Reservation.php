@@ -269,24 +269,46 @@ class Reservation extends Model
     }
 
     public function getCancellationFeeAmount(){
-        return number_format($this->cancellation_fee,2);
+
+        if($this->hasCancellationFee()){
+            return number_format($this->cancellation_fee,2);
+        }else{
+            return '-'.$this->getPrice()->formatByDecimal();
+        }
+
     }
 
     public function getCancellationVatAmount(){
-        if($this->getCancellationVATPercentage() > 0){
-            return number_format($this->getCancellationFeeAmount()*($this->getCancellationVATPercentage()),2);
+
+        if($this->hasCancellationFee()){
+            if($this->getCancellationVATPercentage() > 0){
+                return number_format($this->getCancellationFeeAmount()*($this->getCancellationVATPercentage()/100),2);
+            }else{
+                return 0;
+            }
         }else{
-            return 0;
+            if($this->included_in_accommodation_reservation){
+                return 0;
+            }else{
+                return '-'.$this->getVatAmount()->formatByDecimal();
+            }
         }
+
 
     }
 
     public function getCancellationWithoutVat(){
-        if($this->getCancellationVATPercentage() > 0){
-            return number_format($this->getCancellationFeeAmount()-$this->getCancellationVatAmount(),2);
+
+        if($this->hasCancellationFee()){
+            if($this->getCancellationVATPercentage() > 0){
+                return number_format($this->getCancellationFeeAmount()-$this->getCancellationVatAmount(),2);
+            }else{
+                return number_format($this->getCancellationFeeAmount(),2);
+            }
         }else{
-            return number_format($this->getCancellationFeeAmount(),2);
+            return '-'.$this->getPrice()->formatByDecimal();
         }
+
 
     }
 
@@ -295,7 +317,6 @@ class Reservation extends Model
     }
 
     public function getCancellationVATPercentage(){
-
 
         if($this->included_in_accommodation_reservation){
             return 0;
