@@ -76,7 +76,7 @@ class PartnersOverview extends Component
             'partner.no_show_package_id' => 'required|int',
             'partner.cf_amount_12' => 'required|int',
             'partner.cf_amount_24' => 'required|int',
-            'partner.cf_type' => 'required'
+            'partner.cf_type' => 'required|in:percent,nominal'
         ];
 
         foreach ($this->companyLanguages as $lang) {
@@ -86,8 +86,6 @@ class PartnersOverview extends Component
         }
     return $ruleArray;
     }
-
-
 
 
     public function updated($propertyName)
@@ -114,6 +112,7 @@ class PartnersOverview extends Component
         foreach ($this->companyLanguages as $lang) {
             $this->terms[$lang] = $this->partner->getTranslation('terms', $lang, false);
         }
+
     }
 
 
@@ -128,12 +127,11 @@ class PartnersOverview extends Component
         $this->partner = new Partner();
 
         #Set Default Cancellation Fee Type to be percentage
-        $this->partner->cancellation_fee_type = 'percent';
+        $this->partner->cf_type = 'percent';
         #Set Default Value of Cancellation Fee Amount for < 12 hours
         $this->partner->cf_amount_12 = 100;
         #Set Default Value of Cancellation Fee Amount for < 24 hours
         $this->partner->cf_amount_24 = 50;
-
 
         $this->selectedDestinations = [];
     }
