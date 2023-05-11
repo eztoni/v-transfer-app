@@ -73,6 +73,7 @@ class PartnersOverview extends Component
             'selectedDestinations'=>'required',
             'partner.phone'=>'required|max:255',
             'partner.cancellation_package_id' => 'required|int',
+            'partner.no_show_package_id' => 'required|int',
             'partner.cf_amount_12' => 'required|int',
             'partner.cf_amount_24' => 'required|int',
             'partner.cf_type' => 'required'

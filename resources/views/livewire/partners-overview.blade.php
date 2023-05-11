@@ -160,6 +160,7 @@
             </div>
             <br/>
             <x-input label="Cancellation Opera Package ID" wire:model="partner.cancellation_package_id"></x-input>
+            <x-input label="No Show Opera Package ID" wire:model="partner.no_show_package_id"></x-input>
             <x-native-select
                 wire:model="partner.cf_type"
                 label="Cancellation Fee Type:"
@@ -180,8 +181,6 @@
 
 
     </x-card>
-
-
 </div>
 
 
