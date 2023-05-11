@@ -77,7 +77,7 @@
                             <td style="padding:5px 5px;border: 1px solid black;">
                                 {{$reservation->getCancellationPackageId()}}
                             </td>
-                            <td style="padding:5px 5px;border: 1px solid black;">{{__("mail.reservation_cancellation")}} ({{$reservation->getCancellationPercentage()}}%) - {{\App\Actions\Breakdown\GetPriceBreakdownItemLabel::run($pbItem)}} </td>
+                            <td style="padding:5px 5px;border: 1px solid black;">{{__("mail.reservation_cancellation")}} @if($reservation->getCancellationPercentage()) {{$reservation->getCancellationPercentage()}}%@endif - {{\App\Actions\Breakdown\GetPriceBreakdownItemLabel::run($pbItem)}} </td>
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right">
                                 <b>{{$reservation->getCancellationFeeAmount()}} €</b></td>
 

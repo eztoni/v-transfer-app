@@ -306,7 +306,7 @@ class Reservation extends Model
                 return number_format($this->getCancellationFeeAmount(),2);
             }
         }else{
-            return '-'.$this->getPrice()->formatByDecimal();
+            return '-'.$this->getPriceWithoutVat()->formatByDecimal();
         }
 
 
