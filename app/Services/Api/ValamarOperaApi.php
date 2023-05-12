@@ -307,7 +307,10 @@ class ValamarOperaApi{
 
             return $return;
         }else{
-            return array(
+
+            $return = array();
+
+            $return[] = array(
                 #1 if booking is active - 0 if cancelled
                 'Quantity' => $reservation->status == Reservation::STATUS_CONFIRMED ? 1 : 0,
                 'PackageID' => $this->packageID,
@@ -319,9 +322,10 @@ class ValamarOperaApi{
                 'EndDate' => Carbon::parse($reservation->date_time)->toDateString(),
                 'Comment' => $this->buildPackageComment($reservation),
             );
+
+            return $return;
         }
 
-        dd("nije roundtrip");
     }
 
     private function buildCFPackage(\App\Models\Reservation $reservation,$cancellation_fee) : array{
