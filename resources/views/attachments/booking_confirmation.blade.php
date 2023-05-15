@@ -69,31 +69,26 @@
                 </thead>
 
                 <tbody>
-                @foreach($reservation->price_breakdown as $pbItem)
-                    @if(\Arr::get($pbItem,'item') =='transfer_price')
+                @foreach($reservation->getConfirmationItemBreakdown('items') as $pbItem)
+
+
                         <tr style="border: 1px solid black;">
                             <td style="padding:5px 5px;border: 1px solid black;">{{$loop->index + 1}}</td>
 
                             <td style="padding:5px 5px;border: 1px solid black;">
-                                {{Arr::get($pbItem,'price_data.opera_package_id')}}
+                                {{Arr::get($pbItem,'code')}}
                             </td>
-                            <td style="padding:5px 5px;border: 1px solid black;">{{\App\Actions\Breakdown\GetPriceBreakdownItemLabel::run($pbItem)}} </td>
+                            <td style="padding:5px 5px;border: 1px solid black;">{{Arr::get($pbItem,'transfer')}}</td>
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                                <b>{{$reservation->getPriceWithoutVat()}}</b></td>
+                                <b>{{Arr::get($pbItem,'amount')}} €</b></td>
 
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right"><b>
-                                    @if($reservation->included_in_accommodation_reservation)
-                                        0
-                                    @else
-                                        25%
-
-                                    @endif</b></td>
+                                    {{Arr::get($pbItem,'vat')}} %</b></td>
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                                <b>{{$reservation->getVatAmount()}}</b></td>
+                                <b>{{Arr::get($pbItem,'vat_amount')}} €</b></td>
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                                <b>{{$reservation->getPrice()}}</b></td>
+                                <b>{{Arr::get($pbItem,'price')}} €</b></td>
                         </tr>
-                    @endif
 
                 @endforeach
 
@@ -104,13 +99,13 @@
                         <b>{{__('mail.total_price')}}: </b>
                     </td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>{{$reservation->getPriceWithoutVat()}}</b></td>
+                        <b>{{$reservation->getConfirmationItemBreakdown('items_total')}} €</b></td>
 
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right"><b></b></td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>{{$reservation->getVatAmount()}}</b></td>
+                        <b>{{$reservation->getConfirmationItemBreakdown('items_vat_total')}} €</b></td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>{{$reservation->getPrice()}} / {{$reservation->getPriceHRK()}}</b></td>
+                        <b>{{$reservation->getConfirmationItemBreakdown('items_total')}} € / {{$reservation->getConfirmationItemBreakdown('items_total_hrk')}} HRK</b></td>
 
                 </tr>
                 </tfoot>
@@ -135,7 +130,7 @@
                         @if($reservation->included_in_accommodation_reservation)
                             PPO
                         @else
-                            {{__("mail.vat")}} 25%
+                            {{__("mail.vat")}} {{$reservation->getConfirmationItemBreakdown('tax_group')}} %
 
                         @endif
                     </b></td>
@@ -143,19 +138,19 @@
                 <td style="padding:5px 5px;border: 1px solid black;text-align: left"><b>
                         @if(!$reservation->included_in_accommodation_reservation)
 
-                            {{$reservation->getPriceWithoutVat()}}
+                            {{$reservation->getConfirmationItemBreakdown('items_total_base')}} €
                         @endif
                     </b></td>
 
                 <td style="padding:5px 5px;border: 1px solid black;text-align: left"><b>
                         @if(!$reservation->included_in_accommodation_reservation)
 
-                            {{$reservation->getVatAmount()}}
+                            {{$reservation->getConfirmationItemBreakdown('items_vat_total')}} €
                         @endif
 
                     </b></td>
                 <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                    <b>{{$reservation->getPrice()}}</b>
+                    <b>{{$reservation->getConfirmationItemBreakdown('items_total')}} €</b>
                 </td>
                 </tbody>
 
@@ -165,7 +160,7 @@
                         <b>{{__('mail.price')}}: </b>
                     </td>
                     <td style="border: 1px solid black;text-align: right;padding:5px 5px">
-                        <b>{{$reservation->getPrice()}} / {{$reservation->getPriceHRK()}}</b>
+                        <b>{{$reservation->getConfirmationItemBreakdown('items_total')}} € / {{$reservation->getConfirmationItemBreakdown('items_total_hrk')}} HRK</b>
                     </td>
                 </tr>
                 </tfoot>

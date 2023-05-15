@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Casts\ModelCast;
 use App\Scopes\DestinationScope;
 use App\Services\Api\ValamarOperaApi;
+use Carbon\Carbon;
 use Database\Seeders\TransferExtrasPriceSeeder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -311,6 +312,110 @@ class Reservation extends Model
 
     }
 
+    /**
+     * @param $segment
+     * @return void
+     */
+    public function getConfirmationItemBreakdown($segment){
+
+        $return['items'] = array();
+
+        ##One Way Transfer
+        $route = Route::query()
+            ->where('destination_id', $this->destination_id)
+            ->where('starting_point_id', $this->pickup_location)
+            ->where('ending_point_id', $this->dropoff_location)
+            ->get()->first();
+
+
+        $route_transfer = \DB::table('route_transfer')
+            ->where('route_id',$route->id)
+            ->where('partner_id',$this->partner_id)
+            ->where('transfer_id',$this->transfer_id)
+            ->get()->first();
+
+
+        $price = Money::EUR($route_transfer->price)->formatByDecimal();
+        $vat = $this->included_in_accommodation ? 0 : 25;
+        $vat_amount = number_format($price*($vat/100),2);
+
+        $operaPackageID = $route_transfer->opera_package_id;
+
+        $item = array(
+          'code' => $operaPackageID,
+          'transfer' => $this->pickupLocation->name.' - '.$this->dropoffLocation->name,
+          'amount' => $price,
+          'vat' => $vat,
+          'vat_amount' => $vat_amount,
+          'price' => $price
+        );
+
+        $return['items'][] = $item;
+
+        if($this->round_trip_id){
+
+            $round_trip_reservation = Reservation::findOrFail($this->round_trip_id);
+
+            $return_route = Route::query()
+                ->where('destination_id', $round_trip_reservation->destination_id)
+                ->where('starting_point_id', $round_trip_reservation->pickup_location)
+                ->where('ending_point_id', $round_trip_reservation->dropoff_location)
+                ->get()->first();
+
+
+            $return_route_transfer = \DB::table('route_transfer')
+                ->where('route_id',$return_route->id)
+                ->where('partner_id',$round_trip_reservation->partner_id)
+                ->where('transfer_id',$round_trip_reservation->transfer_id)
+                ->get()->first();
+
+            $returnOperaPackageID = $return_route_transfer->opera_package_id;
+
+            $price = Money::EUR($return_route_transfer->price)->formatByDecimal();
+            $vat = $this->included_in_accommodation ? 0 : 25;
+            $vat_amount = number_format($price*($vat/100),2);
+
+            $item = array(
+                'code' => $returnOperaPackageID,
+                'transfer' => $round_trip_reservation->pickupLocation->name.' - '.$round_trip_reservation->dropoffLocation->name,
+                'amount' => $price,
+                'vat' => $vat,
+                'vat_amount' => $vat_amount,
+                'price' => $price
+            );
+
+            $return['items'][] = $item;
+        }
+
+        #Item Summary
+        if(!empty($return['items'])){
+
+            $return['items_total'] = 0;
+            $return['items_vat_total'] = 0;
+
+            foreach($return['items'] as $item){
+                $return['items_total'] = $return['items_total']+$item['amount'];
+                $return['items_vat_total'] = $return['items_vat_total']+$item['vat_amount'];
+            }
+
+            #Items Total
+            $return['items_total'] = number_format($return['items_total'],2);
+
+            #Vat Total
+            $return['items_vat_total'] = number_format($return['items_vat_total'],2);
+
+            $return['items_total_hrk'] = $return['items_total']*7.53450;
+
+            $return['items_total_hrk'] = number_format($return['items_total_hrk'],2);
+
+        }
+
+            $return['tax_group'] = $this->included_in_accommodation ? 0 : 25;
+            $return['items_total_base'] = number_format($return['items_total']*((100-$return['tax_group'])/100),2);
+
+        return $return[$segment];
+    }
+
     public function getCancellationItemBreakDown($segment){
 
         $return['items'] = array();
@@ -365,6 +470,9 @@ class Reservation extends Model
                 $return['items_total_hrk'] = number_format($return['items_total_hrk'],2);
 
             }
+
+            $return['tax_group'] = $this->included_in_accommodation ? 0 : 25;
+            $return['items_total_base'] = number_format($return['items_total']*((100-$return['tax_group'])/100),2);
         }
 
         return $return[$segment];

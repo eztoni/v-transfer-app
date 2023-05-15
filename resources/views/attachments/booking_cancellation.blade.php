@@ -129,7 +129,7 @@
                         @if($reservation->included_in_accommodation_reservation)
                             PPO
                         @else
-                            {{__("mail.vat")}} {{$reservation->getCancellationVATPercentage()}}%
+                            {{__("mail.vat")}} {{$reservation->getCancellationItemBreakDown('tax_group')}} %
 
                         @endif
                     </b></td>
@@ -137,19 +137,19 @@
                 <td style="padding:5px 5px;border: 1px solid black;text-align: left"><b>
                         @if(!$reservation->included_in_accommodation_reservation)
 
-                            {{$reservation->getCancellationWithoutVat()}} €
+                            {{$reservation->getCancellationItemBreakDown('items_total_base')}} €
                         @endif
                     </b></td>
 
                 <td style="padding:5px 5px;border: 1px solid black;text-align: left"><b>
                         @if(!$reservation->included_in_accommodation_reservation)
 
-                            {{$reservation->getCancellationVatAmount()}} €
+                            {{$reservation->getCancellationItemBreakDown('items_vat_total')}} €
                         @endif
 
                     </b></td>
                 <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                    <b>{{$reservation->getCancellationFeeAmount()}} €</b>
+                    <b>{{$reservation->getCancellationItemBreakDown('items_total')}} €</b>
                 </td>
                 </tbody>
                 <tfoot>
@@ -158,7 +158,7 @@
                         <b>{{__('mail.price')}}: </b>
                     </td>
                     <td style="border: 1px solid black;text-align: right;padding:5px 5px">
-                        <b>{{$reservation->getCancellationFeeAmount()}} € / {{$reservation->getCancellationFeeAmountHRK()}} HRK</b>
+                        <b>{{$reservation->getCancellationItemBreakDown('items_total')}} € / {{$reservation->getCancellationItemBreakDown('items_total_hrk')}} HRK</b>
                     </td>
                 </tr>
                 </tfoot>
