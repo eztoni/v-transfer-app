@@ -80,7 +80,7 @@
                               class=" absolute left-2"
                               icon="x"
                               wire:click="openCancelModal({{$reservation->returnReservation->id}})"
-                    />
+                    >Cancel \ No Show</x-button>
                 @endif
 
                 <strong>Round Trip Reservation</strong>

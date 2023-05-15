@@ -18,7 +18,7 @@ class CancelTransferReservation extends Component
 use Actions;
     public Reservation $reservation;
     public $cancellationDate;
-    public bool $cancelRoundTrip = true;
+    public bool $cancelRoundTrip = false;
     public $cancellation_fee_percent = 0;
     public $cancellation_fee_nominal = 0;
     public $partnerID;
@@ -44,6 +44,7 @@ use Actions;
     }
 
     public function mount(){
+
         $this->loadPartnerCommissionDetails();
     }
 
