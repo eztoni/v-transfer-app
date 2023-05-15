@@ -69,25 +69,25 @@
                 </thead>
 
                 <tbody>
-                @foreach($reservation->price_breakdown as $pbItem)
-                    @if(\Arr::get($pbItem,'item') =='transfer_price')
+                @foreach($reservation->getCancellationItemBreakDown('items') as $pbItem)
+
                         <tr style="border: 1px solid black;">
                             <td style="padding:5px 5px;border: 1px solid black;">{{$loop->index + 1}}</td>
 
                             <td style="padding:5px 5px;border: 1px solid black;">
-                                {{$reservation->getCancellationPackageId()}}
+                                {{$pbItem['code']}}
                             </td>
-                            <td style="padding:5px 5px;border: 1px solid black;">{{__("mail.reservation_cancellation")}} @if($reservation->getCancellationPercentage()) {{$reservation->getCancellationPercentage()}}%@endif - {{\App\Actions\Breakdown\GetPriceBreakdownItemLabel::run($pbItem)}} </td>
+                            <td style="padding:5px 5px;border: 1px solid black;">{{$pbItem['transfer']}} </td>
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                                <b>{{$reservation->getCancellationFeeAmount()}} €</b></td>
+                                <b>{{$pbItem['amount']}} €</b></td>
 
-                            <td style="padding:5px 5px;border: 1px solid black;text-align: right"><b>{{$reservation->getCancellationVatPercentage()}}</b></td>
+                            <td style="padding:5px 5px;border: 1px solid black;text-align: right"><b>{{$pbItem['vat']}}</b></td>
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                                <b>{{$reservation->getCancellationVatAmount()}} €</b></td>
+                                <b>{{$pbItem['vat_amount']}} €</b></td>
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                                <b>{{$reservation->getCancellationFeeAmount()}}</b> €</td>
+                                <b>{{$pbItem['price']}}</b> €</td>
                         </tr>
-                    @endif
+
 
                 @endforeach
 
@@ -98,13 +98,13 @@
                         <b>{{__('mail.total_price')}}: </b>
                     </td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>{{$reservation->getCancellationWithoutVat()}} €</b></td>
+                        <b>{{$reservation->getCancellationItemBreakDown('items_total')}} €</b></td>
 
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right"><b></b></td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>{{$reservation->getCancellationVatAmount()}} €</b></td>
+                        <b>{{$reservation->getCancellationItemBreakDown('items_vat_total')}} €</b></td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>{{$reservation->getCancellationFeeAmount()}} € / {{$reservation->getCancellationFeeAmountHRK()}} HRK</b></td>
+                        <b>{{$reservation->getCancellationItemBreakDown('items_total')}} € / {{$reservation->getCancellationItemBreakDown('items_total_hrk')}} HRK</b></td>
 
                 </tr>
                 </tfoot>

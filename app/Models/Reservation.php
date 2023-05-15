@@ -268,9 +268,9 @@ class Reservation extends Model
         return $return;
     }
 
-    public function getCancellationFeeAmount(){
+    public function getCancellationFeeAmount($cf = false){
 
-        if($this->hasCancellationFee()){
+        if($cf){
             return number_format($this->cancellation_fee,2);
         }else{
             return '-'.$this->getPrice()->formatByDecimal();
@@ -278,11 +278,11 @@ class Reservation extends Model
 
     }
 
-    public function getCancellationVatAmount(){
+    public function getCancellationVatAmount($cf = false){
 
-        if($this->hasCancellationFee()){
+        if($cf){
             if($this->getCancellationVATPercentage() > 0){
-                return number_format($this->getCancellationFeeAmount()*($this->getCancellationVATPercentage()/100),2);
+                return number_format($this->getCancellationFeeAmount('cf')*($this->getCancellationVATPercentage('cf')/100),2);
             }else{
                 return 0;
             }
@@ -293,7 +293,6 @@ class Reservation extends Model
                 return '-'.$this->getVatAmount()->formatByDecimal();
             }
         }
-
 
     }
 
@@ -312,16 +311,75 @@ class Reservation extends Model
 
     }
 
+    public function getCancellationItemBreakDown($segment){
+
+        $return['items'] = array();
+
+        if($this->status == Reservation::STATUS_CANCELLED){
+
+            #No Cancellation Fee - everything goes in negative
+            $item = array(
+                'code' => $this->getCancellationPackageId(),
+                'transfer' => 'Cancellation - '.$this->pickupLocation->name.' - '.$this->dropoffLocation->name,
+                'amount' => $this->getCancellationFeeAmount(),
+                'vat' => $this->getCancellationVATPercentage(),
+                'vat_amount' => $this->getCancellationVatAmount(),
+                'price' => $this->getCancellationFeeAmount(),
+            );
+
+            $return['items'][] = $item;
+
+            #If there is a cancellation fee involved
+            if($this->hasCancellationFee()){
+                $item = array(
+                    'code' => $this->getCancellationPackageId(),
+                    'transfer' => 'Cancellation Fee - ('.$this->getCancellationPercentage().'%) - '.$this->pickupLocation->name.' - '.$this->dropoffLocation->name,
+                    'amount' => $this->getCancellationFeeAmount('cf'),
+                    'vat' => $this->getCancellationVATPercentage('cf'),
+                    'vat_amount' => $this->getCancellationVatAmount('cf'),
+                    'price' => $this->getCancellationFeeAmount('cf'),
+                );
+
+                $return['items'][] = $item;
+            }
+
+            #Item Summary
+            if(!empty($return['items'])){
+
+                $return['items_total'] = 0;
+                $return['items_vat_total'] = 0;
+
+                foreach($return['items'] as $item){
+                    $return['items_total'] = $return['items_total']+$item['amount'];
+                    $return['items_vat_total'] = $return['items_vat_total']+$item['vat_amount'];
+                }
+
+                #Items Total
+                $return['items_total'] = number_format($return['items_total'],2);
+
+                #Vat Total
+                $return['items_vat_total'] = number_format($return['items_vat_total'],2);
+
+                $return['items_total_hrk'] = $return['items_total']*7.53450;
+
+                $return['items_total_hrk'] = number_format($return['items_total_hrk'],2);
+
+            }
+        }
+
+        return $return[$segment];
+    }
+
     public function getCancellationPackageId(){
         return $this->partner->cancellation_package_id;
     }
 
-    public function getCancellationVATPercentage(){
+    public function getCancellationVATPercentage($cf = false){
 
         if($this->included_in_accommodation_reservation){
             return 0;
         }else{
-            if($this->hasCancellationFee()){
+            if($cf){
                 return 0;
             }
             return 25;
