@@ -17,6 +17,7 @@ class ValamarOperaApi{
 
     private array $auth_credentials = array();
     private Reservation $reservation;
+    private Reservation $round_trip_reservation;
     private string $reservation_opera_id = '';
     private string $resortPMSCode = '';
     private array $errors;
@@ -24,8 +25,10 @@ class ValamarOperaApi{
     private array $request = array();
     private array $responseBody = array();
     private string $packageID;
+    private string $returnPackageID;
     private string $callURL;
     private Route $route;
+    private Route $return_route;
 
     const STATUS_SUCCESS = 'success';
     const STATUS_ERROR = 'error';
@@ -206,6 +209,33 @@ class ValamarOperaApi{
             }
         }
 
+        #Check if there is a RoundTripID
+        if($this->reservation->round_trip_id && $return === true){
+
+            #Reset to false as both need to be present in order to send it to Opera
+            $return = false;
+
+            $this->round_trip_reservation = Reservation::findOrFail($this->reservation->round_trip_id);
+
+            $this->return_route = Route::query()
+                ->where('destination_id', $this->round_trip_reservation->destination_id)
+                ->where('starting_point_id', $this->round_trip_reservation->pickup_location)
+                ->where('ending_point_id', $this->round_trip_reservation->dropoff_location)
+                ->get()->first();
+
+            if($this->return_route){
+
+                $return_route_transfer = \DB::table('route_transfer')
+                    ->where('route_id',$this->return_route->id)
+                    ->where('partner_id',$this->round_trip_reservation->partner_id)
+                    ->where('transfer_id',$this->round_trip_reservation->transfer_id)
+                    ->get()->first();
+
+                $this->returnPackageID = $return_route_transfer->opera_package_id;
+                $return = true;
+            }
+        }
+
         return $return;
     }
     /**
@@ -288,24 +318,22 @@ class ValamarOperaApi{
                 'Comment' => $this->buildPackageComment($reservation),
             );
 
-
-            $rtrip = Reservation::findOrFail($reservation->round_trip_id);
-
-
+            #Round Trip Booking
             $return[] = array(
                 #1 if booking is active - 0 if cancelled
-                'Quantity' => $rtrip->status == Reservation::STATUS_CONFIRMED ? 1 : 0,
-                'PackageID' => $this->packageID,
+                'Quantity' => $this->round_trip_reservation->status == Reservation::STATUS_CONFIRMED ? 1 : 0,
+                'PackageID' => $this->returnPackageID,
                 'PricePerUnit' => $this->parsePackagePrice($reservation,2),
                 'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
-                'ExternalCartID' => $rtrip->id,
-                'ExternalCartItemID' => $rtrip->id,
-                'StartDate' => Carbon::parse($rtrip->date_time)->toDateString(),
-                'EndDate' => Carbon::parse($rtrip->date_time)->toDateString(),
-                'Comment' => $this->buildPackageComment($rtrip),
+                'ExternalCartID' => $this->round_trip_reservation->id,
+                'ExternalCartItemID' => $this->round_trip_reservation->id,
+                'StartDate' => Carbon::parse($this->round_trip_reservation->date_time)->toDateString(),
+                'EndDate' => Carbon::parse($this->round_trip_reservation->date_time)->toDateString(),
+                'Comment' => $this->buildPackageComment($this->round_trip_reservation),
             );
 
             return $return;
+
         }else{
 
             $return = array();
