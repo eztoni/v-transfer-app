@@ -202,7 +202,6 @@ class ValamarOperaApi{
                 ->where('transfer_id',$this->reservation->transfer_id)
                 ->get()->first();
 
-
             if($route_transfer->opera_package_id){
                 $this->packageID = $route_transfer->opera_package_id;
                 $return = true;
@@ -276,6 +275,7 @@ class ValamarOperaApi{
         #Build Packages
         $this->request['Packages'] = $this->buildReservationPackage($this->reservation);
 
+
         return true;
     }
     /**
@@ -301,9 +301,21 @@ class ValamarOperaApi{
 
     private function buildReservationPackage(\App\Models\Reservation $reservation) : array{
 
+        $accommodation_res_checkout = $reservation->getLeadTravellerAttribute()?->reservation_check_out;
+
         if($reservation->round_trip_id){
 
             $return = array();
+
+            $package_date = Carbon::parse($reservation->date_time)->toDateString();
+
+            $package_start = $package_date;
+            $package_end = $package_date;
+
+
+            if($package_date == $accommodation_res_checkout){
+                $package_start = $reservation->date_time->subDays(1)->toDateString();
+            }
 
             $return[] = array(
                 #1 if booking is active - 0 if cancelled
@@ -313,10 +325,19 @@ class ValamarOperaApi{
                 'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
                 'ExternalCartID' => $reservation->id,
                 'ExternalCartItemID' => $reservation->id,
-                'StartDate' => Carbon::parse($reservation->date_time)->toDateString(),
-                'EndDate' => Carbon::parse($reservation->date_time)->toDateString(),
+                'StartDate' => $package_start,
+                'EndDate' => $package_end,
                 'Comment' => $this->buildPackageComment($reservation),
             );
+
+
+            $package_date = Carbon::parse($this->round_trip_reservation->date_time)->toDateString();
+            $package_start = $package_date;
+            $package_end = $package_date;
+
+            if($package_date == $accommodation_res_checkout){
+                $package_start = $this->round_trip_reservation->date_time->subDays(1)->toDateString();
+            }
 
             #Round Trip Booking
             $return[] = array(
@@ -327,8 +348,8 @@ class ValamarOperaApi{
                 'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
                 'ExternalCartID' => $this->round_trip_reservation->id,
                 'ExternalCartItemID' => $this->round_trip_reservation->id,
-                'StartDate' => Carbon::parse($this->round_trip_reservation->date_time)->toDateString(),
-                'EndDate' => Carbon::parse($this->round_trip_reservation->date_time)->toDateString(),
+                'StartDate' => $package_start,
+                'EndDate' => $package_end,
                 'Comment' => $this->buildPackageComment($this->round_trip_reservation),
             );
 
@@ -338,6 +359,16 @@ class ValamarOperaApi{
 
             $return = array();
 
+            $package_date = Carbon::parse($reservation->date_time)->toDateString();
+
+            $package_start = $package_date;
+            $package_end = $package_date;
+
+
+            if($package_date == $accommodation_res_checkout){
+                $package_start = $reservation->date_time->subDays(1)->toDateString();
+            }
+
             $return[] = array(
                 #1 if booking is active - 0 if cancelled
                 'Quantity' => $reservation->status == Reservation::STATUS_CONFIRMED ? 1 : 0,
@@ -346,8 +377,8 @@ class ValamarOperaApi{
                 'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
                 'ExternalCartID' => $reservation->id,
                 'ExternalCartItemID' => $reservation->id,
-                'StartDate' => Carbon::parse($reservation->date_time)->toDateString(),
-                'EndDate' => Carbon::parse($reservation->date_time)->toDateString(),
+                'StartDate' => $package_start,
+                'EndDate' => $package_end,
                 'Comment' => $this->buildPackageComment($reservation),
             );
 
