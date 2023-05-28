@@ -41,10 +41,10 @@ class Point extends Model
         'reception_email',
         'longitude',
         'type',
-        'fiskal_id',
         'fiskal_invoice_no',
         'fiskal_estalishment',
         'pms_code',
+        'parent_point_id',
         'pms_class',
         'active',
     ];
@@ -72,8 +72,18 @@ class Point extends Model
     public function scopeCityOnly($q){
         return  $q->where('type',Point::TYPE_CITY);
     }
+
     public function scopeNotCity($q){
         return  $q->where('type','!=',Point::TYPE_CITY);
+    }
+
+
+    public function scopeJustAccommodation($q){
+        return  $q->where('type',Point::TYPE_ACCOMMODATION);
+    }
+
+    public function scopeNotAccommodation($q){
+        return  $q->where('type','!=',Point::TYPE_ACCOMMODATION);
     }
 
     protected static function booted()
@@ -81,6 +91,4 @@ class Point extends Model
         static::addGlobalScope(new ActiveScope());
         static::addGlobalScope(new DestinationScope());
     }
-
-
 }
