@@ -32,6 +32,7 @@ use Actions;
     public $deleteId = '';
     public bool $importPoint = false;
     public $valamarPropertiesFromApi;
+    public $point_options = array();
 
     public $companyLanguages = ['en'];
     public $pointName = [
@@ -45,6 +46,7 @@ use Actions;
         $this->destination = Auth::user()->destination;
         $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
         $this->setPointInitialTranslations();
+        $this->loadParentPointsArray();
 
     }
 
@@ -67,7 +69,7 @@ use Actions;
             ],
             'point.pms_class' => 'nullable|required_if:point.type,'.\App\Models\Point::TYPE_ACCOMMODATION,
             'point.pms_code' => 'nullable|required_if:point.type,'.\App\Models\Point::TYPE_ACCOMMODATION,
-
+            'point.parent_point_id' => 'required|integer|min:0'
         ];
         foreach ($this->companyLanguages as $lang) {
             if ($lang !== 'en') {
@@ -76,6 +78,22 @@ use Actions;
         }
 
         return $ruleArray;
+    }
+
+    private function loadParentPointsArray(){
+
+        $this->point_options = array();
+
+        $point_options  = Point::query()
+            ->cityOnly()
+            ->where('destination_id',$this->destinationId)
+            ->get();
+
+      if(!empty($point_options)){
+          foreach($point_options as $option){
+              $this->point_options[$option->id] = $option->internal_name;
+          }
+      }
     }
 
     public function updatedPointName()

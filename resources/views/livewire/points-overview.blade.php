@@ -49,6 +49,13 @@
     <x-modal.card wire:model="pointModal" title="{{  !empty($this->point->exists) ? 'Updating':'Adding' }} point">
         <div class="">
 
+            <x-native-select
+                option-key-value
+                placeholder="-- Select Parent Point --"
+                wire:model="point.parent_point_id"
+                label="Parent Point"
+                :options="$this->point_options"
+            />
 
             <div class="ds-tabs">
                 @foreach($this->companyLanguages as $languageIso)
@@ -67,8 +74,6 @@
                 </div>
             @endforeach
 
-
-
             <x-input label="Internal Name:" wire:model="point.internal_name"
             hint="This name will be shown in the system to the users."
             />
@@ -81,7 +86,6 @@
                 label="Type:"
                 :options="\App\Models\Point::TYPE_ARRAY"
             />
-
 
             @if($this->point->type == \App\Models\Point::TYPE_ACCOMMODATION)
 
