@@ -558,27 +558,22 @@ class InternalReservation extends Component
 
     public function getPickupAddressPointsProperty()
     {
+
         return Point::query()
             ->notCity()
-            ->whereNotIn('id', [
-                (int)$this->stepOneFields['startingPointId'],
-                (int)$this->stepOneFields['endingPointId'],
-            ])
+            ->where('parent_point_id', (int)$this->stepOneFields['startingPointId'])
             ->get();
+
+
     }
 
     public function getDropoffAddressPointsProperty()
     {
         return Point::query()
             ->notCity()
-            ->whereNotIn('id', [
-                (int)$this->stepOneFields['startingPointId'],
-                (int)$this->stepOneFields['endingPointId'],
-            ])
+            ->where('parent_point_id', (int)$this->stepOneFields['endingPointId'])
             ->get();
-
     }
-
 
     public function getSelectedStartingPointProperty()
     {
@@ -639,8 +634,6 @@ class InternalReservation extends Component
     }
 
 
-
-
     public function addSeat()
     {
         $this->stepTwoFields['seats'][] = false;
@@ -684,7 +677,9 @@ class InternalReservation extends Component
 
     public function setPickupAddress($address): void
     {
+
         $this->stepOneFields['pickupAddressId'] = null;
+
         if (is_numeric($address)) {
             if ($addressPoint = Point::find($address)) {
                 $this->stepOneFields['pickupAddress'] = $addressPoint->name . ' ' . $addressPoint->address;
@@ -694,6 +689,8 @@ class InternalReservation extends Component
             }
         }
         $this->stepOneFields['pickupAddress'] = $address;
+
+
     }
 
     public function setDropoffAddress($address): void
@@ -707,6 +704,8 @@ class InternalReservation extends Component
             }
         }
         $this->stepOneFields['pickupAddress'] = $address;
+
+
     }
 
 

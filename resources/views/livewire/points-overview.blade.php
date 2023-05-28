@@ -49,6 +49,7 @@
     <x-modal.card wire:model="pointModal" title="{{  !empty($this->point->exists) ? 'Updating':'Adding' }} point">
         <div class="">
 
+            @if($this->point->type != \App\Models\Point::TYPE_CITY && $this->point->exists)
             <x-native-select
                 option-key-value
                 placeholder="-- Select Parent Point --"
@@ -56,7 +57,7 @@
                 label="Parent Point"
                 :options="$this->point_options"
             />
-
+            @endif
             <div class="ds-tabs">
                 @foreach($this->companyLanguages as $languageIso)
                     <a @click="selectedLanguage='{{$languageIso}}'" class="ds-tab ds-tab-bordered "

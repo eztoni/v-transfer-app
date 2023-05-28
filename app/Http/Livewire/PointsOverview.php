@@ -69,7 +69,7 @@ use Actions;
             ],
             'point.pms_class' => 'nullable|required_if:point.type,'.\App\Models\Point::TYPE_ACCOMMODATION,
             'point.pms_code' => 'nullable|required_if:point.type,'.\App\Models\Point::TYPE_ACCOMMODATION,
-            'point.parent_point_id' => 'required|integer|min:0'
+            'point.parent_point_id' => 'required_if:point.type,!=,'.\App\Models\Point::TYPE_CITY.',|integer|min:0'
         ];
         foreach ($this->companyLanguages as $lang) {
             if ($lang !== 'en') {
