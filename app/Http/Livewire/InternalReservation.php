@@ -569,6 +569,27 @@ class InternalReservation extends Component
 
     public function getDropoffAddressPointsProperty()
     {
+
+        if($this->stepOneFields['pickupAddressId'] > 0){
+
+            $point = Point::findOrFail($this->stepOneFields['pickupAddressId']);
+
+            if($point->type == \App\Models\Point::TYPE_ACCOMMODATION){
+                return Point::query()
+                    ->notAccommodation()
+                    ->notCity()
+                    ->where('parent_point_id', (int)$this->stepOneFields['endingPointId'])
+                    ->get();
+            }else{
+                return Point::query()
+                    ->justAccommodation()
+                    ->where('parent_point_id', (int)$this->stepOneFields['endingPointId'])
+                    ->get();
+            }
+
+
+        }
+
         return Point::query()
             ->notCity()
             ->where('parent_point_id', (int)$this->stepOneFields['endingPointId'])
@@ -684,6 +705,8 @@ class InternalReservation extends Component
             if ($addressPoint = Point::find($address)) {
                 $this->stepOneFields['pickupAddress'] = $addressPoint->name . ' ' . $addressPoint->address;
                 $this->stepOneFields['pickupAddressId'] = $addressPoint->id;
+
+
 
                 return;
             }

@@ -232,9 +232,9 @@
                                             :has-error="$this->getErrorBag()->has('stepOneFields.dropoffAddress')"
                                             :for="\Illuminate\Support\Str::random()"
                                         />
-                                        <div class="ds-form-control" wire:ignore>
+                                        <div class="ds-form-control">
 
-                                        <select id="dropoffSelect" x-init=" $('#dropoffSelect').select2(
+                                        <select id="dropoffSelect"  wire:key="{{ now() }}" x-init=" $('#dropoffSelect').select2(
                                                 {
                                                     closeOnSelect: true,
                                                     tags: true,
