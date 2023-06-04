@@ -49,11 +49,23 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
         $api->syncReservationWithOpera($this->model->id);
 
         if($cancellation_fee > 0){
-            $api->syncReservationCFWithOpera($this->model->id,$cancellation_fee);
 
-            $valamarFisk = new ValamarFiskalizacija($this->model->id);
-            $valamarFisk->fiskalReservationCF($cancellation_fee);
+            $no_show = false;
+
+            if($cancellation_type == 'no_show'){
+                $no_show = true;
+            }
+
+            $api->syncReservationCFWithOpera($this->model->id,$cancellation_fee,$no_show);
+
+            ##Do not re-issue invoice on no show
+            if(!$no_show){
+                $valamarFisk = new ValamarFiskalizacija($this->model->id);
+                $valamarFisk->fiskalReservationCF($cancellation_fee);
+            }
         }
+
+
 
         ReservationCancelledEvent::dispatch($this->model,[
             ReservationCancelledEvent::SEND_MAIL_CONFIG_PARAM => true

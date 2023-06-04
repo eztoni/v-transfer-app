@@ -97,8 +97,8 @@ use Actions;
         $this->cancellationDate = Carbon::now()->addHour()->format('Y-m-d H:i:s');
 
         if($this->cancellationType == 'no_show'){
-            $this->cfnDisabled = 0;
-            $this->cfpDisabled = 0;
+            $this->cancellation_fee_percent = 100;
+            $this->cancellation_fee_nominal = $reservationTotal->formatByDecimal();
         }else{
             $this->cfnDisabled = 1;
             $this->cfpDisabled = 1;

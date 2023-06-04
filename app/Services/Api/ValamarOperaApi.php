@@ -58,12 +58,12 @@ class ValamarOperaApi{
         }
     }
 
-    public function syncReservationCFWithOpera($reservation_id,$cancellation_fee){
+    public function syncReservationCFWithOpera($reservation_id,$cancellation_fee,$no_show = false){
 
         $this->reservation = Reservation::findOrFail($reservation_id);
 
-        if($this->validateCFReservationMapping()){
-            if($this->buildCFRequestStruct($cancellation_fee)){
+        if($this->validateCFReservationMapping($no_show)){
+            if($this->buildCFRequestStruct($cancellation_fee,$no_show)){
                 $this->sendOperaRequest();
             }
         }else{
@@ -112,7 +112,7 @@ class ValamarOperaApi{
      * Function used to validate whether all the parameters have been set
      * @return bool Returns true if all the properties for the reqest have the valid mapping structure
      */
-    private function validateCFReservationMapping() : bool{
+    private function validateCFReservationMapping($no_show = false) : bool{
 
         $return = true;
 
@@ -128,10 +128,18 @@ class ValamarOperaApi{
             $this->errors[] = 'No reservation number for this reservation';
         }
 
-        #Validate Cancellation PackageID - Route PMS Code
-        if(!$this->validateCancellationPackageID()){
-            $return = false;
-            $this->errors[] = 'Missing Cancellation Opera Package ID';
+        if(!$no_show){
+            #Validate Cancellation PackageID - Route PMS Code
+            if(!$this->validateCancellationPackageID()){
+                $return = false;
+                $this->errors[] = 'Missing Cancellation Opera Package ID';
+            }
+        }else{
+            #Validate Cancellation PackageID - Route PMS Code
+            if(!$this->validateNoShowPackageID()){
+                $return = false;
+                $this->errors[] = 'Missing NoShow Opera Package ID';
+            }
         }
 
         return $return;
@@ -256,6 +264,25 @@ class ValamarOperaApi{
 
         return $return;
     }
+    /**
+     * Function used to validate that the reservation number has been set for this reservation
+     * @return bool True if the reservation number has been set for this reservation, false otherwise
+     */
+    private function validateNoShowPackageID() : bool{
+
+        $return = false;
+
+        $partner = Partner::findOrFail($this->reservation->partner_id);
+
+        if(!empty($partner)){
+            if($partner->no_show_package_id){
+                $this->packageID = $partner->no_show_package_id;
+                return true;
+            }
+        }
+
+        return $return;
+    }
 
     /**
      * Function used to prepare the request needed to be sent towards Opera API Interface
@@ -282,7 +309,7 @@ class ValamarOperaApi{
      * Function used to prepare the request needed to be sent towards Opera API Interface
      * @return void
      */
-    private function buildCFRequestStruct($cancellation_fee): bool{
+    private function buildCFRequestStruct($cancellation_fee,$no_show = false): bool{
 
         #Auth Credentials
         $this->request = $this->auth_credentials;
@@ -294,7 +321,7 @@ class ValamarOperaApi{
         $this->request['TransactionID'] = $this->reservation->id;
 
         #Build Packages
-        $this->request['Packages'][] = $this->buildCFPackage($this->reservation,$cancellation_fee);
+        $this->request['Packages'][] = $this->buildCFPackage($this->reservation,$cancellation_fee,$no_show);
 
         return true;
     }
@@ -387,7 +414,13 @@ class ValamarOperaApi{
 
     }
 
-    private function buildCFPackage(\App\Models\Reservation $reservation,$cancellation_fee) : array{
+    private function buildCFPackage(\App\Models\Reservation $reservation,$cancellation_fee,$no_show = false) : array{
+
+        $comment = 'Cancellation Fee';
+
+        if($no_show){
+            $comment = 'NoShow fee';
+        }
 
         return array(
             #1 if booking is active - 0 if cancelled
@@ -399,7 +432,7 @@ class ValamarOperaApi{
             'ExternalCartItemID' => $reservation->id,
             'StartDate' => Carbon::parse($reservation->date_time)->toDateString(),
             'EndDate' => Carbon::parse($reservation->date_time)->toDateString(),
-            'Comment' => 'Cancellation Fee',
+            'Comment' => $comment,
         );
     }
     /**

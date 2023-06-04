@@ -22,9 +22,25 @@ class SyncOperaTransferReservation extends Component
     }
 
     public function syncReservation(){
+
+
         if($this->reservation->is_main){
+
             $api = new ValamarOperaApi();
-            $api->syncReservationWithOpera($this->reservation->id);
+
+            #$api->syncReservationWithOpera($this->reservation->id);
+
+            if($this->reservation->status =='cancelled'){
+
+                $no_show = $this->reservation->cancellation_type == 'no_show' ? true : false;
+                $cancellation_fee = $this->reservation->cancellation_fee;
+
+                if($cancellation_fee > 0){
+                    $api->syncReservationCFWithOpera($this->reservation->id,$cancellation_fee,$no_show);
+                }
+
+            }
+
             $this->notification()->success('Sync Completed');
             $this->emit('syncCompleted');
         }

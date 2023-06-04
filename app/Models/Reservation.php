@@ -422,9 +422,28 @@ class Reservation extends Model
 
         if($this->status == Reservation::STATUS_CANCELLED){
 
+            $item_name = 'Cancellation Fee';
+            $code = $this->getCancellationPackageId();
+
+            ##One Way Transfer
+            $route = Route::query()
+                ->where('destination_id', $this->destination_id)
+                ->where('starting_point_id', $this->pickup_location)
+                ->where('ending_point_id', $this->dropoff_location)
+                ->get()->first();
+
+
+            $route_transfer = \DB::table('route_transfer')
+                ->where('route_id',$route->id)
+                ->where('partner_id',$this->partner_id)
+                ->where('transfer_id',$this->transfer_id)
+                ->get()->first();
+
+
+
             #No Cancellation Fee - everything goes in negative
             $item = array(
-                'code' => $this->getCancellationPackageId(),
+                'code' => $route_transfer->opera_package_id,
                 'transfer' => 'Cancellation - '.$this->pickupLocation->name.' - '.$this->dropoffLocation->name,
                 'amount' => $this->getCancellationFeeAmount(),
                 'vat' => $this->getCancellationVATPercentage(),
@@ -432,13 +451,20 @@ class Reservation extends Model
                 'price' => $this->getCancellationFeeAmount(),
             );
 
-            $return['items'][] = $item;
+            if($this->cancellation_type != 'no_show'){
+                $return['items'][] = $item;
+            }else{
+                $item_name = 'No Show Fee';
+                $code = $this->getCancellationPackageId(true);
+            }
+
+
 
             #If there is a cancellation fee involved
             if($this->hasCancellationFee()){
                 $item = array(
-                    'code' => $this->getCancellationPackageId(),
-                    'transfer' => 'Cancellation Fee - ('.$this->getCancellationPercentage().'%) - '.$this->pickupLocation->name.' - '.$this->dropoffLocation->name,
+                    'code' => $code,
+                    'transfer' => $item_name.' - ('.$this->getCancellationPercentage().'%) - '.$this->pickupLocation->name.' - '.$this->dropoffLocation->name,
                     'amount' => $this->getCancellationFeeAmount('cf'),
                     'vat' => $this->getCancellationVATPercentage('cf'),
                     'vat_amount' => $this->getCancellationVatAmount('cf'),
@@ -478,8 +504,14 @@ class Reservation extends Model
         return $return[$segment];
     }
 
-    public function getCancellationPackageId(){
-        return $this->partner->cancellation_package_id;
+    public function getCancellationPackageId($no_show = false){
+
+        if($no_show){
+            return $this->partner->no_show_package_id;
+        }else{
+            return $this->partner->cancellation_package_id;
+        }
+
     }
 
     public function getCancellationVATPercentage($cf = false){
