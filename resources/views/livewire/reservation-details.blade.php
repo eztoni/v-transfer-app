@@ -119,7 +119,7 @@
     </script>
 
     @if($operaSyncLogModal)
-    <x-modal.card wire:model="operaSyncLogModal" title="Opera Reservation Sync Log - Reservation ID#{{$this->reservation->id}}">
+    <x-modal.card wire:model="operaSyncLogModal" lg max-width="5xl" title="Opera Reservation Sync Log - Reservation ID#{{$this->reservation->id}}">
         <livewire:sync-opera-transfer-reservation-log :reservation="$this->reservation"/>
     </x-modal.card>
     @endif
