@@ -32,6 +32,9 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
 
     public function cancelReservation($cancellationdate = false,$cancellation_type = 'cancellation',$cancellation_fee = 0)
     {
+
+
+
         $this->model->status = Reservation::STATUS_CANCELLED;
 
         if($cancellationdate){
@@ -42,11 +45,35 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
         $this->model->cancellation_fee = $cancellation_fee;
         $this->model->cancelled_at = $cancellationdate;
 
+
+        #if the reservation is roundtrip and only the first route is cancelled
+        if($this->model->is_main && $this->model->round_trip_id){
+
+           $round_trip_res = Reservation::findOrFail($this->model->round_trip_id);
+
+           if($round_trip_res->status == 'confirmed'){
+               $this->model->is_main = 0;
+               $this->model->round_trip_id = 0;
+           }
+
+           $round_trip_res->is_main = 1;
+           $round_trip_res->save();
+
+        }
+
         $this->model->save();
 
 
+
+        if($this->model->is_main){
+            $reservation_sync_id = $this->model_id;
+        }else{
+            $res_model = Reservation::query()->where('round_trip_id',$this->model->id)->get()->first();
+            $reservation_sync_id = $res_model->id;
+        }
+
         $api = new ValamarOperaApi();
-        $api->syncReservationWithOpera($this->model->id);
+        $api->syncReservationWithOpera($reservation_sync_id);
 
         if($cancellation_fee > 0){
 
