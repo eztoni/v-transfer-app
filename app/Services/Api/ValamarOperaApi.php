@@ -416,10 +416,22 @@ class ValamarOperaApi{
 
     private function buildCFPackage(\App\Models\Reservation $reservation,$cancellation_fee,$no_show = false) : array{
 
+        $accommodation_res_checkout = $reservation->getLeadTravellerAttribute()?->reservation_check_out;
+
         $comment = 'Cancellation Fee';
 
         if($no_show){
             $comment = 'NoShow fee';
+        }
+
+        $package_date = Carbon::parse($reservation->date_time)->toDateString();
+
+        $package_start = $package_date;
+        $package_end = $package_date;
+
+
+        if($package_date == $accommodation_res_checkout){
+            $package_start = $reservation->date_time->subDays(1)->toDateString();
         }
 
         return array(
@@ -430,8 +442,8 @@ class ValamarOperaApi{
             'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
             'ExternalCartID' => $reservation->id,
             'ExternalCartItemID' => $reservation->id,
-            'StartDate' => Carbon::parse($reservation->date_time)->toDateString(),
-            'EndDate' => Carbon::parse($reservation->date_time)->toDateString(),
+            'StartDate' => $package_start,
+            'EndDate' => $package_end,
             'Comment' => $comment,
         );
     }

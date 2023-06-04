@@ -28,7 +28,7 @@ class SyncOperaTransferReservation extends Component
 
             $api = new ValamarOperaApi();
 
-            #$api->syncReservationWithOpera($this->reservation->id);
+            $api->syncReservationWithOpera($this->reservation->id);
 
             if($this->reservation->status =='cancelled'){
 
@@ -38,7 +38,6 @@ class SyncOperaTransferReservation extends Component
                 if($cancellation_fee > 0){
                     $api->syncReservationCFWithOpera($this->reservation->id,$cancellation_fee,$no_show);
                 }
-
             }
 
             $this->notification()->success('Sync Completed');
