@@ -178,7 +178,24 @@ class DestinationReport extends Component
                     if ($i->isConfirmed()) {
                         $this->totalEur = $this->totalEur->add($priceEur->getMoney());
                         $this->totalCommission = $this->totalCommission->add($i->total_commission_amount);
+                    }else{
+
+                        if($i->cancellation_type == 'cancellation'){
+
+                            if($i->cancellation_fee > 0){
+
+
+                                $cf_money = \CKnow\Money\Money::EUR($i->cancellation_fee*100);
+
+                                $this->totalEur = $this->totalEur->add($cf_money->getMoney());
+                                $this->totalCommission = $this->totalCommission->add($cf_money);
+                            }
+                        }elseif($i->cancellation_type == 'no_show'){
+                            $this->totalEur = $this->totalEur->add($priceEur->getMoney());
+                            $this->totalCommission = $this->totalCommission->add($i->total_commission_amount);
+                        }
                     }
+
 
                     $inv = $priceEur->subtract($i->total_commission_amount)->getMoney();
 
@@ -193,7 +210,6 @@ class DestinationReport extends Component
 
                     $net_profit = \Cknow\Money\Money::EUR($net_profit->getAmount());
 
-
                     $invoice_number = '-';
 
                     if(!empty($invoice_data)) {
@@ -206,6 +222,7 @@ class DestinationReport extends Component
                     $priceEur = (string)$priceEur;
                     $priceEur = preg_replace('!€!','',$priceEur);
 
+
                     $total_comm = (string)$i->total_commission_amount;
                     $total_comm= preg_replace('!€!','',$total_comm);
 
@@ -215,6 +232,32 @@ class DestinationReport extends Component
 
                     $pdv = (string)$pdv;
                     $pdv = preg_replace('!€!','',$pdv);
+
+                    if($i->status == 'cancelled'){
+
+                        if($i->cancellation_type == 'cancellation'){
+
+                            if($i->cancellation_fee > 0){
+
+                                $cf_money = \CKnow\Money\Money::EUR($i->cancellation_fee*100);
+                                $priceEur = \Cknow\Money\Money::EUR($cf_money->getAmount());
+
+                                $priceEur = (string)$priceEur;
+                                $priceEur = preg_replace('!€!','',$priceEur);
+
+                                $net_profit = $priceEur;
+                                $total_comm = $priceEur;
+                                $pdv = 0;
+                                $invEur = 0;
+                            }else{
+                                $priceEur = 0;
+                                $net_profit = 0;
+                                $total_comm = 0;
+                                $pdv = 0;
+                                $invEur = 0;
+                            }
+                        }
+                    }
 
                     return [
                         'id' => $i->id,
@@ -240,7 +283,6 @@ class DestinationReport extends Component
                         'pdv' => $pdv,
                     ];
                 })->toArray();
-
 
         $this->totalEur = (string)\Cknow\Money\Money::fromMoney($this->totalEur);
         $this->totalCommission = (string)$this->totalCommission;
@@ -279,8 +321,6 @@ class DestinationReport extends Component
 
                 Carbon::make($this->dateFrom)->format('d.m.Y'),
                 Carbon::make($this->dateTo)->format('d.m.Y'),
-                $partner??'All',
-                $destination??'All',
                 $this->totalEur,
                 $this->totalCommission
 

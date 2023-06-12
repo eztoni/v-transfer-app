@@ -32,6 +32,19 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
 
     }
 
+    private function format_excel_price($price){
+
+        $return = preg_replace('/^\p{Z}+|\p{Z}+$/u', '', $price);
+
+        if($price > 999){
+            $return = str_replace('.','',$return);
+        }
+
+        $return = str_replace(',','.',$return);
+
+        return number_format($return,2,'.','');
+    }
+
     private function format()
     {
 
@@ -47,49 +60,13 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
                 $data_array['postupak'] = $item['status'] == 'confirmed' ? 'RP' : 'CF';
                 $data_array['odrasli'] = $item['adults'];
                 $data_array['djeca'] = (int)$item['children']+(int)$item['infants'];
-                $data_array['bruto_prihod'] = $item['price_eur'];
-                $data_array['trošak_ulaznog_računa'] = $item['invoice_charge'];
-                $data_array['bruto_profit'] = $item['commission_amount'];
+                $data_array['bruto_prihod'] = $this->format_excel_price($item['price_eur']);
+                $data_array['trošak_ulaznog_računa'] = $this->format_excel_price($item['invoice_charge']);
+                $data_array['bruto_profit'] = $this->format_excel_price($item['commission_amount']);
                 $data_array['ugovorena_provizija'] = $item['commission'].'%';
                 $data_array['vrsta_proizvoda'] = 'Transfer';
             }
 
-/*
-            if ($this->isPartnerReport) {
-
-                $data_array['partner'] = $item['name'];
-                $data_array['kontigent'] = $item['transfer'];
-                $data_array['prodajno_mjesto'] = 'VEC';
-                $data_array['vrsta_plaćanja'] = 'REZERVACIJA NA SOBU';
-                $data_array['broj_računa'] = $item['invoice_number'];
-                $data_array['porezna_grupa'] = $item['tax_level'];
-                $data_array['postupak'] = $item['status'] == 'confirmed' ? 'RP' : 'CF';
-                $data_array['datum_prodaje'] = $item['voucher_date'];
-                $data_array['bruto_prihod'] = $item['price_eur'];
-                $data_array['ugovorena_provizija'] = $item['commission'].'%';
-                $data_array['trošak_ulaznog_računa'] = $item['invoice_charge'];
-                $data_array['bruto_profit'] = $item['commission_amount'];
-                $data_array['pdv'] = $item['pdv'];
-                $data_array['neto_profit'] = $item['net_income'];
-
-            }else{
-                $data_array['partner'] = $item['name'];
-                $data_array['kontigent'] = $item['transfer'];
-                $data_array['datum_vouchera'] = $item['voucher_date'];
-                $data_array['prodajno_mjesto'] = 'VEC';
-                $data_array['voucher_id'] = $item['id'];
-                $data_array['porezna_grupa'] = $item['tax_level'];
-                $data_array['nosite_vouchera'] = $item['name'];
-                $data_array['odrasli'] = $item['adults'];
-                $data_array['djeca'] = (int)$item['children']+(int)$item['infants'];
-                $data_array['bruto_prihod'] = $item['price_eur'];
-                $data_array['trošak_ulaznog_računa'] = $item['invoice_charge'];
-                $data_array['bruto_profit'] = $item['commission_amount'];
-                $data_array['ugovorena_provizija'] = $item['commission'].'%';
-                $data_array['vrsta_proizvoda'] = 'Transfer';
-            }
-
-*/
             return $data_array;
         });
     }
@@ -104,7 +81,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
         }
 
         return [
-            ['Datum Od', 'Datum Do', 'Partner', 'Destinacija','Ukupni Prihodi','Ukupna Provizija'],
+            ['Datum Od', 'Datum Do', 'Bruto Prihod','Bruto Profit'],
             $this->filterData,
             [],
             $headings

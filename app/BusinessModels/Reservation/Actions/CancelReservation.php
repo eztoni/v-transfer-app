@@ -66,7 +66,7 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
 
 
         if($this->model->is_main){
-            $reservation_sync_id = $this->model_id;
+            $reservation_sync_id = $this->model->id;
         }else{
             $res_model = Reservation::query()->where('round_trip_id',$this->model->id)->get()->first();
             $reservation_sync_id = $res_model->id;
