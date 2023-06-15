@@ -51,41 +51,17 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getNameAttribute($value)
     {
-        /*
-        if (App::environment('production')) {
-
-            $value =
-                \Auth::user()->hasRole(self::ROLE_SUPER_ADMIN)
-                    ? \Str::mask($value, '*', 3)
-                    : $value;
-        }
-        */
         return $value;
     }
 
     public function getEmailAttribute($value)
     {
-        /*
-        if (App::environment('production')) {
-            $value =
-                \Auth::user()->hasRole(self::ROLE_SUPER_ADMIN)
-                    ? \Str::mask($value, '*', 3)
-                    : $value;
-        }
-        */
         return $value;
     }
 
     public function getOibAttribute($value)
     {
-        /*
-        if (App::environment('production')) {
-            $value =
-                \Auth::user()->hasRole(self::ROLE_SUPER_ADMIN)
-                    ? \Str::mask($value, '*', 3)
-                    : $value;
-        }
-        */
+
         return $value;
     }
 
@@ -149,5 +125,17 @@ class User extends Authenticatable implements MustVerifyEmail
     public function owner()
     {
         return $this->belongsTo(Owner::class);
+    }
+
+    private function maskValue($value){
+
+        if (App::environment('production')) {
+            $value =
+                \Auth::user()->hasRole(self::ROLE_SUPER_ADMIN)
+                    ? \Str::mask($value, '*', 3)
+                    : $value;
+        }
+
+        return $value;
     }
 }
