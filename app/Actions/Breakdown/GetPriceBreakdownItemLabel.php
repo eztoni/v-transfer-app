@@ -24,11 +24,8 @@ class GetPriceBreakdownItemLabel
             default:
                 $label = __('mail.transfer_price');
 
-                $route = \Arr::get($breakdownItem,'price_data.route_id');
 
-                if($route = Route::find($route)){
-                    $label = $route->name;
-                }
+                $label = 'Transfer Price';
 
                 return $label;
                 break;

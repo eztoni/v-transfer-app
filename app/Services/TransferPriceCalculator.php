@@ -71,7 +71,7 @@ class TransferPriceCalculator
         }
 
         $price = Money::EUR(
-            $this->roundTrip ? $this->priceData->price_round_trip : $this->priceData->price
+            $this->priceData->price
         );
 
         $this->breakdownArray[] = [

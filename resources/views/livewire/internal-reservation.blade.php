@@ -809,7 +809,14 @@
                             <x-slot name="footer">
                                 <div class="text-right ml-auto gap-2 pr-2">
                                     Total price:
-                                    <b> {{ \App\Facades\EzMoney::format($this->totalPrice->getAmount()) }}
+                                    <?php
+                                        if($this->roundTrip){
+                                            $multiplier = 2;
+                                        }else{
+                                            $multiplier = 1;
+                                        }
+                                        ?>
+                                    <b> {{ \App\Facades\EzMoney::format($this->totalPrice->getAmount()*$multiplier) }}
                                         EUR</b>
                                 </div>
                             </x-slot>
