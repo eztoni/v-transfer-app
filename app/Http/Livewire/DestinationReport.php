@@ -136,6 +136,7 @@ class DestinationReport extends Component
 
     public function generate(\Swap\Swap $swap)
     {
+
         $this->totalEur = Money::EUR(0);
         $this->totalCommission = \Cknow\Money\Money::EUR(0);
         $exchange = new SwapExchange($swap);
@@ -331,8 +332,8 @@ class DestinationReport extends Component
                 $fileName = "reporting_".gmdate('dmy').'_partner_voucher';
                 break;
             case 'ppom-report':
-                break;
                 $fileName = "reporting_".gmdate('dmy').'_PPOM';
+                break;
             case 'rpo-report':
                 $fileName = "reporting_".gmdate('dmy').'_RPO';
                 break;
