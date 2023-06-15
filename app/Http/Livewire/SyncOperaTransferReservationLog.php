@@ -38,7 +38,16 @@ class SyncOperaTransferReservationLog extends Component
         if($this->reservation->is_main){
             $this->log  = ValamarOperaApi::getSyncOperaLog($this->reservation->id);
         }
+    }
 
+    public function openOperaSyncLogModal($log_id){
+
+        $this->log =  ValamarOperaApi::getSyncOperaLog($this->reservation->id,$log_id);
+
+        $log['request'] = json_decode($this->log[$log_id]->opera_request,true);
+        $log['response'] = json_decode($this->log[$log_id]->opera_response,true);
+
+        dd($log);
     }
 
     public function render()

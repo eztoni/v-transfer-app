@@ -10,6 +10,7 @@ use App\Models\Partner;
 use Carbon\Carbon;
 use Exchanger\Exception\Exception;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\App;
 use Cknow\Money\Money;
 use Money\Currency;
 
@@ -529,8 +530,12 @@ class ValamarOperaApi{
 
         $this->setCallURL('PackagePosting');
 
-        $this->validateResponse(
-            Http::post($this->callURL,$this->request));
+        if(App::environment('local')){
+            $this->write_opera_log();
+        }else{
+            $this->validateResponse(
+                Http::post($this->callURL,$this->request));
+        }
 
         return false;
     }
@@ -650,31 +655,41 @@ class ValamarOperaApi{
      * @param $reservation_id Reservation ID
      * @return void array Log Data
      */
-    static function getSyncOperaLog($reservation_id){
+    static function getSyncOperaLog($reservation_id,$log_id = false){
 
-        $log = \DB::table('opera_sync_log')
-            ->where('reservation_id','=',$reservation_id)
-            ->orderBy('id','desc')
-            ->limit(1)
-            ->get();
+        $return = array();
 
-        if(!empty($log) && isset($log[0])){
+        $log_list = \DB::table('opera_sync_log')
+                ->where('reservation_id','=',$reservation_id)
+                ->orderBy('id','desc')
+                ->get();
+
+            if(!empty($log_list)){
+               foreach($log_list as $log){
+                    $return[$log->id] = $log;
+               }
+            }
 
 
-            $log = $log[0];
+            if($log_id){
+                if(!empty($return[$log_id])){
+                    $log = array();
+                    $log[$log_id] = $return[$log_id];
 
-            $log->opera_request = json_decode($log->opera_request,true);
-            $log->opera_response = json_decode($log->opera_response,true);
-        }else{
-            $log = array(
-                'id' => '0',
-                'updated_at' => 'test',
-                'log_message' => 'No Log',
-                'opera_request' => 'No Request Body',
-                'opera_response' => 'No Response Body',
-            );
-        }
+                    $return = $log;
 
-        return json_decode(json_encode($log),true);
+                }
+            }
+
+            return $return;
+    }
+
+    private function write_opera_log(){
+
+        $log = '['.Carbon::now()->toDateTimeString().']'."\n";
+
+        $log .= print_r($this->request,true)."\n\n";
+
+        file_put_contents('opera_local_log.txt',$log,FILE_APPEND);
     }
 }
