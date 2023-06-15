@@ -31,7 +31,7 @@ use Actions;
             'user.owner_id' => 'required',
             'user.city' => '',
             'user.zip' => '',
-            'user.oib' => 'digits:13|integer|unique:users,oib,'.$this->user->id,
+            'user.oib' => 'digits:11|integer|unique:users,oib,'.$this->user->id,
             'user.set_password'=>'nullable|min:6',
             'user.set_password_confirmation'=>'nullable|same:user.set_password',
             'userRole'=>'required|in:admin,user,reception',
