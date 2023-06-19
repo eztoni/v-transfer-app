@@ -85,7 +85,7 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
                 ReservationCancelledEvent::SEND_MAIL_CONFIG_PARAM => true
             ]);
         }elseif($event == 'updated'){
-            ReservationUpdatedEvent::dispatch($notification_model,[ReservationUpdatedEvent::SEND_MAIL_CONFIG_PARAM => true);
+            ReservationUpdatedEvent::dispatch($notification_model,[ReservationUpdatedEvent::SEND_MAIL_CONFIG_PARAM => true]);
         }
 
     }
