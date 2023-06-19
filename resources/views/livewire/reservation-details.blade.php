@@ -69,7 +69,7 @@
             @endif
 
         </a>
-        @if($reservation->is_round_trip)
+        @if($reservation->is_round_trip && $reservation->returnReservation)
 
             <a class="ds-tab ds-tab-lifted ds-tab-lg flex-grow"
                style="border-color: #136baa;"

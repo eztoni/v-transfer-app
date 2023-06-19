@@ -69,6 +69,7 @@ class CreateReservation extends Reservation
     public function saveReservation(): int
     {
 
+
         $this->validateReservation();
 
         \DB::transaction(function (){
@@ -85,7 +86,7 @@ class CreateReservation extends Reservation
 
             #Send Reservation To Opera
             $OperaAPI = new ValamarOperaApi();
-            $OperaAPI->syncReservationWithOpera($this->model->id);
+            $OperaAPI->syncReservationWithOperaFull($this->model->id);
 
             #Send To Invoicing
             $fiskalAPI = new ValamarFiskalizacija($this->model->id);
@@ -112,7 +113,7 @@ class CreateReservation extends Reservation
 
     public function sendReservationToOpera(){
         $operaAPI = new ValamarOperaApi();
-        $operaAPI->syncReservationWithOpera($this->model->id);
+        $operaAPI->syncReservationWithOperaFull($this->model->id);
     }
 
     private function saveRoundTrip()
@@ -126,7 +127,6 @@ class CreateReservation extends Reservation
         $roundTrip->date_time = $this->returnDate;
         $roundTrip->flight_number = $this->returnFlightNumber;
         $roundTrip->is_main = false;
-
 
         $roundTrip->save();
         $roundTrip->extras()->saveMany($this->extras);

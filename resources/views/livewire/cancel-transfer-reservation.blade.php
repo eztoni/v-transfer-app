@@ -27,11 +27,23 @@
     <x-input type="number" min="1" max="100" label="Cancellation Fee %" wire:model="cancellation_fee_percent"></x-input>
     <x-input  type="number" label="Cancellation Fee €" wire:model="cancellation_fee_nominal"></x-input>
     <br/>
+    @if($reservation->isRoundTrip())
+        <div class="flex justify-end my-3">
+            <x-checkbox lg class="justify-end ml-auto" left-label="Cancel Round trip"
+                        wire:model="cancelRoundTrip"/>
+        </div>
+        <br/>
+    @endif
+
     <label style="font-size: 80%" primary class="flex justify-end">{{$infoMessage}}</label>
     <br/>
-<div class="flex justify-end">
-    <x-button label="Yes" negative wire:click="cancelReservation()"/>
 
-    <x-button label="No"  wire:click="close"/>
-</div>
+    <div class="flex justify-end">
+        <x-button label="Yes" negative wire:click="cancelReservation()"/>
+
+        <x-button label="No"  wire:click="close"/>
+    </div>
+
+
+
 </div>

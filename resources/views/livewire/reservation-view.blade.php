@@ -1,6 +1,5 @@
 <div>
 
-
     <div class="ds-alert
 
     @switch($reservation->status)
@@ -326,6 +325,7 @@
                     <tbody>
 
                     @foreach($this->reservation->price_breakdown as $pbItem)
+
                         <tr>
                             <td class="text-info">{{$loop->index+1}}</td>
                             <td>{{\App\Actions\Breakdown\GetPriceBreakdownItemLabel::run($pbItem)}}</td>
@@ -335,7 +335,7 @@
                     <tr>
                         <td class="text-info"></td>
                         <td class="font-bold text-lg">TOTAL:</td>
-                        <td class="font-bold text-lg text-right"> {{\Cknow\Money\Money::EUR($reservation->price)}}</td>
+                        <td class="font-bold text-lg text-right"> {{$reservation->getPrice()}}</td>
                     </tr>
                     </tbody>
                 </table>

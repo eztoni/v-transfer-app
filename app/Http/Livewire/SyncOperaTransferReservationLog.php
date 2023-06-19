@@ -25,7 +25,7 @@ class SyncOperaTransferReservationLog extends Component
     public function syncReservation(){
         if($this->reservation->is_main){
             $api = new ValamarOperaApi();
-            $api->syncReservationWithOpera($this->reservation->id);
+            $api->syncReservationWithOperaFull($this->reservation->id);
             $this->notification()->success('Sync Completed');
             $this->emit('syncCompleted');
         }
