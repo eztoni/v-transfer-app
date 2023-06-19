@@ -68,12 +68,9 @@ use Actions;
         $cancelAction->cancelReservation(
             $this->cancellationDate,
             $this->cancellationType,
-            $this->cancellation_fee_nominal
+            $this->cancellation_fee_nominal,
+            $this->cancelRoundTrip
         );
-
-        if($this->cancelRoundTrip){
-            $cancelAction->cancelRoundTrip();
-        }
 
         $operaAPI = new ValamarOperaApi();
 
