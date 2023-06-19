@@ -7,6 +7,7 @@ use App\BusinessModels\Reservation\Actions\UpdateReservation;
 use App\Facades\EzMoney;
 use App\Models\Partner;
 use App\Models\Reservation;
+use App\Services\Api\ValamarOperaApi;
 use Carbon\Carbon;
 use http\Env\Request;
 use Livewire\Component;
@@ -34,7 +35,6 @@ use Actions;
         'refund' => 'Cancel - Refund',
         'no_show' => 'No Show'
     );
-
 
     public $cancellationType = 'cancellation';
 
@@ -72,8 +72,19 @@ use Actions;
         );
 
         if($this->cancelRoundTrip){
-
             $cancelAction->cancelRoundTrip();
+        }
+
+        $operaAPI = new ValamarOperaApi();
+
+        if($this->reservation->is_main){
+            $operaAPI->syncReservationWithOperaFull($this->reservation->id);
+        }else{
+            $main_res = Reservation::where('round_trip_id',$this->reservation->id)->get()->first();
+
+            if($main_res){
+                $operaAPI->syncReservationWithOperaFull($main_res->id);
+            }
         }
 
         $this->emit('cancelCompleted');
