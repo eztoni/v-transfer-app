@@ -18,10 +18,16 @@ class ReservationCancellationMail extends Mailable
 
         \App::setLocale($locale);
 
+        $booking_cancellation = 'Booking Cancellation';
+
+        if($locale == 'hr'){
+            $booking_cancellation = 'Otkaz Rezervacije';
+        }
+
         $this->subject(__('mail.guest.cancellation_mail.subject'));
 
         $pdf = PDF::loadView('attachments.booking_cancellation', ['reservation'=>$this->reservation]);
-        $this->attachData($pdf->output(),"Booking Cancellation_{$reservation_id}.pdf");
+        $this->attachData($pdf->output(),"{$booking_cancellation}_{$reservation_id}.pdf");
     }
 
     public function build()

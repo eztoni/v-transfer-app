@@ -19,11 +19,17 @@ class ReservationConfirmationMail extends Mailable
 
         $this->subject(__('mail.guest.confirmation_mail.subject'));
 
+        $booking_confirmation = 'Booking Confirmation';
+
+        if($locale == 'hr'){
+            $booking_confirmation = 'Potvrda Rezervacije';
+        }
+
         $pdf = PDF::loadView('attachments.voucher', ['reservation'=>$this->reservation]);
         $this->attachData($pdf->output(),"Voucher_{$reservation_id}.pdf");
 
         $pdf = PDF::loadView('attachments.booking_confirmation', ['reservation'=>$this->reservation]);
-        $this->attachData($pdf->output(),"Booking Confirmation_{$reservation_id}.pdf");
+        $this->attachData($pdf->output(),"{$booking_confirmation}_{$reservation_id}.pdf");
 
     }
 
