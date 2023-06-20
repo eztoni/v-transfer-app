@@ -371,7 +371,6 @@ class Reservation extends Model
                 ->get()->first();
 
 
-
                 $returnOperaPackageID = $return_route_transfer->opera_package_id;
 
                 $price = Money::EUR($return_route_transfer->price)->formatByDecimal();
@@ -383,6 +382,7 @@ class Reservation extends Model
                     $price = number_format($price*(-1),2);
                     $vat_amount = number_format($vat_amount*(-1),2);
                 }
+
 
                 $item = array(
                     'code' => $returnOperaPackageID,
@@ -498,7 +498,6 @@ class Reservation extends Model
             }
 
 
-
             #If there is a cancellation fee involved
             if($this->hasCancellationFee()){
                 $item = array(
@@ -511,6 +510,61 @@ class Reservation extends Model
                 );
 
                 $return['items'][] = $item;
+            }
+
+            #Return Route
+            if($this->is_main && $this->isRoundTrip()){
+
+                $round_trip_res = Reservation::findOrFail($this->round_trip_id);
+
+                if($this->cancellation_type == 'no_show'){
+                    $code = $round_trip_res->partner->no_show_package_id;
+                }else{
+                    $code = $round_trip_res->partner->cancellation_package_id;
+                }
+
+                ##One Way Transfer
+                $route = Route::query()
+                    ->where('destination_id', $round_trip_res->destination_id)
+                    ->where('starting_point_id', $round_trip_res->pickup_location)
+                    ->where('ending_point_id', $round_trip_res->dropoff_location)
+                    ->get()->first();
+
+
+                $route_transfer = \DB::table('route_transfer')
+                    ->where('route_id',$route->id)
+                    ->where('partner_id',$round_trip_res->partner_id)
+                    ->where('transfer_id',$round_trip_res->transfer_id)
+                    ->get()->first();
+
+
+
+                #No Cancellation Fee - everything goes in negative
+                $item = array(
+                    'code' => $route_transfer->opera_package_id,
+                    'transfer' => 'Cancellation - '.$round_trip_res->pickupLocation->name.' - '.$round_trip_res->dropoffLocation->name,
+                    'amount' => $round_trip_res->getCancellationFeeAmount(),
+                    'vat' => $round_trip_res->getCancellationVATPercentage(),
+                    'vat_amount' => $round_trip_res->getCancellationVatAmount(),
+                    'price' => $round_trip_res->getCancellationFeeAmount(),
+                );
+
+                $return['items'][] = $item;
+
+                #If there is a cancellation fee involved
+                if($round_trip_res->hasCancellationFee()){
+                    $item = array(
+                        'code' => $code,
+                        'transfer' => $item_name.' - ('.$round_trip_res->getCancellationPercentage().'%) - '.$round_trip_res->pickupLocation->name.' - '.$round_trip_res->dropoffLocation->name,
+                        'amount' => $round_trip_res->getCancellationFeeAmount('cf'),
+                        'vat' => $round_trip_res->getCancellationVATPercentage('cf'),
+                        'vat_amount' => $round_trip_res->getCancellationVatAmount('cf'),
+                        'price' => $round_trip_res->getCancellationFeeAmount('cf'),
+                    );
+
+                    $return['items'][] = $item;
+                }
+
             }
 
             #Item Summary
@@ -544,6 +598,8 @@ class Reservation extends Model
             $return['tax_group'] = $this->included_in_accommodation ? 0 : 25;
             $return['items_total_base'] = number_format($return['items_total']*((100-$return['tax_group'])/100),2);
         }
+
+
 
         return $return[$segment];
     }
