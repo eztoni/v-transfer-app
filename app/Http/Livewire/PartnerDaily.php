@@ -64,6 +64,9 @@ class PartnerDaily extends Component
 
     public function updated($property)
     {
+        if($property == 'dateFrom'){
+            $this->dateTo = Carbon::createFromFormat('d.m.Y',$this->dateFrom)->addDay()->format('d.m.Y');
+        }
     }
 
     public function getAdminDestinationsProperty()

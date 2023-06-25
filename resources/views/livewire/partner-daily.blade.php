@@ -10,7 +10,7 @@
                 date-format="d.m.Y"
                 :enable-time="false"
                 :default-date="$this->dateFrom"
-                wire:model.defer="dateFrom"
+                wire:model="dateFrom"
             />
 
             <x-flatpickr
