@@ -18,6 +18,8 @@ use App\Http\Livewire\TransferOverview;
 use App\Http\Livewire\UserOverview;
 use App\Http\Livewire\VehicleEdit;
 use App\Http\Livewire\VehicleOverview;
+use App\Http\Livewire\PartnerDaily;
+use App\Models\Reservation;
 
 /*
     |--------------------------------------------------------------------------
@@ -50,7 +52,27 @@ Route::get('/transfer-overview', TransferOverview::class)->name('transfer-overvi
 Route::get('/transfer-edit/{transferId}', TransferEdit::class)->name('transfer-edit');
 Route::get('/transfer-prices', NewTransferPrices::class)->name('transfer-prices');
 
+Route::get('/partner-daily', PartnerDaily::class)->name('partner-daily');
+Route::get('preview_partner_mail_list/{partner_id}/{date_from}/{date_to}',function ($partner_id,$date_from,$date_to){
 
+
+    $reservations = Reservation::query()
+        ->whereIsMain(true)
+        ->with(['leadTraveller', 'pickupLocation', 'dropoffLocation', 'returnReservation'])
+        ->where('status',Reservation::STATUS_CONFIRMED)
+        ->where(function ($q) use($date_from,$date_to) {
+            $q->where(function ($q) use($date_from,$date_to){
+                $q->whereDate('date_time', '>=', $date_from)
+                    ->whereDate('date_time', '<=',  $date_to);
+            })->orWHereHas('returnReservation',function ($q)use($date_from,$date_to){
+                $q->whereDate('date_time', '>=',  $date_from)
+                    ->whereDate('date_time', '<=',  $date_to);
+            });
+        })->where('partner_id',$partner_id)->get();
+
+
+    return  \App\Actions\Attachments\GenerateTransferOverviewPDF::generate(\Carbon\Carbon::make($date_from),\Carbon\Carbon::make($date_to),$reservations)->download();
+});
 // Prefixed admin routes. There is no difference other than /admin/ prefix in url
 Route::prefix('admin')->name('admin.')->group(function () {
 
@@ -60,7 +82,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/user-overview', UserOverview::class)->name('user-overview');
     Route::post('/upload-images', [UploadImageController::class, 'store'])->name('upload-images');
     Route::get('/company-dashboard', CompanyDashboard::class)->name('company-dashboard');
-
     Route::get('/partners-overview', PartnersOverview::class)->name('partners-overview');
     Route::get('/partner-edit/{partner}', PartnerEdit::class)->name('partner-edit');
 });

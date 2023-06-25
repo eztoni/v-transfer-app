@@ -54,17 +54,3 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
 });
 
-
-// For development only
-if (!App::isProduction()) {
-    Route::middleware(
-        ['role:' . User::ROLE_SUPER_ADMIN]
-    )->group(function () {
-        Route::get('preview_partner_mail_list',function (){
-            return  \App\Actions\Attachments\GenerateTransferOverviewPDF::generate(\Carbon\Carbon::make('2023-02-01'), now()->addDay(),\App\Models\Reservation::all())->download();
-
-
-        });
-
-    });
-}
