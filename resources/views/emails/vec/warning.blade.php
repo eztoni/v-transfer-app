@@ -2,7 +2,7 @@
     <p>Postovani,</p>
         <br>
     <p>
-        Molimo da se obrati pozornost na rezervaciju 
+        Molimo da se obrati pozornost na rezervaciju {{ $reservation->id }}
         Hvala Vam na suradnji.
         </p>
         <br>

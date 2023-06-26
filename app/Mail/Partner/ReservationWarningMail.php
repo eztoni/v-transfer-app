@@ -19,7 +19,6 @@ class ReservationWarningMail extends Mailable
 
         $this->subject('Upozorenje za rezervaciju #'.$reservation_id);
 
-        dd($this->reservation);
     }
 
     public function build()
