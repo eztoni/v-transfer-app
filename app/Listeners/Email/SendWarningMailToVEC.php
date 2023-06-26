@@ -11,7 +11,7 @@ class SendWarningMailToVEC
 {
     // Email addresses who will receive the email
     public array $emailList = [];
-    public $vec_mail = 'njiric.toni@gmail.com';
+    public $vec_mail = 'transfer@valamar.com';
 
     public function sendWarningEmail($resId): void
     {
