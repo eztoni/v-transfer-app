@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\ReservationUpdatedEvent;
+use App\Events\ReservationWarningEvent;
 use App\Http\Controllers\UploadImageController;
 use App\Http\Livewire\CompanyDashboard;
 use App\Http\Livewire\CompanyOverview;
@@ -73,6 +75,16 @@ Route::get('preview_partner_mail_list/{partner_id}/{date_from}/{date_to}',functi
 
     return  \App\Actions\Attachments\GenerateTransferOverviewPDF::generate(\Carbon\Carbon::make($date_from),\Carbon\Carbon::make($date_to),$reservations)->download();
 });
+
+Route::get('/mail-test',function(){
+
+    $reservation = Reservation::findOrFail(172);
+
+    ReservationWarningEvent::dispatch($reservation,[
+        ReservationWarningEvent::SEND_MAIL_CONFIG_PARAM => true,
+    ]);
+});
+
 // Prefixed admin routes. There is no difference other than /admin/ prefix in url
 Route::prefix('admin')->name('admin.')->group(function () {
 

@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Events\ReservationCancelledEvent;
 use App\Events\ReservationCreatedEvent;
 use App\Events\ReservationUpdatedEvent;
+use App\Events\ReservationWarningEvent;
 use App\Listeners\Email\SendCancellationMailToGuest;
 use App\Listeners\Email\SendCancellationMailToGuestListener;
 use App\Listeners\Email\SendCancellationMailToPartnerListener;
@@ -12,6 +13,7 @@ use App\Listeners\Email\SendConfirmationMailToGuestListener;
 use App\Listeners\Email\SendConfirmationMailToPartnerListener;
 use App\Listeners\Email\SendModificationMailToGuestListener;
 use App\Listeners\Email\SendModificationMailToPartnerListener;
+use App\Listeners\Email\SendWarningMailToVEC;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -40,6 +42,9 @@ class EventServiceProvider extends ServiceProvider
         ReservationCancelledEvent::class => [
             SendCancellationMailToPartnerListener::class,
             SendCancellationMailToGuestListener::class,
+        ],
+        ReservationWarningEvent::class => [
+          SendWarningMailToVEC::class,
         ],
     ];
 
