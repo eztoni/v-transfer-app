@@ -18,6 +18,8 @@ class ReservationWarningMail extends Mailable
         \App::setLocale('hr');
 
         $this->subject('Upozorenje za rezervaciju #'.$reservation_id);
+
+        dd($this->reservation);
     }
 
     public function build()
