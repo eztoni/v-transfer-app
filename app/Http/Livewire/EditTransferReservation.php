@@ -67,6 +67,7 @@ use Actions;
     }
 
     public function confirmationDialog(){
+
         $this->dialog()->confirm([
             'title'       => 'You are about to modify a reservation?',
             'description' => 'Proceed with the modification?',
@@ -74,18 +75,20 @@ use Actions;
             'accept'      => [
                 'label'  => 'Yes, modify',
                 'method' => 'save',
-                'params' => 'Saved',
             ],
             'reject' => [
                 'label'  => 'No, cancel',
                 'method' => 'cancel',
             ],
         ]);
+
+
     }
 
 
     public function save(): void
     {
+
         $this->validate($this->rules(),[],$this->fieldNames);
 
         $this->reservation->date_time = $this->date;
@@ -94,6 +97,15 @@ use Actions;
         $updater->setSendMailBool($this->sendModifyMail);
 
         $updater->updateReservation();
+
+        ##Check if the modification has caused max number of occupants to be bigger than supporte occupancy
+        if($this->reservation->getNumPassangersAttribute() > $this->reservation->Transfer->Vehicle->max_occ){
+
+            ReservationWarningEvent::dispatch($this->reservation,[
+                ReservationWarningEvent::SEND_MAIL_CONFIG_PARAM => true,
+            ]);
+        }
+
 
         $this->emit('updateCompleted');
     }
