@@ -852,10 +852,10 @@ class ValamarOperaApi{
 
         $user_id = 0;
 
-        if(auth()->user()->id > 0){
+        if(auth()->user()){
             $user_id = auth()->user()->id;
         }
-        
+
         \DB::insert('insert into opera_sync_log (log_message,reservation_id, opera_request,opera_response,sync_status,updated_by,updated_at) values (?, ?, ?, ?, ?, ?, ?)',
             [
                 $log_message,
