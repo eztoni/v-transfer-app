@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/reservation-notify',[\App\Http\Controllers\NotifyController::class,'update']);
 
+Route::get('/remap-bookings',[\App\Http\Controllers\ReservationMapperController::class,'update']);
+
 // LOG CONTROLLER
 Route::get('/logs', [\App\Http\Controllers\LogController::class, 'show'])->name('logs');
 
