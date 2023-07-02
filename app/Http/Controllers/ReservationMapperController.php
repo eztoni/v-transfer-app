@@ -43,6 +43,7 @@ class ReservationMapperController extends Controller
             ->where('opera_sync',0)
             ->get();
 
+        dd($future_bookings);
         if(!empty($future_bookings)){
             foreach($future_bookings as $booking){
 
