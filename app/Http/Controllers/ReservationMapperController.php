@@ -43,12 +43,12 @@ class ReservationMapperController extends Controller
             ->where('opera_sync',0)
             ->get();
 
-        dd($future_bookings);
+
         if(!empty($future_bookings)){
             foreach($future_bookings as $booking){
 
                 $booking_mappable = true;
-
+                dd($booking->leadTraveller);
                 if($booking->leadTraveller->reservation_number){
                    if(!$booking->leadTraveller->reservation_opera_id || !$booking->leadTraveller->reservation_opera_confirmation){
                       $incomplete_bookings[] = $booking;
