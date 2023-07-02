@@ -48,7 +48,7 @@ class ReservationMapperController extends Controller
             foreach($future_bookings as $booking){
 
                 $booking_mappable = true;
-
+                dd($booking);
                 if($booking->leadTraveller->reservation_number){
                    if(!$booking->leadTraveller->reservation_opera_id || !$booking->leadTraveller->reservation_opera_confirmation){
                       $incomplete_bookings[] = $booking;
@@ -59,7 +59,7 @@ class ReservationMapperController extends Controller
             }
         }
 
-        dd($incomplete_bookings);
+
 
         if(!empty($incomplete_bookings)){
 
