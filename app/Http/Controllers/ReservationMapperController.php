@@ -43,7 +43,7 @@ class ReservationMapperController extends Controller
             ->where('opera_sync',0)
             ->get();
 
-
+        dd($future_bookings);
         if(!empty($future_bookings)){
             foreach($future_bookings as $booking){
 
@@ -62,7 +62,7 @@ class ReservationMapperController extends Controller
         if(!empty($incomplete_bookings)){
 
            $opera_sync = new ValamarOperaApi();
-            dd($incomplete_bookings);
+
            foreach($incomplete_bookings as $booking){
 
                $this->api_handler->setReservationCodeFilter($booking->leadTraveller->reservation_number);
