@@ -58,9 +58,7 @@ class ReservationMapperController extends Controller
                 }
             }
         }
-
-        dd($incomplete_bookings);
-
+        
         if(!empty($incomplete_bookings)){
 
            $opera_sync = new ValamarOperaApi();
