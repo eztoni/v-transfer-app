@@ -850,6 +850,12 @@ class ValamarOperaApi{
 
         $this->reservation->save();
 
+        $user_id = 0;
+
+        if(auth()->user()->id > 0){
+            $user_id = auth()->user()->id;
+        }
+        
         \DB::insert('insert into opera_sync_log (log_message,reservation_id, opera_request,opera_response,sync_status,updated_by,updated_at) values (?, ?, ?, ?, ?, ?, ?)',
             [
                 $log_message,
@@ -857,7 +863,7 @@ class ValamarOperaApi{
                 json_encode($this->request),
                 json_encode($this->responseBody),
                 $status,
-                auth()->user()->id,
+                $user_id,
                 \Carbon\Carbon::now()->toDateTimeString()]
         );
 
