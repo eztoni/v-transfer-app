@@ -42,7 +42,7 @@ class ReservationAlertController extends Controller
 
         $bookings = Reservation::query()->where('is_main',1)
             ->where('date_time','>=',Carbon::now()->format('Y-m-d h:i:s'))
-            ->where('created_at','>=',Carbon::now()->subDay(30)->format('Y-m-d h:i:s'))
+            ->where('created_at','>=',Carbon::now()->sub(1)->format('Y-m-d h:i:s'))
             ->where('status','confirmed')
             ->where('opera_sync',0)
             ->get();
@@ -77,7 +77,7 @@ class ReservationAlertController extends Controller
             if(!empty($has_data_failed_sync)){
                 $alert_report['has_data_failed_sync'] = $has_data_failed_sync;
             }
-            
+
             if(!empty($alert_report)){
                 ReservationAlertEvent::dispatch($alert_report,[
                     ReservationAlertEvent::SEND_MAIL_CONFIG_PARAM => true
