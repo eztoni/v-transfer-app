@@ -24,6 +24,8 @@ Route::post('/reservation-notify',[\App\Http\Controllers\NotifyController::class
 
 Route::get('/remap-bookings',[\App\Http\Controllers\ReservationMapperController::class,'update']);
 
+Route::get('/reservation-alert',[\App\Http\Controllers\ReservationAlertController::class,'update']);
+
 // LOG CONTROLLER
 Route::get('/logs', [\App\Http\Controllers\LogController::class, 'show'])->name('logs');
 
