@@ -52,8 +52,6 @@ class ReservationAlertController extends Controller
         if(!empty($bookings)){
             foreach($bookings as $booking){
 
-                dd($booking->leadTraveller);
-
                 if(!$booking->leadTraveller->reservation_number){
                     $missing_res_number[] = $booking;
                 }elseif(!$booking->leadTraveller->reservation_opera_id || !$booking->leadTraveller->reservation_opera_confirmation){
@@ -79,6 +77,8 @@ class ReservationAlertController extends Controller
             if(!empty($has_data_failed_sync)){
                 $alert_report['has_data_failed_sync'] = $has_data_failed_sync;
             }
+
+            dd($alert_report);
 
             if(!empty($alert_report)){
                 ReservationAlertEvent::dispatch($alert_report,[
