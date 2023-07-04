@@ -77,9 +77,7 @@ class ReservationAlertController extends Controller
             if(!empty($has_data_failed_sync)){
                 $alert_report['has_data_failed_sync'] = $has_data_failed_sync;
             }
-
-            dd($alert_report);
-
+            
             if(!empty($alert_report)){
                 ReservationAlertEvent::dispatch($alert_report,[
                     ReservationAlertEvent::SEND_MAIL_CONFIG_PARAM => true
