@@ -99,7 +99,7 @@ use Actions;
 
         $updater->updateReservation();
 
-        ##Check if the modification has caused max number of occupants to be bigger than supporte occupancy
+        ##Check if the modification has caused max number of occupants to be bigger than supported occupancy
         if($this->reservation->getNumPassangersAttribute() > $this->reservation->Transfer->Vehicle->max_occ){
 
             ReservationWarningEvent::dispatch($this->reservation,[

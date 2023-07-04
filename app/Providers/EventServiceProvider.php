@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\ReservationAlertEvent;
 use App\Events\ReservationCancelledEvent;
 use App\Events\ReservationCreatedEvent;
 use App\Events\ReservationUpdatedEvent;
 use App\Events\ReservationWarningEvent;
+use App\Listeners\Email\SendAlertMailToVEC;
 use App\Listeners\Email\SendCancellationMailToGuest;
 use App\Listeners\Email\SendCancellationMailToGuestListener;
 use App\Listeners\Email\SendCancellationMailToPartnerListener;
@@ -45,6 +47,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         ReservationWarningEvent::class => [
           SendWarningMailToVEC::class,
+        ],
+        ReservationAlertEvent::class => [
+          SendAlertMailToVec::class,
         ],
     ];
 

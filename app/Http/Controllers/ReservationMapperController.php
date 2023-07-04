@@ -39,6 +39,7 @@ class ReservationMapperController extends Controller
 
         $future_bookings = Reservation::query()->where('is_main',1)
             ->where('date_time','>=',Carbon::now()->format('Y-m-d h:i:s'))
+            ->where('created_at','>=',Carbon::now()->subDay()->format('Y-m-d h:i:s'))
             ->where('status','confirmed')
             ->where('opera_sync',0)
             ->get();
@@ -58,7 +59,7 @@ class ReservationMapperController extends Controller
                 }
             }
         }
-        
+
         if(!empty($incomplete_bookings)){
 
            $opera_sync = new ValamarOperaApi();
