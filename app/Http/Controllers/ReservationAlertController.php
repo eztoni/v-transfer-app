@@ -39,7 +39,7 @@ class ReservationAlertController extends Controller
         $missing_res_number = array();
         $not_synced = array();
         $has_data_failed_sync = array();
-        
+
         $bookings = Reservation::query()->where('is_main',1)
             ->where('date_time','>=',Carbon::now()->format('Y-m-d h:i:s'))
             ->where('created_at','>=',Carbon::now()->subDay(30)->format('Y-m-d h:i:s'))
@@ -47,10 +47,12 @@ class ReservationAlertController extends Controller
             ->where('opera_sync',0)
             ->get();
 
-        dd($bookings);
+
 
         if(!empty($bookings)){
             foreach($bookings as $booking){
+
+                dd($booking->leadTraveller);
 
                 if(!$booking->leadTraveller->reservation_number){
                     $missing_res_number[] = $booking;
