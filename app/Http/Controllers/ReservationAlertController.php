@@ -47,6 +47,8 @@ class ReservationAlertController extends Controller
             ->where('opera_sync',0)
             ->get();
 
+        dd($bookings);
+
         if(!empty($bookings)){
             foreach($bookings as $booking){
 
