@@ -5,11 +5,14 @@ namespace App\Http\Livewire;
 use App\Exports\DestinationExport;
 use App\Models\Destination;
 use App\Models\Partner;
+use App\Models\Point;
 use App\Models\Reservation;
 use App\Models\Route;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Maatwebsite\Excel\Facades\Excel;
@@ -30,13 +33,15 @@ class PartnerDaily extends Component
     public $partner = 0;
     public $status = 'All';
     public $message = '';
+    public $reception = 0;
 
     public $pickupLocation = 0;
     public $dropoffLocation = 0;
     public int $destination = 0;
+    public int $accommodation = 0;
     public $totalEur;
     public $totalCommission;
-    public $button_message = 'Generate and Download Partner PDF';
+    public $button_message = 'Generate and Download Reception PDF';
     public bool $isPartnerReporting = false;
     public bool $isPPOMReporting = false;
     public bool $isRPOReporting = false;
@@ -67,6 +72,23 @@ class PartnerDaily extends Component
         if($property == 'dateFrom'){
             $this->dateTo = Carbon::createFromFormat('d.m.Y',$this->dateFrom)->addDay()->format('d.m.Y');
         }
+    }
+
+    public function getAccommodationProperty(){
+
+        $accommodation = Point::query();
+        $accommodation = $accommodation->where('destination_id',$this->destination)
+                         ->where('type',Point::TYPE_ACCOMMODATION)
+            ->get()->mapWithKeys(function ($i) {
+
+                if($this->accommodation < 1){
+                    $this->accommodation = $i->id;
+                }
+
+                return [$i->id => '#'.$i->id.' - '.$i->name.' ( '.$i->internal_name.' )'];
+        });
+
+        return $accommodation->toArray();
     }
 
     public function getAdminDestinationsProperty()
@@ -120,6 +142,8 @@ class PartnerDaily extends Component
         $date_from = $generatedDateFrom->format('Y-m-d');
         $date_to = $generatedDateTo->format('Y-m-d');
 
+        $acc = $this->accommodation;
+
         $reservations = Reservation::query()
             ->whereIsMain(true)
             ->with(['leadTraveller', 'pickupLocation', 'dropoffLocation', 'returnReservation'])
@@ -132,11 +156,14 @@ class PartnerDaily extends Component
                     $q->whereDate('date_time', '>=',  $date_from)
                         ->whereDate('date_time', '<=',  $date_to);
                 });
-            })->where('partner_id',$this->partner)->get();
+            })->where(function($q) use($acc) {
+                $q->where('pickup_address_id',$acc)
+                    ->orWhere('dropoff_address_id',$acc);
+            })->get();
 
         if($reservations->count() > 0){
 
-            $this->redirect('preview_partner_mail_list/'.$this->partner.'/'.$generatedDateFrom->format('Y-m-d').'/'.$generatedDateTo->format('Y-m-d'));
+            $this->redirect('preview_partner_mail_list/'.$this->accommodation.'/'.$generatedDateFrom->format('Y-m-d').'/'.$generatedDateTo->format('Y-m-d'));
         }else{
             $this->message = 'No bookings for selected partner \ period';
         }

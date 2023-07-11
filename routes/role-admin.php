@@ -55,7 +55,7 @@ Route::get('/transfer-edit/{transferId}', TransferEdit::class)->name('transfer-e
 Route::get('/transfer-prices', NewTransferPrices::class)->name('transfer-prices');
 
 Route::get('/partner-daily', PartnerDaily::class)->name('partner-daily');
-Route::get('preview_partner_mail_list/{partner_id}/{date_from}/{date_to}',function ($partner_id,$date_from,$date_to){
+Route::get('preview_partner_mail_list/{accommodation}/{date_from}/{date_to}',function ($accommodation,$date_from,$date_to){
 
 
     $reservations = Reservation::query()
@@ -70,7 +70,11 @@ Route::get('preview_partner_mail_list/{partner_id}/{date_from}/{date_to}',functi
                 $q->whereDate('date_time', '>=',  $date_from)
                     ->whereDate('date_time', '<=',  $date_to);
             });
-        })->where('partner_id',$partner_id)->get();
+        })->where(function($q) use($accommodation) {
+            $q->where('pickup_address_id',$accommodation)
+                ->orWhere('dropoff_address_id',$accommodation);
+        })->get();
+
 
 
     return  \App\Actions\Attachments\GenerateTransferOverviewPDF::generate(\Carbon\Carbon::make($date_from),\Carbon\Carbon::make($date_to),$reservations)->download();

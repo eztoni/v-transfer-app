@@ -1,5 +1,5 @@
 <div>
-    <x-card cardClasses="mb-2" title=" Partner Daily Reservation Report">
+    <x-card cardClasses="mb-2" title=" Reception Daily Reservation Report">
 
 
         <div class="grid grid-cols-9 gap-1">
@@ -24,9 +24,11 @@
 
             <x-select
                 option-key-value
-                wire:model="partner"
-                label="Partner"
-                :options="$this->partners"
+                wire:model="accommodation"
+                label="Select Hotel"
+                :options="$this->getAccommodationProperty()"
+                x-init="3"
+
             ></x-select>
             <div class="ds-divider"></div>
             <div class="ds-form-control flex-col justify-end">
