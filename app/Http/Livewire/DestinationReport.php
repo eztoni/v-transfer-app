@@ -283,10 +283,15 @@ class DestinationReport extends Component
                     $status = 'RP';
 
                     if($i->isCancelled()){
-                        if($i->hasCancellationFee()){
-                            $status = 'CF';
+
+                        if($i->cancellation_type == 'no_show'){
+                            $status = 'No Show';
                         }else{
-                            $status = 'Storno';
+                            if($i->hasCancellationFee()){
+                                $status = 'CF';
+                            }else{
+                                $status = 'Storno';
+                            }
                         }
                     }
 
