@@ -12,9 +12,9 @@
         <x-mail.logo>
             <div class="" style="padding: 3px 25px 0 0; text-align: right ;width: 100%">
                 <p style="width: 100%">
-                    Rezervacije za period:
+                    Rezervacije za <b>{{ $hotel }}</b>, za datum:
                     <br>
-                  <b> {{$from->format('d.m.Y H:i')}} - {{$to->format('d.m.Y H:i')}} </b>
+                  <b> {{$from->format('d.m.Y')}} </b>
 
                 </p>
 
@@ -62,16 +62,16 @@
                         </td>
                         <td style="border: 1px solid black;">{{Arr::get($reservation,'partner')}}</td>
                         <td style="border: 1px solid black;">
-                            <span>A: {{Arr::get($reservation,'adults')}}</span>
+                            <span>Odrasli: {{Arr::get($reservation,'adults')}}</span>
 
                             @if(Arr::get($reservation,'children'))
                                 <br>
-                                <span>C: {{Arr::get($reservation,'children')}}</span>
+                                <span>Djeca: {{Arr::get($reservation,'children')}}</span>
 
                             @endif
                             @if(Arr::get($reservation,'infants'))
                                 <br>
-                                <span>I: {{Arr::get($reservation,'infants')}}</span>
+                                <span>Dojenčad: {{Arr::get($reservation,'infants')}}</span>
                             @endif
 
                         </td>

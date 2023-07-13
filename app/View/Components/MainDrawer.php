@@ -90,7 +90,7 @@ class MainDrawer extends Component
                         'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER)
                     ],
                     [
-                        'text' => 'Partner Daily Report',
+                        'text' => 'Reception Daily Report',
                         'active' => request()->routeIs('partner-daily'),
                         'href' => route('partner-daily'),
                         'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER)

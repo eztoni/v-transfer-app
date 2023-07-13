@@ -133,14 +133,8 @@ class PartnerDaily extends Component
         $this->validate($this->rules);
 
         $generatedDateFrom = Carbon::createFromFormat('d.m.Y',$this->dateFrom);
-        $generatedDateTo = Carbon::createFromFormat('d.m.Y',$this->dateTo);
-
-        if($generatedDateFrom->format('Y-m-d') == $generatedDateTo->format('Y-m-d')){
-            $generatedDateTo->addDay();
-        }
 
         $date_from = $generatedDateFrom->format('Y-m-d');
-        $date_to = $generatedDateTo->format('Y-m-d');
 
         $acc = $this->accommodation;
 
@@ -148,13 +142,11 @@ class PartnerDaily extends Component
             ->whereIsMain(true)
             ->with(['leadTraveller', 'pickupLocation', 'dropoffLocation', 'returnReservation'])
             ->where('status',Reservation::STATUS_CONFIRMED)
-            ->where(function ($q) use($date_from,$date_to) {
-                $q->where(function ($q) use($date_from,$date_to){
-                    $q->whereDate('date_time', '>=', $date_from)
-                        ->whereDate('date_time', '<=',  $date_to);
-                })->orWHereHas('returnReservation',function ($q)use($date_from,$date_to){
-                    $q->whereDate('date_time', '>=',  $date_from)
-                        ->whereDate('date_time', '<=',  $date_to);
+            ->where(function ($q) use($date_from) {
+                $q->where(function ($q) use($date_from){
+                    $q->whereDate('date_time', '=', $date_from);
+                })->orWHereHas('returnReservation',function ($q)use($date_from){
+                    $q->whereDate('date_time', '=',  $date_from);
                 });
             })->where(function($q) use($acc) {
                 $q->where('pickup_address_id',$acc)
@@ -163,9 +155,9 @@ class PartnerDaily extends Component
 
         if($reservations->count() > 0){
 
-            $this->redirect('preview_partner_mail_list/'.$this->accommodation.'/'.$generatedDateFrom->format('Y-m-d').'/'.$generatedDateTo->format('Y-m-d'));
+            $this->redirect('preview_partner_mail_list/'.$this->accommodation.'/'.$generatedDateFrom->format('Y-m-d').'/');
         }else{
-            $this->message = 'No bookings for selected partner \ period';
+            $this->message = 'No bookings for selected Hotel \ period';
         }
 
     }

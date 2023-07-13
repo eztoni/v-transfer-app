@@ -5,23 +5,13 @@
         <div class="grid grid-cols-9 gap-1">
 
             <x-flatpickr
-                label="Date from:"
+                label="Reservation Report Date:"
                 min-date=""
                 date-format="d.m.Y"
                 :enable-time="false"
                 :default-date="$this->dateFrom"
                 wire:model="dateFrom"
             />
-
-            <x-flatpickr
-                label="Date to:"
-                min-date=""
-                date-format="d.m.Y"
-                :enable-time="false"
-                :default-date="$this->dateTo"
-                wire:model.defer="dateTo"
-            />
-
             <x-select
                 option-key-value
                 wire:model="accommodation"
