@@ -190,6 +190,9 @@ class DestinationReport extends Component
 
                                 $this->totalEur = $this->totalEur->add($cf_money->getMoney());
                                 $this->totalCommission = $this->totalCommission->add($cf_money);
+                            }else{
+                                $this->totalEur = $this->totalEur->add($priceEur->getMoney());
+                                $this->totalCommission = $this->totalCommission->add($i->total_commission_amount);
                             }
                         }elseif($i->cancellation_type == 'no_show'){
                             $this->totalEur = $this->totalEur->add($priceEur->getMoney());
@@ -251,11 +254,13 @@ class DestinationReport extends Component
                                 $pdv = 0;
                                 $invEur = 0;
                             }else{
+                                /*
                                 $priceEur = 0;
                                 $net_profit = 0;
                                 $total_comm = 0;
                                 $pdv = 0;
                                 $invEur = 0;
+                                */
                             }
                         }
                     }
