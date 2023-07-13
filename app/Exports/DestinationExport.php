@@ -54,10 +54,11 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
 
             if($this->reportType == 'partner-report'){
                 $data_array['datum_vouchera'] = $item['voucher_date'];
-                $data_array['prodajno_mjesto'] = 'VEC Valamar';
+                $data_array['agent'] = $item['sales_agent'];
+                $data_array['prodajno_mjesto'] = $item['selling_place'];
                 $data_array['voucher_id'] = $item['id'];
                 $data_array['nositelj_vouchera'] = $item['name'];
-                $data_array['postupak'] = $item['status'] == 'confirmed' ? 'RP' : 'CF';
+                $data_array['postupak'] = $item['procedure'];
                 $data_array['odrasli'] = $item['adults'];
                 $data_array['djeca'] = (int)$item['children']+(int)$item['infants'];
                 $data_array['bruto_prihod'] = $this->format_excel_price($item['price_eur']);
@@ -70,12 +71,13 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
             if($this->reportType == 'ppom-report'){
 
                 $data_array['kontigent'] = $item['transfer'];
-                $data_array['prodajno_mjesto'] = 'VEC Valamar';
+                $data_array['agent'] = $item['sales_agent'];
+                $data_array['prodajno_mjesto'] = $item['selling_place'];
                 $data_array['vrsta_plaćanja'] = 'Rezervacija Na Sobu';
                 $data_array['porezna_grupa'] = $item['tax_level'];
                 $data_array['vezani_račun_id'] = $item['invoice_number'];
                 $data_array['datum_prodaje'] = $item['voucher_date'];
-                $data_array['postupak'] = $item['status'] == 'confirmed' ? 'RP' : 'CF';
+                $data_array['postupak'] = $item['procedure'];
                 $data_array['bruto_prihod'] = $this->format_excel_price($item['price_eur']);
                 $data_array['ugovorena_provizija'] = $item['commission'].'%';
                 $data_array['trošak_ulaznog_računa'] = $this->format_excel_price($item['invoice_charge']);
@@ -88,9 +90,10 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
             if($this->reportType == 'rpo-report'){
 
                 $data_array['partner'] = $item['partner'];
+                $data_array['agent'] = $item['sales_agent'];
                 $data_array['kontigent'] = $item['transfer'];
-                $data_array['prodajno_mjesto'] = 'VEC Valamar';
-                $data_array['postupak'] = $item['status'] == 'confirmed' ? 'RP' : 'CF';
+                $data_array['prodajno_mjesto'] = $item['selling_place'];
+                $data_array['postupak'] = $item['procedure'];;
                 $data_array['datum_prodaje'] = $item['voucher_date'];
                 $data_array['datum_vouchera'] = $item['voucher_date'];
                 $data_array['broj_računa'] = $item['invoice_number'];

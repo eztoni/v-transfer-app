@@ -260,6 +260,31 @@ class DestinationReport extends Component
                         }
                     }
 
+                    $selling_place = '';
+
+                    if($i->pickupAddress->type == 'accommodation'){
+                        $selling_place = $i->pickupAddress->name;
+                    }elseif($i->dropoffAddress->type == 'accommodation'){
+                        $selling_place = $i->dropoffAddress->name;
+                    }
+
+                    $sales_agent = 'VEC Agent';
+
+                    if($i->createdBy){
+                        $sales_agent = $i->createdBy->name;
+                    }
+
+
+                    $status = 'RP';
+
+                    if($i->isCancelled()){
+                        if($i->hasCancellationFee()){
+                            $status = 'CF';
+                        }else{
+                            $status = 'Storno';
+                        }
+                    }
+
                     return [
                         'id' => $i->id,
                         'name' => $i->leadTraveller?->first()->full_name,
@@ -282,6 +307,9 @@ class DestinationReport extends Component
                         'invoice_charge' =>  $invEur,
                         'invoice_number' => (string) $invoice_number,
                         'pdv' => $pdv,
+                        'procedure' => $status,
+                        'selling_place' => $selling_place,
+                        'sales_agent' => $sales_agent
                     ];
                 })->toArray();
 
@@ -303,9 +331,9 @@ class DestinationReport extends Component
             return [$i->id => $i->name];
         });
 
-        if (!$this->isPartnerReporting) {
-            $partners->prepend('All partners', 0);
-        }
+        $partners->prepend('All partners', 0);
+
+        $this->partner = 0;
 
         return $partners->toArray();
     }
