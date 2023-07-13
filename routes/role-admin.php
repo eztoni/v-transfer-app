@@ -21,6 +21,7 @@ use App\Http\Livewire\UserOverview;
 use App\Http\Livewire\VehicleEdit;
 use App\Http\Livewire\VehicleOverview;
 use App\Http\Livewire\PartnerDaily;
+use App\Models\Point;
 use App\Models\Reservation;
 
 /*
