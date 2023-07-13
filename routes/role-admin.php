@@ -76,8 +76,9 @@ Route::get('preview_partner_mail_list/{accommodation}/{date_from}/{date_to}',fun
         })->get();
 
 
+    $accommodation_name = Point::findOrFail($accommodation)->name;
 
-    return  \App\Actions\Attachments\GenerateTransferOverviewPDF::generate(\Carbon\Carbon::make($date_from),\Carbon\Carbon::make($date_to),$reservations)->download();
+    return  \App\Actions\Attachments\GenerateTransferOverviewPDF::generate(\Carbon\Carbon::make($date_from),\Carbon\Carbon::make($date_to),$reservations,$accommodation_name)->download();
 });
 
 Route::get('/mail-test',function(){

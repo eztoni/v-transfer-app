@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 class GenerateTransferOverviewPDF
 {
 
-    public static function generate(Carbon $from, Carbon $to, Collection $reservations):PDF
+    public static function generate(Carbon $from, Carbon $to, Collection $reservations,$hotel):PDF
     {
 
         $bookings = array();
@@ -51,6 +51,7 @@ class GenerateTransferOverviewPDF
         return \Barryvdh\DomPDF\Facade\Pdf::loadView('attachments.reservation-overview', [
             'from'=>$from,
             'to'=>$to,
+            'hotel' => $hotel,
             'reservations' => $bookings
         ])->setPaper('a4', 'landscape');
     }
