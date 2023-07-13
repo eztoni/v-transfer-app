@@ -64,16 +64,16 @@
                         </td>
                         <td style="border: 1px solid black;">{{Arr::get($reservation,'partner')}}</td>
                         <td style="border: 1px solid black;">
-                            <span>A: {{Arr::get($reservation,'adults')}}</span>
+                            <span>Odrasli: {{Arr::get($reservation,'adults')}}</span>
 
                             @if(Arr::get($reservation,'children'))
                                 <br>
-                                <span>C: {{Arr::get($reservation,'children')}}</span>
+                                <span>Djeca: {{Arr::get($reservation,'children')}}</span>
 
                             @endif
                             @if(Arr::get($reservation,'infants'))
                                 <br>
-                                <span>I: {{Arr::get($reservation,'infants')}}</span>
+                                <span>Dojenčad: {{Arr::get($reservation,'infants')}}</span>
                             @endif
 
                         </td>
