@@ -165,7 +165,7 @@ class PartnerDaily extends Component
 
             $this->redirect('preview_partner_mail_list/'.$this->accommodation.'/'.$generatedDateFrom->format('Y-m-d').'/'.$generatedDateTo->format('Y-m-d'));
         }else{
-            $this->message = 'No bookings for selected partner \ period';
+            $this->message = 'No bookings for selected Hotel \ period';
         }
 
     }
