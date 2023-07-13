@@ -16,6 +16,21 @@ class GenerateTransferOverviewPDF
         $bookings = array();
 
         foreach($reservations as  $i){
+
+            $opera_resv_id = '';
+            $opera_confirmation_id = '';
+
+            if($i->leadTraveller){
+                #Reservation Opera ID
+                if($i->leadTraveller->reservation_opera_id){
+                    $opera_resv_id = $i->leadTraveller->reservation_opera_id;
+                }
+                #Reservation Opera Confirmation ID
+                if($i->leadTraveller->reservation_opera_confirmation){
+                    $opera_confirmation_id = $i->leadTraveller->reservation_opera_confirmation;
+                }
+            }
+
             $bookings[] = [
                 'id' => $i->id,
                 'name' => $i->leadTraveller?->first()->full_name,
@@ -26,7 +41,10 @@ class GenerateTransferOverviewPDF
                 'infants' => $i->infants,
                 'round_trip' => $i->is_round_trip,
                 'round_trip_date' => $i->returnReservation?->date_time?->format('d.m.Y @ H:i'),
-                'reservation'=>$i
+                'reservation'=>$i,
+                'price' => $i->getPrice()->formatByDecimal(),
+                'opera_resv_id' => $opera_resv_id,
+                'opera_confirmation_id' => $opera_confirmation_id
             ];
         }
 

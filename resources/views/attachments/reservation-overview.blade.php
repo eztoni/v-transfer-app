@@ -34,6 +34,8 @@
                     <td style="padding:5px 5px;border: 1px solid black;">Partner</td>
                     <td style="padding:5px 5px;border: 1px solid black;">Pax</td>
                     <td style="padding:5px 5px;border: 1px solid black;">Ruta</td>
+                    <td style="padding:5px 5px;border: 1px solid black;">Cijena</td>
+                    <td style="padding:5px 5px;border: 1px solid black;">Opera</td>
                 </tr>
                 </thead>
 
@@ -95,8 +97,8 @@
 
                         </td>
 
-
-
+                        <td style="border: 1px solid black;"><p class="flex gap-2">{{Arr::get($reservation,'price')}} €</p></td>
+                        <td class="flex gap-2" style="border: 1px solid black;"><b>Resv ID</b><br/>{{Arr::get($reservation,'opera_resv_id')}}<br/><b>Conf. ID</b><br/>{{Arr::get($reservation,'opera_confirmation_id')}}</td>
                     </tr>
                 @endforeach
                 </tbody>
