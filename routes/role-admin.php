@@ -21,7 +21,6 @@ use App\Http\Livewire\UserOverview;
 use App\Http\Livewire\VehicleEdit;
 use App\Http\Livewire\VehicleOverview;
 use App\Http\Livewire\PartnerDaily;
-use App\Models\Point;
 use App\Models\Reservation;
 
 /*
@@ -56,27 +55,29 @@ Route::get('/transfer-edit/{transferId}', TransferEdit::class)->name('transfer-e
 Route::get('/transfer-prices', NewTransferPrices::class)->name('transfer-prices');
 
 Route::get('/partner-daily', PartnerDaily::class)->name('partner-daily');
-Route::get('preview_partner_mail_list/{accommodation}/{date_from}/',function ($accommodation,$date_from){
+Route::get('preview_partner_mail_list/{accommodation}/{date_from}/{date_to}',function ($accommodation,$date_from,$date_to){
 
 
     $reservations = Reservation::query()
         ->whereIsMain(true)
         ->with(['leadTraveller', 'pickupLocation', 'dropoffLocation', 'returnReservation'])
         ->where('status',Reservation::STATUS_CONFIRMED)
-        ->where(function ($q) use($date_from) {
-            $q->where(function ($q) use($date_from){
-                $q->whereDate('date_time', '=', $date_from);
-            })->orWHereHas('returnReservation',function ($q)use($date_from){
-                $q->whereDate('date_time', '=',  $date_from);
+        ->where(function ($q) use($date_from,$date_to) {
+            $q->where(function ($q) use($date_from,$date_to){
+                $q->whereDate('date_time', '>=', $date_from)
+                    ->whereDate('date_time', '<=',  $date_to);
+            })->orWHereHas('returnReservation',function ($q)use($date_from,$date_to){
+                $q->whereDate('date_time', '>=',  $date_from)
+                    ->whereDate('date_time', '<=',  $date_to);
             });
         })->where(function($q) use($accommodation) {
             $q->where('pickup_address_id',$accommodation)
                 ->orWhere('dropoff_address_id',$accommodation);
         })->get();
 
-    $accommodation_name = Point::findOrFail($accommodation)->name;
 
-    return  \App\Actions\Attachments\GenerateTransferOverviewPDF::generate(\Carbon\Carbon::make($date_from),$reservations,$accommodation_name)->download();
+
+    return  \App\Actions\Attachments\GenerateTransferOverviewPDF::generate(\Carbon\Carbon::make($date_from),\Carbon\Carbon::make($date_to),$reservations)->download();
 });
 
 Route::get('/mail-test',function(){
