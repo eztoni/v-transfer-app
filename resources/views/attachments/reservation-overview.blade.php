@@ -12,7 +12,7 @@
         <x-mail.logo>
             <div class="" style="padding: 3px 25px 0 0; text-align: right ;width: 100%">
                 <p style="width: 100%">
-                    Rezervacije za <b>{{$hotel}}</b> period:
+                    Rezervacije za <b>{{$hotel}}</b> za period:
                     <br>
                   <b> {{$from->format('d.m.Y')}} - {{$to->format('d.m.Y')}} </b>
 
