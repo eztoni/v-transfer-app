@@ -125,10 +125,10 @@
 
         </x-card>
     @else
-
-
-
-
+        <div class="ds-divider"></div>
+        <div class="ds-form-control flex-col justify-end">
+            <small class="ds-alert-warning ds-form-control flex-col text-center">{{ $message }}</small>
+        </div>
     @endif
 
 </div>
