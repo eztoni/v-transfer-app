@@ -154,7 +154,7 @@ class AgentEfficiency extends Component
         $this->totalEur = number_format($this->totalEur,2,'.','');
 
         if($reservations->count() < 1){
-            $this->message = 'No bookings for this agent for the selected parameters';
+            $this->message = 'No bookings for this agent for the selected  date range and parameters';
         }
     }
 
