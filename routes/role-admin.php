@@ -21,6 +21,7 @@ use App\Http\Livewire\UserOverview;
 use App\Http\Livewire\VehicleEdit;
 use App\Http\Livewire\VehicleOverview;
 use App\Http\Livewire\PartnerDaily;
+use App\Http\Livewire\AgentEfficiency;
 use App\Models\Point;
 use App\Models\Reservation;
 
@@ -56,6 +57,9 @@ Route::get('/transfer-edit/{transferId}', TransferEdit::class)->name('transfer-e
 Route::get('/transfer-prices', NewTransferPrices::class)->name('transfer-prices');
 
 Route::get('/partner-daily', PartnerDaily::class)->name('partner-daily');
+
+Route::get('/agent-efficiency',\App\Http\Livewire\AgentEfficiency::class)->name('agent-efficiency');
+
 Route::get('preview_partner_mail_list/{accommodation}/{date_from}/{date_to}',function ($accommodation,$date_from,$date_to){
 
 
