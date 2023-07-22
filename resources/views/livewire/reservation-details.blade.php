@@ -37,6 +37,33 @@
                     <p><b>Cancellation Fee:</b> No cancellation fee applied</p>
                 @endif
                 @endif
+                <br/>
+                <span class="font-extrabold text-info">&nbsp;Reservation Documents: </span>
+                <br/>
+                <button success class="ds-btn  ds-btn-sm"
+                     wire:loading.class="ds-loading"
+                     wire:target="downloadConfirmationPDF"
+                     wire:click="downloadConfirmationPDF({{$reservation->id}})">
+                    @if($reservation->isCancelled())
+                        Booking Cancellation
+                    @else
+                       Booking Confirmation
+                    @endif
+                    <x-icon name="document-download" wire:loading.remove wire:target="downloadConfirmationPDF({{$reservation->id}})" class="w-4 h-4 ml-2">
+                    </x-icon>
+                </button>
+                @if($reservation->isCancelled() && $reservation->hasCancellationFee())
+                    <button success class="ds-btn  ds-btn-sm"
+                            wire:loading.class="ds-loading"
+                            wire:target="downloadCFPDF"
+                            wire:click="downloadCFPDF({{$reservation->id}})">
+                        Cancellation Fee
+                        <x-icon name="document-download" wire:loading.remove wire:target="downloadCFPDF({{$reservation->id}})" class="w-4 h-4 ml-2">
+                        </x-icon>
+                    </button>
+                @endif
+                <br/>
+
 
             </div>
 

@@ -4,6 +4,8 @@ namespace App\Http\Livewire;
 
 use App\Models\Reservation;
 use App\Services\Api\ValamarOperaApi;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Redirect;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 
@@ -115,6 +117,18 @@ use Actions;
         $this->render();
 
     }
+
+    public function downloadConfirmationPDF($id){
+        $this->redirect('/download_document/booking-confirmation/'.$id);
+    }
+
+    public function downloadCFPDF($id){
+
+        $reservation = Reservation::findOrFail($id);
+
+        $this->redirect('/download_document/booking-cancellation-fee/'.$id);
+    }
+
 
     public function render()
     {

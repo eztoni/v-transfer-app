@@ -95,8 +95,6 @@ class DestinationReport extends Component
                 $this->partner = $p->id;
             }
         }
-
-
     }
 
 

@@ -129,10 +129,10 @@
 
                 <button class="ds-btn ds-btn-outline ds-btn-sm ds-btn-square ml-2 "
                         wire:loading.class="ds-loading"
-                        wire:target="exportToExcel"
-                        wire:click="exportToExcel">
+                        wire:target="downloadConfirmationPDF"
+                        wire:click="downloadConfirmationPDF">
 
-                    <x-icon name="document-download" wire:loading.remove wire:target="exportToExcel" class="w-5 h-5 ">
+                    <x-icon name="document-download" wire:loading.remove wire:target="downloadConfirmationPDF" class="w-5 h-5 ">
                     </x-icon>
                 </button>
 

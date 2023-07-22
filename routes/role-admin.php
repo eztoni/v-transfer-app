@@ -83,7 +83,25 @@ Route::get('preview_partner_mail_list/{accommodation}/{date_from}/{date_to}',fun
 
     $accommodation_name = Point::findOrFail($accommodation)->name;
 
-    return  \App\Actions\Attachments\GenerateTransferOverviewPDF::generate(\Carbon\Carbon::make($date_from),\Carbon\Carbon::make($date_to),$reservations,$accommodation_name)->download();
+    return  \App\Actions\Attachments\GenerateTransferOverviewPDF::generate(\Carbon\Carbon::make($date_from),\Carbon\Carbon::make($date_to),$reservations,$accommodation_name)->download('reception_report.pdf');
+});
+
+Route::get('download_document/{type}/{reservation_id}',function($type,$reservation_id){
+
+    $reservation = Reservation::findOrFail($reservation_id);
+    $file_name = 'BookingConfirmation'.$reservation_id.'.pdf';
+
+    switch ($type){
+        case 'booking-confirmation':
+            $view = 'attachments.booking_confirmation';
+            break;
+        case 'booking-cancellation':
+            $view = 'attachments.booking_cancellation';
+            $file_name = 'BookingCancellation'.$reservation_id.'.pdf';
+            break;
+    }
+
+    return \Barryvdh\DomPDF\Facade\Pdf::loadView($view, ['reservation'=> $reservation])->download($file_name);
 });
 
 Route::get('/mail-test',function(){
