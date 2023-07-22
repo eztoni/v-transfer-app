@@ -62,7 +62,7 @@ class AgentEfficiency extends Component
 
     public function updated($property)
     {
-        if($property == 'dateFrom'){
+        if(Carbon::createFromFormat('d.m.Y',$this->dateTo)->format('Y-m-d') < Carbon::createFromFormat('d.m.Y',$this->dateFrom)->format('Y-m-d')){
             $this->dateTo = Carbon::createFromFormat('d.m.Y',$this->dateFrom)->addDay()->format('d.m.Y');
         }
     }
@@ -139,9 +139,9 @@ class AgentEfficiency extends Component
 
             return [
                 'id' => $i->id,
-                'created_at' => $i->created_at->format('Y-m-d'),
+                'created_at' => $i->created_at->format('d.m.Y'),
                 'round_trip' => $i->is_round_trip,
-                'date_time' => $i->date_time->format('Y-m-d @h:i'),
+                'date_time' => $i->date_time->format('d.m.Y'),
                 'price' => $priceEur,
                 'partner' => $i->partner->name,
                 'transfer' => $i->transfer?->name,

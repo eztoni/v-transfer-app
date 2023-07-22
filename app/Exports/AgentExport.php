@@ -56,7 +56,7 @@ class AgentExport implements FromCollection, WithHeadings, ShouldAutoSize, WithS
             $data_array['partner'] = $item['partner'];
             $data_array['dvosmijerno?'] = $item['round_trip'] ? 'Da' : 'Ne';
             $data_array['datum_rezervacije'] = $item['created_at'];
-            $data_array['datum_i_vrijeme_transfera'] = $item['date_time'];
+            $data_array['datum_realizacije'] = $item['date_time'];
             $data_array['transfer'] = $item['transfer'];
             $data_array['gost'] = $item['name'];
             $data_array['iznos_u_EUR'] = $this->format_excel_price($item['price']);

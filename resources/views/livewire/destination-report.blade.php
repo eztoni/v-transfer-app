@@ -142,7 +142,7 @@
                 <tr  style="font-size: 10px !important">
                     @if($this->isPPOMReporting)
                         <th>Kontigent</th>
-                        <th>Agent</th>
+                        <th>Naziv Djelatnika</th>
                         <th>Prodajno Mjesto</th>
                         <th>Vrsta Plaćanja</th>
                         <th>Porezna grupa</th>
@@ -160,7 +160,7 @@
                     @if($this->isRPOReporting)
                         <th>Partner</th>
                         <th>Kontigent</th>
-                            <th>Agent</th>
+                        <th>Naziv Djelatnika</th>
                         <th>Prodajno Mjesto</th>
                         <th>Postupak</th>
                         <th>Datum Prodaje</th>
@@ -178,7 +178,7 @@
 
                     @if($this->isPartnerReporting)
                         <th>Datum Vouchera</th>
-                        <th>Agent</th>
+                        <th>Naziv Djelatnika</th>
                         <th>Prodajno Mjesto</th>
                         <th>Voucher ID</th>
                         <th>Nositelj Vouchera</th>
@@ -193,7 +193,7 @@
                     @endif
 
                     @if($this->isAgentReporting)
-                        <th>Prodajni Agent</th>
+                        <th>Naziv Djelatnika</th>
                         <th>Kontigent</th>
                         <th>Količina</th>
                         <th>Bruto Prihod</th>

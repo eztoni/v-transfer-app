@@ -45,7 +45,6 @@ class DestinationReport extends Component
 
     public $reportType = 'partner';
 
-
     protected $rules = [
         'destination' => 'required',
         'dateFrom' => 'required|date',
@@ -309,7 +308,7 @@ class DestinationReport extends Component
                         'price_eur' => $priceEur,
                         'round_trip' => $i->is_round_trip,
                         'round_trip_date' => $i->returnReservation?->date_time?->format('d.m.Y @ H:i'),
-                        'voucher_date' => $i->created_at->toDateString(),
+                        'voucher_date' => $i->created_at->format('d.m.Y'),
                         'tax_level'=>  \Arr::get($i->transfer_price_state,'price_data.tax_level'),
                         'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
                         'commission_amount'=>  $total_comm,

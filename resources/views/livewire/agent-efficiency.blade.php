@@ -10,7 +10,7 @@
                 date-format="d.m.Y"
                 :enable-time="false"
                 :default-date="$this->dateFrom"
-                wire:model.defer="dateFrom"
+                wire:model="dateFrom"
             />
 
             <x-flatpickr
@@ -19,7 +19,7 @@
                 date-format="d.m.Y"
                 :enable-time="false"
                 :default-date="$this->dateTo"
-                wire:model.defer="dateTo"
+                wire:model="dateTo"
             />
 
             <x-select class="col-span-2"
@@ -45,7 +45,7 @@
 
 
     </x-card>
-    <div class="ds-divider"></div>
+
 
     @if($this->filteredReservations)
 
@@ -65,14 +65,10 @@
             </div>
 
         </div>
-        <div class="ds-divider"></div>
 
         <x-card>
             <div class="flex justify-end mb-2">
                 Export to excel:
-
-
-
                 <button class="ds-btn ds-btn-outline ds-btn-sm ds-btn-square ml-2 "
                         wire:loading.class="ds-loading"
                         wire:target="exportToExcel"
@@ -93,7 +89,7 @@
                         <th>Ruta</th>
                         <th>Dvosmijerno?</th>
                         <th>Datum Rezervacije</th>
-                        <th>Datum i Vrijeme Transfera</th>
+                        <th>Datum Realizacije</th>
                         <th>Transfer</th>
                         <th>Gost</th>
                         <th>Iznos</th>
