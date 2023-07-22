@@ -136,6 +136,8 @@ class DestinationReport extends Component
     public function generate(\Swap\Swap $swap)
     {
 
+
+
         $this->totalEur = Money::EUR(0);
         $this->totalCommission = \Cknow\Money\Money::EUR(0);
         $exchange = new SwapExchange($swap);
@@ -171,6 +173,23 @@ class DestinationReport extends Component
                     $q->where('status', $this->status);
                 })
                 ->get()
+                ->filter(function (Reservation $i){
+                    if($this->isPPOMReporting){
+                        if(\Arr::get($i->transfer_price_state,'price_data.tax_level') != 'PPOM'){
+                            return false;
+                        }
+                    }
+
+                    if($this->isRPOReporting){
+                        if(\Arr::get($i->transfer_price_state,'price_data.tax_level') != 'RPO'){
+                            return false;
+                        }
+                    }
+
+
+                    return true;
+
+                })
                 ->map(function (Reservation $i) use ($converter) {
 
                     $priceEur = \Cknow\Money\Money::EUR($i->price);
@@ -252,14 +271,6 @@ class DestinationReport extends Component
                                 $total_comm = $priceEur;
                                 $pdv = 0;
                                 $invEur = 0;
-                            }else{
-                                /*
-                                $priceEur = 0;
-                                $net_profit = 0;
-                                $total_comm = 0;
-                                $pdv = 0;
-                                $invEur = 0;
-                                */
                             }
                         }
                     }
@@ -321,6 +332,8 @@ class DestinationReport extends Component
                         'sales_agent' => $sales_agent
                     ];
                 })->toArray();
+
+
 
         $this->totalEur = (string)\Cknow\Money\Money::fromMoney($this->totalEur);
         $this->totalCommission = (string)$this->totalCommission;
