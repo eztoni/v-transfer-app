@@ -67,6 +67,7 @@ use Actions;
                 });
             })
             ->where('is_main',true)
+            ->orderBy('created_at','desc')
             ->get();
     }
 
