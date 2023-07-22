@@ -71,7 +71,15 @@ class AgentEfficiency extends Component
 
         $agent_list = User::query();
 
-        $agent_list = $agent_list->get()->mapWithKeys(function ($i) {
+        $agent_list = $agent_list->get()->filter(function ($i) {
+          if($i->id > 3){
+              return true;
+          }
+
+          return false;
+
+        })->
+        mapWithKeys(function ($i) {
 
                 if($this->agent < 1){
                     $this->agent = $i->id;

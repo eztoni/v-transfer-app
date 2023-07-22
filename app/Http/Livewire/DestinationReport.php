@@ -186,7 +186,7 @@ class DestinationReport extends Component
                         }
                     }
 
-
+                    #Return Valid Bookings - filter for PPOM and RPO reporting
                     return true;
 
                 })
