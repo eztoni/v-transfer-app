@@ -308,7 +308,7 @@ class DestinationReport extends Component
                     return [
                         'id' => $i->id,
                         'name' => $i->leadTraveller?->first()->full_name,
-                        'date_time' => $i->date_time?->format('d.m.Y @ H:i'),
+                        'date_time' => $i->date_time?->format('d.m.Y'),
                         'partner' => $i->partner->name,
                         'adults' => $i->adults,
                         'children' => $i->children,
@@ -333,11 +333,8 @@ class DestinationReport extends Component
                     ];
                 })->toArray();
 
-
-
         $this->totalEur = (string)\Cknow\Money\Money::fromMoney($this->totalEur);
         $this->totalCommission = (string)$this->totalCommission;
-
     }
 
     public function updated($property)

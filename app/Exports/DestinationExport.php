@@ -54,6 +54,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
 
             if($this->reportType == 'partner-report'){
                 $data_array['datum_vouchera'] = $item['voucher_date'];
+                $data_array['datum_realizacije'] = $item['date_time'];
                 $data_array['agent'] = $item['sales_agent'];
                 $data_array['prodajno_mjesto'] = $item['selling_place'];
                 $data_array['voucher_id'] = $item['id'];
@@ -77,6 +78,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
                 $data_array['porezna_grupa'] = $item['tax_level'];
                 $data_array['vezani_račun_id'] = $item['invoice_number'];
                 $data_array['datum_prodaje'] = $item['voucher_date'];
+                $data_array['datum_realizacije'] = $item['date_time'];
                 $data_array['postupak'] = $item['procedure'];
                 $data_array['bruto_prihod'] = $this->format_excel_price($item['price_eur']);
                 $data_array['ugovorena_provizija'] = $item['commission'].'%';
@@ -95,7 +97,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
                 $data_array['prodajno_mjesto'] = $item['selling_place'];
                 $data_array['postupak'] = $item['procedure'];;
                 $data_array['datum_prodaje'] = $item['voucher_date'];
-                $data_array['datum_vouchera'] = $item['voucher_date'];
+                $data_array['datum_realizacije'] = $item['date_time'];
                 $data_array['broj_računa'] = $item['invoice_number'];
                 $data_array['proizvod'] = $item['transfer'];
                 $data_array['vezani_račun_id'] = '-';

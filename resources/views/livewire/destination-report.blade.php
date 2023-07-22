@@ -148,6 +148,7 @@
                         <th>Porezna grupa</th>
                         <th>Broj potvrde rezervacije</th>
                         <th>Datum Prodaje</th>
+                        <th>Datum Realizacije</th>
                         <th>Postupak</th>
                         <th>Bruto Prihod</th>
                         <th>Ugovorena Provizija</th>
@@ -164,7 +165,7 @@
                         <th>Prodajno Mjesto</th>
                         <th>Postupak</th>
                         <th>Datum Prodaje</th>
-                        <th>Datum Vouchera</th>
+                        <th>Datum Realizacije</th>
                         <th>Broj Računa</th>
                         <th>Proizvod</th>
                         <th>Porezna grupa</th>
@@ -216,6 +217,7 @@
                             <td>{{Arr::get($reservation,'tax_level')}}</td>
                             <td>{{Arr::get($reservation,'invoice_number')}}</td>
                             <td>{{Arr::get($reservation,'voucher_date')}}</td>
+                            <td>{{Arr::get($reservation,'date_time')}}</td>
                             <td>{{Arr::get($reservation,'procedure')}}</td>
                             <td>{{Arr::get($reservation,'price_eur')}}</td>
                             <td align="center">{{Arr::get($reservation,'commission')}} %</td>
@@ -232,7 +234,7 @@
                                 <td>{{Arr::get($reservation,'selling_place')}}</td>
                                 <td>{{Arr::get($reservation,'procedure')}}</td>
                                 <td>{{Arr::get($reservation,'voucher_date')}}</td>
-                                <td>{{Arr::get($reservation,'voucher_date')}}</td>
+                                <td>{{Arr::get($reservation,'date_time')}}</td>
                                 <td>{{Arr::get($reservation,'invoice_number')}}</td>
                                 <td>{{Arr::get($reservation,'transfer')}}</td>
                                 <td>{{Arr::get($reservation,'tax_level')}}</td>
