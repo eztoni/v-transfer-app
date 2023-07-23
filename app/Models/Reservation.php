@@ -589,7 +589,7 @@ class Reservation extends Model
 
         $return['items'] = array();
 
-        if($this->status == Reservation::STATUS_CANCELLED){
+        if($this->status == Reservation::STATUS_CANCELLED || ($this->isRoundTrip && $this->returnReservation->status == 'cancelled' && $this->returnReservation->hasCancellationFee())){
 
             $item_name = 'Cancellation Fee';
             $code = $this->getCancellationPackageId();

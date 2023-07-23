@@ -92,7 +92,7 @@
                         </button>
                     @endif
 
-                @if($reservation->isCancelled() && $reservation->hasCancellationFee())
+                @if($reservation->isCancelled() && $reservation->hasCancellationFee() || ($reservation->isRoundTrip && $reservation->returnReservation->status == 'cancelled' && $reservation->returnReservation->hasCancellationFee()))
                     <button success class="ds-btn  ds-btn-xs"
                             wire:loading.class="ds-loading"
                             wire:target="downloadCFPDF"
