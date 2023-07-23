@@ -398,43 +398,17 @@ class Reservation extends Model
                 if($round_trip_reservation->status == 'cancelled'){
                     $price = number_format($price*(-1),2);
                     $vat_amount = number_format($vat_amount*(-1),2);
-                }
-
-
-                $item = array(
-                    'code' => $returnOperaPackageID,
-                    'transfer' => $round_trip_reservation->pickupLocation->name.' - '.$round_trip_reservation->dropoffLocation->name,
-                    'amount' => $price,
-                    'vat' => $vat,
-                    'vat_amount' => $vat_amount,
-                    'price' => $price
-                );
-
-                $return['items'][] = $item;
-
-                if($round_trip_reservation->status == 'cancelled' && $round_trip_reservation->cancellation_fee > 0){
-
-                    if($round_trip_reservation->cancellation_type == 'no_show'){
-                        $canc_package_id = $round_trip_reservation->partner->no_show_package_id;
-                        $item_name = 'No Show Fee';
-                    }else{
-                        $canc_package_id = $round_trip_reservation->partner->cancellation_package_id;
-                        $item_name = 'Cancellation Fee';
-                    }
-
-                    $item_name .= ' ('.$round_trip_reservation->pickupLocation->name.' - '.$round_trip_reservation->dropoffLocation->name.')';
 
                     $item = array(
-                        'code' => $canc_package_id,
-                        'transfer' => $item_name,
-                        'amount' => $round_trip_reservation->cancellation_fee,
-                        'vat' => 0,
-                        'vat_amount' => '0.00',
-                        'price' => $round_trip_reservation->cancellation_fee
+                        'code' => $returnOperaPackageID,
+                        'transfer' => $round_trip_reservation->pickupLocation->name.' - '.$round_trip_reservation->dropoffLocation->name,
+                        'amount' => $price,
+                        'vat' => $vat,
+                        'vat_amount' => $vat_amount,
+                        'price' => $price
                     );
 
                     $return['items'][] = $item;
-
                 }
         }
 
