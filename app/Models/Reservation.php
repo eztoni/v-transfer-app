@@ -624,6 +624,86 @@ class Reservation extends Model
         return $return[$segment];
     }
 
+    public function getCancellationFeeItemBreakDown($segment){
+
+        $return['items'] = array();
+
+        if($this->status == Reservation::STATUS_CANCELLED){
+
+            $item_name = 'Cancellation Fee';
+            $code = $this->getCancellationPackageId();
+
+            #If there is a cancellation fee involved
+            if($this->hasCancellationFee()){
+                $item = array(
+                    'code' => $code,
+                    'transfer' => $item_name.' - ('.$this->getCancellationPercentage().'%) - '.$this->pickupLocation->name.' - '.$this->dropoffLocation->name,
+                    'amount' => $this->getCancellationFeeAmount('cf'),
+                    'vat' => $this->getCancellationVATPercentage('cf'),
+                    'vat_amount' => $this->getCancellationVatAmount('cf'),
+                    'price' => $this->getCancellationFeeAmount('cf'),
+                );
+
+                $return['items'][] = $item;
+            }
+
+            #Return Route
+            if($this->is_main && $this->isRoundTrip()){
+
+                $round_trip_res = Reservation::findOrFail($this->round_trip_id);
+
+                if($this->cancellation_type == 'no_show'){
+                    $code = $round_trip_res->partner->no_show_package_id;
+                }else{
+                    $code = $round_trip_res->partner->cancellation_package_id;
+                }
+
+                #If there is a cancellation fee involved
+                if($round_trip_res->hasCancellationFee()){
+                    $item = array(
+                        'code' => $code,
+                        'transfer' => $item_name.' - ('.$round_trip_res->getCancellationPercentage().'%) - '.$round_trip_res->pickupLocation->name.' - '.$round_trip_res->dropoffLocation->name,
+                        'amount' => $round_trip_res->getCancellationFeeAmount('cf'),
+                        'vat' => $round_trip_res->getCancellationVATPercentage('cf'),
+                        'vat_amount' => $round_trip_res->getCancellationVatAmount('cf'),
+                        'price' => $round_trip_res->getCancellationFeeAmount('cf'),
+                    );
+
+                    $return['items'][] = $item;
+                }
+
+            }
+
+            #Item Summary
+            if(!empty($return['items'])){
+
+                $return['items_total'] = 0;
+                $return['items_vat_total'] = 0;
+
+                foreach($return['items'] as $item){
+                    $return['items_total'] = $return['items_total']+$item['amount'];
+                    $return['items_vat_total'] = $return['items_vat_total']+$item['vat_amount'];
+                }
+
+                #Items Total
+                $return['items_total'] = number_format($return['items_total'],2);
+
+                #Vat Total
+                $return['items_vat_total'] = number_format($return['items_vat_total'],2);
+
+                $return['items_total_hrk'] = $return['items_total']*7.53450;
+
+                $return['items_total_hrk'] = number_format($return['items_total_hrk'],2);
+
+            }
+
+            $return['tax_group'] = $this->included_in_accommodation ? 0 : 25;
+            $return['items_total_base'] = number_format($return['items_total']*((100-$return['tax_group'])/100),2);
+        }
+
+        return $return[$segment];
+    }
+
     public function getCancellationPackageId($no_show = false){
 
         if($no_show){

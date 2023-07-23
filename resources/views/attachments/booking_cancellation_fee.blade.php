@@ -69,7 +69,7 @@
                 </thead>
 
                 <tbody>
-                @foreach($reservation->getConfirmationItemBreakdown('items') as $pbItem)
+                @foreach($reservation->getCancellationFeeItemBreakDown('items') as $pbItem)
 
 
                         <tr style="border: 1px solid black;">
@@ -99,13 +99,13 @@
                         <b>{{__('mail.total_price')}}: </b>
                     </td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>{{$reservation->getConfirmationItemBreakdown('items_total')}} €</b></td>
+                        <b>{{$reservation->getCancellationFeeItemBreakDown('items_total')}} €</b></td>
 
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right"><b></b></td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>{{$reservation->getConfirmationItemBreakdown('items_vat_total')}} €</b></td>
+                        <b>{{$reservation->getCancellationFeeItemBreakDown('items_vat_total')}} €</b></td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>{{$reservation->getConfirmationItemBreakdown('items_total')}} € / {{$reservation->getConfirmationItemBreakdown('items_total_hrk')}} HRK</b></td>
+                        <b>{{$reservation->getCancellationFeeItemBreakDown('items_total')}} € / {{$reservation->getCancellationFeeItemBreakDown('items_total_hrk')}} HRK</b></td>
 
                 </tr>
                 </tfoot>
@@ -130,7 +130,7 @@
                         @if($reservation->included_in_accommodation_reservation)
                             PPO
                         @else
-                            {{__("mail.vat")}} {{$reservation->getConfirmationItemBreakdown('tax_group')}} %
+                            {{__("mail.vat")}} {{$reservation->getCancellationFeeItemBreakDown('tax_group')}} %
 
                         @endif
                     </b></td>
@@ -138,19 +138,19 @@
                 <td style="padding:5px 5px;border: 1px solid black;text-align: left"><b>
                         @if(!$reservation->included_in_accommodation_reservation)
 
-                            {{$reservation->getConfirmationItemBreakdown('items_total_base')}} €
+                            {{$reservation->getCancellationFeeItemBreakDown('items_total_base')}} €
                         @endif
                     </b></td>
 
                 <td style="padding:5px 5px;border: 1px solid black;text-align: left"><b>
                         @if(!$reservation->included_in_accommodation_reservation)
 
-                            {{$reservation->getConfirmationItemBreakdown('items_vat_total')}} €
+                            {{$reservation->getCancellationFeeItemBreakDown('items_vat_total')}} €
                         @endif
 
                     </b></td>
                 <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                    <b>{{$reservation->getConfirmationItemBreakdown('items_total')}} €</b>
+                    <b>{{$reservation->getCancellationFeeItemBreakDown('items_total')}} €</b>
                 </td>
                 </tbody>
 
@@ -160,7 +160,7 @@
                         <b>{{__('mail.price')}}: </b>
                     </td>
                     <td style="border: 1px solid black;text-align: right;padding:5px 5px">
-                        <b>{{$reservation->getConfirmationItemBreakdown('items_total')}} € / {{$reservation->getConfirmationItemBreakdown('items_total_hrk')}} HRK</b>
+                        <b>{{$reservation->getCancellationFeeItemBreakDown('items_total')}} € / {{$reservation->getCancellationFeeItemBreakDown('items_total_hrk')}} HRK</b>
                     </td>
                 </tr>
                 </tfoot>

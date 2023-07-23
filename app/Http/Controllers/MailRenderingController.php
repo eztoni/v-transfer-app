@@ -30,7 +30,9 @@ class MailRenderingController extends Controller
             case 'ATTACHMENT_CANCELLATION':
                 return  PDF::loadView('attachments.booking_cancellation', ['reservation'=>Reservation::find($id)])->outputHtml();
                 break;
-
+            case 'ATTACHMENT_CANCELLATION_FEE':
+                return PDF::loadView('attachments.booking_cancellation_fee', ['reservation'=>Reservation::find($id)])->outputHtml();
+                break;
         }
 
     }
