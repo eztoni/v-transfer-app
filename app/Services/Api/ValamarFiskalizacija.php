@@ -284,10 +284,15 @@ class ValamarFiskalizacija{
                             $invoice->invoice_id = $next_invoice;
                             $invoice->invoice_establishment = $owner_location->fiskal_establishment;
                             $invoice->invoice_device = $owner_location->fiskal_device;
-                            $invoice->invoice_type = self::INVOICE_TYPE_RESERVATION;
+                            $invoice->invoice_type = self::INVOICE_TYPE_CANCELLATION_FEE;
                             $invoice->amount = $amount;
-                            $invoice->log_id = 0;
-                            $invoice->invoice_type = 'cancellation_fee';
+
+                         
+                            if(!empty($response['log_id'])){
+                                $invoice->log_id = $response['log_id'];
+                            }else{
+                                $invoice->log_id = 0;
+                            }
 
                             $invoice->save();
 
