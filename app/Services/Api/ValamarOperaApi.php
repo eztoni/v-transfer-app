@@ -57,6 +57,7 @@ class ValamarOperaApi{
 
             $this->request['Packages'] = $this->buildReservationPackages($this->reservation);
 
+
             if(empty($this->errors)){
                 $this->sendOperaRequest();
             }else{

@@ -3,42 +3,46 @@
         <div class="flex items-center justify-between">
             <div>
                 <p class=" text-xl font-bold">Transfer #{{$reservation->id}}: </p>
-                <p><strong>Created by:</strong> {{$reservation->createdBy->name}}
-                    <strong>@</strong> {{\Carbon\Carbon::parse($reservation->created_at->format('d.m.Y H:i'))->addHour()->format('d.m.Y H:i')}}</p>
+                <strong class=" text-sm">Created by:{{$reservation->createdBy->name}}</strong>
+                <strong class=" text-sm">@ {{\Carbon\Carbon::parse($reservation->created_at->format('d.m.Y H:i'))->addHour()->format('d.m.Y H:i')}}</strong>
                 @if($reservation->updated_by)
-                    <p><strong>Updated by:</strong> {{$reservation->updatedBy->name}}
-                        <strong>@</strong> {{ $reservation->updated_at->format('d.m.Y H:i') }}</p>
+                    <br/>
+                    <strong class=" text-sm">Updated by: {{$reservation->updatedBy->name}}</strong>
+                        <strong class=" text-sm">@ {{ $reservation->updated_at->format('d.m.Y H:i') }}</strong>
                 @endif
                 @if($reservation->is_round_trip)
-                    <span class="ds-badge  ds-badge-success">Round trip</span>
+                    <span class="ds-badge  ds-badge-success text-sm">Round trip</span>
                 @endif
-                <p><span class="font-extrabold text-info">Opera Status: {{$reservation->isSyncedWithOpera()?'Synced':'Not Synced'}}<br/></span>
-                    <x-button primary wire:click="openOperaSyncModal({{$reservation->id}})">{{$reservation->isSyncedWithOpera()?'Re-Sync':'Sync'}}</x-button>
-                    <x-button sm icon="external-link" wire:click="openOperaSyncLogModal({{$reservation->id}})">View Sync Log</x-button>
+                <br/>
+                <span class="font-extrabold text-info text-sm">Opera Status: {{$reservation->isSyncedWithOpera()?'Synced':'Not Synced'}}</span>
+                    <x-button primary xs wire:click="openOperaSyncModal({{$reservation->id}})">{{$reservation->isSyncedWithOpera()?'Re-Sync':'Sync'}}</x-button>
+                    <x-button xs icon="external-link" wire:click="openOperaSyncLogModal({{$reservation->id}})">View Sync Log</x-button>
                     <br/>
-                    <span class="font-extrabold text-info">&nbsp;Invoice: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[count($reservation->invoices)-1]->invoice_id.'-'.$reservation->invoices[0]->invoice_establishment.'-'.$reservation->invoices[0]->invoice_device : '-'}}</span></span>
-                    <br/>
-                    <span class="font-extrabold text-info">&nbsp;ZKI: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[0]?->zki:'-'}}</span></span>
-                    <br/>
-                    <span class="font-extrabold text-info">&nbsp;JIR: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[0]?->jir:'-'}}</span></span>
+                    <!-- Invoice Details -->
+                    <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{$reservation->getInvoiceData('invoice_number')}} ({{$reservation->getInvoiceData('amount')}})</span></span>
+                    <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->getInvoiceData('zki')}}</span></span>
+                    <span class="font-extrabold text-info text-sm">JIR: <span class="text-info font-normal">{{$reservation->getInvoiceData('jir')}}</span></span>
 
                 @if(empty($reservation->invoices[0]))
-                        <br/>
                         <x-button sm icon="external-link" wire:click="openFiskalSyncModal({{$reservation->id}})">Issue Invoice ( Fiskalizacija )</x-button>
                 @endif
 
                 @if($reservation->status == 'cancelled')
                     <br/>
                     <br/>
-                    <p><b>Cancellation DateTime: </b>{{$reservation->cancelled_at}}</p>
+                    <p  class="text-sm"><u>Cancellation Details</u></p>
+                    <p class="text-sm"><b>Cancellation DateTime: </b>{{$reservation->cancelled_at}}</p>
                     @if($reservation->cancellation_fee > 0)
-                    <p><b>Cancellation Fee Applied: </b>{{$reservation->cancellation_fee}} € ( {{$reservation->cancellation_type}} ) </p>
+                    <p class="text-sm">Cancellation Fee Applied: </b>{{$reservation->cancellation_fee}} € ( {{$reservation->cancellation_type}} ) </p>
                     @else
-                    <p><b>Cancellation Fee:</b> No cancellation fee applied</p>
+                    <p class="text-sm"><b>Cancellation Fee:</b> No cancellation fee applied</p>
+                    <!-- Cancellation Invoice Details -->
+                    <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{$reservation->getInvoiceData('invoice_number','cancellation')}} ({{$reservation->getInvoiceData('amount','cancellation')}})</span></span>
+                    <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->getInvoiceData('zki','cancellation')}}</span></span>
+                    <span class="font-extrabold text-info text-sm">JIR: <span class="text-info font-normal">{{$reservation->getInvoiceData('jir','cancellation')}}</span></span>
                 @endif
                 @endif
                 <br/>
-                <span class="font-extrabold text-info">&nbsp;Reservation Documents: </span>
                 <br/>
                 @if($reservation->isCancelled())
                 <button success class="ds-btn  ds-btn-sm"
@@ -46,19 +50,21 @@
                      wire:target="downloadCancellationPDF"
                      wire:click="downloadCancellationPDF({{$reservation->id}})">
 
-                        Booking Cancellation
+                        Download Cancellation
                         <x-icon name="document-download" wire:loading.remove wire:target="downloadCancellationPDF({{$reservation->id}})" class="w-4 h-4 ml-2"> </x-icon>
                     @else
 
-                        <button success class="ds-btn  ds-btn-sm"
+                        <button success class="ds-btn  ds-btn-xs"
                                 wire:loading.class="ds-loading"
                                 wire:target="downloadConfirmationPDF"
                                 wire:click="downloadConfirmationPDF({{$reservation->id}})">
-                        Booking Confirmation
+                        Download Confirmation
                         <x-icon name="document-download" wire:loading.remove wire:target="downloadConfirmationPDF({{$reservation->id}})" class="w-4 h-4 ml-2"> </x-icon>
                     @endif
                 </button>
                 @if($reservation->isCancelled() && $reservation->hasCancellationFee())
+                            <span class="font-extrabold text-info"><u>Cancellation Fee: </u></span>
+                <br/>
                     <button success class="ds-btn  ds-btn-sm"
                             wire:loading.class="ds-loading"
                             wire:target="downloadCFPDF"

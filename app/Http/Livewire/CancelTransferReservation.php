@@ -7,6 +7,7 @@ use App\BusinessModels\Reservation\Actions\UpdateReservation;
 use App\Facades\EzMoney;
 use App\Models\Partner;
 use App\Models\Reservation;
+use App\Services\Api\ValamarFiskalizacija;
 use App\Services\Api\ValamarOperaApi;
 use Carbon\Carbon;
 use http\Env\Request;
@@ -76,13 +77,27 @@ use Actions;
 
         if($this->reservation->is_main){
             $operaAPI->syncReservationWithOperaFull($this->reservation->id);
+            $fiskalValamar = new ValamarFiskalizacija($this->reservation->id);
+            $fiskalValamar->fiskalReservation();
+
+            if($this->reservation->hasCancellationFee()){
+                $fiskalValamar->fiskalReservationCF($this->reservation->getCancellationFeeAmount(true));
+            }
+
         }else{
             $main_res = Reservation::where('round_trip_id',$this->reservation->id)->get()->first();
 
             if($main_res){
                 $operaAPI->syncReservationWithOperaFull($main_res->id);
+                $fiskalValamar = new ValamarFiskalizacija($main_res->id);
+                $fiskalValamar->fiskalReservation();
+
+                if($main_res->hasCancellationFee()){
+                    $fiskalValamar->fiskalReservationCF($main_res->getCancellationFeeAmount(true));
+                }
             }
         }
+
 
         $this->emit('cancelCompleted');
     }

@@ -712,11 +712,11 @@ class Reservation extends Model
         return $return;
     }
 
-    public function getInvoiceData($param){
+    public function getInvoiceData($param,$invoice_type = 'reservation'){
 
-        $invoice_data = \DB::table('invoices')->where('reservation_id','=',$this->id)->first();
+        $invoice_data = \DB::table('invoices')->where('reservation_id','=',$this->id)->where('invoice_type',$invoice_type)->first();
 
-        $return = '';
+        $return = '-';
 
         if(!empty($invoice_data)){
             switch ($param){
@@ -728,6 +728,9 @@ class Reservation extends Model
                     break;
                 case 'jir':
                     $return = $invoice_data->jir;
+                    break;
+                case 'amount':
+                    $return = $invoice_data->amount.' €';
                     break;
             }
         }

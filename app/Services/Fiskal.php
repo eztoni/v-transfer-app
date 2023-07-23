@@ -14,7 +14,7 @@ use XMLWriter;
 
 class Fiskal
 {
-    public static function Fiskal(int $reservation_id, DateTime $time, string $oib, int $sequence, string $location, string $device, string $amount, string $zki, bool $late_delivery = false,Point $point): array
+    public static function Fiskal(int $reservation_id, DateTime $time, string $oib, int $sequence, string $location, string $device, string $amount, string $zki, bool $late_delivery = false,Point $point,string $log_type = 'fiskal'): array
     {
         if (config('valamar.valamar_fiskalizacija_demo_mode')) {
             $oib = config('valamar.valamar_fiskalizacija_demo_oib');
@@ -31,7 +31,7 @@ class Fiskal
                 'error' => 'invalid certificate file or password'
             ];
 
-            ValamarFiskalizacija::write_db_log(
+            $log_id = ValamarFiskalizacija::write_db_log(
                 $reservation_id,
                 'fiskal',
                 json_encode(array('payload' => array())),
@@ -40,6 +40,11 @@ class Fiskal
                 '',
                 'error'
             );
+
+
+            if($log_id > 0){
+                $response['log_id'] = $log_id;
+            }
 
             return $response;
         }
@@ -221,15 +226,19 @@ class Fiskal
                         'error' => ''
                     ];
 
-                    ValamarFiskalizacija::write_db_log(
+                   $log_id = ValamarFiskalizacija::write_db_log(
                         $reservation_id,
-                        'fiskal',
+                        $log_type,
                         json_encode(array('payload' => $payload)),
                         json_encode(array('payload' => $dom_response->saveXML())),
                         $zki,
                         $return['jir'],
                         'success'
                     );
+
+                    if($log_id > 0){
+                           $return['log_id'] = $log_id;
+                    }
 
                     return $return;
                 }
@@ -261,15 +270,19 @@ class Fiskal
                 'error' => curl_error($ch)
             ];
 
-            ValamarFiskalizacija::write_db_log(
+            $log_id = ValamarFiskalizacija::write_db_log(
                 $reservation_id,
-                'fiskal',
+                $log_type,
                 json_encode(array('payload' => $payload)),
                 json_encode(array('payload' => $response)),
                 '',
                 '',
                 'error'
             );
+
+            if($log_id > 0){
+                $response['log_id'] = $log_id;
+            }
 
             return $response;
         }
@@ -283,15 +296,20 @@ class Fiskal
             'error' => 'unknown'
         ];
 
-        ValamarFiskalizacija::write_db_log(
+        $log_id = ValamarFiskalizacija::write_db_log(
             $reservation_id,
-            'fiskal',
+            $log_type,
             json_encode(array('payload' => $payload)),
             json_encode(array('payload' => $response)),
             '',
             '',
             'error'
         );
+
+
+        if($log_id > 0){
+            $response['log_id'] = $log_id;
+        }
 
         return $response;
     }

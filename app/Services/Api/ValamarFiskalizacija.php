@@ -9,6 +9,7 @@ use App\Models\Reservation;
 use App\Models\Traveller;
 use App\Services\Fiskal;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use function Symfony\Component\String\b;
 use Exchanger\Exception\Exception;
 use Illuminate\Support\Facades\Http;
@@ -35,6 +36,10 @@ class ValamarFiskalizacija{
       'opera'
     );
 
+    const INVOICE_TYPE_RESERVATION = 'reservation';
+    const INVOICE_TYPE_CANCELLATION = 'cancellation';
+    const INVOICE_TYPE_CANCELLATION_FEE = 'cancellation_fee';
+
     const STATUS_SUCCESS = 'success';
     const STATUS_ERROR = 'error';
 
@@ -54,6 +59,8 @@ class ValamarFiskalizacija{
 
     public function fiskalReservation(){
 
+
+        $invoice_type = 'reservation';
         #Get End Location
         $owner_location = false;
 
@@ -105,7 +112,6 @@ class ValamarFiskalizacija{
                         02,
                         number_format($this->reservation->price/100,2),$owner_location);
 
-
                     $next_invoice = ($owner_location->fiskal_invoice_no+1);
 
                     if(strlen($next_invoice) == 1){
@@ -116,6 +122,7 @@ class ValamarFiskalizacija{
 
                     if($reservation->status == Reservation::STATUS_CANCELLED){
                         $amount = '-'.$amount;
+                        $invoice_type = 'cancellation';
                     }
 
                     $this->amount = $amount;
@@ -152,12 +159,17 @@ class ValamarFiskalizacija{
                             $invoice->invoice_id = $next_invoice;
                             $invoice->invoice_establishment = $owner_location->fiskal_establishment;
                             $invoice->invoice_device = $owner_location->fiskal_device;
+                            $invoice->amount = $amount;
+                            $invoice->log_id = 0;
+                            $invoice->invoice_type = $invoice_type;
+
+                            if(!empty($response['log_id'])){
+                                $invoice->log_id = $response['log_id'];
+                            }
 
                             $invoice->save();
 
                             $this->invoice = $invoice;
-
-
 
                             if(config('valamar.valamar_opera_fiskalizacija_active')){
                                 $this->setAuthenticationHeaders();
@@ -272,11 +284,15 @@ class ValamarFiskalizacija{
                             $invoice->invoice_id = $next_invoice;
                             $invoice->invoice_establishment = $owner_location->fiskal_establishment;
                             $invoice->invoice_device = $owner_location->fiskal_device;
+                            $invoice->invoice_type = self::INVOICE_TYPE_RESERVATION;
+                            $invoice->amount = $amount;
+                            $invoice->log_id = 0;
+                            $invoice->invoice_type = 'cancellation_type';
 
                             $invoice->save();
 
                             $this->invoice = $invoice;
-                            
+
                             if(config('valamar.valamar_opera_fiskalizacija_active')){
                                 $this->setAuthenticationHeaders();
                                 if($this->validateReservationNumber() && $this->validatePMSCode()){
@@ -459,16 +475,12 @@ class ValamarFiskalizacija{
      */
     static function write_db_log($res_id,$log_type,$request,$response,$zki = '',$jir = '',$status){
 
-        \DB::insert('insert into opera_fiskal_log (reservation_id, log_type ,request,response,zki, jir, status) values (?, ?, ?, ?, ?, ?,?)',
-            [
-                $res_id,
-                $log_type,
-                $request,
-                $response,
-                $zki,
-                $jir,
-                $status]
+        $log_id = DB::table('opera_fiskal_log')->insertGetId(
+          array('reservation_id' => $res_id,'log_type'=>$log_type,'request'=>$request,'response'=>$response,'zki'=>$zki,'jir'=>$jir,'status'=>$status)
         );
+
+        return $log_id;
+
     }
 
     /**

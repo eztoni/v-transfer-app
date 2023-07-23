@@ -53,7 +53,7 @@
 
         <x-mail.row>
 
-
+            <p align="right">{{__('mail.invoice_no')}}: {{$reservation->getInvoiceData('invoice_number','cancellation')}}</p><br/>
             <table style="  border-collapse: unset ;border: 1px solid #363636; width: 100%;font-size: 11px">
                 <thead>
                 <tr style="border: 1px solid black;font-weight: 700;">
@@ -170,7 +170,20 @@
 
         <div class="" style="padding-top: 40px;"></div>
 
-
+        <x-mail.row>
+            @if($reservation->getInvoiceData('zki','cancellation'))
+                <br/>
+                <p><b>ZKI:</b> {{$reservation->getInvoiceData('zki','cancellation')}}</p>
+            @endif
+            @if($reservation->getInvoiceData('jir'))
+                <p><b>JIR:</b> {{$reservation->getInvoiceData('jir','cancellation')}}</p>
+            @endif
+            <div class="" style="padding-top: 20px;"></div>
+            <p><b>{{__('mail.terms_and_conditions')}}</b></p>
+            <br>
+            <p>{{__('mail.booking_confirmation.terms_and_conditions')}}</p>
+            <div class="" style="padding-bottom: 20px;"></div>
+        </x-mail.row>
 
         <x-mail.row>
             <br>
