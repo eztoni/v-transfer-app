@@ -122,6 +122,10 @@ use Actions;
         $this->redirect('/download_document/booking-confirmation/'.$id);
     }
 
+    public function downloadCancellationPDF($id){
+        $this->redirect('/download_document/booking-cancellation/'.$id);
+    }
+
     public function downloadCFPDF($id){
 
         $reservation = Reservation::findOrFail($id);
