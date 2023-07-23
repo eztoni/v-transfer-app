@@ -511,19 +511,7 @@ class Reservation extends Model
 
             $return['items'][] = $item;
 
-            #If there is a cancellation fee involved
-            if($this->hasCancellationFee() && 2 < 1){
-                $item = array(
-                    'code' => $code,
-                    'transfer' => $item_name.' - ('.$this->getCancellationPercentage().'%) - '.$this->pickupLocation->name.' - '.$this->dropoffLocation->name,
-                    'amount' => $this->getCancellationFeeAmount('cf'),
-                    'vat' => $this->getCancellationVATPercentage('cf'),
-                    'vat_amount' => $this->getCancellationVatAmount('cf'),
-                    'price' => $this->getCancellationFeeAmount('cf'),
-                );
 
-                $return['items'][] = $item;
-            }
 
             #Return Route
             if($this->is_main && $this->isRoundTrip()){
@@ -577,20 +565,6 @@ class Reservation extends Model
                 $item['price'] = '-'.$item['price'];
 
                 $return['items'][] = $item;
-
-                #If there is a cancellation fee involved
-                if($round_trip_res->hasCancellationFee()){
-                    $item = array(
-                        'code' => $code,
-                        'transfer' => $item_name.' - ('.$round_trip_res->getCancellationPercentage().'%) - '.$round_trip_res->pickupLocation->name.' - '.$round_trip_res->dropoffLocation->name,
-                        'amount' => $round_trip_res->getCancellationFeeAmount('cf'),
-                        'vat' => $round_trip_res->getCancellationVATPercentage('cf'),
-                        'vat_amount' => $round_trip_res->getCancellationVatAmount('cf'),
-                        'price' => $round_trip_res->getCancellationFeeAmount('cf'),
-                    );
-
-                    $return['items'][] = $item;
-                }
 
             }
 
