@@ -85,6 +85,9 @@ class Reservation extends Model
 
     public function getPrice(): Money
     {
+        if($this->isRoundTrip && $this->returnReservation->status == 'cancelled'){
+            $this->price = $this->price/2;
+        }
         return Money::EUR($this->price);
     }
 
