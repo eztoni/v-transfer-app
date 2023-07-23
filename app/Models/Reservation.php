@@ -709,7 +709,7 @@ class Reservation extends Model
 
     public function getInvoiceData($param,$invoice_type = 'reservation'){
 
-        $invoice_data = \DB::table('invoices')->where('reservation_id','=',$this->id)->where('invoice_type',$invoice_type)->first();
+        $invoice_data = \DB::table('invoices')->where('reservation_id','=',$this->id)->where('invoice_type',$invoice_type)->latest()->first();
 
         $return = '-';
 

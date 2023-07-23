@@ -120,6 +120,11 @@ class ValamarFiskalizacija{
 
                     $amount = number_format($this->reservation->price/100,2);
 
+
+                    if($reservation->isRoundTrip && $reservation->returnReservation->status == 'cancelled'){
+                        $amount = '-'.number_format($amount/2,2);
+                    }
+
                     if($reservation->status == Reservation::STATUS_CANCELLED){
                         $amount = '-'.$amount;
                         $invoice_type = 'cancellation';
@@ -287,7 +292,7 @@ class ValamarFiskalizacija{
                             $invoice->invoice_type = self::INVOICE_TYPE_CANCELLATION_FEE;
                             $invoice->amount = $amount;
 
-                         
+
                             if(!empty($response['log_id'])){
                                 $invoice->log_id = $response['log_id'];
                             }else{

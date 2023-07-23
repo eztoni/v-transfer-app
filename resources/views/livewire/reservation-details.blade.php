@@ -28,6 +28,25 @@
                         <x-button xs icon="external-link" wire:click="openFiskalSyncModal({{$reservation->id}})">Issue Invoice ( Fiskalizacija )</x-button>
                 @endif
 
+
+                @if($reservation->isRoundTrip && $reservation->returnReservation->status == 'cancelled')
+                    <br/>
+                    <br/>
+                    <p  class="text-sm font-bold"><u>Roundtrip Cancellation Details #{{$reservation->returnReservation->id}}</u>
+                    </p>
+                    <p  class="text-sm"><b>Route: </b>{{$reservation->returnReservation->pickupAddress->name}} => {{$reservation->returnReservation->dropoffAddress->name}}</p>
+                    <p class="text-sm"><b>Cancellation DateTime: </b>{{$reservation->returnReservation->cancelled_at}}</p>
+{{--                    <br/>--}}
+{{--                    <!-- Invoice Details -->--}}
+{{--                    <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{$reservation->returnReservation->getInvoiceData('invoice_number','cancellation')}} ({{$reservation->returnReservation->getInvoiceData('amount','cancellation')}})</span></span>--}}
+{{--                    <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->returnReservation->getInvoiceData('zki','cancellation')}}</span></span>--}}
+{{--                    <span class="font-extrabold text-info text-sm">JIR: <span class="text-info font-normal">{{$reservation->returnReservation->getInvoiceData('jir','cancellation')}}</span></span>--}}
+
+{{--                    @if($reservation->getInvoiceData('invoice_number') == '-')--}}
+{{--                        <x-button xs icon="external-link" wire:click="openFiskalSyncModal({{$reservation->returnReservation->id}})">Issue Invoice ( Fiskalizacija )</x-button>--}}
+{{--                    @endif--}}
+                @endif
+
                 @if($reservation->status == 'cancelled')
                     <br/>
                     <br/>
