@@ -287,7 +287,7 @@ class ValamarFiskalizacija{
                             $invoice->invoice_type = self::INVOICE_TYPE_RESERVATION;
                             $invoice->amount = $amount;
                             $invoice->log_id = 0;
-                            $invoice->invoice_type = 'cancellation_type';
+                            $invoice->invoice_type = 'cancellation_fee';
 
                             $invoice->save();
 

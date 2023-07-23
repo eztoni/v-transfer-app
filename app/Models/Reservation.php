@@ -466,7 +466,9 @@ class Reservation extends Model
 
         if($this->status == Reservation::STATUS_CANCELLED){
 
-            $item_name = 'Cancellation Fee';
+
+
+
             $code = $this->getCancellationPackageId();
 
             ##One Way Transfer
@@ -503,15 +505,15 @@ class Reservation extends Model
             #Add Original Route To the Invoice
             $return['items'][] = $item;
 
+            $item_name = $this->confirmation_language == 'hr' ? 'Naknada štete' : 'Cancellation Fee';
+
             #No Cancellation Fee - everything goes in negative
-            $item['transfer'] = 'Cancellation - '.$item['transfer'];
+            $item['transfer'] = $item_name.' - '.$item['transfer'];
             $item['amount'] = '-'.$item['amount'];
             $item['vat_amount'] = '-'.$item['vat_amount'];
             $item['price'] = '-'.$item['price'];
 
             $return['items'][] = $item;
-
-
 
             #Return Route
             if($this->is_main && $this->isRoundTrip()){
@@ -607,6 +609,13 @@ class Reservation extends Model
             $item_name = 'Cancellation Fee';
             $code = $this->getCancellationPackageId();
 
+            if($this->cancellation_type == 'no_show'){
+                $item_name = 'No Show';
+                $code = $this->partner->no_show_package_id;
+            }else{
+                $code = $this->partner->cancellation_package_id;
+            }
+
             #If there is a cancellation fee involved
             if($this->hasCancellationFee()){
                 $item = array(
@@ -627,6 +636,7 @@ class Reservation extends Model
                 $round_trip_res = Reservation::findOrFail($this->round_trip_id);
 
                 if($this->cancellation_type == 'no_show'){
+                    $item_name = 'No Show';
                     $code = $round_trip_res->partner->no_show_package_id;
                 }else{
                     $code = $round_trip_res->partner->cancellation_package_id;
