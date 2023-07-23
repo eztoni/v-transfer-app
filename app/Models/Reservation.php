@@ -324,6 +324,7 @@ class Reservation extends Model
      */
     public function getConfirmationItemBreakdown($segment){
 
+
         $return['items'] = array();
 
         ##One Way Transfer
@@ -383,6 +384,17 @@ class Reservation extends Model
                 $vat_amount = number_format($price*($vat/100),2);
 
 
+                $item = array(
+                    'code' => $returnOperaPackageID,
+                    'transfer' => $round_trip_reservation->pickupLocation->name.' - '.$round_trip_reservation->dropoffLocation->name,
+                    'amount' => $price,
+                    'vat' => $vat,
+                    'vat_amount' => $vat_amount,
+                    'price' => $price
+                );
+
+                $return['items'][] = $item;
+
                 if($round_trip_reservation->status == 'cancelled'){
                     $price = number_format($price*(-1),2);
                     $vat_amount = number_format($vat_amount*(-1),2);
@@ -433,10 +445,6 @@ class Reservation extends Model
                 $return['items_vat_total'] = 0;
 
                 foreach($return['items'] as $item){
-
-                    if($item['amount'] < 0){
-                        continue;
-                    }
 
                     $return['items_total'] = $return['items_total']+$item['amount'];
                     $return['items_vat_total'] = $return['items_vat_total']+$item['vat_amount'];
