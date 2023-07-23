@@ -274,9 +274,15 @@ class Reservation extends Model
         if($cf){
             return number_format($this->cancellation_fee,2);
         }else{
-            return '-'.$this->getPrice()->formatByDecimal();
-        }
 
+            $price = $this->getPrice()->formatByDecimal();
+
+            if($this->isRoundTrip()){
+                $price = number_format($this->getPrice()->formatByDecimal()/2,2);
+            }
+
+            return '-'.$price;
+        }
     }
 
     public function getCancellationVatAmount($cf = false){
@@ -354,7 +360,6 @@ class Reservation extends Model
 
         if($this->round_trip_id){
 
-
             $round_trip_reservation = Reservation::findOrFail($this->round_trip_id);
 
             $return_route = Route::query()
@@ -421,33 +426,33 @@ class Reservation extends Model
                 }
         }
 
-        #Item Summary
-        if(!empty($return['items'])){
+            #Item Summary
+            if(!empty($return['items'])){
 
-            $return['items_total'] = 0;
-            $return['items_vat_total'] = 0;
+                $return['items_total'] = 0;
+                $return['items_vat_total'] = 0;
 
-            foreach($return['items'] as $item){
+                foreach($return['items'] as $item){
 
-                if($item['amount'] < 0){
-                    continue;
+                    if($item['amount'] < 0){
+                        continue;
+                    }
+
+                    $return['items_total'] = $return['items_total']+$item['amount'];
+                    $return['items_vat_total'] = $return['items_vat_total']+$item['vat_amount'];
                 }
 
-                $return['items_total'] = $return['items_total']+$item['amount'];
-                $return['items_vat_total'] = $return['items_vat_total']+$item['vat_amount'];
+                #Items Total
+                $return['items_total'] = number_format($return['items_total'],2);
+
+                #Vat Total
+                $return['items_vat_total'] = number_format($return['items_vat_total'],2);
+
+                $return['items_total_hrk'] = $return['items_total']*7.53450;
+
+                $return['items_total_hrk'] = number_format($return['items_total_hrk'],2);
+
             }
-
-            #Items Total
-            $return['items_total'] = number_format($return['items_total'],2);
-
-            #Vat Total
-            $return['items_vat_total'] = number_format($return['items_vat_total'],2);
-
-            $return['items_total_hrk'] = $return['items_total']*7.53450;
-
-            $return['items_total_hrk'] = number_format($return['items_total_hrk'],2);
-
-        }
 
             $return['tax_group'] = $this->included_in_accommodation ? 0 : 25;
             $return['items_total_base'] = number_format($return['items_total']*((100-$return['tax_group'])/100),2);
@@ -478,28 +483,36 @@ class Reservation extends Model
                 ->where('transfer_id',$this->transfer_id)
                 ->get()->first();
 
+            #Basic Route
+            $price = Money::EUR($route_transfer->price)->formatByDecimal();
+            $vat = $this->included_in_accommodation ? 0 : 25;
+            $vat_amount = number_format($price*($vat/100),2);
 
+            $operaPackageID = $route_transfer->opera_package_id;
 
-            #No Cancellation Fee - everything goes in negative
+            #Original Route - added for the calculation
             $item = array(
-                'code' => $route_transfer->opera_package_id,
-                'transfer' => 'Cancellation - '.$this->pickupLocation->name.' - '.$this->dropoffLocation->name,
-                'amount' => $this->getCancellationFeeAmount(),
-                'vat' => $this->getCancellationVATPercentage(),
-                'vat_amount' => $this->getCancellationVatAmount(),
-                'price' => $this->getCancellationFeeAmount(),
+                'code' => $operaPackageID,
+                'transfer' => $this->pickupLocation->name.' - '.$this->dropoffLocation->name,
+                'amount' => $price,
+                'vat' => $vat,
+                'vat_amount' => $vat_amount,
+                'price' => $price
             );
 
-            if($this->cancellation_type != 'no_show'){
-                $return['items'][] = $item;
-            }else{
-                $item_name = 'No Show Fee';
-                $code = $this->getCancellationPackageId(true);
-            }
+            #Add Original Route To the Invoice
+            $return['items'][] = $item;
 
+            #No Cancellation Fee - everything goes in negative
+            $item['transfer'] = 'Cancellation - '.$item['transfer'];
+            $item['amount'] = '-'.$item['amount'];
+            $item['vat_amount'] = '-'.$item['vat_amount'];
+            $item['price'] = '-'.$item['price'];
+
+            $return['items'][] = $item;
 
             #If there is a cancellation fee involved
-            if($this->hasCancellationFee()){
+            if($this->hasCancellationFee() && 2 < 1){
                 $item = array(
                     'code' => $code,
                     'transfer' => $item_name.' - ('.$this->getCancellationPercentage().'%) - '.$this->pickupLocation->name.' - '.$this->dropoffLocation->name,
@@ -537,17 +550,31 @@ class Reservation extends Model
                     ->where('transfer_id',$round_trip_res->transfer_id)
                     ->get()->first();
 
+                #Basic Route
+                $price = Money::EUR($route_transfer->price)->formatByDecimal();
+                $vat = $this->included_in_accommodation ? 0 : 25;
+                $vat_amount = number_format($price*($vat/100),2);
 
+                $operaPackageID = $route_transfer->opera_package_id;
+
+                #Original Route - added for the calculation
+                $item = array(
+                    'code' => $operaPackageID,
+                    'transfer' => $round_trip_res->pickupLocation->name.' - '.$round_trip_res->dropoffLocation->name,
+                    'amount' => $price,
+                    'vat' => $vat,
+                    'vat_amount' => $vat_amount,
+                    'price' => $price
+                );
+
+                #Add Original Route To the Invoice
+                $return['items'][] = $item;
 
                 #No Cancellation Fee - everything goes in negative
-                $item = array(
-                    'code' => $route_transfer->opera_package_id,
-                    'transfer' => 'Cancellation - '.$round_trip_res->pickupLocation->name.' - '.$round_trip_res->dropoffLocation->name,
-                    'amount' => $round_trip_res->getCancellationFeeAmount(),
-                    'vat' => $round_trip_res->getCancellationVATPercentage(),
-                    'vat_amount' => $round_trip_res->getCancellationVatAmount(),
-                    'price' => $round_trip_res->getCancellationFeeAmount(),
-                );
+                $item['transfer'] = 'Cancellation - '.$item['transfer'];
+                $item['amount'] = '-'.$item['amount'];
+                $item['vat_amount'] = '-'.$item['vat_amount'];
+                $item['price'] = '-'.$item['price'];
 
                 $return['items'][] = $item;
 
@@ -574,11 +601,6 @@ class Reservation extends Model
                 $return['items_vat_total'] = 0;
 
                 foreach($return['items'] as $item){
-
-                    if($item['amount'] < 0){
-                        continue;
-                    }
-
                     $return['items_total'] = $return['items_total']+$item['amount'];
                     $return['items_vat_total'] = $return['items_vat_total']+$item['vat_amount'];
                 }
@@ -598,8 +620,6 @@ class Reservation extends Model
             $return['tax_group'] = $this->included_in_accommodation ? 0 : 25;
             $return['items_total_base'] = number_format($return['items_total']*((100-$return['tax_group'])/100),2);
         }
-
-
 
         return $return[$segment];
     }
