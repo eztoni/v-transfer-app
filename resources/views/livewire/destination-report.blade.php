@@ -210,57 +210,57 @@
                 @foreach($this->filteredReservations as $reservation)
                     <tr>
                         @if($this->isPPOMReporting)
-                            <td>{{Arr::get($reservation,'transfer')}}</td>
-                            <td>{{Arr::get($reservation,'sales_agent')}}</td>
-                            <td>{{Arr::get($reservation,'selling_place')}}</td>
-                            <td>REZERVACIJA NA SOBU</td>
-                            <td>{{Arr::get($reservation,'tax_level')}}</td>
-                            <td>{{Arr::get($reservation,'invoice_number')}}</td>
-                            <td>{{Arr::get($reservation,'voucher_date')}}</td>
-                            <td>{{Arr::get($reservation,'date_time')}}</td>
-                            <td>{{Arr::get($reservation,'procedure')}}</td>
-                            <td>{{Arr::get($reservation,'price_eur')}}</td>
-                            <td align="center">{{Arr::get($reservation,'commission')}} %</td>
-                            <td align="center">{{Arr::get($reservation,'invoice_charge')}}</td>
-                            <td align="center">{{Arr::get($reservation,'commission_amount')}}</td>
-                            <td align="center">{{Arr::get($reservation,'pdv')}}</td>
-                            <td align="center">{{Arr::get($reservation,'net_income')}}</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'transfer')}}</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'sales_agent')}}</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'selling_place')}}</td>
+                            <td style="font-size: 12px">REZERVACIJA NA SOBU</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'tax_level')}}</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'invoice_number')}}</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'voucher_date')}}</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'date_time')}}</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'procedure')}}</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'price_eur')}}</td>
+                            <td align="center" style="font-size: 12px">{{Arr::get($reservation,'commission')}} %</td>
+                            <td align="center" style="font-size: 12px">{{Arr::get($reservation,'invoice_charge')}}</td>
+                            <td align="center" style="font-size: 12px">{{Arr::get($reservation,'commission_amount')}}</td>
+                            <td align="center" style="font-size: 12px">{{Arr::get($reservation,'pdv')}}</td>
+                            <td align="center" style="font-size: 12px">{{Arr::get($reservation,'net_income')}}</td>
                         @endif
 
                         @if($this->isRPOReporting)
-                                <td>{{Arr::get($reservation,'partner')}}</td>
-                                <td>{{Arr::get($reservation,'transfer')}}</td>
-                                <td>{{Arr::get($reservation,'sales_agent')}}</td>
-                                <td>{{Arr::get($reservation,'selling_place')}}</td>
-                                <td>{{Arr::get($reservation,'procedure')}}</td>
-                                <td>{{Arr::get($reservation,'voucher_date')}}</td>
-                                <td>{{Arr::get($reservation,'date_time')}}</td>
-                                <td>{{Arr::get($reservation,'invoice_number')}}</td>
-                                <td>{{Arr::get($reservation,'transfer')}}</td>
-                                <td>{{Arr::get($reservation,'tax_level')}}</td>
-                                <td>-</td>
-                                <td>1</td>
-                                <td>{{Arr::get($reservation,'price_eur')}}</td>
-                                <td align="center">{{Arr::get($reservation,'commission_amount')}}</td>
-                                <td align="center">{{Arr::get($reservation,'invoice_charge')}}</td>
-                                <td align="center">{{Arr::get($reservation,'commission')}} %</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'partner')}}</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'transfer')}}</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'sales_agent')}}</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'selling_place')}}</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'procedure')}}</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'voucher_date')}}</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'date_time')}}</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'invoice_number')}}</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'transfer')}}</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'tax_level')}}</td>
+                                <td style="font-size: 12px">-</td>
+                                <td style="font-size: 12px">1</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'price_eur')}}</td>
+                                <td align="center" style="font-size: 12px">{{Arr::get($reservation,'commission_amount')}}</td>
+                                <td align="center" style="font-size: 12px">{{Arr::get($reservation,'invoice_charge')}}</td>
+                                <td align="center" style="font-size: 12px">{{Arr::get($reservation,'commission')}} %</td>
 
                         @endif
 
                         @if($this->isPartnerReporting)
-                                <td>{{Arr::get($reservation,'voucher_date')}}</td>
-                                <td>{{Arr::get($reservation,'sales_agent')}}</td>
-                                <td>{{Arr::get($reservation,'selling_place')}}</td>
-                                <td>{{Arr::get($reservation,'id')}}</td>
-                                <td>{{Arr::get($reservation,'name')}}</td>
-                                <td>{{Arr::get($reservation,'procedure')}}</td>
-                                <td>{{Arr::get($reservation,'adults')}}</td>
-                                <td>{{Arr::get($reservation,'children')}}</td>
-                                <td>{{Arr::get($reservation,'price_eur')}}</td>
-                                <td align="center">{{Arr::get($reservation,'invoice_charge')}}</td>
-                                <td align="center">{{Arr::get($reservation,'commission_amount')}}</td>
-                                <td align="center">{{Arr::get($reservation,'commission')}} %</td>
-                                <td>Transfer</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'voucher_date')}}</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'sales_agent')}}</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'selling_place')}}</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'id')}}</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'name')}}</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'procedure')}}</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'adults')}}</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'children')}}</td>
+                                <td style="font-size: 12px">{{Arr::get($reservation,'price_eur')}}</td>
+                                <td align="center" style="font-size: 12px">{{Arr::get($reservation,'invoice_charge')}}</td>
+                                <td align="center" style="font-size: 12px">{{Arr::get($reservation,'commission_amount')}}</td>
+                                <td align="center" style="font-size: 12px">{{Arr::get($reservation,'commission')}} %</td>
+                                <td style="font-size: 12px">Transfer</td>
                         @endif
 
                     </tr>
