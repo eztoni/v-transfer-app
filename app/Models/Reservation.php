@@ -451,9 +451,6 @@ class Reservation extends Model
 
         if($this->status == Reservation::STATUS_CANCELLED){
 
-
-
-
             $code = $this->getCancellationPackageId();
 
             ##One Way Transfer
@@ -490,7 +487,7 @@ class Reservation extends Model
             #Add Original Route To the Invoice
             $return['items'][] = $item;
 
-            $item_name = $this->confirmation_language == 'hr' ? 'Naknada štete' : 'Cancellation Fee';
+            $item_name = $this->confirmation_language == 'hr' ? 'Otkaz' : 'Cancellation';
 
             #No Cancellation Fee - everything goes in negative
             $item['transfer'] = $item_name.' - '.$item['transfer'];
