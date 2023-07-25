@@ -80,40 +80,40 @@
 
             </div>
 
-            <table class="ds-table max-w-full ds-table-compact">
-                <tr  style="font-size: 10px !important">
+            <table class="ds-table-zebra ds-table-compact">
+                <tr>
                     @if($this->isAgentReporting)
 
-                        <th>ID</th>
-                        <th>Agent</th>
-                        <th>Partner</th>
-                        <th>Ruta</th>
-                        <th>Dvosmijerno?</th>
-                        <th>Datum Rezervacije</th>
-                        <th>Datum Realizacije</th>
-                        <th>Transfer</th>
-                        <th>Gost</th>
-                        <th>Iznos</th>
+                        <th align="center">ID</th>
+                        <th align="center">Agent</th>
+                        <th align="center">Partner</th>
+                        <th align="center">Ruta</th>
+                        <th align="center">Dvosmijerno?</th>
+                        <th align="center">Datum Rezervacije</th>
+                        <th align="center">Datum Realizacije</th>
+                        <th align="center">Transfer</th>
+                        <th align="center">Gost</th>
+                        <th align="center">Iznos</th>
 
                     @endif
                 </tr>
                 </thead>
-                <tbody  style="font-size: 10px !important">
+                <tbody>
                 @foreach($this->filteredReservations as $reservation)
                     <tr>
 
                         @if($this->isAgentReporting)
 
-                            <td style="font-size: 12px">{{Arr::get($reservation,'id')}}</td>
-                            <td style="font-size: 12px">{{Arr::get($reservation,'agent_name')}} ({{Arr::get($reservation,'agent_mail')}})</td>
-                            <td style="font-size: 12px">{{Arr::get($reservation,'partner')}}</td>
-                            <td style="font-size: 12px">{{Arr::get($reservation,'route')}}</td>
-                            <td style="font-size: 12px">{{Arr::get($reservation,'round_trip') ? 'Da' : 'Ne'}}</td>
-                            <td style="font-size: 12px">{{Arr::get($reservation,'created_at')}}</td>
-                            <td style="font-size: 12px">{{Arr::get($reservation,'date_time')}}</td>
-                            <td style="font-size: 12px">{{Arr::get($reservation,'transfer')}}</td>
-                            <td style="font-size: 12px">{{Arr::get($reservation,'name')}}</td>
-                            <td style="font-size: 12px">{{Arr::get($reservation,'price')}} €</td>
+                            <td >{{Arr::get($reservation,'id')}}</td>
+                            <td >{{Arr::get($reservation,'agent_name')}} ({{Arr::get($reservation,'agent_mail')}})</td>
+                            <td >{{Arr::get($reservation,'partner')}}</td>
+                            <td>{{Arr::get($reservation,'route')}}</td>
+                            <td >{{Arr::get($reservation,'round_trip') ? 'Da' : 'Ne'}}</td>
+                            <td >{{Arr::get($reservation,'created_at')}}</td>
+                            <td >{{Arr::get($reservation,'date_time')}}</td>
+                            <td >{{Arr::get($reservation,'transfer')}}</td>
+                            <td >{{Arr::get($reservation,'name')}}</td>
+                            <td >{{Arr::get($reservation,'price')}} €</td>
 
                         @endif
                     </tr>
