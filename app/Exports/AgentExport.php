@@ -53,6 +53,8 @@ class AgentExport implements FromCollection, WithHeadings, ShouldAutoSize, WithS
             $data_array = array();
 
             $data_array['id'] = $item['id'];
+            $data_array['agent'] = $item['agent_name'];
+            $data_array['login_email'] = $item['agent_mail'];
             $data_array['partner'] = $item['partner'];
             $data_array['dvosmijerno?'] = $item['round_trip'] ? 'Da' : 'Ne';
             $data_array['datum_rezervacije'] = $item['created_at'];

@@ -85,6 +85,7 @@
                     @if($this->isAgentReporting)
 
                         <th>ID</th>
+                        <th>Agent</th>
                         <th>Partner</th>
                         <th>Ruta</th>
                         <th>Dvosmijerno?</th>
@@ -103,15 +104,16 @@
 
                         @if($this->isAgentReporting)
 
-                            <td>{{Arr::get($reservation,'id')}}</td>
-                            <td>{{Arr::get($reservation,'partner')}}</td>
-                            <td>{{Arr::get($reservation,'route')}}</td>
-                            <td>{{Arr::get($reservation,'round_trip') ? 'Da' : 'Ne'}}</td>
-                            <td>{{Arr::get($reservation,'created_at')}}</td>
-                            <td>{{Arr::get($reservation,'date_time')}}</td>
-                            <td>{{Arr::get($reservation,'transfer')}}</td>
-                            <td>{{Arr::get($reservation,'name')}}</td>
-                            <td>{{Arr::get($reservation,'price')}} €</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'id')}}</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'agent_name')}} ({{Arr::get($reservation,'agent_mail')}})</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'partner')}}</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'route')}}</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'round_trip') ? 'Da' : 'Ne'}}</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'created_at')}}</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'date_time')}}</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'transfer')}}</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'name')}}</td>
+                            <td style="font-size: 12px">{{Arr::get($reservation,'price')}} €</td>
 
                         @endif
                     </tr>
