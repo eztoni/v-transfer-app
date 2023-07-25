@@ -57,9 +57,9 @@
             <table style="  border-collapse: unset ;border: 1px solid #363636; width: 100%;font-size: 11px;table-layout: fixed">
                 <thead>
                 <tr style="border: 1px solid black;font-weight: 700;">
-                    <td style="border: 1px solid black;padding:5px 5px" width="8%">{{__('mail.no')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;" width="8%">{{__('mail.code')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;" width="20%">{{__('mail.transfer')}}</td>
+                    <td style="border: 1px solid black;padding:5px 5px" width="6%">{{__('mail.no')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;" width="6%">{{__('mail.code')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;" width="24%">{{__('mail.transfer')}}</td>
 
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right" width="12%">{{__('mail.amount')}}</td>
                     <td style="padding:5px 5px;border: 1px solid black;text-align: right" width="8%">{{__('mail.vat')}}%</td>
