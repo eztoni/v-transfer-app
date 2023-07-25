@@ -54,17 +54,17 @@
         <x-mail.row>
 
             <p align="right">{{__('mail.invoice_no')}}: {{$reservation->getInvoiceData('invoice_number','cancellation_fee')}}</p><br/>
-            <table style="  border-collapse: unset ;border: 1px solid #363636; width: 100%;font-size: 11px">
+            <table style="  border-collapse: unset ;border: 1px solid #363636; width: 100%;font-size: 11px;table-layout: fixed">
                 <thead>
                 <tr style="border: 1px solid black;font-weight: 700;">
-                    <td style="border: 1px solid black;padding:5px 5px">{{__('mail.no')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.code')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.transfer')}}</td>
+                    <td style="border: 1px solid black;padding:5px 5px" width="8%">{{__('mail.no')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;" width="8%">{{__('mail.code')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;" width="24%">{{__('mail.transfer')}}</td>
 
-                    <td style="padding:5px 5px;border: 1px solid black;text-align: right">{{__('mail.amount')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;text-align: right">{{__('mail.vat')}}%</td>
-                    <td style="padding:5px 5px;border: 1px solid black;text-align: right">{{__('mail.vat_amount')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;text-align: right">{{__('mail.price')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;text-align: right" width="8%">{{__('mail.amount')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;text-align: right" width="8%">{{__('mail.vat')}}%</td>
+                    <td style="padding:5px 5px;border: 1px solid black;text-align: right" width="18%">{{__('mail.vat_amount')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;text-align: right" width="26%">{{__('mail.price')}}</td>
                 </tr>
                 </thead>
 
@@ -115,13 +115,13 @@
 
             <p style="margin-bottom: 25px;margin-top: 25px;">{{__("mail.tax_recapitulation")}}</p>
 
-            <table style="  border-collapse: unset ;border: 1px solid #363636; width: 100%;font-size: 11px">
+            <table style="  border-collapse: unset ;border: 1px solid #363636; width: 100%;font-size: 11px;table-layout:fixed">
                 <thead>
                 <tr style="border: 1px solid black;font-weight: 700;">
-                    <td style="border: 1px solid black;padding:5px 5px">{{__('mail.tax_group')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.base')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.vat')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;">{{__('mail.total_price')}}</td>
+                    <td style="border: 1px solid black;padding:5px 5px" width="28%">{{__('mail.tax_group')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;" width="28%">{{__('mail.base')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;" width="18%">{{__('mail.vat')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;" width="26%">{{__('mail.total_price')}}</td>
 
                 </tr>
                 </thead>
