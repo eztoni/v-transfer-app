@@ -66,6 +66,11 @@ class ValamarFiskalizacija{
 
         $reservation = $this->reservation;
 
+        #Avoid Sending Invoice Cancellation
+        if($reservation->status == 'cancelled'){
+            return true;
+        }
+
         if($reservation->included_in_accommodation_reservation == 1){
             return true;
         }
