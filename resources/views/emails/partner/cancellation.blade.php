@@ -1,10 +1,8 @@
 <x-mail.layouts.main>
     <x-mail.body>
         <x-mail.logo-mail-body/>
-
-
         <x-mail.row>
-            <div style="padding: 25px 0">
+            <div style="padding: 25px 0;font-size:14px !important;">
                 <p>Poštovani,
                 </p>
                 <br>
