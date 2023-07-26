@@ -59,7 +59,7 @@
 
          *{
              font-family:"Source Sans Pro",'Roboto-bold',"DeJaVu Sans";
-             line-height: 14px;
+             font-size: 14px !important;
              color: #363636;
          }
 
