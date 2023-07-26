@@ -1,8 +1,4 @@
-<x-mail.layouts.main>
-    <x-mail.body>
-        <x-mail.logo-mail-body/>
-        <x-mail.row>
-            <div style="padding: 25px 0;font-size:14px !important;">
+            <div style="padding: 25px 0;font-size:14px !important;word-spacing:normal;background-color:#F4F4F4;padding-top: 40px;padding-bottom: 40px">
                 <p>Poštovani,
                 </p>
                 <br>
@@ -10,6 +6,3 @@
                 <br>
                 <p> Vaš Valamar Tim</p>
             </div>
-        </x-mail.row>
-    </x-mail.body>
-</x-mail.layouts.main>
