@@ -20,52 +20,6 @@
     @vite('resources/css/app.css')
     @vite('resources/css/styles.scss')
 
-    <style type="text/css">
-        .page-break {
-            page-break-after: always;
-        }
-        #outlook a {
-            padding: 0;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-        }
-
-        table,
-        td {
-            border-collapse: collapse;
-            mso-table-lspace: 0pt;
-            mso-table-rspace: 0pt;
-        }
-
-        img {
-            border: 0;
-            height: auto;
-            line-height: 100%;
-            outline: none;
-            text-decoration: none;
-            -ms-interpolation-mode: bicubic;
-        }
-
-        p {
-            display: block;
-            margin: 0px;
-            font-weight: normal!important;
-        }
-
-         *{
-             font-family:"Source Sans Pro",'Roboto-bold',"DeJaVu Sans";
-             font-size: 14px !important;
-             color: #363636;
-         }
-
-        @slot('head_after')
-
-    </style>
     <!--[if mso]>
     <noscript>
         <xml>
