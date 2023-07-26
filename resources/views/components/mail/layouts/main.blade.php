@@ -20,46 +20,6 @@
     @vite('resources/css/app.css')
     @vite('resources/css/styles.scss')
 
-    <!--[if mso]>
-    <noscript>
-        <xml>
-            <o:OfficeDocumentSettings>
-                <o:AllowPNG/>
-                <o:PixelsPerInch>96</o:PixelsPerInch>
-            </o:OfficeDocumentSettings>
-        </xml>
-    </noscript>
-    <![endif]-->
-    <!--[if lte mso 11]>
-    <style type="text/css">
-        .mj-outlook-group-fix { width:100% !important; }
-    </style>
-    <![endif]-->
-    <style type="text/css">
-        @media only screen and (min-width:480px) {
-            .mj-column-per-100 {
-                width: 100% !important;
-                max-width: 100%;
-            }
-        }
-    </style>
-    <style media="screen and (min-width:480px)">
-        .moz-text-html .mj-column-per-100 {
-            width: 100% !important;
-            max-width: 100%;
-        }
-    </style>
-    <style type="text/css">
-        @media only screen and (max-width:480px) {
-            table.mj-full-width-mobile {
-                width: 100% !important;
-            }
-
-            td.mj-full-width-mobile {
-                width: auto !important;
-            }
-        }
-    </style>
 </head>
 
 <body style="word-spacing:normal;background-color:#F4F4F4;padding-top: 40px;padding-bottom: 40px">
