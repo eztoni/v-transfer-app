@@ -20,6 +20,7 @@ class MailRenderingController extends Controller
                 return new \App\Mail\Guest\ReservationCancellationMail($id,$res->confirmation_language);
                 break;
             case 'CANCEL':
+                return new \App\Mail\Guest\ReservationCancellationMail($id,$res->confirmation_language);
                 break;
             case 'ATTACHMENT_VOUCHER':
                 return PDF::loadView('attachments.voucher', ['reservation'=>Reservation::find($id)])->outputHtml();
