@@ -52,10 +52,6 @@
                     <br/>
                     <p  class="text-sm"><u>Cancellation Details</u></p>
                     <p class="text-sm"><b>Cancellation DateTime: </b>{{$reservation->cancelled_at}}</p>
-                    <!-- Cancellation Invoice Details -->
-                    <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{$reservation->getInvoiceData('invoice_number','cancellation')}} ({{$reservation->getInvoiceData('amount','cancellation')}})</span></span>
-                    <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->getInvoiceData('zki','cancellation')}}</span></span>
-                    <span class="font-extrabold text-info text-sm">JIR: <span class="text-info font-normal">{{$reservation->getInvoiceData('jir','cancellation')}}</span></span>
                     <br/>
                     @if($reservation->cancellation_fee > 0)
                     <br/>
