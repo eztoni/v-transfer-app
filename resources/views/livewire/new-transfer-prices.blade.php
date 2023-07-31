@@ -15,36 +15,40 @@
 
     <div class="grid grid-cols-12 gap-4">
         <div class="col-span-3 ">
-            <div class="flex flex-col justify-end gap-4 rounded p-4 bg-white shadow-lg border border-primary-500 pb-8">
 
-                @if($this->showSearch)
-                    <x-native-select
-                        label="Transfers:"
-                        placeholder="Select a transfer"
-                        option-label="name"
-                        option-value="id"
-                        :options="$this->transfers->map(fn ($m) => ['id'=>$m->id,'name'=>$m->name])->toArray() "
-                        wire:model="transferId"
-                    />
-                @endif
+            @if($this->showSearch || ($transfer && $partner))
+                <div class="flex flex-col justify-end gap-4 rounded p-4 bg-white shadow-lg border border-primary-500 pb-8">
 
-                @if ($transfer && $partner)
-                    <x-native-select
-                        label="Partner:"
-                        option-label="name"
-                        option-value="id"
-                        :options="\App\Models\Partner::all()->map(fn ($m) => ['id'=>$m->id,'name'=>$m->name])->toArray() "
-                        wire:model="partnerId"
-                    />
-                @endif
-            </div>
+                    @if($this->showSearch)
+                        <x-native-select
+                            label="Transfers:"
+                            placeholder="Select a transfer"
+                            option-label="name"
+                            option-value="id"
+                            :options="$this->transfers->map(fn ($m) => ['id'=>$m->id,'name'=>$m->name])->toArray() "
+                            wire:model="transferId"
+                        />
+                    @endif
+                    
+                    @if ($transfer && $partner)
+                        <x-native-select
+                            label="Partner:"
+                            option-label="name"
+                            option-value="id"
+                            :options="\App\Models\Partner::all()->map(fn ($m) => ['id'=>$m->id,'name'=>'#'.$m->id.' '.$m->name])->toArray() "
+                            wire:model="partnerId"
+                        />
+                    @endif
 
 
+
+                </div>
+            @endif
         </div>
         <div class="col-span-9">
 
             @if($transfer)
-                @if($partner  )
+                @if($partner)
 
                     @if ($this->routes)
                         @forelse ($this->routes as $r)
@@ -253,7 +257,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                               d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
                                     </svg>
-                                    <label>Select a partner to add prices!</label>
+                                    <label>{{$partnerMessage}}</label>
                                 </div>
                             </div>
                         </TD>

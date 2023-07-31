@@ -23,10 +23,10 @@ class NewTransferPrices extends Component
     public $showSearch = true;
     public ?Partner $partner= null;
     public $modelPrices;
-
+    public $partnerMessage = 'Please Select a partner';
     public int $transferId;
     public int $partnerId;
-
+    public $hasPartners = false;
 
     public function fieldNames($rId){ return
         [
@@ -69,13 +69,22 @@ class NewTransferPrices extends Component
     public function mount()
     {
         $this->partner = Partner::first();
+
+
         if (!$this->transfer){
             $this->transfer = Transfer::first();
         }
         if($this->transfer){
             $this->transferId = $this->transfer->id;
         }
-        $this->partnerId = $this->partner->id;
+
+        if($this->partner){
+            $this->hasPartners = true;
+            $this->partnerId = $this->partner->id;
+        }else{
+            $this->partnerMessage = 'No partners defined for this destination. Please define partners for this destination in order to be able to set the prices.';
+        }
+
         $this->setModelPrices();
     }
 
