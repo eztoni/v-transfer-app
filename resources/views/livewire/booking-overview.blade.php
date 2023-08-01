@@ -84,7 +84,7 @@
                 <div class="flex">
                     <div class="m-0 divider"></div>
                     @if($reservation->included_in_accommodation_reservation == 1)
-                        <p class="font-extrabold text-success"><i>Transfer included in Accommodation Reservation</i></p>
+                        <small class="font-extrabold text-success">Transfer included in Accommodation Reservation</small>
                     @else
                         <span class="font-extrabold text-info">Opera Status: <span class="ds-badge sm ds-badge-{{$reservation->isSyncedWithOpera()?'success':'error'}}">{{$reservation->isSyncedWithOpera()?'Synced':'Not Synced'}}</span></span>
                         <span class="font-extrabold text-info">&nbsp;ZKI: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[0]?->zki:'-'}}</span></span>
