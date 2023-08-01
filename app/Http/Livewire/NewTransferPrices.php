@@ -43,8 +43,6 @@ class NewTransferPrices extends Component
 
     public function ruless($rId){
 
-
-
         $rules = [
             "modelPrices.$rId.price" => 'required|min:1|regex:'. \App\Services\Helpers\EzMoney::MONEY_REGEX,
             "modelPrices.$rId.round_trip" => 'boolean|nullable',
@@ -85,6 +83,8 @@ class NewTransferPrices extends Component
             $this->partnerMessage = 'No partners defined for this destination. Please define partners for this destination in order to be able to set the prices.';
         }
 
+
+
         $this->setModelPrices();
     }
 
@@ -119,6 +119,7 @@ class NewTransferPrices extends Component
                 if (!\Arr::has($this->modelPrices, $route->id)) {
 
                     $newPrice = TransferPricePivot::make()->toArray();
+
                     $newPrice['new_price']=true;
 
                     $this->modelPrices = \Arr::add(
@@ -138,6 +139,8 @@ class NewTransferPrices extends Component
 
     public function formatPrice($k)
     {
+
+
         $this->formatValue($k,'price',fn($i)=>EzMoney::format($i));
         $this->formatValue($k,'price_round_trip',fn($i)=>EzMoney::format($i));
         $this->formatValue($k,'price_with_discount',fn($i)=>EzMoney::format($i));
@@ -172,6 +175,17 @@ class NewTransferPrices extends Component
             $this->modelPrices[$routeId] = $priceModel;
             $this->formatPrice($routeId);
         }
+
+        if(Str::contains($property,['modelPrices'])){
+            if(Str::contains($property,'round_trip')){
+                
+                $routeId = explode('.', $property)[1];
+
+                if(empty($this->modelPrices[$routeId]['price_round_trip'])){
+                    $this->modelPrices[$routeId]['price_round_trip'] = 0;
+                }
+            }
+        }
     }
 
     public function getRoutesProperty()
@@ -181,6 +195,8 @@ class NewTransferPrices extends Component
 
     public function save($routeId)
     {
+
+
         if (!$priceArray = $this->modelPrices[$routeId]) {
             return;
         }
@@ -188,6 +204,7 @@ class NewTransferPrices extends Component
         $this->validate($this->ruless($routeId), [], $this->fieldNames($routeId));
 
         $priceArray['price'] = EzMoney::parseForDb($priceArray['price']);
+
         if ($priceArray['price_round_trip'] ?? false) {
             $priceArray['price_round_trip'] = EzMoney::parseForDb($priceArray['price_round_trip']);
         }
@@ -196,6 +213,11 @@ class NewTransferPrices extends Component
         $priceArray['date_from'] = Carbon::createFromFormat('d.m.Y',$priceArray['date_from'])->format('Y-m-d');
         $priceArray['date_to'] = Carbon::createFromFormat('d.m.Y',$priceArray['date_to'])->format('Y-m-d');
 
+
+        if(empty($priceArray['price_round_trip'])){
+            #Default to 0 to avoid Anabella Bug
+            $priceArray['price_round_trip'] = 0;
+        }
 
         \DB::table('route_transfer')->updateOrInsert(
             [
