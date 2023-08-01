@@ -148,4 +148,22 @@ use Actions;
 
         return view('livewire.user-overview',compact('users','currentUser','roles','owners','destinations'));
     }
+
+    public function translateUserRole($userRole){
+
+        $return = $userRole;
+
+        switch ($userRole){
+            case User::ROLE_USER:
+                $return = 'VEC';
+                break;
+            case User::ROLE_ADMIN:
+                $return = 'Administrator';
+                break;
+            case User::ROLE_RECEPTION:
+                $return = 'Reception';
+                break;
+        }
+        return $return;
+    }
 }

@@ -19,7 +19,7 @@
                     <th>{{ $user_data->id }}</th>
                     <td>{{ $user_data->name }}</td>
                     <td>{{ $user_data->email }}</td>
-                    <td>@foreach($user_data->getRoleNames() as $roleName) <span class="badge"> {{$roleName}}</span> @endforeach</td>
+                    <td>@foreach($user_data->getRoleNames() as $roleName) <span class="badge"> {{$this->translateUserRole($roleName)}}</span> @endforeach</td>
                     @if($user_data->hasRole('super-admin'))
                         <td class="text-center">
                             <x-button.circle disabled primary icon="pencil">
