@@ -93,7 +93,7 @@
                         <th align="center">Datum Realizacije</th>
                         <th align="center">Transfer</th>
                         <th align="center">Gost</th>
-                        <th align="center">Iznos</th>
+                        <th align="center">Iznos  €</th>
 
                     @endif
                 </tr>
@@ -104,16 +104,16 @@
 
                         @if($this->isAgentReporting)
 
-                            <td >{{Arr::get($reservation,'id')}}</td>
-                            <td >{{Arr::get($reservation,'agent_name')}} ({{Arr::get($reservation,'agent_mail')}})</td>
-                            <td >{{Arr::get($reservation,'partner')}}</td>
+                            <td>{{Arr::get($reservation,'id')}}</td>
+                            <td>{{Arr::get($reservation,'agent_name')}} ({{Arr::get($reservation,'agent_mail')}})</td>
+                            <td>{{Arr::get($reservation,'partner')}}</td>
                             <td>{{Arr::get($reservation,'route')}}</td>
-                            <td >{{Arr::get($reservation,'round_trip') ? 'Da' : 'Ne'}}</td>
-                            <td >{{Arr::get($reservation,'created_at')}}</td>
-                            <td >{{Arr::get($reservation,'date_time')}}</td>
-                            <td >{{Arr::get($reservation,'transfer')}}</td>
-                            <td >{{Arr::get($reservation,'name')}}</td>
-                            <td >{{Arr::get($reservation,'price')}} €</td>
+                            <td>{{Arr::get($reservation,'round_trip') ? 'Da' : 'Ne'}}</td>
+                            <td>{{Arr::get($reservation,'created_at')}}</td>
+                            <td>{{Arr::get($reservation,'date_time')}}</td>
+                            <td>{{Arr::get($reservation,'transfer')}}</td>
+                            <td>{{Arr::get($reservation,'name')}}</td>
+                            <td>{{Arr::get($reservation,'price')}} </td>
 
                         @endif
                     </tr>
