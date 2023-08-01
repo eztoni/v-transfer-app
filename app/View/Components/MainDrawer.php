@@ -69,7 +69,7 @@ class MainDrawer extends Component
             [
                 'icon' => 'fas fa-chart-bar',
                 'text' => 'Reports',
-                'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN),
+                'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN, User::ROLE_RECEPTION),
                 'items' => [
                     [
                         'text' => 'Partner Report',
@@ -93,7 +93,7 @@ class MainDrawer extends Component
                         'text' => 'Reception Daily Report',
                         'active' => request()->routeIs('partner-daily'),
                         'href' => route('partner-daily'),
-                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER)
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER, User::ROLE_RECEPTION),
                     ],
                     [
                         'text' => 'Agent Efficiency Report',

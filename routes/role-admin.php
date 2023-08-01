@@ -56,8 +56,6 @@ Route::get('/transfer-overview', TransferOverview::class)->name('transfer-overvi
 Route::get('/transfer-edit/{transferId}', TransferEdit::class)->name('transfer-edit');
 Route::get('/transfer-prices', NewTransferPrices::class)->name('transfer-prices');
 
-Route::get('/partner-daily', PartnerDaily::class)->name('partner-daily');
-
 Route::get('/agent-efficiency',\App\Http\Livewire\AgentEfficiency::class)->name('agent-efficiency');
 
 Route::get('preview_partner_mail_list/{accommodation}/{date_from}/{date_to}',function ($accommodation,$date_from,$date_to){

@@ -18,15 +18,31 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
     Route::middleware(
-        ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN . '|' . User::ROLE_USER.'|'.User::ROLE_RECEPTION]
+        ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN . '|' . User::ROLE_USER. '|' .User::ROLE_RECEPTION]
     )->group(callback: function () {
+
         /*
             |--------------------------------------------------------------------------
             | User routes
             |--------------------------------------------------------------------------
         */
 
-        include 'role-user.php';
+
+       include 'role-user.php';
+
+        Route::middleware(
+            ['role:' .User::ROLE_RECEPTION .'|' .User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN]
+        )->group(function(){
+            /*
+                |--------------------------------------------------------------------------
+                | Reception routes
+                |--------------------------------------------------------------------------
+            */
+           include 'role-reception.php';
+        });
+
+
+
 
         Route::middleware(
             ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN]
