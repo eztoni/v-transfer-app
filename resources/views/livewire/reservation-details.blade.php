@@ -15,7 +15,11 @@
                 @endif
 
                 <br/>
-                <span class="font-extrabold text-info text-sm">Opera Status: {{$reservation->isSyncedWithOpera()?'Synced':'Not Synced'}}</span>
+
+                @if($reservation->included_in_accommodation_reservation == 1)
+                    <span class="font-extrabold text-info text-sm">Reservation included in Accommodation Reservation<br/><small><ul><li><i> - Reservation Not posted to Opera.</i><br/><i> - Reservation Invoice Not Created via App.</i></li></ul></small></span>
+                @else
+                    <span class="font-extrabold text-info text-sm">Opera Status: {{$reservation->isSyncedWithOpera()?'Synced':'Not Synced'}}</span>
                     <x-button primary xs wire:click="openOperaSyncModal({{$reservation->id}})">{{$reservation->isSyncedWithOpera()?'Re-Sync':'Sync'}}</x-button>
                     <x-button xs icon="external-link" wire:click="openOperaSyncLogModal({{$reservation->id}})">View Sync Log</x-button>
                     <br/>
@@ -24,10 +28,10 @@
                     <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->getInvoiceData('zki')}}</span></span>
                     <span class="font-extrabold text-info text-sm">JIR: <span class="text-info font-normal">{{$reservation->getInvoiceData('jir')}}</span></span>
 
-                @if($reservation->getInvoiceData('invoice_number') == '-')
+                    @if($reservation->getInvoiceData('invoice_number') == '-')
                         <x-button xs icon="external-link" wire:click="openFiskalSyncModal({{$reservation->id}})">Issue Invoice ( Fiskalizacija )</x-button>
+                    @endif
                 @endif
-
 
                 @if($reservation->isRoundTrip && $reservation->returnReservation->status == 'cancelled')
                     <br/>
@@ -36,15 +40,6 @@
                     </p>
                     <p  class="text-sm"><b>Route: </b>{{$reservation->returnReservation->pickupAddress->name}} => {{$reservation->returnReservation->dropoffAddress->name}}</p>
                     <p class="text-sm"><b>Cancellation DateTime: </b>{{$reservation->returnReservation->cancelled_at}}</p>
-{{--                    <br/>--}}
-{{--                    <!-- Invoice Details -->--}}
-{{--                    <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{$reservation->returnReservation->getInvoiceData('invoice_number','cancellation')}} ({{$reservation->returnReservation->getInvoiceData('amount','cancellation')}})</span></span>--}}
-{{--                    <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->returnReservation->getInvoiceData('zki','cancellation')}}</span></span>--}}
-{{--                    <span class="font-extrabold text-info text-sm">JIR: <span class="text-info font-normal">{{$reservation->returnReservation->getInvoiceData('jir','cancellation')}}</span></span>--}}
-
-{{--                    @if($reservation->getInvoiceData('invoice_number') == '-')--}}
-{{--                        <x-button xs icon="external-link" wire:click="openFiskalSyncModal({{$reservation->returnReservation->id}})">Issue Invoice ( Fiskalizacija )</x-button>--}}
-{{--                    @endif--}}
                 @endif
 
                 @if($reservation->status == 'cancelled')
@@ -57,11 +52,14 @@
                     <br/>
                     <p  class="text-sm"><u>Cancellation Fee Details</u></p>
                     <p class="text-sm">Cancellation Fee Applied: </b>{{$reservation->cancellation_fee}} € ( {{$reservation->cancellation_type}} ) </p>
-                    <!-- Cancellation Invoice Details -->
-                    <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{$reservation->getInvoiceData('invoice_number','cancellation_fee')}} ({{$reservation->getInvoiceData('amount','cancellation_fee')}})</span></span>
-                    <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->getInvoiceData('zki','cancellation_fee')}}</span></span>
-                    <span class="font-extrabold text-info text-sm">JIR: <span class="text-info font-normal">{{$reservation->getInvoiceData('jir','cancellation_fee')}}</span></span>
-                    @else
+
+                    @if($reservation->included_in_accommodation_reservation == 0)
+                            <!-- Cancellation Invoice Details -->
+                            <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{$reservation->getInvoiceData('invoice_number','cancellation_fee')}} ({{$reservation->getInvoiceData('amount','cancellation_fee')}})</span></span>
+                            <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->getInvoiceData('zki','cancellation_fee')}}</span></span>
+                            <span class="font-extrabold text-info text-sm">JIR: <span class="text-info font-normal">{{$reservation->getInvoiceData('jir','cancellation_fee')}}</span></span>
+                    @endif
+                   @else
                     <p class="text-sm"><b>Cancellation Fee:</b> No cancellation fee applied</p>
 
                 @endif

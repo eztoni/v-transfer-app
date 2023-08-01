@@ -51,7 +51,6 @@
         </x-card>
     </div>
 
-
     @foreach($this->reservations as $reservation)
 
         <x-card cardClasses="mb-4" title="Transfer #{{$reservation->id}}">
@@ -84,10 +83,16 @@
             <div class="flex flex-col w-full">
                 <div class="flex">
                     <div class="m-0 divider"></div>
-                    <span class="font-extrabold text-info">Opera Status: <span class="ds-badge ds-badge-{{$reservation->isSyncedWithOpera()?'success':'error'}}">{{$reservation->isSyncedWithOpera()?'Synced':'Not Synced'}}</span></span>
-                    <span class="font-extrabold text-info">&nbsp;ZKI: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[0]?->zki:'-'}}</span></span>
-                    <span class="font-extrabold text-info">&nbsp;JIR: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[0]?->jir:'-'}}</span></span>
-                    <span class="font-extrabold text-info">&nbsp;Invoice: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[0]->invoice_id.'-'.$reservation->invoices[0]->invoice_establishment.'-'.$reservation->invoices[0]->invoice_device : '-'}}</span></span>
+                    @if($reservation->included_in_accommodation_reservation == 1)
+                        <p class="font-extrabold text-success"><i>Transfer included in Accommodation Reservation</i></p>
+                    @else
+                        <span class="font-extrabold text-info">Opera Status: <span class="ds-badge sm ds-badge-{{$reservation->isSyncedWithOpera()?'success':'error'}}">{{$reservation->isSyncedWithOpera()?'Synced':'Not Synced'}}</span></span>
+                        <span class="font-extrabold text-info">&nbsp;ZKI: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[0]?->zki:'-'}}</span></span>
+                        <span class="font-extrabold text-info">&nbsp;JIR: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[0]?->jir:'-'}}</span></span>
+                        <span class="font-extrabold text-info">&nbsp;Invoice: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[0]->invoice_id.'-'.$reservation->invoices[0]->invoice_establishment.'-'.$reservation->invoices[0]->invoice_device : '-'}}</span></span>
+                    @endif
+
+
                 </div>
             </div>
         </x-card>

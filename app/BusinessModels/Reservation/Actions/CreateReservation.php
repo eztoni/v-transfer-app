@@ -84,13 +84,16 @@ class CreateReservation extends Reservation
                 $this->saveRoundTrip();
             }
 
-            #Send Reservation To Opera
-            $OperaAPI = new ValamarOperaApi();
-            $OperaAPI->syncReservationWithOperaFull($this->model->id);
 
-            #Send To Invoicing
-            $fiskalAPI = new ValamarFiskalizacija($this->model->id);
-            $fiskalAPI->fiskalReservation();
+            if($this->model->included_in_accommodation_reservation == 0){
+                #Send Reservation To Opera
+                $OperaAPI = new ValamarOperaApi();
+                $OperaAPI->syncReservationWithOperaFull($this->model->id);
+
+                #Send To Invoicing
+                $fiskalAPI = new ValamarFiskalizacija($this->model->id);
+                $fiskalAPI->fiskalReservation();
+            }
 
             ReservationCreatedEvent::dispatch($this->model,[
                 ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail
