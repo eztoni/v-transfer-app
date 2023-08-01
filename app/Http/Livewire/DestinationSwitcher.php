@@ -16,7 +16,7 @@ class DestinationSwitcher extends Component
 use Actions;
 
     public function changeDestination($destinationId){
-        if(!Auth::user()->hasAnyRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN,User::ROLE_USER]))
+        if(!Auth::user()->hasAnyRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN,User::ROLE_USER,User::ROLE_RECEPTION]))
             return;
 
         $user = Auth::user();
@@ -31,7 +31,7 @@ use Actions;
     {
 
         $destinations = Destination::all();
-
+        
         # Stefano Pitao da se izbjegne filtracija korisnik\destinacija
         #if(Auth::user()->hasAnyRole([User::ROLE_USER]))
           #  $destinations = Auth::user()->availableDestinations()->get();
