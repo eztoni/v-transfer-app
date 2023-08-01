@@ -43,11 +43,19 @@ class RoutesOverview extends EzComponent
         foreach ($this->companyLanguages as $lang) {
             $this->routeName[$lang] = $this->model->getTranslation('name', $lang, false);
         }
+
     }
     public function updateModel($modelId):void
     {
         parent::updateModel($modelId);
         $this->instantiateComponentValues();
+    }
+
+    public function addModel()
+    {
+        parent::addModel();
+        #Restart Route Name
+        $this->routeName = array_fill_keys(array_keys($this->routeName), null);
     }
 
     public function updatedRouteName()
