@@ -93,7 +93,7 @@
                         <th align="center">Datum Realizacije</th>
                         <th align="center">Transfer</th>
                         <th align="center">Gost</th>
-                        <th align="center">Iznos  €</th>
+                        <th align="center">Iznos u EUR</th>
 
                     @endif
                 </tr>
