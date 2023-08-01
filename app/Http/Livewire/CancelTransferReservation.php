@@ -73,31 +73,34 @@ use Actions;
             $this->cancelRoundTrip
         );
 
-        $operaAPI = new ValamarOperaApi();
+        if($this->reservation->included_in_accommodation_reservation == 0){
 
-        if($this->reservation->is_main){
-            $operaAPI->syncReservationWithOperaFull($this->reservation->id);
-            $fiskalValamar = new ValamarFiskalizacija($this->reservation->id);
-            $fiskalValamar->fiskalReservation();
+            $operaAPI = new ValamarOperaApi();
 
-            if($this->reservation->hasCancellationFee()){
-                $fiskalValamar->fiskalReservationCF($this->reservation->getCancellationFeeAmount(true));
-            }
-
-        }else{
-            $main_res = Reservation::where('round_trip_id',$this->reservation->id)->get()->first();
-
-            if($main_res){
-                $operaAPI->syncReservationWithOperaFull($main_res->id);
-                $fiskalValamar = new ValamarFiskalizacija($main_res->id);
+            if($this->reservation->is_main){
+                $operaAPI->syncReservationWithOperaFull($this->reservation->id);
+                $fiskalValamar = new ValamarFiskalizacija($this->reservation->id);
                 $fiskalValamar->fiskalReservation();
 
-                if($main_res->hasCancellationFee()){
-                    $fiskalValamar->fiskalReservationCF($main_res->getCancellationFeeAmount(true));
+                if($this->reservation->hasCancellationFee()){
+                    $fiskalValamar->fiskalReservationCF($this->reservation->getCancellationFeeAmount(true));
+                }
+
+            }else{
+                $main_res = Reservation::where('round_trip_id',$this->reservation->id)->get()->first();
+
+                if($main_res){
+
+                    $operaAPI->syncReservationWithOperaFull($main_res->id);
+                    $fiskalValamar = new ValamarFiskalizacija($main_res->id);
+                    $fiskalValamar->fiskalReservation();
+
+                    if($main_res->hasCancellationFee()){
+                        $fiskalValamar->fiskalReservationCF($main_res->getCancellationFeeAmount(true));
+                    }
                 }
             }
         }
-
 
         $this->emit('cancelCompleted');
     }
