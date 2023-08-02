@@ -17,7 +17,7 @@
                 <br/>
 
                 @if($reservation->included_in_accommodation_reservation == 1)
-                    <span class="font-extrabold text-info text-sm">Reservation included in Accommodation Reservation<br/><small><ul><li><i> - Reservation Not posted to Opera.</i><br/><i> - Reservation Invoice Not Created via App.</i></li></ul></small></span>
+                    <span class="font-extrabold text-info text-sm">Reservation included in Accommodation Reservation<br/><small><ul><li><i> - Reservation Not posted to Opera.</i><br/><i> - Reservation Invoice Not Created via Transfer App.</i></li></ul></small></span>
                 @else
                     <span class="font-extrabold text-info text-sm">Opera Status: {{$reservation->isSyncedWithOpera()?'Synced':'Not Synced'}}</span>
                     <x-button primary xs wire:click="openOperaSyncModal({{$reservation->id}})">{{$reservation->isSyncedWithOpera()?'Re-Sync':'Sync'}}</x-button>
