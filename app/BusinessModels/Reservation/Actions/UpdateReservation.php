@@ -13,8 +13,11 @@ class UpdateReservation extends \App\BusinessModels\Reservation\Reservation
 
         $this->model->save();
 
-        $api = new ValamarOperaApi();
-        $api->syncReservationWithOperaFull($this->model->id);
+        if($this->model->included_in_accommodation_reservation == 0){
+
+            $api = new ValamarOperaApi();
+            $api->syncReservationWithOperaFull($this->model->id);
+        }
 
         ReservationUpdatedEvent::dispatch($this->model,[ReservationUpdatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail]);
 

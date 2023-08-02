@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\BusinessModels\Reservation\Actions\CancelReservation;
 use App\BusinessModels\Reservation\Actions\UpdateReservation;
 use App\Services\Api\ValamarClientApi;
+use App\Services\Api\ValamarFiskalizacija;
+use App\Services\Api\ValamarOperaApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Carbon\Carbon;
@@ -221,6 +223,36 @@ class NotifyController extends Controller
                                 }
 
                                 $cancel->cancelReservation(false,'cancellation',$cancellation_fee_nominal);
+
+
+                                if($reservation->included_in_accommodation_reservation == 0){
+
+                                    $operaAPI = new ValamarOperaApi();
+
+                                    if($reservation->is_main){
+                                        $operaAPI->syncReservationWithOperaFull($reservation->id);
+                                        $fiskalValamar = new ValamarFiskalizacija($reservation->id);
+                                        $fiskalValamar->fiskalReservation();
+
+                                        if($reservation->hasCancellationFee()){
+                                            $fiskalValamar->fiskalReservationCF($reservation->getCancellationFeeAmount(true));
+                                        }
+
+                                    }else{
+                                        $main_res = Reservation::where('round_trip_id',$reservation->id)->get()->first();
+
+                                        if($main_res){
+
+                                            $operaAPI->syncReservationWithOperaFull($main_res->id);
+                                            $fiskalValamar = new ValamarFiskalizacija($main_res->id);
+                                            $fiskalValamar->fiskalReservation();
+
+                                            if($main_res->hasCancellationFee()){
+                                                $fiskalValamar->fiskalReservationCF($main_res->getCancellationFeeAmount(true));
+                                            }
+                                        }
+                                    }
+                                }
 
                                 $change = true;
 
