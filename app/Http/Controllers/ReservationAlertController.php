@@ -40,6 +40,7 @@ class ReservationAlertController extends Controller
         $not_synced = array();
         $has_data_failed_sync = array();
 
+        dd(Carbon::now()->subDays(1)->format('Y-m-d h:i:s'));
 
         $bookings = Reservation::query()->where('is_main',1)
             ->where('date_time','>=',Carbon::now()->format('Y-m-d h:i:s'))
@@ -61,7 +62,7 @@ class ReservationAlertController extends Controller
                 }
             }
         }
-      
+
 
         if(!empty($missing_res_number) || !empty($not_synced) || !empty($has_data_failed_sync)){
 
