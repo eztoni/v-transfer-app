@@ -125,7 +125,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
         }
 
         return [
-            ['Datum Od', 'Datum Do', 'Bruto Prihod','Bruto Profit'],
+            ['Datum Od', 'Datum Do'],
             $this->filterData,
             [],
             $headings

@@ -127,7 +127,7 @@ class DestinationReport extends Component
     public function generate(\Swap\Swap $swap)
     {
 
-      
+
         $this->totalEur = Money::EUR(0);
         $this->totalCommission = \Cknow\Money\Money::EUR(0);
         $exchange = new SwapExchange($swap);
@@ -207,7 +207,6 @@ class DestinationReport extends Component
                             $this->totalCommission = $this->totalCommission->add($i->total_commission_amount);
                         }
                     }
-
 
                     $inv = $priceEur->subtract($i->total_commission_amount)->getMoney();
 
@@ -358,8 +357,8 @@ class DestinationReport extends Component
 
                 Carbon::make($this->dateFrom)->format('d.m.Y'),
                 Carbon::make($this->dateTo)->format('d.m.Y'),
-                $this->totalEur,
-                $this->totalCommission
+//                $this->totalEur,
+//                $this->totalCommission
 
         ]);
 
