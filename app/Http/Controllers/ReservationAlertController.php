@@ -49,7 +49,6 @@ class ReservationAlertController extends Controller
             ->get();
 
 
-
         if(!empty($bookings)){
             foreach($bookings as $booking){
 
@@ -62,8 +61,8 @@ class ReservationAlertController extends Controller
                 }
             }
         }
-        dd($bookings);
-        
+      
+
         if(!empty($missing_res_number) || !empty($not_synced) || !empty($has_data_failed_sync)){
 
             $alert_report = array();
