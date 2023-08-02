@@ -70,7 +70,7 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
                 #Clicked on non-main way
                 $main_booking = Reservation::where('round_trip_id',$this->model->id)->get()->first();
 
-                #If the main is confirmed and we are cancelling non main route
+                #If the main is confirmed, and we are cancelling non-main route
                 if($main_booking->status == Reservation::STATUS_CONFIRMED){
                     $event = 'updated';
                     $notification_model = $main_booking;
@@ -87,6 +87,7 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
         }elseif($event == 'updated'){
             ReservationUpdatedEvent::dispatch($notification_model,[ReservationUpdatedEvent::SEND_MAIL_CONFIG_PARAM => true]);
         }
+
 
     }
 }
