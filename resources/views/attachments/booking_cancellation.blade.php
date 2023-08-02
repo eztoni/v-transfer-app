@@ -52,8 +52,10 @@
         </x-mail.row>
 
         <x-mail.row>
+            @if($reservation->included_in_accommodation_reservation == 0)
+                <p align="right">{{__('mail.invoice_no')}}: {{$reservation->getInvoiceData('invoice_number')}}</p><br/>
+            @endif
 
-            <p align="right">{{__('mail.invoice_no')}}: {{$reservation->getInvoiceData('invoice_number')}}</p><br/>
             <table style="  border-collapse: unset ;border: 1px solid #363636; width: 100%;font-size: 11px;table-layout: fixed" >
                 <thead>
                 <tr style="border: 1px solid black;font-weight: 700;">
@@ -136,7 +138,6 @@
 
                 <td style="padding:5px 5px;border: 1px solid black;text-align: right"><b>
                         @if(!$reservation->included_in_accommodation_reservation)
-
                             {{$reservation->getCancellationItemBreakDown('items_total_base')}} €
                         @endif
                     </b></td>
@@ -171,13 +172,17 @@
         <div class="" style="padding-top: 40px;"></div>
 
         <x-mail.row>
-            @if($reservation->getInvoiceData('zki'))
-                <br/>
-                <p><b>ZKI:</b> {{$reservation->getInvoiceData('zki')}}</p>
+
+            @if($reservation->included_in_accommodation_reservation == 0)
+                @if($reservation->getInvoiceData('zki'))
+                    <br/>
+                    <p><b>ZKI:</b> {{$reservation->getInvoiceData('zki')}}</p>
+                @endif
+                @if($reservation->getInvoiceData('jir'))
+                    <p><b>JIR:</b> {{$reservation->getInvoiceData('jir')}}</p>
+                @endif
             @endif
-            @if($reservation->getInvoiceData('jir'))
-                <p><b>JIR:</b> {{$reservation->getInvoiceData('jir')}}</p>
-            @endif
+
             <div class="" style="padding-top: 20px;"></div>
             <p><b>{{__('mail.terms_and_conditions')}}</b></p>
             <br>
