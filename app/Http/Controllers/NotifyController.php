@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\BusinessModels\Reservation\Actions\CancelReservation;
 use App\BusinessModels\Reservation\Actions\UpdateReservation;
+use App\Models\Partner;
 use App\Services\Api\ValamarClientApi;
 use App\Services\Api\ValamarFiskalizacija;
 use App\Services\Api\ValamarOperaApi;
