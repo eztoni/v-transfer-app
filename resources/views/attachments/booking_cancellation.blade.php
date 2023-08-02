@@ -172,6 +172,9 @@
         <div class="" style="padding-top: 40px;"></div>
 
         <x-mail.row>
+            @if($reservation->getRouteTransferTaxLevel() == 'PPOM')
+                <br/><p style="float: right;font-style: italic;font-site:10px"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
+            @endif
 
             @if($reservation->included_in_accommodation_reservation == 0)
                 @if($reservation->getInvoiceData('zki'))

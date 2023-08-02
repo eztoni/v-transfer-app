@@ -214,6 +214,30 @@ class Reservation extends Model
         return $commission;
     }
 
+    public function getRouteTransferTaxLevel(){
+
+        $return = 0;
+
+        ##One Way Transfer
+        $route = Route::query()
+            ->where('destination_id', $this->destination_id)
+            ->where('starting_point_id', $this->pickup_location)
+            ->where('ending_point_id', $this->dropoff_location)
+            ->get()->first();
+
+        $route_transfer = \DB::table('route_transfer')
+            ->where('route_id',$route->id)
+            ->where('partner_id',$this->partner_id)
+            ->where('transfer_id',$this->transfer_id)
+            ->get()->first();
+
+        if($route_transfer){
+            $return = $route_transfer->tax_level;
+        }
+
+        return $return;
+    }
+
     public function getTotalCommissionAmountAttribute():Money
     {
         return $this->transfer_price_commission->add($this->extras_summed_commission);
