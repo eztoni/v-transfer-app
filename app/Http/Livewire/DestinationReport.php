@@ -29,7 +29,7 @@ class DestinationReport extends Component
 
     public $dateFrom;
     public $dateTo;
-    public $partner = 0;
+    public $partner;
     public $status = 'All';
 
     public $pickupLocation = 0;
@@ -59,7 +59,6 @@ class DestinationReport extends Component
     {
         $this->destination = \Auth::user()->destination_id;
 
-
         $this->dateFrom = Carbon::now()->startOfMonth()->format('d.m.Y');
         $this->dateTo = Carbon::now()->endOfMonth()->format('d.m.Y');
         $this->filteredReservations = [];
@@ -88,13 +87,7 @@ class DestinationReport extends Component
             $this->reportType = 'agent-report';
         }
 
-
-        if($this->isPartnerReporting){
-            $p = Partner::first();
-            if($p){
-                $this->partner = $p->id;
-            }
-        }
+        $this->partner = 0;
     }
 
 
@@ -134,8 +127,7 @@ class DestinationReport extends Component
     public function generate(\Swap\Swap $swap)
     {
 
-
-
+      
         $this->totalEur = Money::EUR(0);
         $this->totalCommission = \Cknow\Money\Money::EUR(0);
         $exchange = new SwapExchange($swap);
@@ -338,6 +330,7 @@ class DestinationReport extends Component
     public function updated($property)
     {
         $this->validateOnly($property);
+
     }
 
     public function getPartnersProperty()
@@ -349,8 +342,6 @@ class DestinationReport extends Component
         });
 
         $partners->prepend('All partners', 0);
-
-        $this->partner = 0;
 
         return $partners->toArray();
     }
