@@ -141,6 +141,7 @@
             <table width="100% !important" class="ds-table-zebra ds-table-compact w-full">
                 <tr  style="font-size: 10px !important">
                     @if($this->isPPOMReporting)
+                        <th align="left">Partner</th>
                         <th align="left">Kontigent</th>
                         <th align="left">Naziv Djelatnika</th>
                         <th align="left">Prodajno Mjesto</th>
@@ -178,6 +179,7 @@
                     @endif
 
                     @if($this->isPartnerReporting)
+                        <th align="left">Partner</th>
                         <th align="left">Datum Vouchera</th>
                         <th align="left">Naziv Djelatnika</th>
                         <th align="left">Prodajno Mjesto</th>
@@ -210,6 +212,7 @@
                 @foreach($this->filteredReservations as $reservation)
                     <tr>
                         @if($this->isPPOMReporting)
+                            <td >{{Arr::get($reservation,'partner')}}</td>
                             <td >{{Arr::get($reservation,'transfer')}}</td>
                             <td >{{Arr::get($reservation,'sales_agent')}}</td>
                             <td >{{Arr::get($reservation,'selling_place')}}</td>
@@ -248,6 +251,7 @@
                         @endif
 
                         @if($this->isPartnerReporting)
+                                <td >{{Arr::get($reservation,'partner')}}</td>
                                 <td >{{Arr::get($reservation,'voucher_date')}}</td>
                                 <td >{{Arr::get($reservation,'sales_agent')}}</td>
                                 <td >{{Arr::get($reservation,'selling_place')}}</td>
