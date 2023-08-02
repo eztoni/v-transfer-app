@@ -3,17 +3,18 @@ use App\Http\Livewire\BookingOverview;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\InternalReservation;
 use App\Http\Livewire\ReservationDetails;
+use App\Models\Reservation;
 
- /*
-     |--------------------------------------------------------------------------
-     | User role routes
-     |--------------------------------------------------------------------------
-     | These routes will be available for these roles:
-     |  - SUPER-ADMIN
-     |  - ADMIN
-     |  - USER
-        - RECEPTION
- */
+/*
+    |--------------------------------------------------------------------------
+    | User role routes
+    |--------------------------------------------------------------------------
+    | These routes will be available for these roles:
+    |  - SUPER-ADMIN
+    |  - ADMIN
+    |  - USER
+       - RECEPTION
+*/
 
 
 Route::get('/', Dashboard::class)->name('dashboard');
