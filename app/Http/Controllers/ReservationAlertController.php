@@ -48,7 +48,7 @@ class ReservationAlertController extends Controller
             ->where('opera_sync',0)
             ->get();
 
-       
+
 
         if(!empty($bookings)){
             foreach($bookings as $booking){
@@ -62,7 +62,8 @@ class ReservationAlertController extends Controller
                 }
             }
         }
-
+        dd($bookings);
+        
         if(!empty($missing_res_number) || !empty($not_synced) || !empty($has_data_failed_sync)){
 
             $alert_report = array();
@@ -79,7 +80,7 @@ class ReservationAlertController extends Controller
                 $alert_report['has_data_failed_sync'] = $has_data_failed_sync;
             }
 
-            dd("test");
+
 
             if(!empty($alert_report)){
                 ReservationAlertEvent::dispatch($alert_report,[
