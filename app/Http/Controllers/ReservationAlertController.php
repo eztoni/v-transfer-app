@@ -41,10 +41,9 @@ class ReservationAlertController extends Controller
         $has_data_failed_sync = array();
 
 
-
         $bookings = Reservation::query()->where('is_main',1)
             ->where('date_time','>=',Carbon::now()->format('Y-m-d h:i:s'))
-            ->where('created_at','>=',Carbon::now()->sub(1)->format('Y-m-d h:i:s'))
+            ->where('created_at','>=',Carbon::now()->subDays(1)->format('Y-m-d h:i:s'))
             ->where('status','confirmed')
             ->where('opera_sync',0)
             ->get();
