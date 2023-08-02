@@ -53,6 +53,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
             $data_array = array();
 
             if($this->reportType == 'partner-report'){
+                $data_array['partner'] = $item['transfer'];
                 $data_array['datum_vouchera'] = $item['voucher_date'];
                 $data_array['datum_realizacije'] = $item['date_time'];
                 $data_array['agent'] = $item['sales_agent'];
@@ -71,6 +72,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
 
             if($this->reportType == 'ppom-report'){
 
+                $data_array['partner'] = $item['transfer'];
                 $data_array['kontigent'] = $item['transfer'];
                 $data_array['agent'] = $item['sales_agent'];
                 $data_array['prodajno_mjesto'] = $item['selling_place'];
