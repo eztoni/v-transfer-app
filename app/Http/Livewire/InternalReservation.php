@@ -470,7 +470,7 @@ class InternalReservation extends Component
     {
 
         $data = Arr::get($this->apiData, $i);
-
+        
         $this->stepOneFields['adults'] = Arr::get($data, 'adults');
         $this->stepOneFields['children'] = Arr::get($data, 'children');
         $this->stepOneFields['luggage'] = Arr::get($data, 'adults');
@@ -486,6 +486,8 @@ class InternalReservation extends Component
             $this->roundTrip = true;
             $this->stepOneFields['dateTime'] = $checkInDate->format('d.m.Y').' '.substr($this->stepOneFields['dateTime'],11,5);
         }
+
+        $this->stepOneFields['rate_plan'] = Arr::get($data, 'rateCode');
 
         $this->stepTwoFields['leadTraveller']['firstName'] = Str::title(Arr::get($data, 'reservationHolderData.firstName'));
         $this->stepTwoFields['leadTraveller']['lastName'] = Str::title(Arr::get($data, 'reservationHolderData.lastName'));
