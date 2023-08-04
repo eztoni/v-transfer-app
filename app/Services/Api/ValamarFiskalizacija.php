@@ -84,8 +84,6 @@ class ValamarFiskalizacija{
 
         $opera_res_data = $valamar_api->getReservationList();
 
-
-
         #Fetch the reservation from Opera
         if(!empty($opera_res_data[$reservation_code])){
 
@@ -118,6 +116,10 @@ class ValamarFiskalizacija{
                         $price = $price*2;
                     }
 
+                    if($this->reservation->isRoundTrip && $this->reservation->status == 'cancelled' && $this->reservation->returnReservation->status == 'confirmed'){
+                        $price = $this->reservation->returnReservation->price;
+                    }
+
                     $zki =   Fiskal::GenerateZKI(
                         Carbon::now(),
                         $owner->oib,
@@ -132,12 +134,10 @@ class ValamarFiskalizacija{
                         $next_invoice = '0'.$next_invoice;
                     }
 
-
-
                     $amount = number_format($price/100,2);
 
                     $this->amount = $amount;
-                    
+
                     $response = Fiskal::Fiskal(
                         $this->reservation_id,
                         Carbon::now(),

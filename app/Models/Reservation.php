@@ -90,9 +90,15 @@ class Reservation extends Model
     }
 
     public function getDisplayPrice(): Money{
+
         if($this->isRoundTrip && $this->returnReservation->status == 'confirmed'){
             $this->price = $this->price_breakdown[0]['price_data']['price_round_trip'];
         }
+
+        if($this->isRoundTrip && $this->status == 'cancelled' && $this->returnReservation->status == 'confirmed'){
+           $this->price = $this->returnReservation->price;
+        }
+
         return Money::EUR($this->price);
     }
 
