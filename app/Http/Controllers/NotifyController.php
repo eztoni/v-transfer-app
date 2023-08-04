@@ -223,8 +223,7 @@ class NotifyController extends Controller
                                         }
                                 }
 
-                                $cancel->cancelReservation(false,'cancellation',$cancellation_fee_nominal);
-
+                                $cancel->cancelReservation($cancellationDate,'cancellation',$cancellation_fee_nominal);
 
                                 if($reservation->included_in_accommodation_reservation == 0){
 
