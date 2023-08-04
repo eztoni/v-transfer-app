@@ -111,13 +111,20 @@ class ValamarFiskalizacija{
 
                     $this->oib = $owner->oib;
 
+
+                    $price = $this->reservation->price;
+
+                    if($this->reservation->isRoundTrip && $this->reservation->returnReservation->status == 'confirmed'){
+                        $price = $price*2;
+                    }
+
                     $zki =   Fiskal::GenerateZKI(
                         Carbon::now(),
                         $owner->oib,
                         1,
                         01,
                         02,
-                        number_format($this->reservation->price/100,2),$owner_location);
+                        number_format($price/100,2),$owner_location);
 
                     $next_invoice = ($owner_location->fiskal_invoice_no+1);
 
@@ -125,14 +132,12 @@ class ValamarFiskalizacija{
                         $next_invoice = '0'.$next_invoice;
                     }
 
-                    $amount = number_format($this->reservation->price/100,2);
+
+
+                    $amount = number_format($price/100,2);
 
                     $this->amount = $amount;
                     
-//                    if($reservation->isRoundTrip && $reservation->returnReservation->status == 'cancelled'){
-//                        $amount = number_format($amount/2,2);
-//                    }
-//
                     $response = Fiskal::Fiskal(
                         $this->reservation_id,
                         Carbon::now(),
@@ -145,7 +150,6 @@ class ValamarFiskalizacija{
                         false,
                         $owner_location
                     );
-
 
                     if(!empty($response)){
 

@@ -60,7 +60,7 @@
                     <span class="ds-badge-primary ds-badge-info ds-badge-warning ds-badge-accent hidden"></span>
                     <span class="ds-badge sm ds-badge-{{$reservation->isRoundTrip()?'accent':'primary'}}">{{$reservation->isRoundTrip()?'Round trip':'One way'}}</span>
                         <span class="ds-badge ds-badge-{{$reservation->status == 'confirmed' ? 'success':'error'}}">{{ucfirst($reservation->status)}}</span>
-                        <span class="font-extrabold text-info">{{$reservation->getPrice()}}</span>
+                        <span class="font-extrabold text-info">{{$reservation->getDisplayPrice()}}</span>
                         <x-button sm icon="external-link" target="_blank" href="{{route('reservation-details',$reservation->id)}}">View</x-button>
                     </div>
                 </x-slot>
