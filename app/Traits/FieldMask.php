@@ -11,7 +11,7 @@ trait FieldMask
     public function getAttribute($name)
     {
         if (App::environment('production')) {
-            if (!app()->runningInConsole() && \Auth::user()->hasRole(User::ROLE_SUPER_ADMIN)) {
+            if (!app()->runningInConsole()) {
                 if (property_exists($this, 'masked')) {
                     if (is_array($this->masked)) {
                         foreach ($this->masked as $fieldName) {
