@@ -43,6 +43,7 @@ class InternalReservation extends Component
         'children' => 0,
         'infants' => 0,
         'luggage' => 0,
+        'rate_plan' => null
     ];
 
 
@@ -56,6 +57,7 @@ class InternalReservation extends Component
         'stepOneFields.returnDateTime' => 'round trip date & time',
         'stepOneFields.returnTime' => 'round trip time',
         'stepOneFields.adults' => 'adults',
+        'stepOneFields.rate_plan' => 'rate plan',
         'stepOneFields.children' => 'children',
         'stepOneFields.infants' => 'infants',
         'stepOneFields.luggage' => 'luggage',
@@ -91,6 +93,7 @@ class InternalReservation extends Component
             'stepOneFields.children' => 'required|numeric|integer|max:50',
             'stepOneFields.infants' => 'required|numeric|integer|max:50',
             'stepOneFields.luggage' => 'required|numeric|integer|max:50',
+            'stepOneFields.rate_plan' => 'required'
 
         ];
         if ($this->roundTrip) {
@@ -310,7 +313,8 @@ class InternalReservation extends Component
             $this->stepOneFields['luggage'],
             $this->stepOneFields['pickupAddressId'],
             $this->stepOneFields['dropoffAddressId'],
-            $this->stepTwoFields['includedInAccommodationReservation']
+            $this->stepTwoFields['includedInAccommodationReservation'],
+            $this->stepOneFields['rate_plan']
         );
 
         $businessModel->addLeadTraveller($traveller);

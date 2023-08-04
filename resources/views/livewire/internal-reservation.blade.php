@@ -341,6 +341,10 @@
                                          wire:model="stepOneFields.luggage"
                                 />
 
+                                <x-input label="Rate Plan"
+                                         wire:model="stepOneFields.rate_plan"
+                                />
+
                             </div>
 
                         </div>

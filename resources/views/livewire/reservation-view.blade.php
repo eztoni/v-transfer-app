@@ -180,10 +180,6 @@
                         <td>{{$this->reservation->leadTraveller->last_name}}</td>
                     </tr>
                     <tr>
-                        <td class="font-bold">Reservation number:</td>
-                        <td>{{$this->reservation->leadTraveller->reservation_number}}</td>
-                    </tr>
-                    <tr>
                         <td class="font-bold">Phone:</td>
                         <td>{{$this->reservation->leadTraveller->phone}}</td>
                     </tr>
@@ -191,7 +187,15 @@
                         <td class="font-bold">Email:</td>
                         <td>{{$this->reservation->leadTraveller->email}}</td>
                     </tr>
+                    <tr>
+                        <td class="font-bold">Rate Plan Code:</td>
+                        <td>{{$this->reservation->rate_plan}}</td>
+                    </tr>
 
+                    <tr>
+                        <td class="font-bold">Reservation number:</td>
+                        <td>{{$this->reservation->leadTraveller->reservation_number}}</td>
+                    </tr>
                     <tr>
                         <td class="font-bold">Opera ID:</td>
                         <td>{{$this->reservation->leadTraveller->reservation_opera_id}}</td>

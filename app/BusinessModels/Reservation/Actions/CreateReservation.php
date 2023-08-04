@@ -39,6 +39,7 @@ class CreateReservation extends Reservation
         int|string|null $pickupAddressId = null,
         int|string|null $dropoffAddressId= null,
         bool $includedInAccommodationReservation= false,
+        string $rate_plan = ''
 
     ): void
     {
@@ -64,11 +65,11 @@ class CreateReservation extends Reservation
         $this->model->pickup_address_id = $pickupAddressId;
         $this->model->dropoff_address_id = $dropoffAddressId;
         $this->model->included_in_accommodation_reservation = $includedInAccommodationReservation;
+        $this->model->rate_plan = $rate_plan;
 
     }
     public function saveReservation(): int
     {
-
 
         $this->validateReservation();
 
