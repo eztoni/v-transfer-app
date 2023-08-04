@@ -11,7 +11,7 @@ class SendAlertMailToVEC
 {
     // Email addresses who will receive the email
     public array $emailList = [];
-    public $vec_mail = 'transfers@valamar.com';
+    public $vec_mail = 'transfer@valamar.com';
 
     public function sendAlertEmail($alert_list): void
     {
