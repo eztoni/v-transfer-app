@@ -64,8 +64,6 @@
             color: #363636;
         }
 
-        @slot('head_after')
-
     </style>
     <!--[if mso]>
     <noscript>
