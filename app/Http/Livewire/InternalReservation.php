@@ -214,6 +214,8 @@ class InternalReservation extends Component
 
     public $resSaved = false;
 
+    public Reservation|null $reservationStatus = null;
+    public bool $reservationStatusModal = false;
     public bool $roundTrip = false;
     public int $step = 1;
     public $selectedTransfer = null;
@@ -222,7 +224,7 @@ class InternalReservation extends Component
     public $activateChildSeats = false;
     public $activateExtras = false;
     public $emailList = array();
-
+    public $completeReservation = 'Complete Reservation';
 
     public function getExtrasProperty()
     {
@@ -260,6 +262,8 @@ class InternalReservation extends Component
     {
 
         $this->validate($this->stepTwoRules(), [], $this->fieldNames);
+
+        $this->completeReservation = 'Saving Reservation ...';
 
         $traveller = new Traveller();
 
@@ -339,12 +343,14 @@ class InternalReservation extends Component
 
         $businessModel->setSendMail($this->stepTwoFields['sendMail']);
 
-
         $id = $businessModel->saveReservation();
 
+        $this->completeReservation = 'Save complete!';
+
+        $this->openStatusModal($id);
 
         $this->notification()->success('Reservation saved');
-        Redirect::route('reservation-details', $id);
+
     }
 
 
@@ -425,6 +431,13 @@ class InternalReservation extends Component
         }
     }
 
+    public function openStatusModal($id)
+    {
+        $this->reservationStatusModal = true;
+
+        $this->reservationStatus = Reservation::findOrFail($id);
+
+    }
 
     public function pullData()
     {
@@ -470,7 +483,7 @@ class InternalReservation extends Component
     {
 
         $data = Arr::get($this->apiData, $i);
-        
+
         $this->stepOneFields['adults'] = Arr::get($data, 'adults');
         $this->stepOneFields['children'] = Arr::get($data, 'children');
         $this->stepOneFields['luggage'] = Arr::get($data, 'adults');

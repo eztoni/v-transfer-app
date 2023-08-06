@@ -739,6 +739,33 @@ class Reservation extends Model
         return $return;
     }
 
+
+    public function ConfirmationSentMailToGuest() : bool{
+
+        $return = false;
+
+        $mail_logs = \DB::table('reservationmails')->where('reservation_id','=',$this->id)->where('email_type','guest_confirmation')->get()->first();
+
+        if(!empty($mail_logs)){
+            $return = true;
+        }
+
+        return $return;
+    }
+
+    public function ConfirmationSentMailToPartner() : bool{
+
+        $return = false;
+
+        $mail_logs = \DB::table('reservationmails')->where('reservation_id','=',$this->id)->where('email_type','partner_confirmation')->get()->first();
+
+        if(!empty($mail_logs)){
+            $return = true;
+        }
+
+        return $return;
+    }
+
     public function getInvoiceData($param,$invoice_type = 'reservation'){
 
         $invoice_data = \DB::table('invoices')->where('reservation_id','=',$this->id)->where('invoice_type',$invoice_type)->latest()->first();

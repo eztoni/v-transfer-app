@@ -13,7 +13,6 @@
                                   icon="cloud-download"></x-button>
                     </x-slot>
 
-
                     <x-modal.card max-width="8xl" wire:model="pullModal" lg title="Pull data from Opera">
                         @if($this->pullModal)
                             <div class="flex gap-4   flex-wrap">
@@ -871,7 +870,7 @@
 
                                 <x-slot name="footer" class="mt-4">
                                     <x-button wire:click="saveReservation" lg positive class="float-right w-full"
-                                              label="Complete reservation">
+                                              label="{{$completeReservation}}">
                                     </x-button>
                                 </x-slot>
 
@@ -890,7 +889,11 @@
             </div>
         </div>
 
-
+    @if($reservationStatusModal)
+        <x-modal.card wire:model="reservationStatusModal"  title="Reservation Save Breakdown #{{$this->reservationStatus->id}}">
+            <livewire:show-reservation-status  :reservation="$this->reservationStatus"/>
+        </x-modal.card>
+    @endif
 </div>
 
 <script>
