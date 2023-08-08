@@ -26,7 +26,7 @@
                     <x-button xs icon="external-link" wire:click="openOperaSyncLogModal({{$reservation->id}})">View Sync Log</x-button>
                     <br/>
                     <!-- Invoice Details -->
-                    <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{$reservation->getInvoiceData('invoice_number')}} ({{$reservation->getInvoiceData('amount')}})</span></span>
+                    <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number')}} ({{$reservation->getInvoiceData('amount')}})</span></span>
                     <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->getInvoiceData('zki')}}</span></span>
                     <span class="font-extrabold text-info text-sm">JIR: <span class="text-info font-normal">{{$reservation->getInvoiceData('jir')}}</span></span>
 
