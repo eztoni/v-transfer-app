@@ -9,9 +9,10 @@
 
     <!-- If Reservation is Included In Accommodation -->
     @if($reservation->included_in_accommodation_reservation == 1 || $reservation->v_level_reservation == 1)
-        <p class="text-right">No Opera and Download Needed<x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>
+        <p class="text-right">No Opera  Download Needed<x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>
         <small class="flex justify-end">Reservation Included in Accommodation Reservation</small>
         <p class="text-right">Fiskalizacija popratnog dokumenta - not required <x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>
+        <small class="flex justify-end">Reservation Included in Accommodation Reservation</small>
     @else
         <!-- Checking Opera Download -->
         @if($reservation->isSyncedWithOpera() == 1)
