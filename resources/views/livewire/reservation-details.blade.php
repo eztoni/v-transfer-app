@@ -18,6 +18,8 @@
 
                 @if($reservation->included_in_accommodation_reservation == 1)
                     <span class="font-extrabold text-info text-sm">Reservation included in Accommodation Reservation<br/><small><ul><li><i> - Reservation Not posted to Opera.</i><br/><i> - Reservation Invoice Not Created via Transfer App.</i></li></ul></small></span>
+                @elseif($reservation->v_level_reservation == 1)
+                    <span class="font-extrabold text-info text-sm">V Level Rate Plan Reservation included in Accommodation Reservation<br/><small><ul><li><i> - Reservation Not posted to Opera.</i><br/><i> - Reservation Invoice ( fiskalizacija popratnog dokumenta ) Not Created via Transfer App.</i></li></ul></small></span>
                 @else
                     <span class="font-extrabold text-info text-sm">Opera Status: {{$reservation->isSyncedWithOpera()?'Synced':'Not Synced'}}</span>
                     <x-button primary xs wire:click="openOperaSyncModal({{$reservation->id}})">{{$reservation->isSyncedWithOpera()?'Re-Sync':'Sync'}}</x-button>

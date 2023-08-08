@@ -35,6 +35,8 @@ return [
 
     'important_notes' => 'Remarques importantes sur votre réservation de transfert, les modifications et les annulations',
 
+    'total_eur' => 'Total EUR',
+    'total_hrk' => 'Total HRK',
     'important_note_1' => 'Veuillez avoir votre réservation prête à montrer à votre conducteur (via un téléphone mobile ou une version imprimée) afin de reconfirmer que vous êtes arrivé au bon transfert selon l\'horaire et la réservation.',
     'pickup_and_meeting_point' => 'Heure de ramassage et point de rendez-vous',
     'li_1_1' => 'Heure de ramassage à l\'aéroport et point de rendez-vous à l\'arrivée : le conducteur sera en attente à l\'extérieur de la zone de récupération des bagages à la porte affectée au numéro de vol spécifié, tenant un panneau de ramassage avec le nom du passager. La durée de l\'attente est celle prévue lorsque le vol est à l\'heure. En cas de retard, le temps d\'attente est prolongé en conséquence. Si vous ne pouvez pas identifier votre transfert à l\'emplacement désigné, veuillez contacter',

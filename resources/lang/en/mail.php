@@ -160,7 +160,8 @@ If you have any special requests, feel free to reply to this e-mail.
     'included_in_accommodation_reservation'=>'This transfer is included in accommodation reservation',
     'reservation_holder'=>'Reservation holder',
     'created_at'=>'Created at',
-
+    'total_eur' => 'Total EUR',
+    'total_hrk' => 'Total HRK',
 
     'without_vat'=>'Without VAT',
     'vat'=>'VAT',

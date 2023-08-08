@@ -52,21 +52,17 @@
         </x-mail.row>
 
         <x-mail.row>
-            @if($reservation->included_in_accommodation_reservation == 0)
-                <p align="right">{{__('mail.invoice_no')}}: {{$reservation->getInvoiceData('invoice_number','reservation')}}</p><br/>
+            @if($reservation->included_in_accommodation_reservation == 0 && $reservation->v_level_reservation == 0)
+                <p align="right">{{__('mail.invoice_no')}}: {{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number','reservation')}}</p><br/>
             @endif
 
             <table style="  border-collapse: unset ;border: 1px solid #363636; width: 100%;font-size: 11px;table-layout: fixed">
                 <thead>
                 <tr style="border: 1px solid black;font-weight: 700;">
-                    <td style="border: 1px solid black;padding:5px 5px" width="6%">{{__('mail.no')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;" width="6%">{{__('mail.code')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;" width="24%">{{__('mail.transfer')}}</td>
-
-                    <td style="padding:5px 5px;border: 1px solid black;text-align: right" width="12%">{{__('mail.amount')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;text-align: right" width="8%">{{__('mail.vat')}}%</td>
-                    <td style="padding:5px 5px;border: 1px solid black;text-align: right" width="18%">{{__('mail.vat_amount')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;text-align: right" width="26%">{{__('mail.price')}}</td>
+                    <td style="border: 1px solid black;padding:5px 5px;" width="5%"  >{{__('mail.no')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;" width="5%">{{__('mail.code')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;" width="50%">{{__('mail.service_name')}}</td>
+                    <td style="padding:5px 5px;border: 1px solid black;text-align: right" width="40%">{{__('mail.total')}}</td>
                 </tr>
                 </thead>
 
@@ -74,19 +70,12 @@
                 @foreach($reservation->getConfirmationItemBreakdown('items') as $pbItem)
 
                         <tr style="border: 1px solid black;">
-                            <td style="padding:5px 5px;border: 1px solid black;">{{$loop->index + 1}}</td>
+                            <td style="padding:5px 5px;border: 1px solid black;">{{$loop->index + 1}}.</td>
 
                             <td style="padding:5px 5px;border: 1px solid black;">
                                 {{Arr::get($pbItem,'code')}}
                             </td>
                             <td style="padding:5px 5px;border: 1px solid black;">{{Arr::get($pbItem,'transfer')}}</td>
-                            <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                                <b>{{Arr::get($pbItem,'amount')}} €</b></td>
-
-                            <td style="padding:5px 5px;border: 1px solid black;text-align: right"><b>
-                                    {{Arr::get($pbItem,'vat')}} %</b></td>
-                            <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                                <b>{{Arr::get($pbItem,'vat_amount')}} €</b></td>
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right">
                                 <b>{{Arr::get($pbItem,'price')}} €</b></td>
                         </tr>
@@ -97,79 +86,27 @@
                 <tfoot>
                 <tr>
                     <td colspan="3" style="border: 1px solid black; text-align: right;padding:5px 5px">
-                        <b>{{__('mail.total_price')}}: </b>
+                        <b>{{__('mail.total_eur')}}: </b>
                     </td>
-                    <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>{{$reservation->getConfirmationItemBreakdown('items_total')}} €</b></td>
-
-                    <td style="padding:5px 5px;border: 1px solid black;text-align: right"><b></b></td>
-                    <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>{{$reservation->getConfirmationItemBreakdown('items_vat_total')}} €</b></td>
-                    <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                        <b>{{$reservation->getConfirmationItemBreakdown('items_total')}} € / {{$reservation->getConfirmationItemBreakdown('items_total_hrk')}} HRK</b></td>
-
+                    <td style="border: 1px solid black;text-align: right;padding:5px 5px">
+                        <b>{{$reservation->getConfirmationItemBreakdown('items_total')}} €</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="border: 1px solid black; text-align: right;padding:5px 5px">
+                        <b>{{__('mail.total_hrk')}}: </b>
+                    </td>
+                    <td style="border: 1px solid black;text-align: right;padding:5px 5px">
+                        <b>{{$reservation->getConfirmationItemBreakdown('items_total_hrk')}} HRK</b>
+                    </td>
                 </tr>
                 </tfoot>
 
             </table>
-
-
-            <p style="margin-bottom: 25px;margin-top: 25px;">{{__("mail.tax_recapitulation")}}</p>
-
-            <table style="  border-collapse: unset ;border: 1px solid #363636; width: 100%;font-size: 11px;table-layout: fixed">
-                <thead>
-                <tr style="border: 1px solid black;font-weight: 700;">
-                    <td style="border: 1px solid black;padding:5px 5px;text-align: right" width="28%">{{__('mail.tax_group')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;text-align: right" width="28%">{{__('mail.base')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;text-align: right" width="18%">{{__('mail.vat_amount')}}</td>
-                    <td style="padding:5px 5px;border: 1px solid black;text-align: right" width="26%">{{__('mail.total_price')}}</td>
-
-                </tr>
-                </thead>
-                <tbody>
-                <td style="padding:5px 5px;border: 1px solid black;text-align: right"><b>
-                        @if($reservation->included_in_accommodation_reservation)
-                            PPO
-                        @else
-                            {{__("mail.vat")}} {{$reservation->getConfirmationItemBreakdown('tax_group')}} %
-
-                        @endif
-                    </b></td>
-
-                <td style="padding:5px 5px;border: 1px solid black;text-align: right"><b>
-                        @if(!$reservation->included_in_accommodation_reservation)
-
-                            {{$reservation->getConfirmationItemBreakdown('items_total_base')}} €
-                        @endif
-                    </b></td>
-
-                <td style="padding:5px 5px;border: 1px solid black;text-align: right"><b>
-                        @if(!$reservation->included_in_accommodation_reservation)
-
-                            {{$reservation->getConfirmationItemBreakdown('items_vat_total')}} €
-                        @endif
-
-                    </b></td>
-                <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                    <b>{{$reservation->getConfirmationItemBreakdown('items_total')}} €</b>
-                </td>
-                </tbody>
-
-                <tfoot>
-                <tr>
-                    <td colspan="3" style="border: 1px solid black; text-align: right;padding:5px 5px">
-                        <b>{{__('mail.price')}}: </b>
-                    </td>
-                    <td style="border: 1px solid black;text-align: right;padding:5px 5px">
-                        <b>{{$reservation->getConfirmationItemBreakdown('items_total')}} € / {{$reservation->getConfirmationItemBreakdown('items_total_hrk')}} HRK</b>
-                    </td>
-                </tr>
-                </tfoot>
-            </table><br>
+            <br/>
             <p style="float: right;font-style: italic;font-site:10px">{{__('mail.price_info')}}</p>
 
         </x-mail.row>
-
 
         <div class="" style="padding-top: 40px;"></div>
 
@@ -179,7 +116,7 @@
                 <br/><p style="float: right;font-style: italic;font-site:10px"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
             @endif
 
-            @if($reservation->included_in_accommodation_reservation == 0)
+            @if($reservation->included_in_accommodation_reservation == 0 && $reservation->v_level_reservation == 0)
                 @if($reservation->getInvoiceData('zki','reservation'))
                     <br/>
                     <p><b>ZKI:</b> {{$reservation->getInvoiceData('zki','reservation')}}</p>

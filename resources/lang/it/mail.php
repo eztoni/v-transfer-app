@@ -33,6 +33,8 @@ return [
     'transfer_price' => 'Prezzo del trasferimento',
     'vehicle_type' => 'Tipo di veicolo',
 
+    'total_eur' => 'Total EUR',
+    'total_hrk' => 'Total HRK',
     'important_notes' => 'Note importanti sulla tua prenotazione di trasferimento, modifiche e cancellazioni',
     'important_note_1' => 'Ti preghiamo di avere la tua prenotazione pronta da mostrare al tuo autista
             (via telefono mobile o versione stampata) per poter confermare di essere arrivato/a

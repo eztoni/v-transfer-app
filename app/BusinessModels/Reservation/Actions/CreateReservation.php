@@ -39,7 +39,8 @@ class CreateReservation extends Reservation
         int|string|null $pickupAddressId = null,
         int|string|null $dropoffAddressId= null,
         bool $includedInAccommodationReservation= false,
-        string $rate_plan = ''
+        string $rate_plan = '',
+        bool $vlevelrateplanReservation = false
 
     ): void
     {
@@ -66,6 +67,7 @@ class CreateReservation extends Reservation
         $this->model->dropoff_address_id = $dropoffAddressId;
         $this->model->included_in_accommodation_reservation = $includedInAccommodationReservation;
         $this->model->rate_plan = $rate_plan;
+        $this->model->v_level_reservation = $vlevelrateplanReservation;
 
     }
     public function saveReservation(): int
@@ -86,7 +88,7 @@ class CreateReservation extends Reservation
             }
 
 
-            if($this->model->included_in_accommodation_reservation == 0){
+            if($this->model->included_in_accommodation_reservation == 0 && $this->model->v_level_reservation == 0){
                 #Send Reservation To Opera
                 $OperaAPI = new ValamarOperaApi();
                 $OperaAPI->syncReservationWithOperaFull($this->model->id);
@@ -96,9 +98,11 @@ class CreateReservation extends Reservation
                 $fiskalAPI->fiskalReservation();
             }
 
-            ReservationCreatedEvent::dispatch($this->model,[
-                ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail
-            ]);
+            if($this->model->getInvoiceData('zki')){
+                ReservationCreatedEvent::dispatch($this->model,[
+                    ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail
+                ]);
+            }
         });
 
         //Cache the order

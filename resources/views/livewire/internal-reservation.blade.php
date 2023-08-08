@@ -464,7 +464,7 @@
             <div class="mb-2">
                 <x-card>
                     <div class="flex justify-end">
-                        <x-button wire:click="goBack" label="Back"/>
+                        <x-button wire:click="goBack" label="<< Back"/>
                     </div>
                 </x-card>
             </div>
@@ -778,6 +778,12 @@
                             <p>Passengers: <b>{{$this->totalPassengers}}</b></p>
                             <p>Ticket type: <b>{{$this->roundTrip ? 'Round trip' : 'One way'}}</b></p>
 
+                                @if(!empty($this->stepOneFields['rate_plan']))
+                                    <p>Rate Plan:
+                                        <b>{{$this->stepOneFields['rate_plan']}}</b>
+                                    </p>
+                                @endif
+
 
                             @if($this->selectedExtras->isNotEmpty())
                                 <div class="ds-divider my-1"></div>
@@ -851,6 +857,11 @@
                                     lg
                                     wire:model.defer="stepTwoFields.includedInAccommodationReservation"
                                 label="Price Included in Accommodation Reservation"
+                                ></x-toggle><br/>
+                                <x-toggle
+                                    lg
+                                    wire:model.defer="stepTwoFields.vlevelrateplanReservation"
+                                label="V Level Rate Plan Reservation"
                                 ></x-toggle>
                             <hr class="my-4">
                                 <x-select

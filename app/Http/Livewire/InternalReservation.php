@@ -75,8 +75,9 @@ class InternalReservation extends Component
         'stepTwoFields.leadTraveller.check_out' => ' check out',
         'stepTwoFields.otherTravellers' => 'other travellers',
         'stepTwoFields.otherTravellers.*.firstName' => 'first name',
-        'stepTwoFields.otherTravellers.*.lastName' => 'last naem',
-        'stepTwoFields.includedInAccommodationReservation' => 'last naem',
+        'stepTwoFields.otherTravellers.*.lastName' => 'last name',
+        'stepTwoFields.includedInAccommodationReservation' => 'included in reservation',
+        'stepTwoFields.vlevelrateplanReservation' => 'v level rate plan reservation',
         'stepTwoFields.confirmationLanguage' => 'Confirmation language',
     ];
 
@@ -117,6 +118,7 @@ class InternalReservation extends Component
             'stepTwoFields.leadTraveller.check_in' => 'required',
             'stepTwoFields.leadTraveller.check_out' => 'required',
             'stepTwoFields.includedInAccommodationReservation' => 'boolean',
+            'stepTwoFields.vlevelrateplanReservation' => 'boolean',
             'stepTwoFields.confirmationLanguage' => 'required',
         ];
 
@@ -174,7 +176,8 @@ class InternalReservation extends Component
         'otherTravellers' => [
 
         ],
-        'includedInAccommodationReservation' => false
+        'includedInAccommodationReservation' => false,
+        'vlevelrateplanReservation' => false
     ];
 
 
@@ -318,7 +321,8 @@ class InternalReservation extends Component
             $this->stepOneFields['pickupAddressId'],
             $this->stepOneFields['dropoffAddressId'],
             $this->stepTwoFields['includedInAccommodationReservation'],
-            $this->stepOneFields['rate_plan']
+            $this->stepOneFields['rate_plan'],
+            $this->stepTwoFields['vlevelrateplanReservation']
         );
 
         $businessModel->addLeadTraveller($traveller);
@@ -502,6 +506,10 @@ class InternalReservation extends Component
 
         $this->stepOneFields['rate_plan'] = Arr::get($data, 'rateCode');
 
+        if(preg_match('!VL!',$this->stepOneFields['rate_plan'])){
+            $this->stepTwoFields['vlevelrateplanReservation'] = true;
+        }
+
         $this->stepTwoFields['leadTraveller']['firstName'] = Str::title(Arr::get($data, 'reservationHolderData.firstName'));
         $this->stepTwoFields['leadTraveller']['lastName'] = Str::title(Arr::get($data, 'reservationHolderData.lastName'));
         $this->stepTwoFields['leadTraveller']['email'] = Arr::get($data, 'reservationHolderData.email');
@@ -512,6 +520,9 @@ class InternalReservation extends Component
 
         $this->stepTwoFields['leadTraveller']['check_in'] = $checkInDate->format('d.m.Y');
         $this->stepTwoFields['leadTraveller']['check_out'] = $checkOutDate->format('d.m.Y');
+
+
+
         $this->notification()->success('Data pulled');
 
         $this->setOtherTravellers();

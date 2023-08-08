@@ -85,11 +85,13 @@
                     <div class="m-0 divider"></div>
                     @if($reservation->included_in_accommodation_reservation == 1)
                         <small class="font-extrabold text-success">Transfer included in Accommodation Reservation</small>
+                    @elseif($reservation->v_level_reservation == 1)
+                        <small class="font-extrabold text-success">V Level Rate Plan Transfer included in Accommodation Reservation</small>
                     @else
                         <span class="font-extrabold text-info">Opera Status: <span class="ds-badge sm ds-badge-{{$reservation->isSyncedWithOpera()?'success':'error'}}">{{$reservation->isSyncedWithOpera()?'Synced':'Not Synced'}}</span></span>
                         <span class="font-extrabold text-info">&nbsp;ZKI: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[0]?->zki:'-'}}</span></span>
                         <span class="font-extrabold text-info">&nbsp;JIR: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[0]?->jir:'-'}}</span></span>
-                        <span class="font-extrabold text-info">&nbsp;Invoice: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? $reservation->invoices[0]->invoice_id.'-'.$reservation->invoices[0]->invoice_establishment.'-'.$reservation->invoices[0]->invoice_device : '-'}}</span></span>
+                        <span class="font-extrabold text-info">&nbsp;Invoice: <span class="text-info font-normal">{{!empty($reservation->invoices[0]) ? gmdate('Y').'-'.$reservation->invoices[0]->invoice_id.'/'.$reservation->invoices[0]->invoice_establishment.'/'.$reservation->invoices[0]->invoice_device : '-'}}</span></span>
                     @endif
 
 

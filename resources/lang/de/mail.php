@@ -136,6 +136,8 @@ werden, bezahlen Sie diese beim Check-in im Objekt Ihres Aufenthaltes.',
     'reservation_holder'=>'Reservierungsinhaber',
     'created_at'=>'Erstellt am',
 
+    'total_eur' => 'Total EUR',
+    'total_hrk' => 'Total HRK',
     'without_vat'=>'Ohne USt.',
     'vat'=>'USt.',
     'vat_amount'=>'USt.-Betrag',
