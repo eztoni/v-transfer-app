@@ -170,7 +170,7 @@
                         <th align="left">Broj Računa</th>
                         <th align="left">Proizvod</th>
                         <th align="left">Porezna grupa</th>
-                        <th align="left">Broj potvrde rezervacije</th>
+                        <th align="left">Broj potvrde narudžbe transfera</th>
                         <th align="left">Količina</th>
                         <th align="left">Bruto prihod</th>
                         <th align="left">Bruto profit</th>
@@ -241,7 +241,7 @@
                                 <td >{{gmdate('Y').'-'.Arr::get($reservation,'invoice_number')}}</td>
                                 <td >{{Arr::get($reservation,'transfer')}}</td>
                                 <td >{{Arr::get($reservation,'tax_level')}}</td>
-                                <td >-</td>
+                                <td >{{gmdate('Y').'-'.Arr::get($reservation,'invoice_number')}}</td>
                                 <td >1</td>
                                 <td >{{Arr::get($reservation,'price_eur')}}</td>
                                 <td align="center" >{{Arr::get($reservation,'commission_amount')}}</td>
