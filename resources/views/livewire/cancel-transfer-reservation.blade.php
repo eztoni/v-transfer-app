@@ -21,7 +21,7 @@
     @endif
 
     @if($reservation->included_in_accommodation_reservation == 1 || $reservation->v_level_transfer == 1)
-        <p class="text">Cost: {{$this->reservation->getPrice()}}</p>
+        <small class="text">Internal Cost: {{$this->reservation->getPrice()}}</small>
     @endif
     <div class="ds-divider"></div>
 
