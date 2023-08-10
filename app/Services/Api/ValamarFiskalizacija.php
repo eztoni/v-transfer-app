@@ -71,10 +71,6 @@ class ValamarFiskalizacija{
             return true;
         }
 
-        if($reservation->included_in_accommodation_reservation == 1){
-            return true;
-        }
-
         $traveller_info = $reservation->getLeadTravellerAttribute();
 
         $reservation_code = $traveller_info->reservation_number;
@@ -132,6 +128,11 @@ class ValamarFiskalizacija{
 
                     if(strlen($next_invoice) == 1){
                         $next_invoice = '0'.$next_invoice;
+                    }
+
+                    if($reservation->included_in_accommodation_reservation == 1 || $reservation->v_level_reservation){
+                        #Fiskal - send to 0
+                        $price = 0;
                     }
 
                     $amount = number_format($price/100,2);

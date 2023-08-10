@@ -13,7 +13,7 @@ class UpdateReservation extends \App\BusinessModels\Reservation\Reservation
 
         $this->model->save();
 
-        if($this->model->included_in_accommodation_reservation == 0){
+        if($this->model->included_in_accommodation_reservation == 0 && $this->model->v_level_reservation == 0){
 
             $api = new ValamarOperaApi();
             $api->syncReservationWithOperaFull($this->model->id);

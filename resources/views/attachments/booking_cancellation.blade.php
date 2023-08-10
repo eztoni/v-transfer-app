@@ -90,7 +90,13 @@
                         <b>{{__('mail.total_eur')}}: </b>
                     </td>
                     <td style="border: 1px solid black;text-align: right;padding:5px 5px">
-                        <b>{{$reservation->getCancellationItemBreakDown('items_total')}} €</b>
+                        {{dd($reservation)}}
+                        @if($reservation->included_in_accommodation_reservation == 0 && $reservation->v_level_reservation == 0)
+                            <b>{{$reservation->getCancellationItemBreakDown('items_total')}} €</b>
+                        @else
+                            <b>0,00 €</b>
+                        @endif
+
                     </td>
                 </tr>
                 <tr>
@@ -98,7 +104,11 @@
                         <b>{{__('mail.total_hrk')}}: </b>
                     </td>
                     <td style="border: 1px solid black;text-align: right;padding:5px 5px">
-                        <b>{{$reservation->getCancellationItemBreakDown('items_total_hrk')}} HRK</b>
+                        @if($reservation->included_in_accommodation_reservation == 0 && $reservation->v_level_reservation == 0)
+                            <b>{{$reservation->getCancellationItemBreakDown('items_total_hrk')}} HRK</b>
+                        @else
+                            <b>0,00 HRK</b>
+                        @endif
                     </td>
                 </tr>
                 </tfoot>
@@ -117,15 +127,14 @@
                 <br/><p style="float: right;font-style: italic;font-site:10px"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
             @endif
 
-            @if($reservation->included_in_accommodation_reservation == 0 && $reservation->v_level_reservation == 0)
-                @if($reservation->getInvoiceData('zki'))
-                    <br/>
-                    <p><b>ZKI:</b> {{$reservation->getInvoiceData('zki')}}</p>
-                @endif
-                @if($reservation->getInvoiceData('jir'))
-                    <p><b>JIR:</b> {{$reservation->getInvoiceData('jir')}}</p>
-                @endif
+            @if($reservation->getInvoiceData('zki'))
+                <br/>
+                <p><b>ZKI:</b> {{$reservation->getInvoiceData('zki')}}</p>
             @endif
+            @if($reservation->getInvoiceData('jir'))
+                <p><b>JIR:</b> {{$reservation->getInvoiceData('jir')}}</p>
+            @endif
+
 
             <div class="" style="padding-top: 20px;"></div>
             <p><b>{{__('mail.terms_and_conditions')}}</b></p>
