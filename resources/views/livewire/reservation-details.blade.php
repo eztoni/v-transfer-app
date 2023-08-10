@@ -17,7 +17,7 @@
                 <br/>
 
                 @if($reservation->included_in_accommodation_reservation == 1)
-                    <span class="font-extrabold text-info text-sm">Reservation included in Accommodation Reservation<br/><small><ul><li><i> - Reservation Not posted to Opera.</i><br/><i> - Reservation Invoice Not Created via Transfer App.</i></li></ul></small></span>
+                    <span class="font-extrabold text-info text-sm">Reservation included in Accommodation Reservation<br/><small><ul><li><i> - Reservation Not posted to Opera.</i>  </li></ul></small></span>
                     <!-- Invoice Details -->
                     <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number')}} ({{$reservation->getInvoiceData('amount')}})</span></span>
                     <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->getInvoiceData('zki')}}</span></span>
