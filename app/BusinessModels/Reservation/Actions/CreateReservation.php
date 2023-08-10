@@ -92,11 +92,12 @@ class CreateReservation extends Reservation
                 #Send Reservation To Opera
                 $OperaAPI = new ValamarOperaApi();
                 $OperaAPI->syncReservationWithOperaFull($this->model->id);
-
-                #Send To Invoicing
-                $fiskalAPI = new ValamarFiskalizacija($this->model->id);
-                $fiskalAPI->fiskalReservation();
             }
+
+
+            #Send To Invoicing
+            $fiskalAPI = new ValamarFiskalizacija($this->model->id);
+            $fiskalAPI->fiskalReservation();
 
             if($this->model->getInvoiceData('zki')){
                 ReservationCreatedEvent::dispatch($this->model,[

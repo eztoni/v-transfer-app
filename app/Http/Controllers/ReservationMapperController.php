@@ -6,6 +6,7 @@ use App\BusinessModels\Reservation\Actions\CancelReservation;
 use App\BusinessModels\Reservation\Actions\UpdateReservation;
 use App\Models\Traveller;
 use App\Services\Api\ValamarClientApi;
+use App\Services\Api\ValamarFiskalizacija;
 use App\Services\Api\ValamarOperaApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -81,8 +82,13 @@ class ReservationMapperController extends Controller
 
                   $leadTraveller->save();
 
-                  $opera_sync->syncReservationWithOperaFull($booking->id);
 
+                  if($booking->included_in_accommodation_reservation == 0 && $booking->v_level_reservation == 0){
+                      $opera_sync->syncReservationWithOperaFull($booking->id);
+                  }
+
+                   $fiskalValamar = new ValamarFiskalizacija($booking->id);
+                   $fiskalValamar->fiskalReservation();
                }
            }
         }

@@ -73,12 +73,14 @@ use Actions;
             $this->cancelRoundTrip
         );
 
-        if($this->reservation->included_in_accommodation_reservation == 0 && $this->reservation->v_level_reservation == 0){
-
             $operaAPI = new ValamarOperaApi();
 
             if($this->reservation->is_main){
-                $operaAPI->syncReservationWithOperaFull($this->reservation->id);
+
+                if($this->reservation->included_in_accommodation_reservation == 0 && $this->reservation->v_level_reservation == 0){
+                    $operaAPI->syncReservationWithOperaFull($this->reservation->id);
+                }
+
                 $fiskalValamar = new ValamarFiskalizacija($this->reservation->id);
                 $fiskalValamar->fiskalReservation();
 
@@ -91,7 +93,10 @@ use Actions;
 
                 if($main_res){
 
-                    $operaAPI->syncReservationWithOperaFull($main_res->id);
+                    if($this->reservation->included_in_accommodation_reservation == 0 && $this->reservation->v_level_reservation == 0) {
+                        $operaAPI->syncReservationWithOperaFull($main_res->id);
+                    }
+
                     $fiskalValamar = new ValamarFiskalizacija($main_res->id);
                     $fiskalValamar->fiskalReservation();
 
@@ -100,7 +105,7 @@ use Actions;
                     }
                 }
             }
-        }
+
 
         $this->emit('cancelCompleted');
     }
