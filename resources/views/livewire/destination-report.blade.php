@@ -147,7 +147,7 @@
                         <th align="left">Prodajno Mjesto</th>
                         <th align="left">Vrsta Plaćanja</th>
                         <th align="left">Porezna grupa</th>
-                        <th align="left">Broj potvrde rezervacije</th>
+                        <th align="left">Broj potvrde narudžbe transfera</th>
                         <th align="left">Datum Prodaje</th>
                         <th align="left">Datum Realizacije</th>
                         <th align="left">Postupak</th>
@@ -218,7 +218,7 @@
                             <td >{{Arr::get($reservation,'selling_place')}}</td>
                             <td >REZERVACIJA NA SOBU</td>
                             <td >{{Arr::get($reservation,'tax_level')}}</td>
-                            <td >{{Arr::get($reservation,'invoice_number')}}</td>
+                            <td >{{gmdate('Y').'-'.Arr::get($reservation,'invoice_number')}}</td>
                             <td >{{Arr::get($reservation,'voucher_date')}}</td>
                             <td >{{Arr::get($reservation,'date_time')}}</td>
                             <td >{{Arr::get($reservation,'procedure')}}</td>
@@ -238,7 +238,7 @@
                                 <td >{{Arr::get($reservation,'procedure')}}</td>
                                 <td >{{Arr::get($reservation,'voucher_date')}}</td>
                                 <td >{{Arr::get($reservation,'date_time')}}</td>
-                                <td >{{Arr::get($reservation,'invoice_number')}}</td>
+                                <td >{{gmdate('Y').'-'.Arr::get($reservation,'invoice_number')}}</td>
                                 <td >{{Arr::get($reservation,'transfer')}}</td>
                                 <td >{{Arr::get($reservation,'tax_level')}}</td>
                                 <td >-</td>

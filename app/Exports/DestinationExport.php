@@ -78,7 +78,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
                 $data_array['prodajno_mjesto'] = $item['selling_place'];
                 $data_array['vrsta_plaćanja'] = 'Rezervacija Na Sobu';
                 $data_array['porezna_grupa'] = $item['tax_level'];
-                $data_array['broj_potvrde_narudžbe_transfera'] = $item['invoice_number'];
+                $data_array['broj_potvrde_narudžbe_transfera'] = gmdate('Y').'-'.$item['invoice_number'];
                 $data_array['datum_prodaje'] = $item['voucher_date'];
                 $data_array['datum_realizacije'] = $item['date_time'];
                 $data_array['postupak'] = $item['procedure'];
@@ -100,7 +100,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
                 $data_array['postupak'] = $item['procedure'];;
                 $data_array['datum_prodaje'] = $item['voucher_date'];
                 $data_array['datum_realizacije'] = $item['date_time'];
-                $data_array['broj_računa'] = $item['invoice_number'];
+                $data_array['broj_računa'] = gmdate('Y').'-'.$item['invoice_number'];
                 $data_array['proizvod'] = $item['transfer'];
                 $data_array['broj_potvrde_narudžbe_transfera'] = '-';
                 $data_array['količina'] = 1;
