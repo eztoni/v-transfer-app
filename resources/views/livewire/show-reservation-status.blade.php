@@ -11,8 +11,14 @@
     @if($reservation->included_in_accommodation_reservation == 1 || $reservation->v_level_reservation == 1)
         <p class="text-right">No Opera  Download Needed<x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>
         <small class="flex justify-end">Reservation Included in Accommodation Reservation</small>
-        <p class="text-right">Fiskalizacija popratnog dokumenta - not required <x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>
-        <small class="flex justify-end">Reservation Included in Accommodation Reservation</small>
+
+        <!-- Checking Invoicing Download -->
+        @if($reservation->getInvoiceData('zki') == '')
+            <p class="text-right">Fiskalizacija popratnog dokumenta {{$reservation->getInvoiceData('invoice_number')}} <x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>
+            <small class="flex justify-end">ZKI: {{$reservation->getInvoiceData('zki')}} JIR: {{$reservation->getInvoiceData('jir')}}</small>
+        @else
+            <p class="text-right">Fiskalizacija popratnog dokumenta <x-icon name="exclamation" solid class="w-6 h-6  ml-4  text-red-400 float-right" ></x-icon></p>
+        @endif
     @else
         <!-- Checking Opera Download -->
         @if($reservation->isSyncedWithOpera() == 1)
