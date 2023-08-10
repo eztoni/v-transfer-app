@@ -24,10 +24,7 @@
             <div class="" style="padding: 3px 25px 0 0; text-align: right ;width: 100%">
                 <p style="width: 100%">
                     {!! \App\Actions\Mail\GetMailHeaderAddressAndName::run($reservation) !!}
-                    <br>
-                    Phone: +385 (0) 52 465 000
-                    <br>
-
+                    <br/>
                     E-mail: reservations@valamar.com
                 </p>
 
@@ -39,11 +36,11 @@
         <x-mail.row>
             <div class="" style="padding: 3px 0 0 0; text-align: right ;width: 100%; margin-bottom: 25px">
                 <p style="width: 100%">
-                    <b>{{__('mail.created_at')}}:</b> {{\Carbon\Carbon::parse($reservation->created_at->format('d.m.Y H:i'))->addHour()->format('d.m.Y H:i')}}
+                    <b>{{__('mail.transfer_reservation_confirmation')}}:</b> {{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number','reservation')}}
+                    <br/>
+                    <b>{{__('mail.accommodation_reservation_holder')}}:</b> {{$reservation->lead_traveller->full_name}}
                     <br>
-                    <b>{{__('mail.reservation_holder')}}:</b> {{$reservation->lead_traveller->full_name}}
-                    <br>
-                    <b>{{__('mail.reservation_number')}}:</b> #{{$reservation->id}}
+                    <b>{{__('mail.accommodation_reservation_number')}}:</b> {{$reservation->getAccommodationReservationCode()}}
                     <br>
 
                 </p>
@@ -52,10 +49,6 @@
         </x-mail.row>
 
         <x-mail.row>
-            @if($reservation->included_in_accommodation_reservation == 0 && $reservation->v_level_reservation == 0)
-                <p align="right">{{__('mail.invoice_no')}}: {{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number','reservation')}}</p><br/>
-            @endif
-
             <table style="  border-collapse: unset ;border: 1px solid #363636; width: 100%;font-size: 11px;table-layout: fixed">
                 <thead>
                 <tr style="border: 1px solid black;font-weight: 700;">
@@ -115,11 +108,14 @@
                         @endif
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="4"><p style="float: right;font-style: italic;font-site:10px;padding:2px">{{__('mail.price_info')}}</p></td>
+                </tr>
                 </tfoot>
 
             </table>
             <br/>
-            <p style="float: right;font-style: italic;font-site:10px">{{__('mail.price_info')}}</p>
+
 
         </x-mail.row>
 
@@ -130,14 +126,28 @@
             @if(\Arr::get($reservation->transfer_price_state,'price_data.tax_level') == 'PPOM')
                 <br/><p style="float: right;font-style: italic;font-site:10px"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
             @endif
-
-            @if($reservation->getInvoiceData('zki','reservation'))
+            <div align="center">
+                <!-- Issue Location -->
                 <br/>
-                <p><b>ZKI:</b> {{$reservation->getInvoiceData('zki','reservation')}}</p>
-            @endif
-            @if($reservation->getInvoiceData('jir'))
-                <p><b>JIR:</b> {{$reservation->getInvoiceData('jir','reservation')}}</p>
-            @endif
+                <p><b>Issue Location:</b> {{$reservation->getAccommodationData('name')}}</p>
+                <!-- Issue Date and Time -->
+                <p><b>Issue Date and Time:</b>  {{\Carbon\Carbon::parse($reservation->created_at->format('d.m.Y H:i'))->addHour()->format('d.m.Y H:i')}}</p>
+                <!-- Operator -->
+                <p><b>Operator:</b> {{$reservation->getOperatorName()}}</p>
+
+                <!-- ZKI -->
+                @if($reservation->getInvoiceData('zki','reservation'))
+                    <p><b>ZKI:</b> {{$reservation->getInvoiceData('zki','reservation')}}</p>
+                @endif
+
+                <!-- Jir -->
+                @if($reservation->getInvoiceData('jir'))
+                    <p><b>JIR:</b> {{$reservation->getInvoiceData('jir','reservation')}}</p>
+                @endif
+                <p><b>Accommodation:</b> {{$reservation->getAccommodationData('name')}}</p>
+
+            </div>
+
 
             <div class="" style="padding-top: 20px;"></div>
             <p><b>{{__('mail.terms_and_conditions')}}</b></p>

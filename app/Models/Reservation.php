@@ -766,6 +766,37 @@ class Reservation extends Model
         return $return;
     }
 
+    public function getAccommodationReservationCode(){
+        return $this->leadTraveller()->first()->reservation_number != null ? $this->leadTraveller()->first()->reservation_number : '-';
+    }
+
+    public function getAccommodationData($property){
+
+        #Case - Pickup Address is type of Accommodation
+        if($this->pickupAddress->type == Point::TYPE_ACCOMMODATION){
+            $return =  $this->pickupAddress->$property;
+        }
+
+        #Case - Dropoff Address is type of Accommodation
+        if($this->dropoffAddress->type == Point::TYPE_ACCOMMODATION){
+            $return = $this->dropoffAddress->$property;
+        }
+
+        return $return;
+    }
+
+    public function getOperatorName(){
+
+        $return = 'Valamar User';
+
+        $user_data = User::findOrFail($this->created_by);
+
+        if($user_data){
+            $return = $user_data->name;
+        }
+
+        return $return;
+    }
     public function getInvoiceData($param,$invoice_type = 'reservation'){
 
         $invoice_data = \DB::table('invoices')->where('reservation_id','=',$this->id)->where('invoice_type',$invoice_type)->latest()->first();

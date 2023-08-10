@@ -12,36 +12,31 @@ class GetMailHeaderAddressAndName
     public static function run(Reservation $reservation):string
     {
 
-        /*
-            if (($reservation->pickupLocation->type === Point::TYPE_ACCOMMODATION && $reservation->dropoffLocation->type === Point::TYPE_ACCOMMODATION)   ){
-                return  "Valamar Riviera d.d.
+        $header = '';
+
+            if (($reservation->pickupAddress->type === Point::TYPE_ACCOMMODATION && $reservation->dropoffAddress->type === Point::TYPE_ACCOMMODATION)   ){
+                $header =   "Valamar Riviera d.d.
                         <br>
                         52440 Poreč, Croatia";
             }
 
-            if ($reservation->pickupLocation->type === Point::TYPE_ACCOMMODATION){
-                return "{$reservation->pickupLocation->name}
+            if ($reservation->pickupAddress->type === Point::TYPE_ACCOMMODATION){
+                $header =  "{$reservation->pickupAddress->name}
                         <br>
-                        {$reservation->pickupLocation->address}";
+                        {$reservation->pickupAddress->address}";
 
-            }elseif($reservation->dropoffLocation->type === Point::TYPE_ACCOMMODATION){
-                return "{$reservation->dropoffLocation->name}
+            }elseif($reservation->dropoffAddress->type === Point::TYPE_ACCOMMODATION){
+                $header = "{$reservation->dropoffAddress->name}
                         <br>
-                        {$reservation->dropoffLocation->address}";
+                        {$reservation->dropoffAddress->address}";
             }
 
-            return  "Valamar Riviera d.d.
-                        <br>
-                       Stancija Kaligari 1 52440 Poreč, Croatia";
-        */
+
+            $header .= '<br/>Telephone: +385 (20) 52 465 000<br/>';
+            $header .= 'Fax: +385 (20) 52 451 206';
 
         switch ($reservation->destination->owner_id){
-            case 1:
-                return  "Valamar Riviera d.d.
-                    <br>
-                   Stancija Kaligari 1 52440 Poreč, Croatia
-                   <br/>
-                   HR-AB-52-040020883
+            case 1: "<br/>HR-AB-52-040020883
                    <br/>
                    OIB: 36201212847
                    <br/>
@@ -49,27 +44,14 @@ class GetMailHeaderAddressAndName
                    ";
                 break;
             case 2:
-                return "Imperial Riviera d.d.
-                <br/>
-                    J. Barakovića2
-                    <br/>
-                    51280 Rab, Croatia
-                    <br/>
-                    HR-AB-51-040000124
-                    <br/>
+                $header .= "<br/>
                     OIB: 90896496260
                     <br/>
                     IBAN: HR8124020061100210497
                     ";
         }
 
-        return  "Valamar Riviera d.d.
-                    <br>
-                   Stancija Kaligari 1 52440 Poreč, Croatia
-                   <br>
-                   OIB: 36201212847
-                   <br/>
-                   ";
+        return $header;
 
     }
 
