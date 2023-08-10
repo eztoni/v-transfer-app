@@ -438,10 +438,14 @@
                                     </div>
 
                                     <span class="  ">Price: <b>
-                                     {{\App\Facades\EzMoney::format($this->roundTrip
-                                            ?$item->price_round_trip
-                                            :$item->price)}}
-                                            EUR</b></span>
+                                            @if($item->included_in_accommodation == 0)
+                                             {{\App\Facades\EzMoney::format($this->roundTrip
+                                                    ?$item->price_round_trip
+                                                    :$item->price)}}
+                                                    EUR</b></span>
+                                    @else
+                                        0,00 EUR</b><small><br/>Included in Accommodation Reservation</small></span>
+                                    @endif
 
                                     <x-button
                                         :primary="$this->isTransferPartnerPairSelected($item->partner_id,$item->transfer_id)"
@@ -814,7 +818,6 @@
                         </div>
 
                         @if($this->step === 2 && $this->totalPrice)
-
                             <x-slot name="footer">
                                 <div class="text-right ml-auto gap-2 pr-2">
                                     Total price:
@@ -824,9 +827,17 @@
                                         }else{
                                             $multiplier = 1;
                                         }
+
+                                        if($this->stepTwoFields['includedInAccommodationReservation']){
+                                            #Set Multiplier of total price to be 0 - hack to display price as 0
+                                            $multiplier = 0;
+                                        }
                                         ?>
                                     <b> {{ \App\Facades\EzMoney::format($this->totalPrice->getAmount()*$multiplier) }}
                                         EUR</b>
+                                    @if($this->stepTwoFields['includedInAccommodationReservation'])
+                                        <br/><small>Included in Accommodation Reservation</small>
+                                    @endif
                                 </div>
                             </x-slot>
                         @endif
@@ -852,12 +863,6 @@
                     @if($step === 2 && $resSaved == false)
                         <div class="my-2">
                             <x-card>
-
-                                <x-toggle
-                                    lg
-                                    wire:model.defer="stepTwoFields.includedInAccommodationReservation"
-                                label="Price Included in Accommodation Reservation"
-                                ></x-toggle><br/>
                                 <x-toggle
                                     lg
                                     wire:model.defer="stepTwoFields.vlevelrateplanReservation"

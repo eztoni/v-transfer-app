@@ -700,8 +700,20 @@ class InternalReservation extends Component
 
     public function selectTransfer($transferId, $partnerId)
     {
+
+        $this->stepTwoFields['includedInAccommodationReservation'] = false;
+
         $transfer = Transfer::findOrFail($transferId);
         $partner = Partner::findOrFail($partnerId);
+        $route = $this->getSelectedRouteProperty();
+
+        $route_transfer = \DB::table('route_transfer')->where('transfer_id',$transferId)->where('partner_id',$partnerId)->where('route_id',$route->id)->first();
+
+        if(!empty($route_transfer)){
+            if($route_transfer->included_in_accommodation == 1){
+                $this->stepTwoFields['includedInAccommodationReservation'] = true;
+            }
+        }
 
         $this->selectedTransfer = $transfer->id;
         $this->selectedPartner = $partner->id;
