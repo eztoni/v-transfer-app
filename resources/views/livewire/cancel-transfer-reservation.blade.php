@@ -15,11 +15,14 @@
     <p class="text sm">{{$partnerConditions}}</p>
     <div class="ds-divider"></div>
     @if($reservation->included_in_accommodation_reservation == 0 && $reservation->v_level_transfer == 0)
-        <p class="text">Reservation Total: {{$this->reservation->getPrice()}}</p>
+        <p class="text">Reservation Total For Guest: {{$this->reservation->getPrice()}}</p>
     @else
         <p class="text">Reservation Total: 0,00 €</p>
     @endif
 
+    @if($reservation->included_in_accommodation_reservation == 1 || $reservation->v_level_transfer == 1)
+        <p class="text">Cost: {{$this->reservation->getPrice()}}</p>
+    @endif
     <div class="ds-divider"></div>
 
     <x-native-select
