@@ -221,8 +221,13 @@
                                             @else
                                                 <p></p>
                                             @endif
+                                                <div class="flex">
+                                                    <h1 class="text-1xl mb-1 font-bold mr-2">Rate Plan Includes Transfer Price</h1>
+                                                    <x-toggle md wire:model="modelPrices.{{$r->id}}.included_in_accommodation"/>
+                                                </div>
                                             <x-button wire:click="save({{$r->id}})" icon="save" positive>Save</x-button>
                                         </div>
+
                                     </div>
 
 

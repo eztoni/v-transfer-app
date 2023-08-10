@@ -38,7 +38,8 @@ class NewTransferPrices extends Component
         "modelPrices.$rId.tax_level" => 'tax level',
         "modelPrices.$rId.calculation_type" => 'calculation type',
         "modelPrices.$rId.commission" => 'commission',
-        "modelPrices.$rId.discount" => 'discount'
+        "modelPrices.$rId.discount" => 'discount',
+        "modelPrices".$rId.'included_in_accommodation' => 'included in accommodation'
     ];}
 
     public function ruless($rId){
@@ -178,7 +179,7 @@ class NewTransferPrices extends Component
 
         if(Str::contains($property,['modelPrices'])){
             if(Str::contains($property,'round_trip')){
-                
+
                 $routeId = explode('.', $property)[1];
 
                 if(empty($this->modelPrices[$routeId]['price_round_trip'])){
@@ -235,7 +236,8 @@ class NewTransferPrices extends Component
                 'calculation_type',
                 'commission',
                 'discount',
-                'opera_package_id'
+                'opera_package_id',
+                'included_in_accommodation'
             ])
         );
 
