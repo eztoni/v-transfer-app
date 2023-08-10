@@ -322,24 +322,31 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Name:</th>
+                        <th>Item:</th>
                         <th class="text-right">Amount:</th>
                     </tr>
                     </thead>
                     <tbody>
 
-                    @foreach($this->reservation->price_breakdown as $pbItem)
+                    @if($this->reservation->included_in_accommodation_reservation == 0)
+                        @foreach($this->reservation->price_breakdown as $pbItem)
 
-                        <tr>
-                            <td class="text-info">{{$loop->index+1}}</td>
-                            <td>{{\App\Actions\Breakdown\GetPriceBreakdownItemLabel::run($pbItem)}}</td>
-                            <td class="text-right"> {{Arr::get($pbItem,'amount.formatted')}}</td>
-                        </tr>
-                    @endforeach
+                            <tr>
+                                <td class="text-info">{{$loop->index+1}}</td>
+                                <td>{{\App\Actions\Breakdown\GetPriceBreakdownItemLabel::run($pbItem)}}</td>
+                                <td class="text-right"> {{Arr::get($pbItem,'amount.formatted')}}</td>
+                            </tr>
+                        @endforeach
+                    @endif
                     <tr>
                         <td class="text-info"></td>
                         <td class="font-bold text-lg">TOTAL:</td>
-                        <td class="font-bold text-lg text-right"> {{$reservation->getPrice()}}</td>
+                        @if($this->reservation->included_in_accommodation_reservation == 0)
+                            <td class="font-bold text-lg text-right"> {{$reservation->getPrice()}}</td>
+                        @else
+                            <td class="font-bold text-lg text-right"> € 0,00</td>
+                        @endif
+
                     </tr>
                     </tbody>
                 </table>
