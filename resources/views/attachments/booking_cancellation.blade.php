@@ -24,10 +24,7 @@
             <div class="" style="padding: 3px 25px 0 0; text-align: right ;width: 100%">
                 <p style="width: 100%">
                     {!! \App\Actions\Mail\GetMailHeaderAddressAndName::run($reservation) !!}
-                    <br>
-                    Phone: +385 (0) 52 451 206
-                    <br>
-
+                    <br/>
                     E-mail: reservations@valamar.com
                 </p>
 
@@ -151,28 +148,29 @@
         <x-mail.footer>
             {{__('mail.valamar_transfer_service')}}<br>
             {{__('mail.not_fiscalized')}}
+            <div class="" style="padding-top: 20px;"></div>
+            <x-mail.footer-below>
+
+                <div style="position: relative; bottom: 0">
+
+                    <p style="text-align: justify; font-size: 8px">
+
+                        @if($reservation->destination->owner_id == 1)
+                            {{__('mail.guest.footer.valamar')}}
+                        @endif
+
+                        @if($reservation->destination->owner_id == 2)
+                            {{__('mail.guest.footer.imperial')}}
+                        @endif
+
+                        @if($reservation->destination->owner_id == 3){
+                        {{__('mail.guest.footer.helios_faros')}}
+                        @endif
+                    </p>
+                </div>
+            </x-mail.footer-below>
         </x-mail.footer>
     </x-mail.body>
-    <x-mail.footer-below>
 
-        <div class="" style="padding-top: 10px;"></div>
-        <div style="position: relative;max-width: 600px;padding-bottom: 25px; bottom: 0">
-
-            <p style="text-align: justify; font-size: 8px">
-
-                @if($reservation->destination->owner_id == 1)
-                    {{__('mail.guest.footer.valamar')}}
-                @endif
-
-                @if($reservation->destination->owner_id == 2)
-                    {{__('mail.guest.footer.imperial')}}
-                @endif
-
-                @if($reservation->destination->owner_id == 3){
-                {{__('mail.guest.footer.helios_faros')}}
-                @endif
-            </p>
-        </div>
-    </x-mail.footer-below>
 
 </x-mail.layouts.main>
