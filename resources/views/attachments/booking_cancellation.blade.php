@@ -114,7 +114,31 @@
             <br>
             <p style="float: right;font-style: italic;font-site:10px">{{__('mail.price_info')}}</p>
         </x-mail.row>
+        <x-mail.row>
 
+            @if(\Arr::get($reservation->transfer_price_state,'price_data.tax_level') == 'PPOM')
+                <br/><p style="float: right;font-style: italic;font-size: 13px !important"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
+            @endif
+            <div align="center" style="font-size: 13px !important">
+                <!-- Issue Location -->
+                <br/>
+                <p><b>Issue Location:</b> {{$reservation->getAccommodationData('name')}}</p>
+                <!-- Issue Date and Time -->
+                <p><b>Issue Date and Time:</b>  {{\Carbon\Carbon::parse($reservation->created_at->format('d.m.Y H:i'))->addHour()->format('d.m.Y H:i')}}</p>
+                <!-- Operator -->
+                <p><b>Operator:</b> {{$reservation->getOperatorName()}}</p>
+
+                <p><b>Accommodation:</b> {{$reservation->getAccommodationData('name')}}</p>
+
+            </div>
+
+
+            <div class="" style="padding-top: 20px;"></div>
+            <p style="font-size: 13px !important"><b>{{__('mail.terms_and_conditions')}}</b></p>
+            <br>
+            <p style="font-size: 13px !important">{{__('mail.booking_confirmation.terms_and_conditions')}}</p>
+            <div class="" style="padding-bottom: 20px;"></div>
+        </x-mail.row>
 
         <div class="" style="padding-top: 40px;"></div>
 
@@ -122,15 +146,6 @@
             @if(\Arr::get($reservation->transfer_price_state,'price_data.tax_level') == 'PPOM')
                 <br/><p style="float: right;font-style: italic;font-size:13px !important"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
             @endif
-
-            @if($reservation->getInvoiceData('zki'))
-                <br/>
-                <p><b>ZKI:</b> {{$reservation->getInvoiceData('zki')}}</p>
-            @endif
-            @if($reservation->getInvoiceData('jir'))
-                <p><b>JIR:</b> {{$reservation->getInvoiceData('jir')}}</p>
-            @endif
-
 
             <div class="" style="padding-top: 20px;font-size: 13px !important"></div>
             <p><b>{{__('mail.terms_and_conditions')}}</b></p>
