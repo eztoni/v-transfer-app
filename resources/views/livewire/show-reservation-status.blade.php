@@ -28,7 +28,7 @@
         @endif
 
         <!-- Checking Invoicing Download -->
-        @if($reservation->getInvoiceData('zki') == '')
+        @if($reservation->getInvoiceData('zki') != '')
             <p class="text-right">Fiskalizacija popratnog dokumenta {{$reservation->getInvoiceData('invoice_number')}} <x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>
             <small class="flex justify-end">ZKI: {{$reservation->getInvoiceData('zki')}} JIR: {{$reservation->getInvoiceData('jir')}}</small>
         @else
