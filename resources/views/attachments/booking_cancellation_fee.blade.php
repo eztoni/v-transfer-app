@@ -24,10 +24,7 @@
             <div class="" style="padding: 3px 25px 0 0; text-align: right ;width: 100%">
                 <p style="width: 100%">
                     {!! \App\Actions\Mail\GetMailHeaderAddressAndName::run($reservation) !!}
-                    <br>
-                    Phone: +385 (0) 52 465 000
-                    <br>
-
+                    <br/>
                     E-mail: reservations@valamar.com
                 </p>
 
@@ -38,12 +35,12 @@
 
         <x-mail.row>
             <div class="" style="padding: 3px 0 0 0; text-align: right ;width: 100%; margin-bottom: 25px">
-                <p style="width: 100%">
-                    <b>{{__('mail.created_at')}}:</b> {{\Carbon\Carbon::parse($reservation->created_at->format('d.m.Y H:i'))->addHour()->format('d.m.Y H:i')}}
+                <p style="width: 100%;font-size: 13px !important">
+                    <b>{{__('mail.transfer_reservation_confirmation')}}:</b> {{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number','cancellation_fee')}}
+                    <br/>
+                    <b>{{__('mail.accommodation_reservation_holder')}}:</b> {{$reservation->lead_traveller->full_name}}
                     <br>
-                    <b>{{__('mail.reservation_holder')}}:</b> {{$reservation->lead_traveller->full_name}}
-                    <br>
-                    <b>{{__('mail.reservation_number')}}:</b> #{{$reservation->id}}
+                    <b>{{__('mail.accommodation_reservation_number')}}:</b> {{$reservation->getAccommodationReservationCode()}}
                     <br>
 
                 </p>
@@ -53,7 +50,6 @@
 
         <x-mail.row>
 
-            <p align="right">{{__('mail.invoice_no')}}: {{$reservation->getInvoiceData('invoice_number','cancellation_fee')}}</p><br/>
             <table style="  border-collapse: unset ;border: 1px solid #363636; width: 100%;font-size: 11px;table-layout: fixed">
                 <thead>
                 <tr style="border: 1px solid black;font-weight: 700;">
