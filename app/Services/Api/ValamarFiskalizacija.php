@@ -206,10 +206,6 @@ class ValamarFiskalizacija{
 
         $reservation = $this->reservation;
 
-        if($reservation->included_in_accommodation_reservation == 1){
-            return true;
-        }
-
         $traveller_info = $reservation->getLeadTravellerAttribute();
 
         $reservation_code = $traveller_info->reservation_number;
