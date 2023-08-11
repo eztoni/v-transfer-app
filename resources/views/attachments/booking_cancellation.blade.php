@@ -146,7 +146,6 @@
             <br>
             <br>
         </x-mail.row>
-        <div class="" style="padding-top: 40px;"></div>
 
         <x-mail.footer>
             {{__('mail.valamar_transfer_service')}}<br>
