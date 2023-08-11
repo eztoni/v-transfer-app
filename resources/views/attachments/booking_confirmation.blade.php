@@ -35,7 +35,7 @@
 
         <x-mail.row>
             <div class="" style="padding: 3px 0 0 0; text-align: right ;width: 100%; margin-bottom: 25px">
-                <p style="width: 100%">
+                <p style="width: 100%;font-size: 13px !important">
                     <b>{{__('mail.transfer_reservation_confirmation')}}:</b> {{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number','reservation')}}
                     <br/>
                     <b>{{__('mail.accommodation_reservation_holder')}}:</b> {{$reservation->lead_traveller->full_name}}
@@ -108,13 +108,13 @@
                         @endif
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="4"><p style="float: right;font-style: italic;font-site:10px;padding:2px">{{__('mail.price_info')}}</p></td>
-                </tr>
+
+
                 </tfoot>
 
             </table>
-            <br/>
+     
+            <p style="float: right;font-style: italic;font-size:10px;padding:2px">{{__('mail.price_info')}}</p>
 
 
         </x-mail.row>
@@ -124,9 +124,9 @@
         <x-mail.row>
 
             @if(\Arr::get($reservation->transfer_price_state,'price_data.tax_level') == 'PPOM')
-                <br/><p style="float: right;font-style: italic;font-site:10px"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
+                <br/><p style="float: right;font-style: italic;font-size: 13px !important"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
             @endif
-            <div align="center">
+            <div align="center" style="font-size: 13px !important">
                 <!-- Issue Location -->
                 <br/>
                 <p><b>Issue Location:</b> {{$reservation->getAccommodationData('name')}}</p>
@@ -150,41 +150,42 @@
 
 
             <div class="" style="padding-top: 20px;"></div>
-            <p><b>{{__('mail.terms_and_conditions')}}</b></p>
+            <p style="font-size: 13px !important"><b>{{__('mail.terms_and_conditions')}}</b></p>
             <br>
-            <p>{{__('mail.booking_confirmation.terms_and_conditions')}}</p>
+            <p style="font-size: 13px !important">{{__('mail.booking_confirmation.terms_and_conditions')}}</p>
             <div class="" style="padding-bottom: 20px;"></div>
         </x-mail.row>
-        <div class="" style="padding-top: 40px;"></div>
 
-        <x-mail.footer>
+        <x-mail.footer style="position: fixed;bottom:0 !important">
             {{__('mail.valamar_transfer_service')}}<br>
             {{__('mail.not_fiscalized')}}
+            <div class="" style="padding-top: 20px;"></div>
+            <x-mail.footer-below>
+
+
+                <div style="position: relative; bottom: 0">
+
+                    <p style="text-align: justify; font-size: 8px">
+
+                        <!-- Valamar Riviera Footer -->
+                        @if($reservation->destination->owner_id == 1)
+                            {{__('mail.guest.footer.valamar')}}
+                        @endif
+
+                        <!-- Imperial Rab Footer -->
+                        @if($reservation->destination->owner_id == 2)
+                            {{__('mail.guest.footer.imperial')}}
+                        @endif
+
+                        <!-- Helious Faros -->
+                        @if($reservation->destination->owner_id == 3){
+                        {{__('mail.guest.footer.helios_faros')}}
+                        @endif
+                    </p>
+                </div>
+            </x-mail.footer-below>
         </x-mail.footer>
-        <x-mail.footer-below>
 
-            <div class="" style="padding-top: 10px;"></div>
-            <div style="position: relative;max-width: 600px;padding-bottom: 25px; bottom: 0">
-
-                <p style="text-align: justify; font-size: 10px">
-
-                    <!-- Valamar Riviera Footer -->
-                    @if($reservation->destination->owner_id == 1)
-                        {{__('mail.guest.footer.valamar')}}
-                    @endif
-
-                    <!-- Imperial Rab Footer -->
-                    @if($reservation->destination->owner_id == 2)
-                        {{__('mail.guest.footer.imperial')}}
-                    @endif
-
-                    <!-- Helious Faros -->
-                    @if($reservation->destination->owner_id == 3){
-                    {{__('mail.guest.footer.helios_faros')}}
-                    @endif
-                </p>
-            </div>
-        </x-mail.footer-below>
 
     </x-mail.body>
 
