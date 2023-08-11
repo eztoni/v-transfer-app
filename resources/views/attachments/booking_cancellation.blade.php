@@ -90,7 +90,6 @@
                         <b>{{__('mail.total_eur')}}: </b>
                     </td>
                     <td style="border: 1px solid black;text-align: right;padding:5px 5px">
-                        {{dd($reservation)}}
                         @if($reservation->included_in_accommodation_reservation == 0 && $reservation->v_level_reservation == 0)
                             <b>{{$reservation->getCancellationItemBreakDown('items_total')}} €</b>
                         @else
