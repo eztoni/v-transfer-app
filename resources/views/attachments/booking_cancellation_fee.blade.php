@@ -99,7 +99,7 @@
 
             </table>
             <br/>
-            <p style="float: right;font-style: italic;font-site:10px">{{__('mail.price_info')}}</p>
+            <p style="float: right;font-style: italic;font-size:13px !important">{{__('mail.price_info')}}</p>
 
         </x-mail.row>
 
@@ -111,14 +111,27 @@
             @if(\Arr::get($reservation->transfer_price_state,'price_data.tax_level') == 'PPOM')
                 <br/><p style="float: right;font-style: italic;font-site:10px"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
             @endif
-
-            @if($reservation->getInvoiceData('zki','cancellation_fee'))
+            <div align="center" style="font-size: 13px !important">
+                <!-- Issue Location -->
                 <br/>
-                <p><b>ZKI:</b> {{$reservation->getInvoiceData('zki','cancellation_fee')}}</p>
-            @endif
-            @if($reservation->getInvoiceData('jir'))
-                <p><b>JIR:</b> {{$reservation->getInvoiceData('jir','cancellation_fee')}}</p>
-            @endif
+                <p><b>Issue Location:</b> {{$reservation->getAccommodationData('name')}}</p>
+                <!-- Issue Date and Time -->
+                <p><b>Issue Date and Time:</b>  {{\Carbon\Carbon::parse($reservation->created_at->format('d.m.Y H:i'))->addHour()->format('d.m.Y H:i')}}</p>
+                <!-- Operator -->
+                <p><b>Operator:</b> {{$reservation->getOperatorName()}}</p>
+
+                <!-- ZKI -->
+                @if($reservation->getInvoiceData('zki','cancellation_fee'))
+                    <p><b>ZKI:</b> {{$reservation->getInvoiceData('zki','cancellation_fee')}}</p>
+                @endif
+
+                <!-- Jir -->
+                @if($reservation->getInvoiceData('jir'))
+                    <p><b>JIR:</b> {{$reservation->getInvoiceData('jir','cancellation_fee')}}</p>
+                @endif
+                <p><b>Accommodation:</b> {{$reservation->getAccommodationData('name')}}</p>
+
+            </div>
             <div class="" style="padding-top: 20px;"></div>
             <p><b>{{__('mail.terms_and_conditions')}}</b></p>
             <br>
