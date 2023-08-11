@@ -134,31 +134,31 @@
         <x-mail.footer>
             {{__('mail.valamar_transfer_service')}}<br>
             {{__('mail.not_fiscalized')}}
+
+            <x-mail.footer-below>
+                <div class="" style="padding-top: 20px;"></div>
+                <div style="position: relative; bottom: 0">
+
+                    <p style="text-align: justify; font-size: 8px">
+
+                        <!-- Valamar Riviera Footer -->
+                        @if($reservation->destination->owner_id == 1)
+                            {{__('mail.guest.footer.valamar')}}
+                        @endif
+
+                        <!-- Imperial Rab Footer -->
+                        @if($reservation->destination->owner_id == 2)
+                            {{__('mail.guest.footer.imperial')}}
+                        @endif
+
+                        <!-- Helious Faros -->
+                        @if($reservation->destination->owner_id == 3){
+                        {{__('mail.guest.footer.helios_faros')}}
+                        @endif
+                    </p>
+                </div>
+            </x-mail.footer-below>
         </x-mail.footer>
-        <x-mail.footer-below>
-
-            <div class="" style="padding-top: 10px;"></div>
-            <div style="position: relative;max-width: 600px;padding-bottom: 25px; bottom: 0">
-
-                <p style="text-align: justify; font-size: 8px">
-
-                    <!-- Valamar Riviera Footer -->
-                    @if($reservation->destination->owner_id == 1)
-                        {{__('mail.guest.footer.valamar')}}
-                    @endif
-
-                    <!-- Imperial Rab Footer -->
-                    @if($reservation->destination->owner_id == 2)
-                        {{__('mail.guest.footer.imperial')}}
-                    @endif
-
-                    <!-- Helious Faros -->
-                    @if($reservation->destination->owner_id == 3){
-                    {{__('mail.guest.footer.helios_faros')}}
-                    @endif
-                </p>
-            </div>
-        </x-mail.footer-below>
 
     </x-mail.body>
 </x-mail.layouts.main>
