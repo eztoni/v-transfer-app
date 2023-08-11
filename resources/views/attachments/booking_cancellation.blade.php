@@ -112,7 +112,7 @@
             </table>
 
             <br>
-            <p style="float: right;font-style: italic;font-site:10px">{{__('mail.price_info')}}</p>
+            <p style="float: right;font-style: italic;font-size:13px !important">{{__('mail.price_info')}}</p>
         </x-mail.row>
         <x-mail.row>
 
@@ -131,24 +131,12 @@
                 <p><b>Accommodation:</b> {{$reservation->getAccommodationData('name')}}</p>
 
             </div>
-
+                @if(\Arr::get($reservation->transfer_price_state,'price_data.tax_level') == 'PPOM')
+                    <br/><p style="float: right;font-style: italic;font-size:13px !important"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
+                @endif
 
             <div class="" style="padding-top: 20px;"></div>
             <p style="font-size: 13px !important"><b>{{__('mail.terms_and_conditions')}}</b></p>
-            <br>
-            <p style="font-size: 13px !important">{{__('mail.booking_confirmation.terms_and_conditions')}}</p>
-            <div class="" style="padding-bottom: 20px;"></div>
-        </x-mail.row>
-
-        <div class="" style="padding-top: 40px;"></div>
-
-        <x-mail.row>
-            @if(\Arr::get($reservation->transfer_price_state,'price_data.tax_level') == 'PPOM')
-                <br/><p style="float: right;font-style: italic;font-size:13px !important"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
-            @endif
-
-            <div class="" style="padding-top: 20px;font-size: 13px !important"></div>
-            <p><b>{{__('mail.terms_and_conditions')}}</b></p>
             <br>
             <p style="font-size: 13px !important">{{__('mail.booking_confirmation.terms_and_conditions')}}</p>
             <div class="" style="padding-bottom: 20px;"></div>
