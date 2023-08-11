@@ -35,12 +35,12 @@
 
         <x-mail.row>
             <div class="" style="padding: 3px 0 0 0; text-align: right ;width: 100%; margin-bottom: 25px">
-                <p style="width: 100%">
-                    {{__('mail.cancelled_at')}}: {{\Carbon\Carbon::parse($reservation->updated_at->format('d.m.Y H:i'))->addHour()->format('d.m.Y H:i')}}
+                <p style="width: 100%;font-size: 13px !important">
+                    <b>{{__('mail.transfer_reservation_confirmation')}}:</b> {{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number','reservation')}}
+                    <br/>
+                    <b>{{__('mail.accommodation_reservation_holder')}}:</b> {{$reservation->lead_traveller->full_name}}
                     <br>
-                    {{__('mail.reservation_holder')}}: {{$reservation->lead_traveller->full_name}}
-                    <br>
-                    <b>{{__('mail.reservation_number')}}:</b> #{{$reservation->id}}
+                    <b>{{__('mail.accommodation_reservation_number')}}:</b> {{$reservation->getAccommodationReservationCode()}}
                     <br>
 
                 </p>
@@ -120,7 +120,7 @@
 
         <x-mail.row>
             @if(\Arr::get($reservation->transfer_price_state,'price_data.tax_level') == 'PPOM')
-                <br/><p style="float: right;font-style: italic;font-site:10px"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
+                <br/><p style="float: right;font-style: italic;font-size:13px !important"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
             @endif
 
             @if($reservation->getInvoiceData('zki'))
@@ -132,10 +132,10 @@
             @endif
 
 
-            <div class="" style="padding-top: 20px;"></div>
+            <div class="" style="padding-top: 20px;font-size: 13px !important"></div>
             <p><b>{{__('mail.terms_and_conditions')}}</b></p>
             <br>
-            <p>{{__('mail.booking_confirmation.terms_and_conditions')}}</p>
+            <p style="font-size: 13px !important">{{__('mail.booking_confirmation.terms_and_conditions')}}</p>
             <div class="" style="padding-bottom: 20px;"></div>
         </x-mail.row>
 
