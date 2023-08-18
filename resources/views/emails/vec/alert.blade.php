@@ -5,7 +5,8 @@
         U nastavku slijedi kategorizirani opis rezervacija nad kojima je potrebna akcija agenta:
         </p>
         @if(!empty($alert_list['missing_reservation_number']))
-            Rezervacijama iz liste niže nedostaje <b>Reservation Number</b>, te ne može biti automatski mapirana, time nikada ni proslijeđena u Operu.<br/>
+            Rezervacijama iz liste niže nedostaje <b>Reservation Number</b>,ne mogu biti automatski mapirane,te time nikada ni proslijeđena u Operu.<br/>
+    
             Za ove rezervacije potrebno je u pregledu rezervacija unijeti ispravan reservation number ( PHCode itd ).
 
             <ul>
@@ -18,7 +19,7 @@
         @endif
 
         @if(!empty($alert_list['not_synced']))
-            Rezervacijama iz liste niže imaju reservation number, no im nedostaju <b>Opera ID i Opera Confirmation.</b><br/>
+            Rezervacije iz liste niže imaju reservation number, ali im nedostaju <b>Opera ID i Opera Confirmation.</b><br/>
 
             Za ove rezervacije, sustav nije mogao iz MDP-a povući rezervaciju po postavljenom reservation numberu, te je isti potrebno provjeriti.
 
