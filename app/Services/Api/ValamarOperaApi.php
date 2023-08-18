@@ -257,6 +257,8 @@ class ValamarOperaApi{
                 ->where('ending_point_id', $this->round_trip_reservation->dropoff_location)
                 ->get()->first();
 
+
+
             if($this->return_route){
 
                 $return_route_transfer = \DB::table('route_transfer')
@@ -410,6 +412,8 @@ class ValamarOperaApi{
                 $package_start = $this->round_trip_reservation->date_time->subDays(1)->toDateString();
             }
 
+
+
             #Round Trip Booking
             $return[] = array(
                 #1 if booking is active - 0 if cancelled
@@ -452,6 +456,8 @@ class ValamarOperaApi{
                 'EndDate' => $package_end,
                 'Comment' => $this->buildPackageComment($reservation),
             );
+
+
 
             return $return;
         }
@@ -605,7 +611,7 @@ class ValamarOperaApi{
                     #1 if booking is active - 0 if cancelled
                     'Quantity' => $this->round_trip_reservation->status == Reservation::STATUS_CONFIRMED ? 1 : 0,
                     'PackageID' => $this->returnPackageID,
-                    'PricePerUnit' => $this->parsePackagePrice($reservation,2),
+                    'PricePerUnit' => $this->parsePackagePrice($this->round_trip_reservation,2),
                     'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
                     'ExternalCartID' => $this->round_trip_reservation->id,
                     'ExternalCartItemID' => $this->round_trip_reservation->id,
@@ -613,6 +619,8 @@ class ValamarOperaApi{
                     'EndDate' => $package_end,
                     'Comment' => $this->buildPackageComment($this->round_trip_reservation),
                 );
+
+
 
                 if($this->round_trip_reservation->isCancelled() && $this->round_trip_reservation->hasCancellationFee()){
 
@@ -702,6 +710,7 @@ class ValamarOperaApi{
 
         $total = 0;
 
+
         if($direction == 0){
             #Get total of all items on the data list
             if(!empty($reservation->price_breakdown)){
@@ -715,14 +724,17 @@ class ValamarOperaApi{
 
         if($direction == 1 || $direction == 2){
             if(!empty($reservation->price_breakdown)){
+
+
                 foreach($reservation->price_breakdown as $price_item){
                   if($price_item['item'] == 'transfer_price'){
+
                       if($direction == 1){
                           $total += $price_item['price_data']['price'];
                       }
 
                       if($direction == 2){
-                          $total += ($price_item['price_data']['price_round_trip']-$price_item['price_data']['price']);
+                          $total += $price_item['price_data']['price_round_trip'];
                       }
                   }
                 }
