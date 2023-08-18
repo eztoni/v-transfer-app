@@ -24,7 +24,7 @@
 
             <ul>
                 @foreach($alert_list['not_synced'] as $booking)
-                    <li>{{$booking->id}} - {{$booking->leadTraveller->full_name}}</li>
+                    <li>{{$booking->id.' ('.$booking->getAccommodationReservationCode().')'}} - {{$booking->leadTraveller->full_name}}</li>
                 @endforeach
             </ul>
             <br/>
@@ -38,7 +38,7 @@
 
             <ul>
                 @foreach($alert_list['has_data_failed_sync'] as $booking)
-                    <li>{{$booking->id}} - {{$booking->leadTraveller->full_name}}</li>
+                    <li>{{$booking->id.' ('.$booking->getAccommodationReservationCode().')'}} - {{$booking->leadTraveller->full_name}}</li>
                 @endforeach
             </ul>
             <br/>
