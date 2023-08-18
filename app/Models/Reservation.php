@@ -267,6 +267,17 @@ class Reservation extends Model
             return $log;
     }
 
+    public function getOverallReservationStatus(){
+
+        $status = $this->status;
+          
+        if($this->is_roundtrip && $this->returnReservation->status == 'cancelled' && $this->status == 'confirmed'){
+            $status = self::STATUS_CONFIRMED;
+        }
+
+        return $status;
+    }
+
     public function get_extras_list(){
 
         $extras = array();
