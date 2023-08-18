@@ -91,15 +91,21 @@ class Reservation extends Model
 
     public function getDisplayPrice(): Money{
 
+        $display_price = $this->price;
+
         if($this->isRoundTrip && $this->returnReservation->status == 'confirmed'){
-            $this->price = $this->price_breakdown[0]['price_data']['price_round_trip'];
+            $display_price = $this->price_breakdown[0]['price_data']['price_round_trip'];
         }
 
         if($this->isRoundTrip && $this->status == 'cancelled' && $this->returnReservation->status == 'confirmed'){
-           $this->price = $this->returnReservation->price;
+            $display_price = $this->returnReservation->price;
         }
 
-        return Money::EUR($this->price);
+        if($this->isRoundTrip && $this->status == 'confirmed' && $this->returnReservation->status == 'confirmed'){
+            $display_price = $this->returnReservation->price+$this->price;
+        }
+
+        return Money::EUR($display_price);
     }
 
     public function getCancellationFeeAmountHRK() {
@@ -314,10 +320,6 @@ class Reservation extends Model
         }else{
 
             $price = $this->getPrice()->formatByDecimal();
-
-            if($this->isRoundTrip()){
-                $price = number_format($this->getPrice()->formatByDecimal()/2,2);
-            }
 
             return '-'.$price;
         }
