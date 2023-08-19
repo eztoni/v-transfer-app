@@ -17,7 +17,7 @@
                 <th>Email</th>
                 <th>Destination</th>
                 <th class="text-center">Update</th>
-
+                <th class="text-center">Copy Partner</th>
             </tr>
             </thead>
             <tbody>
@@ -32,6 +32,10 @@
                     <td class="text-center">
                         <x-button.circle primary icon="pencil" wire:click="updatePartner({{$p->id}})">
                         </x-button.circle>
+                    </td>
+                    <td class="text-center">
+                        <x-button wire:click="copyPartner({{$p->id}})" positive
+                        >Copy Partner</x-button>
                     </td>
                 </tr>
 
@@ -112,6 +116,51 @@
 
                         <x-button wire:click="closeCopyTermsModal()" >Close</x-button>
                         <x-button wire:click="copyPartnerTerms()" positive
+                        >Copy Terms</x-button>
+                    </div>
+                </x-slot>
+        </x-modal.card>
+
+        <x-modal.card title="Copy Partner" wire:model="copyPartnerModal">
+
+            @if($this->otherOwners)
+                <x-select option-key-value
+                          label="Company to copy the partner to:"
+                          wire:model="destinationCopyOwnerId"
+                          :options="$this->otherOwners->pluck('name','id')"></x-select>
+            @endif
+                @if($this->partnerPreviewId)
+                <div x-data="{selectedLanguage:'en'}" >
+                    <div class="ds-tabs justify-end mb-2">
+                        @foreach($this->companyLanguages as $languageIso)
+                            <a @click="selectedLanguage='{{$languageIso}}'" class="ds-tab ds-tab-bordered "
+                               x-bind:class="selectedLanguage ==='{{$languageIso}}'?'ds-tab-active':''">
+                                {{Str::upper($languageIso)}}
+                            </a>
+                        @endforeach
+                    </div>
+                    <p>Terms that will be copied:</p>
+
+                @foreach($this->companyLanguages as $languageIso)
+                        <div :key="{{$languageIso}}" class="mb-4" x-show="selectedLanguage ==='{{$languageIso}}'" x-transition:enter>
+                            <div class="form-control"  x-data="{html:null}">
+
+                                <p class="border rounded-lg p-2">
+                                    {!!  nl2br(Arr::get($this->termsPreview,$languageIso))!!}
+                                </p>
+                            </div>
+                        </div>
+
+                    @endforeach
+
+                    </div>
+                @endif
+                <p class="text-warning-300">By clicking Copy Partner button, partner will be created in the destination company</p>
+                <x-slot name="footer">
+                    <div class="flex justify-between">
+
+                        <x-button wire:click="closeCopyTermsModal()" >Close</x-button>
+                        <x-button wire:click="copyPartnerToOwner()" positive
                         >Copy Terms</x-button>
                     </div>
                 </x-slot>

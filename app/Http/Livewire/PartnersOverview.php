@@ -22,9 +22,12 @@ class PartnersOverview extends Component
     public $search = '';
     public $partner;
     public $partnerModal;
+    public $copyPartnerModal;
     public $softDeleteModal;
     public $deleteId = '';
     public $selectedDestinations = [];
+    public $destinationCopyOwnerId = 0;
+    public $otherOwners = array();
     public $cf_types = array(
         'percent' => 'Percentage ( % )',
         'nominal' => 'Nominal ( € )'
@@ -48,9 +51,10 @@ class PartnersOverview extends Component
     public function openCopyTermsModal(){
         $this->copyTermsModal = true;
     }
-    public function closeCopyTermsModal(){
-        $this->copyTermsModal = false;
+    public function closeCopyPartnerModal(){
+        $this->copyPartnerModal = false;
     }
+
 
     public function getTermsPreviewProperty(){
         return \Arr::get($this->partnersWithTerms->where('id',$this->partnerPreviewId)->first()?->getTranslations(),'terms');
@@ -97,6 +101,10 @@ class PartnersOverview extends Component
         $this->partnerModal = true;
     }
 
+    public function openCopyPartnerModal(){
+        $this->copyPartnerModal = true;
+    }
+
     public function closePartnerModal(){
         $this->partnerModal = false;
     }
@@ -108,6 +116,12 @@ class PartnersOverview extends Component
     {
         $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
         $this->partner = new Partner();
+
+        $this->otherOwners = \DB::table('owners')->where('id','!=',Auth::user()->owner_id)->get();
+
+        if(!empty($this->otherOwners)){
+            $this->destinationCopyOwnerId = $this->otherOwners->first()->id;
+        }
 
         foreach ($this->companyLanguages as $lang) {
             $this->terms[$lang] = $this->partner->getTranslation('terms', $lang, false);
@@ -136,6 +150,11 @@ class PartnersOverview extends Component
         $this->selectedDestinations = [];
     }
 
+    public function copyPartner($partnerId){
+
+        $this->partner = Partner::withoutGlobalScope(DestinationScope::class)->find($partnerId);
+        $this->openCopyPartnerModal();
+    }
     public function updatePartner($partnerId){
 
         $this->openPartnerModal();
@@ -180,6 +199,22 @@ class PartnersOverview extends Component
     }
     //------------- Soft Delete End ---------
 
+
+    public function copyPartnerToOwner(){
+
+        if($this->destinationCopyOwnerId > 0){
+
+            $partnerCopy = $this->partner->replicate();
+
+            $partnerCopy->owner_id = $this->destinationCopyOwnerId;
+
+            $partnerCopy->save();
+
+            $this->notification()->success('Partner copied to destination company','',);
+        }
+
+        $this->closeCopyPartnerModal();
+    }
     public function render()
     {
         $destinations = Destination::all();
