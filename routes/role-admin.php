@@ -9,6 +9,7 @@ use App\Http\Livewire\CRUD\OwnerOverview;
 use App\Http\Livewire\CRUD\RoutesOverview;
 use App\Http\Livewire\DestinationReport;
 use App\Http\Livewire\Destinations;
+use App\Http\Livewire\DestinationSetupChecker;
 use App\Http\Livewire\ExtrasEdit;
 use App\Http\Livewire\ExtrasOverview;
 use App\Http\Livewire\NewTransferPrices;
@@ -71,6 +72,7 @@ Route::get('/mail-test',function(){
 Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/points-overview', PointsOverview::class)->name('points-overview');
+    Route::get('/destination-setup-checker', DestinationSetupChecker::class)->name('destination-setup-checker');
     Route::get('/company-overview', CompanyOverview::class)->name('company-overview');
     Route::get('/destinations', Destinations::class)->name('destinations');
     Route::get('/user-overview', UserOverview::class)->name('user-overview');

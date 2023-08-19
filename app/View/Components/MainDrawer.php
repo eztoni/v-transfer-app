@@ -135,6 +135,12 @@ class MainDrawer extends Component
                         'href' => route('admin.points-overview'),
                         'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN),
                     ],
+                    [
+                        'text' => 'Destination Setup Checker',
+                        'active' => request()->routeIs('admin.destination-setup-checker'),
+                        'href' => route('admin.destination-setup-checker'),
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN),
+                    ],
 
                 ]
             ],

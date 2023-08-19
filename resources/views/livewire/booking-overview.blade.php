@@ -44,8 +44,7 @@
                             />
 
                     </div>
-                    <x-button primary wire:click="search" >Search</x-button>
-
+                    <x-button primary wire:click="search">Search</x-button>
                     <x-button success href="{{route('internal-reservation')}}">+ New </x-button>
                 </div>
         </x-card>
