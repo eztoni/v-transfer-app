@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Destination;
 use App\Models\Language;
+use App\Models\Owner;
 use App\Models\Partner;
 use App\Models\User;
 use App\Scopes\CompanyScope;
@@ -112,6 +113,7 @@ class PartnersOverview extends Component
     public function mount(){
         $this->instantiateComponentValues();
     }
+
     public function instantiateComponentValues()
     {
         $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
@@ -199,7 +201,6 @@ class PartnersOverview extends Component
     }
     //------------- Soft Delete End ---------
 
-
     public function copyPartnerToOwner(){
 
         if($this->destinationCopyOwnerId > 0){
@@ -209,6 +210,10 @@ class PartnersOverview extends Component
             $partnerCopy->owner_id = $this->destinationCopyOwnerId;
 
             $partnerCopy->save();
+
+            $ownerDestinations = \DB::table('destinations')->where('owner_id',$this->destinationCopyOwnerId)->get();
+
+            $partnerCopy->destinations()->sync($ownerDestinations->pluck('id')->toArray());
 
             $this->notification()->success('Partner copied to destination company','',);
         }
