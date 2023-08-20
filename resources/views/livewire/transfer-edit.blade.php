@@ -4,7 +4,7 @@
         <x-slot:tabHeader>
             <x-card cardClasses="mb-4 " >
                 <div class="flex justify-end items-center">
-                    <x-button href="{{route('transfer-overview')}}"  primary label="Back to transfer overview" />
+                    <x-button href="{{route('transfer-overview')}}"  primary label="<< Back to transfer overview" />
                 </div>
             </x-card>
         </x-slot:tabHeader>

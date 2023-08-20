@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Destination;
+use App\Models\Language;
 use App\Models\Transfer;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Auth;
@@ -20,10 +21,15 @@ use Actions;
     public $search = '';
     public $transfer;
     public $vehicleId;
+    public $duplicateTransferID;
     public $transferModal;
     public $transferName;
     public $destinationId;
-
+    public $companyLanguages = ['en'];
+    public $transferCopyName = [
+        'en' => null
+    ];
+    public $duplicateTransferModal = false;
 
 
     protected $rules = [
@@ -90,11 +96,52 @@ use Actions;
 
     }
 
+    public function showDuplicateTransferModal($transfer_id){
 
+        $tnr = Transfer::where('id',$transfer_id)->get()->first();
+
+        $this->duplicateTransferID = $transfer_id;
+        $this->transferCopyName = $tnr->getTranslations('name');
+
+        $this->duplicateTransferModal = true;
+
+    }
+    public function hideDuplicateTransferModal(){
+        $this->duplicateTransferModal = false;
+    }
+
+    public function mount(){
+        $this->companyLanguages = Language::all()->pluck('language_code')->toArray();
+    }
     public function render()
     {
         $transfers = Transfer::with(['destination','media'])->search('name',$this->search)->paginate(10);
 
-        return view('livewire.transfer-overview',compact('transfers'));
+        return view('livewire.transfer-overview',compact('transfers',));
+    }
+
+    public function duplicateTransfer(){
+
+
+
+        $tnr = Transfer::find($this->duplicateTransferID)->first();
+
+        $copyTransfer = $tnr->replicate();
+
+        $copyTransfer->setTranslations('name',$this->transferCopyName);
+
+        $copyTransfer->save();
+
+        $vehicle = Vehicle::where('transfer_id',$this->duplicateTransferID)->first();
+
+        $copyVehicle = $vehicle->replicate();
+
+        $copyVehicle->transfer_id = $copyTransfer->id;
+
+        $copyVehicle->save();
+
+        $this->notification()->success('Success','Transfer duplicated!');
+
+        $this->hideDuplicateTransferModal();
     }
 }

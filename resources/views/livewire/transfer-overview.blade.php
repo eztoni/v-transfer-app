@@ -13,6 +13,7 @@
                     <th>Name</th>
                     <th>Vehicle Type</th>
                     <th class="text-center">Edit</th>
+                    <th class="text-center">Duplicate</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -37,6 +38,10 @@
                         <td class="text-center">
                             <x-button.circle icon="pencil" primary  href="{{ route('transfer-edit',$tr)}}">
                             </x-button.circle>
+                        </td>
+
+                        <td class="text-center">
+                            <x-button positive wire:click="showDuplicateTransferModal({{$tr->id}})">Duplicate Transfer</x-button>
                         </td>
                     </tr>
 
@@ -84,6 +89,36 @@
             </x-modal.card>
 
 
+        <x-modal.card title="Duplicate Transfer" wire:model="duplicateTransferModal">
+
+                    <x-settings-layout.tab
+                        handle="3">
+                        <x-card title="">
+
+                            @foreach($this->companyLanguages as $languageIso)
+                                <div :key="{{$languageIso}}" class="mb-4" x-show="selectedLanguage ==='{{$languageIso}}'" x-transition:enter>
+                                    <div class="form-control max-w-sm"  x-data="{html:null}">
+                                        <x-input label="Name ({{Str::upper($languageIso)}}):" wire:model="transferCopyName.{{$languageIso}}"
+                                        />
+                                    </div>
+                                </div>
+
+                            @endforeach
+
+                        </x-card>
+                    </x-settings-layout.tab>
+
+            <div class="ds-divider"></div>
+
+            <x-slot name="footer" >
+                <div class="flex justify-between">
+
+                    <x-button wire:click="hideDuplicateTransferModal()">Close</x-button>
+                    <x-button wire:click="duplicateTransfer()"
+                              positive>Duplicate</x-button>
+                </div>
+            </x-slot>
+        </x-modal.card>
 
 
     </x-card>
