@@ -58,7 +58,7 @@
 {{--                        Div below is used to compile these dynamic classes    --}}
                     <span class="ds-badge-primary ds-badge-info ds-badge-warning ds-badge-accent hidden"></span>
                     <span class="ds-badge sm ds-badge-{{$reservation->isRoundTrip()?'accent':'primary'}}">{{$reservation->isRoundTrip()?'Round trip':'One way'}}</span>
-                        <span class="ds-badge ds-badge-{{$reservation->getOverallReservationStatus() == 'confirmed' ? 'success':'error'}}">{{ucfirst($reservation->status)}}</span>
+                        <span class="ds-badge ds-badge-{{$reservation->getOverallReservationStatus() == 'confirmed' ? 'success':'error'}}">{{ucfirst($reservation->getOverallReservationStatus())}}</span>
                         @if($reservation->included_in_accommodation_reservation == 1)
                             <span class="font-extrabold text-info">€ 0,00</span>
                         @else
