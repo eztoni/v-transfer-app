@@ -4,8 +4,10 @@ namespace App\Http\Livewire\CRUD;
 
 use App\Models\Destination;
 use App\Models\Language;
+use App\Models\Partner;
 use App\Models\Point;
 use App\Models\Route;
+use App\Scopes\DestinationScope;
 use App\View\Components\Form\EzSelect;
 use App\View\Components\Form\EzTextInput;
 use Illuminate\Support\Collection;
@@ -21,6 +23,10 @@ class RoutesOverview extends EzComponent
         'en' => null
     ];
 
+    public $copyRouteName = [
+        'en' => null
+    ];
+    public $copyRouteModal = false;
 
     public array $fieldRuleNames=[
         'model.destination_id' => 'destination',
@@ -78,9 +84,34 @@ class RoutesOverview extends EzComponent
         ];
     }
 
+    public function showCopyRouteModal(){
+
+        $this->copyRouteName = $this->routeName;
+
+        $this->copyRouteModal = true;
+    }
+
+    public function hideCopyRouteModal(){
+        $this->copyRouteModal = false;
+    }
+
+    public function copyRoute($routeId){
+
+        $routeObj = Route::find($routeId)->first();
+
+        $newCopy = $routeObj->replicate();
+
+        $newCopy->setTranslations('name', $this->copyRouteName);
+
+        $newCopy->save();
+
+        $this->hideCopyRouteModal();
+
+        $this->notification()->success('Route Duplicated!','',);
+    }
     protected function modelName(): string
     {
-        return 'Route';
+        return 'Routes';
     }
 
     protected function withArray():array
@@ -137,4 +168,6 @@ class RoutesOverview extends EzComponent
 
         return $ruleArray;
     }
+
+
 }
