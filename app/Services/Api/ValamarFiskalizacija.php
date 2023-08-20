@@ -67,7 +67,7 @@ class ValamarFiskalizacija{
         $reservation = $this->reservation;
 
         #Avoid Sending Invoice Cancellation
-        if($reservation->status == 'cancelled'){
+        if($reservation->getOverallReservationStatus() == 'cancelled'){
             return true;
         }
 
