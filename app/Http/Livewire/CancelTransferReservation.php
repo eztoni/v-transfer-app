@@ -126,7 +126,7 @@ use Actions;
             $this->cancellation_fee_nominal = number_format($reservationTotal->formatByDecimal()*($this->cancellation_fee_percent/100),2);
         }
 
-        $this->displayPrice = $reservationTotal->formatByDecimal().' €';
+        $this->displayPrice = '€ '.$reservationTotal->formatByDecimal();
 
         switch ($property){
             case 'cancellation_fee_percent':
