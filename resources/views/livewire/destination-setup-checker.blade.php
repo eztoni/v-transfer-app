@@ -1,7 +1,7 @@
 <div x-data="{selectedLanguage:'en'}">
 
 <!-- Points -->
-<x-card title="Destination - {{$destination->name}} - Point Mapping Check">
+<x-card title="Destination - {{$destination->name}} - Partner Mapping Check">
 
     <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50" title="naziv tablice">
         <thead>
