@@ -414,6 +414,22 @@ class Reservation extends Model
 
         $return['items'][] = $item;
 
+        if($this->status == 'cancelled'){
+
+            $price = number_format($price*(-1),2);
+            $vat_amount = number_format($vat_amount*(-1),2);
+
+            $item = array(
+                'code' => $operaPackageID,
+                'transfer' => $this->pickupLocation->name.' - '.$this->dropoffLocation->name,
+                'amount' => $price,
+                'vat' => $vat,
+                'vat_amount' => $vat_amount,
+                'price' => $price
+            );
+            $return['items'][] = $item;
+        }
+
         if($this->round_trip_id){
 
             $round_trip_reservation = Reservation::findOrFail($this->round_trip_id);
@@ -451,6 +467,7 @@ class Reservation extends Model
                 $return['items'][] = $item;
 
                 if($round_trip_reservation->status == 'cancelled'){
+
                     $price = number_format($price*(-1),2);
                     $vat_amount = number_format($vat_amount*(-1),2);
 

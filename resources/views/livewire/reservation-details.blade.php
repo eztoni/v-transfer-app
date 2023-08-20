@@ -62,7 +62,7 @@
                     <p class="text-sm"><b>Cancellation DateTime: </b>{{$reservation->returnReservation->cancelled_at}}</p>
                 @endif
 
-                @if($reservation->status == 'cancelled')
+                @if($reservation->getOverallReservationStatus() == 'cancelled')
                     <br/>
                     <br/>
                     <p  class="text-sm"><u>Cancellation Details</u></p>
@@ -84,7 +84,7 @@
                 @endif
                 <br/>
                 <br/>
-                @if($reservation->isCancelled())
+                @if($reservation->getOverallReservationStatus() == 'cancelled')
                 <button success class="ds-btn  ds-btn-xs"
                      wire:loading.class="ds-loading"
                      wire:target="downloadCancellationPDF"
