@@ -107,9 +107,7 @@
 
                         </x-card>
                     </x-settings-layout.tab>
-
-            <div class="ds-divider"></div>
-
+            
             <x-slot name="footer" >
                 <div class="flex justify-between">
 
