@@ -60,7 +60,7 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
 
                     $round_trip_reservation = Reservation::where('round_trip_id',$this->model->round_trip_id)->get()->first();
                     #If we are canceling one way ( main ) and other is confirmed
-                    if($round_trip_reservation->status == Reservation::STATUS_CONFIRMED){
+                    if($this->model->returnReservation->status == Reservation::STATUS_CONFIRMED){
                         $event = 'updated';
                     }
                 }
@@ -79,7 +79,7 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
             }
 
         }
-
+        
         if($event == 'cancellation'){
             ReservationCancelledEvent::dispatch($notification_model,[
                 ReservationCancelledEvent::SEND_MAIL_CONFIG_PARAM => true
