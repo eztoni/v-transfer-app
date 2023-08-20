@@ -20,6 +20,7 @@ class CancelTransferReservation extends Component
 use Actions;
     public Reservation $reservation;
     public $cancellationDate;
+    public String $displayPrice = '';
     public bool $cancelRoundTrip = false;
     public $cancellation_fee_percent = 0;
     public $cancellation_fee_nominal = 0;
@@ -112,8 +113,20 @@ use Actions;
 
     public function updated($property){
 
+
         $this->validate($this->getRules());
-        $reservationTotal = $this->reservation->getPrice();
+
+        if($this->cancelRoundTrip){
+            $reservationTotal = $this->reservation->getDisplayPrice();
+        }else{
+            $reservationTotal = $this->reservation->getPrice();
+        }
+
+        if($property == 'cancelRoundTrip'){
+            $this->cancellation_fee_nominal = number_format($reservationTotal->formatByDecimal()*($this->cancellation_fee_percent/100),2);
+        }
+
+        $this->displayPrice = $reservationTotal->formatByDecimal().' €';
 
         switch ($property){
             case 'cancellation_fee_percent':
@@ -145,6 +158,8 @@ use Actions;
     private function loadPartnerCommissionDetails(){
 
         if($this->partnerID > 0){
+
+            $this->displayPrice = $this->reservation->getPrice();
 
             $partner = Partner::findOrFail($this->partnerID);
 
