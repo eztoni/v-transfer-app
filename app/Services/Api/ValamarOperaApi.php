@@ -57,7 +57,6 @@ class ValamarOperaApi{
 
             $this->request['Packages'] = $this->buildReservationPackages($this->reservation);
 
-
             if(empty($this->errors)){
                 $this->sendOperaRequest();
             }else{
@@ -725,7 +724,6 @@ class ValamarOperaApi{
         if($direction == 1 || $direction == 2){
             if(!empty($reservation->price_breakdown)){
 
-
                 foreach($reservation->price_breakdown as $price_item){
                   if($price_item['item'] == 'transfer_price'){
 
@@ -734,7 +732,7 @@ class ValamarOperaApi{
                       }
 
                       if($direction == 2){
-                          $total += $price_item['price_data']['price_round_trip'];
+                          $total += $price_item['price_data']['price'];
                       }
                   }
                 }
