@@ -65,6 +65,13 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
                     }
                 }
 
+                $fiskalValamar = new ValamarFiskalizacija($this->model->id);
+                $fiskalValamar->fiskalReservation();
+
+                if($this->model->hasCancellationFee()){
+                    $fiskalValamar->fiskalReservationCF($this->model->getCancellationFeeAmount(true));
+                }
+
             }else{
 
                 #Clicked on non-main way
@@ -76,10 +83,18 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
                     $notification_model = $main_booking;
                 }
 
+
+                $fiskalValamar = new ValamarFiskalizacija($main_booking->id);
+                $fiskalValamar->fiskalReservation();
+
+                if($main_booking->hasCancellationFee()){
+                    $fiskalValamar->fiskalReservationCF($main_booking->getCancellationFeeAmount(true));
+                }
+
             }
 
         }
-        
+
         if($event == 'cancellation'){
             ReservationCancelledEvent::dispatch($notification_model,[
                 ReservationCancelledEvent::SEND_MAIL_CONFIG_PARAM => true
