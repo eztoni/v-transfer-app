@@ -8,6 +8,7 @@ use App\Events\ReservationUpdatedEvent;
 use App\Models\Reservation;
 use App\Services\Api\ValamarFiskalizacija;
 use App\Services\Api\ValamarOperaApi;
+use Carbon\Carbon;
 
 class CancelReservation extends \App\BusinessModels\Reservation\Reservation
 {
@@ -23,6 +24,7 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
             if($roundTripReservation && !$roundTripReservation->isCancelled()){
 
                 $roundTripReservation->status =  Reservation::STATUS_CANCELLED;
+                $roundTripReservation->cancelled_at = Carbon::now()->format('Y-m-d H:i:s');
                 $roundTripReservation->save();
             }
 
