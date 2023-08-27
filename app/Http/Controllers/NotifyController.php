@@ -42,17 +42,6 @@ class NotifyController extends Controller
 
         $changed_bookings = $request->all();
 
-//        \DB::insert('insert into opera_sync_log (log_message,reservation_id, opera_request,opera_response,sync_status,updated_by,updated_at) values (?, ?, ?, ?, ?, ?, ?)',
-//            [
-//                'Reservation Update Event',
-//                0,
-//                json_encode($request->all()),
-//                json_encode(array()),
-//                'success',
-//                0,
-//                \Carbon\Carbon::now()->toDateTimeString()]
-//        );
-
         if(!empty($changed_bookings['reservations'])){
             foreach($changed_bookings['reservations'] as $data){
                $reservation_change[] = $data;
@@ -98,16 +87,6 @@ class NotifyController extends Controller
                         'message' => $update_response,
                     );
 
-//                    \DB::insert('insert into opera_sync_log (log_message,reservation_id, opera_request,opera_response,sync_status,updated_by,updated_at) values (?, ?, ?, ?, ?, ?, ?)',
-//                        [
-//                            'Reservation Not Updated '.$reservation_data['resvNameId'],
-//                            0,
-//                            json_encode($request->all()),
-//                            json_encode($response),
-//                            'error',
-//                            0,
-//                            \Carbon\Carbon::now()->toDateTimeString()]
-//                    );
                 }
 
 
@@ -163,7 +142,7 @@ class NotifyController extends Controller
                 if(!empty($valamar_res_data[$result->reservation_number])){
 
                     #Check Reservation Status Change
-                    if($reservation->status == Reservation::STATUS_CONFIRMED){
+                    if($reservation->getOverallReservationStatus() == Reservation::STATUS_CONFIRMED){
 
                         $opera_res_status = $valamar_res_data[$result->reservation_number]['status'];
 
