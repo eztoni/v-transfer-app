@@ -109,7 +109,7 @@
         <x-mail.row>
 
             @if(\Arr::get($reservation->transfer_price_state,'price_data.tax_level') == 'PPOM')
-                <br/><p style="float: right;font-style: italic;font-site:10px"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
+                <br/><p style="float: right;font-style: italic;font-size:10px"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
             @endif
             <div align="center" style="font-size: 13px !important">
                 <!-- Issue Location -->
