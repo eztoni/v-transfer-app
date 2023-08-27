@@ -23,7 +23,7 @@ class ReservationCancellationMail extends Mailable
 
         if($locale == 'hr'){
             $booking_cancellation = 'Otkaz Rezervacije';
-            $booking_cancellation_fee = 'NaknadaŠtete';
+            $booking_cancellation_fee = 'Naknada Štete';
         }
 
         $this->subject(__('mail.guest.cancellation_mail.subject'));
