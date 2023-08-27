@@ -55,6 +55,13 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
         #If Cancellation of the roundtrip - everything stays the same
         if($this->cancelRoundTrip){
             $this->cancelRoundTrip();
+
+            $fiskalValamar = new ValamarFiskalizacija($this->model->id);
+
+            if($this->model->hasCancellationFee()){
+                $fiskalValamar->fiskalReservationCF($this->model->getCancellationFeeAmount(true));
+            }
+
         }else{
             if($this->model->is_main){
 
@@ -68,7 +75,6 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
                 }
 
                 $fiskalValamar = new ValamarFiskalizacija($this->model->id);
-                $fiskalValamar->fiskalReservation();
 
                 if($this->model->hasCancellationFee()){
                     $fiskalValamar->fiskalReservationCF($this->model->getCancellationFeeAmount(true));
@@ -87,7 +93,6 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
 
 
                 $fiskalValamar = new ValamarFiskalizacija($main_booking->id);
-                $fiskalValamar->fiskalReservation();
 
                 if($main_booking->hasCancellationFee()){
                     $fiskalValamar->fiskalReservationCF($main_booking->getCancellationFeeAmount(true));
