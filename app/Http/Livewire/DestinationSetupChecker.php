@@ -10,6 +10,7 @@ use App\Models\Partner;
 use App\Models\Transfer;
 use App\Models\User;
 use App\Services\Api\ValamarClientApi;
+use App\Services\Api\ValamarFiskalizacija;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -32,6 +33,7 @@ use Actions;
     public ?Point $point;
     public $pointModal;
     public $softDeleteModal;
+    public $destinationPoints = false;
     public $deleteId = '';
     public bool $importPoint = false;
     public $valamarPropertiesFromApi;
@@ -41,6 +43,9 @@ use Actions;
     public $pointName = [
         'en' => null
     ];
+
+    public $mappedPackages = array();
+    public $route_packages = array();
 
     public function mount()
     {
@@ -73,16 +78,40 @@ use Actions;
 
         $points = Point::whereDestinationId(Auth::user()->destination_id)->where('type',Point::TYPE_ACCOMMODATION)->get();
 
+        $this->destinationPoints = $points;
+
         $partners = \DB::table('partners')->where('owner_id',Auth::user()->owner_id)->get();
 
-        $this->valamarPropertiesFromApi = collect();
 
+        $routes = array();
+
+        $this->getMappedPackageRelations($points);
+
+        $transfers = Transfer::where('destination_id',Auth::user()->destination_id)->get();
+
+        $transfer_ids = array();
+
+        if(!empty($transfers)){
+            foreach($transfers as $tr){
+                $transfer_ids[] = $tr->id;
+            }
+        }
+
+        $owner_partners = Partner::where('owner_id',Auth::user()->owner_id)->get();
+
+        $partner_ids = array();
+
+        $this->valamarPropertiesFromApi = collect();
 
         $this->valamarPropertiesFromApi = (new ValamarClientApi())->getPropertiesList();
 
         if(!empty($this->valamarPropertiesFromApi)){
             foreach($this->valamarPropertiesFromApi as $property){
-                $propertyMap[$property['propertyOperaCode'].'|'.$property['class']] = $property['name'];
+
+                if(!empty($property['class'])){
+                    $propertyMap[$property['propertyOperaCode'].'|'.$property['class']] = $property['name'];
+                }
+
             }
         }
 
@@ -108,6 +137,110 @@ use Actions;
         }
 
 
-        return view('livewire.destination-setup-checker',compact('destinations','points','partners'));
+
+
+
+        return view('livewire.destination-setup-checker',compact('destinations','points','partners','routes'));
+    }
+
+    private function getMappedPackageRelations($accommodation_list){
+
+        $owner_partners = Partner::where('owner_id',Auth::user()->owner_id)->get();
+
+        $package_ids = array();
+
+        $transfers = Transfer::where('destination_id',Auth::user()->destination_id)->get();
+
+        $transfer_ids = array();
+
+        if(!empty($transfers)){
+            foreach($transfers as $tr){
+                $transfer_ids[] = $tr->id;
+            }
+        }
+
+        if(!empty($owner_partners)){
+
+            $partner_ids = array();
+
+            foreach($owner_partners as $partner){
+
+                $partner_ids[] = $partner->id;
+
+                if($partner->cancellation_package_id > 0 && !in_array($partner->cancellation_package_id,$package_ids)){
+                    $package_ids[] = $partner->cancellation_package_id;
+                }
+
+                if($partner->no_show_package_id > 0 && !in_array($partner->no_show_package_id,$package_ids)){
+                    $package_ids[] = $partner->no_show_package_id;
+                }
+            }
+
+            if(!empty($transfer_ids) && !empty($partner_ids)){
+
+                $mapped_routes =  \DB::table('route_transfer')
+                    ->whereIn('transfer_id', $transfer_ids)
+                    ->whereIn('partner_id', $partner_ids)
+                    ->where('opera_package_id', '>', 0)
+                    ->get();
+
+                if(!empty($mapped_routes)){
+                    foreach($mapped_routes as $rt){
+                        if(!in_array($rt->opera_package_id,$package_ids)){
+                            $this->route_packages[] = (int)$rt->opera_package_id;
+                            $package_ids[] = (int)$rt->opera_package_id;
+                        }
+                    }
+                }
+            }
+
+            if(!empty($package_ids)){
+
+                $valamarAPI = new ValamarFiskalizacija();
+                $packageExistance = $valamarAPI->validatePackageIDMapping($package_ids);
+
+
+
+                if($packageExistance['Status'] == 'OK' && !empty($packageExistance['PackageInfo'])){
+                    foreach($packageExistance['PackageInfo'] as $packMap){
+
+                        $packageID = $packMap['PackageID'];
+
+                        if(!empty($packMap['HotelList'])){
+                            foreach($packMap['HotelList'] as $hotelInfo){
+
+                                $hotelMapping = explode('/',$hotelInfo);
+
+                                if(count($hotelMapping) > 0){
+                                    $this->mappedPackages[trim($packageID)][trim($hotelMapping[0])] = $hotelMapping[1];
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+            }
+
+        }
+    }
+
+    public function getPackagePropertyMapping($package_id){
+
+        $return = array();
+
+        if(!empty($this->destinationPoints)){
+            foreach($this->destinationPoints as $point){
+
+                $code = $point->pms_code;
+
+                if(empty($this->mappedPackages[$package_id][$code])){
+                    $return[] = '['.$code.'] '.$point->name;
+                }
+            }
+        }
+
+        return $return;
+
     }
 }

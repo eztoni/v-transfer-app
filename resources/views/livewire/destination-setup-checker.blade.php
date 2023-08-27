@@ -9,6 +9,7 @@
                 <th>#ID</th>
                 <th>Partner Name</th>
                 <th>Cancellation Package ID</th>
+                <th>Missing Activations</th>
                 <th>No Show Package ID</th>
             </tr>
         </thead>
@@ -19,6 +20,20 @@
                     <td>{{$partner->name}}</td>
                     <td style="text-align: center">
                         {{$partner->cancellation_package_id}} @if($partner->cancellation_package_id > 0) <x-button  sm positive icon="check"></x-button> @else <x-button sm  negative icon="check"></x-button> @endif
+                    </td>
+                    <td style="text-align: center">
+                        @if($partner->cancellation_package_id > 0)
+                            @if($this->getPackagePropertyMapping($partner->cancellation_package_id) > 0)
+                                @foreach($this->getPackagePropertyMapping($partner->cancellation_package_id) as $code)
+                                    <small>{{$code}}  <x-button xs negative icon="check"></x-button> </small><br/>
+                                @endforeach
+                            @else
+                                <small>Mapped Properly <x-button xs positive icon="check"></x-button></small>
+                            @endif
+                        @else
+                            <small>No information.</small>
+                        @endif
+
                     </td>
                     <td style="text-align: center">
                         {{$partner->no_show_package_id}} @if($partner->no_show_package_id > 0) <x-button sm  positive icon="check"></x-button> @else <x-button sm negative icon="check"></x-button> @endif
@@ -90,8 +105,36 @@
 
     </table>
 
-
-
 </x-card>
+    <br/>
+    <!-- Accommodation -->
+    <x-card title="Route Package Codes" >
 
+        <table class="ds-table ds-table-compact w-full" wire:loading.delay.class="opacity-50" title="naziv tablice">
+            <thead>
+            <tr>
+                <th>#PackageID</th>
+                <th style="text-align: center">Missing Mapping Activation</th>
+            </tr>
+            </thead>
+            @if($this->route_packages)
+                @foreach($this->route_packages as $code)
+                    <tr>
+                        <td>#{{$code}}</td>
+                        <td style="text-align: center">
+                            @if($this->getPackagePropertyMapping($code))
+                                @foreach($this->getPackagePropertyMapping($code) as $missing)
+                                    <small>{{$missing}} <x-button xs negative icon="check"></x-button></small><br/>
+                                @endforeach
+                            @else
+                                <small>Mapped on every destination property <x-button xs positive icon="check"></x-button></small>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
+
+        </table>
+
+    </x-card>
 </div>

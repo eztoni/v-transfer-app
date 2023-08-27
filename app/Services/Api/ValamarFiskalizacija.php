@@ -48,23 +48,26 @@ class ValamarFiskalizacija{
         'error'
     );
 
-    public function __construct($reservation_id)
+    public function __construct($reservation_id = false)
     {
 
-        $this->reservation_id = $reservation_id;
+        if($reservation_id){
+            $this->reservation_id = $reservation_id;
 
-        $this->reservation = Reservation::findOrFail($this->reservation_id);
-
+            $this->reservation = Reservation::findOrFail($this->reservation_id);
+        }
     }
 
     public function fiskalReservation(){
 
+        $error = false;
 
         $invoice_type = 'reservation';
         #Get End Location
         $owner_location = false;
 
         $reservation = $this->reservation;
+
 
         #Avoid Sending Invoice Cancellation
         if($reservation->getOverallReservationStatus() == 'cancelled'){
@@ -92,6 +95,7 @@ class ValamarFiskalizacija{
             if(!$owner_location){
                 $owner_location = Point::where('pms_code','=',$acc_opera_code)->get()->first();
             }
+
 
             if($owner_location){
 
@@ -193,8 +197,25 @@ class ValamarFiskalizacija{
 
                     }
             }
+        }else{
+                $error = 'Unable to find Property with PropertyCode: '.$acc_opera_code.' and PropertyClass: '.$acc_opera_class;
+            }
+
+        }else{
+            $error = 'Unable to pull the reservation data for reservation: '.$reservation_code;
         }
 
+        #Write a fiskal Error
+        if($error){
+            ValamarFiskalizacija::write_db_log(
+                $this->reservation_id,
+                'fiskal',
+                'Reservation ID: '.$this->reservation_id,
+                json_encode(array('error' => $error)),
+                '',
+                '',
+                self::STATUS_ERROR
+            );
         }
 
     }
@@ -503,5 +524,35 @@ class ValamarFiskalizacija{
         $this->callURL = config('valamar.valamar_opera_api_url')."/".$method;
     }
 
+
+
+    public function validatePackageIDMapping(array $packageIDs){
+
+
+        if(!empty($packageIDs)){
+
+            $this->setAuthenticationHeaders();
+            $this->setCallURL('CheckPackages');
+
+            #Auth Credentials
+            $this->request = $this->auth_credentials;
+
+            #PMS Reservation ID
+
+            $this->request['PackageIDList'] = $packageIDs;
+
+            $response = Http::post($this->callURL,$this->request);
+
+            if(!$response->successful()){
+
+            }else{
+                $this->responseBody = $response->json();
+            }
+
+        }
+
+        return $this->responseBody;
+
+    }
 
 }
