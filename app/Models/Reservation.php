@@ -275,6 +275,8 @@ class Reservation extends Model
             $status = self::STATUS_CONFIRMED;
         }
 
+
+
         if($this->is_roundtrip && $this->returnReservation->status == 'confirmed' && $this->status == 'cancelled'){
             $status = self::STATUS_CONFIRMED;
         }
@@ -830,6 +832,23 @@ class Reservation extends Model
         }
 
         return $return;
+    }
+
+    public function getLatestInvoiceError(){
+
+        $error = 'Unknown error has occurred';
+
+        $invoice_log_data = \DB::table('opera_fiskal_log')->where('reservation_id',$this->id)->where('log_type','fiskal')->where('status','error')->orderBy('id','desc')->get()->first();
+
+        if(!empty($invoice_log_data)){
+           $log = json_decode($invoice_log_data->response,true);
+
+           if(!empty($log['error'])){
+               $error = trim($log['error']);
+           }
+        }
+
+        return $error;
     }
     public function getInvoiceData($param,$invoice_type = 'reservation'){
 
