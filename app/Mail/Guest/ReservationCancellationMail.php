@@ -33,7 +33,7 @@ class ReservationCancellationMail extends Mailable
 
         if($this->reservation->hasCancellationFee()){
             $pdf_cf = PDF::loadView('attachments.booking_cancellation_fee',['reservation'=>$this->reservation]);
-            $this->attachData($pdf->output(),"{$booking_cancellation_fee}_{$reservation_id}.pdf");
+            $this->attachData($pdf_cf->output(),"{$booking_cancellation_fee}_{$reservation_id}.pdf");
         }
     }
 
