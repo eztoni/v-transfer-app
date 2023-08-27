@@ -7,6 +7,8 @@ use App\Http\Livewire\ActivityLogDashboard;
 use App\Http\Livewire\CompanyOverview;
 use App\Http\Livewire\DevMailPreview;
 use App\Http\Livewire\LanguageOverview;
+use App\Mail\Guest\ReservationCancellationMail;
+use App\Services\Api\ValamarFiskalizacija;
 
  /*
      |--------------------------------------------------------------------------
@@ -26,6 +28,13 @@ Route::get('/language-overview', LanguageOverview::class)->name('language-overvi
 Route::get('edit-user/{user}', [EditUserController::class, 'showUser'])->name('edit-user');
 Route::get('/company-overview', CompanyOverview::class)->name('company-overview');
 Route::get('activity-log-dashboard', ActivityLogDashboard::class)->name('activity-log-dashboard');
+
+Route::get('/test', function () {
+
+    $mail = new ReservationCancellationMail(94,$locale??'en');
+
+});
+
 
 Route::get('/dev-mail-preview', DevMailPreview::class)->name('dev-mail-preview');
 Route::get('/res-mail-render/{type}/{id}', [MailRenderingController::class, 'renderReservationMail'])->name('res-mail-render');
