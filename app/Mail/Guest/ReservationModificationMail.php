@@ -27,6 +27,8 @@ class ReservationModificationMail extends Mailable
 
         if($this->reservation->hasCancellationFee()){
 
+            $booking_cancellation_fee = 'Cancellation Fee';
+
             if($locale == 'hr'){
                 $booking_cancellation_fee = 'Naknada Štete';
             }
