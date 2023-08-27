@@ -34,6 +34,20 @@ class ReservationModificationMail extends Mailable
             $pdf_cf = PDF::loadView('attachments.booking_cancellation_fee',['reservation'=>$this->reservation]);
             $this->attachData($pdf->output(),"{$booking_cancellation_fee}_{$reservation_id}.pdf");
         }
+
+        if($this->reservation->isRoundTrip()){
+            if($this->reservation->returnReservation->hasCancellationFee()){
+
+                $return_id = $this->reservation->round_trip_id;
+
+                if($locale == 'hr'){
+                    $booking_cancellation_fee = 'Naknada Štete';
+                }
+
+                $pdf_cf = PDF::loadView('attachments.booking_cancellation_fee',['reservation'=>$this->returnReservation]);
+                $this->attachData($pdf->output(),"{$booking_cancellation_fee}_{$return_id}.pdf");
+            }
+        }
     }
 
     public function build()
