@@ -145,7 +145,8 @@ use Actions;
 
     private function getMappedPackageRelations($accommodation_list){
 
-        $owner_partners = Partner::where('owner_id',Auth::user()->owner_id)->get();
+
+        $owner_partners =  \DB::table('partners')->where('owner_id',Auth::user()->owner_id)->get();
 
         $package_ids = array();
 
@@ -176,6 +177,8 @@ use Actions;
                 }
             }
 
+
+
             if(!empty($transfer_ids) && !empty($partner_ids)){
 
                 $mapped_routes =  \DB::table('route_transfer')
@@ -194,12 +197,12 @@ use Actions;
                 }
             }
 
+
+
             if(!empty($package_ids)){
 
                 $valamarAPI = new ValamarFiskalizacija();
                 $packageExistance = $valamarAPI->validatePackageIDMapping($package_ids);
-
-
 
                 if($packageExistance['Status'] == 'OK' && !empty($packageExistance['PackageInfo'])){
                     foreach($packageExistance['PackageInfo'] as $packMap){
@@ -218,8 +221,6 @@ use Actions;
                         }
                     }
                 }
-
-
             }
 
         }
