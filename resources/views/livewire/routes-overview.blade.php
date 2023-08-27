@@ -17,7 +17,6 @@
                     <th>Name</th>
                     <th>Start</th>
                     <th>End</th>
-                    <th class="text-center">Update</th>
                     <th class="text-right"><span class="pr-4">Delete</span></th>
 
                 </tr>
