@@ -24,6 +24,16 @@ class ReservationModificationMail extends Mailable
 
         $pdf = PDF::loadView('attachments.booking_confirmation', ['reservation'=>$this->reservation]);
         $this->attachData($pdf->output(),"Booking Confirmation_{$reservation_id}.pdf");
+
+        if($this->reservation->hasCancellationFee()){
+
+            if($locale == 'hr'){
+                $booking_cancellation_fee = 'Naknada Štete';
+            }
+
+            $pdf_cf = PDF::loadView('attachments.booking_cancellation_fee',['reservation'=>$this->reservation]);
+            $this->attachData($pdf->output(),"{$booking_cancellation_fee}_{$reservation_id}.pdf");
+        }
     }
 
     public function build()
