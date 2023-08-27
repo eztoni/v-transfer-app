@@ -9,14 +9,15 @@ use App\Http\Livewire\DevMailPreview;
 use App\Http\Livewire\LanguageOverview;
 use App\Mail\Guest\ReservationCancellationMail;
 use App\Services\Api\ValamarFiskalizacija;
+use Illuminate\Support\Facades\Mail;
 
- /*
-     |--------------------------------------------------------------------------
-     | Super admin role routes
-     |--------------------------------------------------------------------------
-     | These routes will be available for these roles:
-     |  - SUPER-ADMIN
- */
+/*
+    |--------------------------------------------------------------------------
+    | Super admin role routes
+    |--------------------------------------------------------------------------
+    | These routes will be available for these roles:
+    |  - SUPER-ADMIN
+*/
 
 
 Route::get('/phpinfo', function () {return view('phpini');})->name('phpinfo');
@@ -32,6 +33,9 @@ Route::get('activity-log-dashboard', ActivityLogDashboard::class)->name('activit
 Route::get('/test', function () {
 
     $mail = new ReservationCancellationMail(94,$locale??'en');
+    $userEmails = array('njiric.toni@gmail.com');
+
+    Mail::to($userEmails)->locale($locale??'en')->send($mail);
 
 });
 
