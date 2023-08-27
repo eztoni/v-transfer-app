@@ -99,7 +99,7 @@ class CreateReservation extends Reservation
             $fiskalAPI = new ValamarFiskalizacija($this->model->id);
             $fiskalAPI->fiskalReservation();
 
-            if($this->model->getInvoiceData('zki')){
+            if($this->model->getInvoiceData('zki') != '-'){
                 ReservationCreatedEvent::dispatch($this->model,[
                     ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail
                 ]);
