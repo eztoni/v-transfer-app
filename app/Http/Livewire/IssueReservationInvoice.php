@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Events\ReservationCreatedEvent;
 use App\Models\Reservation;
 use App\Services\Api\ValamarFiskalizacija;
 use Livewire\Component;
@@ -13,8 +14,16 @@ class IssueReservationInvoice extends Component
     public Reservation $reservation;
 
     public function issueInvoice(){
+
         $fiskal = new ValamarFiskalizacija($this->reservation->id);
         $fiskal->fiskalReservation();
+
+        if($this->reservation->getInvoiceData('zki') != '-'){
+            ReservationCreatedEvent::dispatch($this->reservation,[
+                ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM => true
+            ]);
+        }
+
         $this->notification()->success('Invoice Issued');
         $this->emit('invoiceIssueCompleted');
     }
