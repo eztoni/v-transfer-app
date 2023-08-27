@@ -9,8 +9,9 @@
                 <th>#ID</th>
                 <th>Partner Name</th>
                 <th>Cancellation Package ID</th>
-                <th>Missing Activations</th>
+                <th>Missing Cancellation Package ID activations</th>
                 <th>No Show Package ID</th>
+                <th>Missing No Show Package ID activations</th>
             </tr>
         </thead>
         @if($partners)
@@ -37,6 +38,20 @@
                     </td>
                     <td style="text-align: center">
                         {{$partner->no_show_package_id}} @if($partner->no_show_package_id > 0) <x-button sm  positive icon="check"></x-button> @else <x-button sm negative icon="check"></x-button> @endif
+                    </td>
+                    <td style="text-align: center">
+                        @if($partner->no_show_package_id > 0)
+                            @if($this->getPackagePropertyMapping($partner->no_show_package_id) > 0)
+                                @foreach($this->getPackagePropertyMapping($partner->no_show_package_id) as $code)
+                                    <small>{{$code}}  <x-button xs negative icon="check"></x-button> </small><br/>
+                                @endforeach
+                            @else
+                                <small>Mapped Properly <x-button xs positive icon="check"></x-button></small>
+                            @endif
+                        @else
+                            <small>No information.</small>
+                        @endif
+
                     </td>
                 </tr>
             @endforeach
