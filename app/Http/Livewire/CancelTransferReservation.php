@@ -80,7 +80,12 @@ use Actions;
 
                 if($this->reservation->included_in_accommodation_reservation == 0 && $this->reservation->v_level_reservation == 0){
                     $operaAPI->syncReservationWithOperaFull($this->reservation->id);
+
+                    $fiskal = new ValamarFiskalizacija($this->reservation->id);
+                    $fiskal->fiskalReservation();
                 }
+
+
 
             }else{
                 $main_res = Reservation::where('round_trip_id',$this->reservation->id)->get()->first();
@@ -89,6 +94,10 @@ use Actions;
 
                     if($this->reservation->included_in_accommodation_reservation == 0 && $this->reservation->v_level_reservation == 0) {
                         $operaAPI->syncReservationWithOperaFull($main_res->id);
+
+
+                        $fiskal = new ValamarFiskalizacija($main_res->id);
+                        $fiskal->fiskalReservation();
                     }
 
                 }
