@@ -543,7 +543,7 @@ class ValamarOperaApi{
                 ##See if there is a cancellation Fee
                 if($reservation->hasCancellationFee()){
 
-                    $this->validateCFReservationMapping();
+                    $this->validateCFReservationMapping($reservation->cancellation_type == 'no_show' ? true : false);
 
                     if(empty($this->errors)){
                         $return[] = $this->buildCFPackage($reservation,$reservation->cancellation_fee,$reservation->cancellation_type == 'no_show' ? true : false);
@@ -588,7 +588,7 @@ class ValamarOperaApi{
 
                 #Check Cancellation Fee For The Booking
                 if($reservation->isCancelled() && $reservation->hasCancellationFee()){
-                    $this->validateCFReservationMapping();
+                    $this->validateCFReservationMapping($reservation->cancellation_type == 'no_show' ? true : false);
 
                     if(empty($this->errors)){
                         $return[] = $this->buildCFPackage($reservation,$reservation->cancellation_fee,$reservation->cancellation_type == 'no_show' ? true : false);
@@ -623,7 +623,7 @@ class ValamarOperaApi{
 
                 if($this->round_trip_reservation->isCancelled() && $this->round_trip_reservation->hasCancellationFee()){
 
-                    $this->validateCFReservationMapping();
+                    $this->validateCFReservationMapping($this->round_trip_reservation->cancellation_type == 'no_show' ? true : false);
 
                     if(empty($this->errors)){
                         $return[] = $this->buildCFPackage($this->round_trip_reservation,$this->round_trip_reservation->cancellation_fee,$this->round_trip_reservation->cancellation_type == 'no_show' ? true : false);
