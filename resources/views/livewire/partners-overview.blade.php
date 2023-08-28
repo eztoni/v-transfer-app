@@ -161,7 +161,7 @@
 
                         <x-button wire:click="closeCopyTermsModal()" >Close</x-button>
                         <x-button wire:click="copyPartnerToOwner()" positive
-                        >Copy Terms</x-button>
+                        >Copy Partner</x-button>
                     </div>
                 </x-slot>
         </x-modal.card>
