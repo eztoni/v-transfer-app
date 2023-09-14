@@ -12,6 +12,7 @@
             <th>Name</th>
             <th>Internal Name</th>
             <th class="text-center">Update</th>
+            <th class="text-center">Copy Point</th>
         </tr>
         </thead>
         <tbody>
@@ -24,7 +25,10 @@
                     <x-button.circle primary wire:click="updatePoint({{$p->id}})" icon="pencil">
                     </x-button.circle>
                 </td>
-
+                <td class="text-center">
+                    <x-button wire:click="copyPoint({{$p->id}})" positive
+                    >Copy Partner</x-button>
+                </td>
 
             </tr>
         @empty
@@ -126,6 +130,32 @@
 
         </div>
 
+    </x-modal.card>
+
+
+
+    <x-modal.card title="Copy Point" wire:model="copyPointModal">
+
+        @if($this->otherDestinations)
+            <x-select option-key-value
+                      label="Destination to copy the point to:"
+                      wire:model="destinationCopyPointId"
+                      :options="$this->otherDestinations->pluck('name','id')"></x-select>
+        @endif
+        <p class="text-warning-300">By clicking Copy Point button, point will be created in the destination.</p>
+        @if($this->copyPoint)
+            @if($this->copyPoint->parent_point_id > 0)
+                <p class="text-danger-100" style="color: darkred;font-weight:bold;">Before copying this point, make sure it's parent point is copied first.</p>
+            @endif
+        @endif
+        <x-slot name="footer">
+            <div class="flex justify-between">
+
+                <x-button wire:click="closeCopyPointModal()" >Close</x-button>
+                <x-button wire:click="copyPointToDestination()" positive
+                >Copy Point</x-button>
+            </div>
+        </x-slot>
     </x-modal.card>
 
 

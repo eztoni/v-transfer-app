@@ -33,11 +33,15 @@ use Actions;
     public bool $importPoint = false;
     public $valamarPropertiesFromApi;
     public $point_options = array();
-
+    public $otherDestinations = array();
+    public $copyPointModal = false;
+    public $destinationCopyPointId = 0;
     public $companyLanguages = ['en'];
     public $pointName = [
         'en' => null
     ];
+    public $copyPoint = false;
+    public $copyDestination = 0;
 
     public function mount()
     {
@@ -48,6 +52,11 @@ use Actions;
         $this->setPointInitialTranslations();
         $this->loadParentPointsArray();
 
+        $this->otherDestinations = \DB::table('destinations')->where('owner_id',Auth::user()->owner_id)->where('id','!=',Auth::user()->destination_id)->get();
+
+        if(!empty($this->otherDestinations)){
+            $this->destinationCopyPointId = $this->otherDestinations->first()->id;
+        }
     }
 
     protected function rules()
@@ -94,6 +103,23 @@ use Actions;
               $this->point_options[$option->id] = $option->internal_name;
           }
       }
+    }
+
+    public function copyPoint($point_id){
+
+        $this->copyPoint = Point::findorfail($point_id);
+
+        $this->openCopyPointModal();
+    }
+
+    public function openCopyPointModal(){
+        $this->copyPointModal = true;
+    }
+
+
+
+    public function closeCopyPointModal(){
+        $this->copyPointModal = false;
     }
 
     public function updatedPointName()
@@ -194,6 +220,22 @@ use Actions;
             $this->point->address = Arr::get($dataFromApi,'address')?:'';
             $this->importPoint = false;
         }
+    }
+
+    public function copyPointToDestination(){
+
+        if($this->destinationCopyPointId > 0){
+
+            $pointCopy = $this->copyPoint->replicate();
+
+            $pointCopy->destination_id = $this->destinationCopyPointId;
+
+            $pointCopy->save();
+
+            $this->notification()->success('Point copied to destination','',);
+        }
+
+        $this->closeCopyPointModal();
     }
 
 
