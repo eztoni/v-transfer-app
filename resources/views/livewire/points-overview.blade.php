@@ -27,7 +27,7 @@
                 </td>
                 <td class="text-center">
                     <x-button wire:click="copyPoint({{$p->id}})" positive
-                    >Copy Partner</x-button>
+                    >Copy Point</x-button>
                 </td>
 
             </tr>
