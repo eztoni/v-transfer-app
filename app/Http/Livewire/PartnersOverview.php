@@ -68,6 +68,10 @@ class PartnersOverview extends Component
         $this->partnerPreviewId = 0;
     }
 
+    public function closeCopyTermsModal(){
+        $this->copyPartnerModal = false;
+    }
+
     protected function rules()
     {
         $ruleArray= [
