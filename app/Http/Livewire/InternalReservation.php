@@ -463,7 +463,6 @@ class InternalReservation extends Component
             $api->setCheckOutFilter(Carbon::create($this->pullDataFields['dTo']));
         }
 
-
         $this->apiData = $api->getReservationList();
     }
 
@@ -498,7 +497,7 @@ class InternalReservation extends Component
         $this->stepOneFields['returnDateTime'] = Carbon::make(Arr::get($data, 'checkOut'))?->format('d.m.Y').' '.substr($this->stepOneFields['returnDateTime'],11,5);
 
         if ($checkInDate?->isPast()) {
-            $this->stepOneFields['dateTime'] = $this->stepOneFields['returnDateTime'];
+            $this->stepOneFields['dateTime'] = $this->stepOneFields['dateTime'];
         } else {
             $this->roundTrip = true;
             $this->stepOneFields['dateTime'] = $checkInDate->format('d.m.Y').' '.substr($this->stepOneFields['dateTime'],11,5);
