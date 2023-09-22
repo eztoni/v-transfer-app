@@ -19,7 +19,7 @@ class Destination extends Model
     use LogsActivity;
     use FieldMask;
 
-    protected $masked = ['name'];
+    protected $masked = [];
 
     protected $fillable = [
         'name',
