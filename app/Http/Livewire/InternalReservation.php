@@ -380,12 +380,21 @@ class InternalReservation extends Component
     {
         $this->validateOnly($property, array_merge($this->stepOneRules(), $this->stepTwoRules()), [], $this->fieldNames);
 
+
         if (in_array($property, [
             'stepOneFields.startingPointId',
             'stepOneFields.endingPointId',
         ])) {
-            $this->resetAdresses();
+
+            if($property == 'stepOneFields.endingPointId' && $this->stepOneFields['pickupAddressId'] != ''){
+                $this->stepOneFields['dropoffAddress'] = '';
+            }else{
+                $this->resetAdresses();
+            }
         }
+
+
+
 
         if (array_key_exists(Str::replace('stepOneFields.', '', $property), $this->stepOneFields)) {
             $this->isTransferAvailableAfterDataChange();
