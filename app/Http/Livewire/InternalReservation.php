@@ -390,6 +390,7 @@ class InternalReservation extends Component
             if($property == 'stepOneFields.endingPointId' && $this->stepOneFields['pickupAddressId'] != ''){
                 $this->stepOneFields['dropoffAddress'] = '';
             }else{
+
                 $this->resetAdresses();
             }
         }
@@ -424,7 +425,6 @@ class InternalReservation extends Component
     public function resetAdresses()
     {
         $this->stepOneFields['pickupAddress'] = $this->stepOneFields['dropoffAddress'] = '';
-        $this->getPickupAddressPointsProperty();
     }
 
 
@@ -547,11 +547,12 @@ class InternalReservation extends Component
     //reset the points when we change destination
     public function updatedStepOneFieldsStartingPointId()
     {
+        $this->stepOneFields['endingPointId'] = '';
+        $this->stepOneFields['pickupAddressId'] = $this->stepOneFields['endingAddressId'] = '';
+
         if (!$this->getEndingPointsProperty()->contains(function ($item) {
             return $item->id === (int)$this->stepOneFields['endingPointId'];
-        })) {
-            $this->stepOneFields['endingPointId'] = '';
-        }
+        }));
     }
 
     public function getDestinationsWithRoutesProperty()
