@@ -907,6 +907,19 @@ class Reservation extends Model
         });
     }
 
+    public function getReservationReceptionEmail(){
+
+        $return = false;
+
+        $email = $this->getAccommodationData('reception_email');
+
+        if(!empty($email) && filter_var($email,FILTER_VALIDATE_EMAIL)){
+            $return = trim($email);
+        }
+
+        return $return;
+    }
+
     protected function priceBreakdown(): Attribute
     {
         return Attribute::make(

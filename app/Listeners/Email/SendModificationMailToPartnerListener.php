@@ -32,10 +32,15 @@ class SendModificationMailToPartnerListener
     public function handle(ReservationUpdatedEvent $event)
     {
         if( $event->shouldSendMail()){
+
             $reservation = $event->reservation;
 
             if($partnerEmail = $event->reservation->partner?->email){
                 $this->emailList['partnerMail'] = $partnerEmail;
+            }
+
+            if($receptionEmail = $event->reservation->getReservationReceptionEmail()){
+                $this->emailList['receptionMail'] = $receptionEmail;
             }
 
             if($this->emailList){

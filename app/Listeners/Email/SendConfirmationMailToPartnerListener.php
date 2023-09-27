@@ -39,6 +39,10 @@ class SendConfirmationMailToPartnerListener
                 $this->emailList['partnerMail'] = $partnerEmail;
             }
 
+            if($receptionEmail = $event->reservation->getReservationReceptionEmail()){
+                $this->emailList['receptionMail'] = $receptionEmail;
+            }
+
             if($this->emailList){
                 $this->sendConfirmationMail($event->reservation->id);
             }
