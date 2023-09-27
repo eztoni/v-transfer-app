@@ -25,9 +25,14 @@
                             <x-button.circle disabled primary icon="pencil">
                             </x-button.circle>
                         </td>
+                    @elseif( $user_data->id == 29)
+                        <td class="text-center">
+                            <x-button.circle primary disabled  wire:click="updateUser({{$user_data->id}})" icon="pencil">
+                            </x-button.circle>
+                        </td>
                     @else
                         <td class="text-center">
-                            <x-button.circle primary wire:click="updateUser({{$user_data->id}})" icon="pencil">
+                            <x-button.circle primary  icon="pencil">
                             </x-button.circle>
                         </td>
                    @endif
