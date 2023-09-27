@@ -386,15 +386,13 @@ class InternalReservation extends Component
             'stepOneFields.endingPointId',
         ])) {
 
+
             if($property == 'stepOneFields.endingPointId' && $this->stepOneFields['pickupAddressId'] != ''){
                 $this->stepOneFields['dropoffAddress'] = '';
             }else{
                 $this->resetAdresses();
             }
         }
-
-
-
 
         if (array_key_exists(Str::replace('stepOneFields.', '', $property), $this->stepOneFields)) {
             $this->isTransferAvailableAfterDataChange();
@@ -426,6 +424,7 @@ class InternalReservation extends Component
     public function resetAdresses()
     {
         $this->stepOneFields['pickupAddress'] = $this->stepOneFields['dropoffAddress'] = '';
+        $this->getPickupAddressPointsProperty();
     }
 
 
