@@ -164,14 +164,16 @@ class DestinationReport extends Component
                 })
                 ->get()
                 ->filter(function (Reservation $i){
+
                     if($this->isPPOMReporting){
-                        if(\Arr::get($i->transfer_price_state,'price_data.tax_level') != 'PPOM'){
+
+                        if($i->getRouteTransferTaxLevel() != 'PPOM'){
                             return false;
                         }
                     }
 
                     if($this->isRPOReporting){
-                        if(\Arr::get($i->transfer_price_state,'price_data.tax_level') != 'RPO'){
+                        if($i->getRouteTransferTaxLevel() != 'RPO'){
                             return false;
                         }
                     }
@@ -293,7 +295,7 @@ class DestinationReport extends Component
                             }
                         }
                     }
-                    
+
                     return [
                         'id' => $i->id,
                         'name' => $i->leadTraveller?->full_name,
