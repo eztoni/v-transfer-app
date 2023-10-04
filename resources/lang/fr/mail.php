@@ -48,6 +48,6 @@ return [
     'li_3_2' => 'La ceinture de sécurité doit être portée en tout temps.',
     'other_travellers' => 'Autres Voyageurs',
     'price' => 'Prix',
-    'transfer' => 'Transfer'
-
+    'transfer' => 'Transfer',
+    'telephone' => 'Téléphone'
 ];

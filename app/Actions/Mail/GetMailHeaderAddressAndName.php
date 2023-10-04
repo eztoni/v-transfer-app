@@ -32,7 +32,7 @@ class GetMailHeaderAddressAndName
             }
 
 
-            $header .= '<br/>Telephone: +385 (20) 52 465 000<br/>';
+            $header .= '<br/>'.__('mail.telephone').': +385 (20) 52 465 000<br/>';
             $header .= 'Fax: +385 (20) 52 451 206';
 
         switch ($reservation->destination->owner_id){
