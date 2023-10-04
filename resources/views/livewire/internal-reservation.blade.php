@@ -100,7 +100,7 @@
                                             <th>{{\Carbon\Carbon::parse(\Illuminate\Support\Arr::get($r,'checkOut'))->format('d.m.Y')}}</th>
                                             <th>{{\Illuminate\Support\Arr::get($r,'status')}}</th>
                                             <td>
-                                                @if(\Illuminate\Support\Arr::get($r,'status') == 'CANCEL')
+                                                @if(\Illuminate\Support\Arr::get($r,'status') == 'CANCEL' || \Illuminate\Support\Arr::get($r,'status') == 'CHECKED OUT')
                                                     <x-button.circle sm negative disabled wire:click=""
                                                                      icon="cloud-download"/>
                                                 @else
@@ -178,6 +178,7 @@
                                                 $itemSelected = false;
                                             @endphp
                                             @foreach($this->pickupAddressPoints as $pickupAddressPoint)
+
                                                 <option
                                                     @if($this->stepOneFields['pickupAddress'] === $pickupAddressPoint->name. ' ' . $pickupAddressPoint->address)
                                                     selected
