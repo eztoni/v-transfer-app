@@ -311,7 +311,7 @@ class DestinationReport extends Component
                         'round_trip' => $i->is_round_trip,
                         'round_trip_date' => $i->returnReservation?->date_time?->format('d.m.Y @ H:i'),
                         'voucher_date' => $i->created_at->format('d.m.Y'),
-                        'tax_level'=>  \Arr::get($i->transfer_price_state,'price_data.tax_level'),
+                        'tax_level'=>  $i->getRouteTransferTaxLevel(),
                         'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
                         'commission_amount'=>  $total_comm,
                         'net_income' => $net_profit,
