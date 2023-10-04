@@ -58,7 +58,16 @@
             @endif
 
             <p style="font-size: 14px"><b>{{__('mail.direction')}}:</b>
-                {{ $reservation->returnReservation ? 'Round Trip' : 'One Way' }}</p>
+                @if( $reservation->returnReservation)
+                    @if($reservation->returnReservation->status == 'cancelled' || $reservation->status == 'cancelled')
+                        One Way
+                    @else
+                        Round Trip
+                    @endif
+                @else
+                    One Way
+                @endif
+            </p>
 
         </x-mail.row>
         <x-mail.divider></x-mail.divider>
@@ -72,32 +81,37 @@
                 {{__('mail.transfer_itinerary')}}
                 </span>
             </h3>
+            @if($reservation->status == 'confirmed')
+                <p style="font-size: 14px"><b>{{__('mail.pickup_date')}}: </b> {{$reservation->date_time->format('d.m.Y')}}
+                </p>
+                @if($reservation->flight_number)
+                    <p style="font-size: 14px"><b>{{__('mail.flight_number')}}:</b> {{$reservation->flight_number}}</p>
+                @endif
+                <p style="font-size: 14px"><b>{{__('mail.pickup_address')}}: </b> {{$reservation->pickup_address}}</p>
+                <p style="font-size: 14px"><b>{{__('mail.pickup_time')}}: </b> {{$reservation->date_time->format('H:i')}}
+                </p>
+                <p style="font-size: 14px"><b>{{__('mail.dropoff_address')}}: </b> {{$reservation->dropoff_address}}</p>
+                @if($reservation->transfer?->vehicle?->type)
+                    <p style="font-size: 14px"><b>{{__('mail.vehicle_type')}}
+                            : </b> {{$reservation->transfer->vehicle->type}}</p>
+                @endif
 
-            <p style="font-size: 14px"><b>{{__('mail.pickup_date')}}: </b> {{$reservation->date_time->format('d.m.Y')}}
-            </p>
-            @if($reservation->flight_number)
-                <p style="font-size: 14px"><b>{{__('mail.flight_number')}}:</b> {{$reservation->flight_number}}</p>
-            @endif
-            <p style="font-size: 14px"><b>{{__('mail.pickup_address')}}: </b> {{$reservation->pickup_address}}</p>
-            <p style="font-size: 14px"><b>{{__('mail.pickup_time')}}: </b> {{$reservation->date_time->format('H:i')}}
-            </p>
-            <p style="font-size: 14px"><b>{{__('mail.dropoff_address')}}: </b> {{$reservation->dropoff_address}}</p>
-            @if($reservation->transfer?->vehicle?->type)
-                <p style="font-size: 14px"><b>{{__('mail.vehicle_type')}}
-                        : </b> {{$reservation->transfer->vehicle->type}}</p>
+                @if(count($reservation->extras) > 0)
+                    <p style="font-size: 14px"><b>{{__('mail.extras')}}
+                            : </b> {{$reservation->get_extras_list()}}</p>
+                @endif
+
+                @if($reservation->remark)
+                    <p style="font-size: 14px"><b>{{__('mail.remark')}}:</b> {{$reservation->remark}}</p>
+                @endif
             @endif
 
-            @if(count($reservation->extras) > 0)
-                <p style="font-size: 14px"><b>{{__('mail.extras')}}
-                        : </b> {{$reservation->get_extras_list()}}</p>
+            @if($reservation->status == 'confirmed' && $reservation->returnReservation && $reservation->returnReservation->status == 'confirmed')
+                                <p style="margin-top: 20px;">{!! __('mail.please_note_round_trip') !!}</p>
+                                <br>
             @endif
+            @if($reservation->returnReservation && $reservation->returnReservation->status == 'confirmed')
 
-            @if($reservation->remark)
-                <p style="font-size: 14px"><b>{{__('mail.remark')}}:</b> {{$reservation->remark}}</p>
-            @endif
-            @if($reservation->returnReservation)
-                <p style="margin-top: 20px;">{!! __('mail.please_note_round_trip') !!}</p>
-                <br>
                 <p style="font-size: 14px"><b>{{__('mail.pickup_date')}}
                         : </b> {{$reservation->returnReservation->date_time->format('d.m.Y')}}</p>
                 @if($reservation->flight_number)
