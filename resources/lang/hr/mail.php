@@ -75,7 +75,7 @@ Prilikom uspješne kupnje sklopljen je ugovor za proizvod/e naveden/e u potvrdi 
         'cancellation_mail' => [
             'subject' => 'Otkaz vaše rezervacije',
             'body' => [
-                'thank_you' => 'U nastavku nalazi se potvrda o otkazu rezervacije.',
+                'thank_you' => 'U privitku nalazi se potvrda o otkazu rezervacije.',
                 'body' => '
 
 U slučaju posebnih zahtjeva s vaše strane slobodno se javite povratno na ovaj mail.
