@@ -35,7 +35,7 @@ class Reservation extends Model
         'en' => 'English',
         'hr' => 'Hrvatski',
         'de' => 'German',
-        'fr' => 'French',
+        #'fr' => 'French',
         'it' => 'Italian',
     ];
 
