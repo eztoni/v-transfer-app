@@ -61,11 +61,22 @@ Route::get('/agent-efficiency',\App\Http\Livewire\AgentEfficiency::class)->name(
 
 Route::get('/mail-test',function(){
 
-    $reservation = Reservation::findOrFail(172);
+    $reservation = Reservation::findOrFail(163);
 
-    ReservationWarningEvent::dispatch($reservation,[
-        ReservationWarningEvent::SEND_MAIL_CONFIG_PARAM => true,
-    ]);
+    $price = $reservation->price;
+
+    if($reservation->isRoundTrip && $reservation->returnReservation->status == 'confirmed'){
+        $price = $price*2;
+    }
+
+    if($reservation->isRoundTrip && $reservation->status == 'cancelled' && $reservation->returnReservation->status == 'confirmed'){
+        $price = $reservation->returnReservation->price;
+    }
+
+
+    $amount = number_format($price/100,2,'.','');
+
+    dd($amount);
 });
 
 // Prefixed admin routes. There is no difference other than /admin/ prefix in url
