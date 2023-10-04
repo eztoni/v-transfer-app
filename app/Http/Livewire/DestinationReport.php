@@ -293,10 +293,10 @@ class DestinationReport extends Component
                             }
                         }
                     }
-
+                    
                     return [
                         'id' => $i->id,
-                        'name' => $i->leadTraveller?->first()->full_name,
+                        'name' => $i->leadTraveller?->full_name,
                         'date_time' => $i->date_time?->format('d.m.Y'),
                         'partner' => $i->partner->name,
                         'adults' => $i->adults,
