@@ -102,195 +102,157 @@ class NotifyController extends Controller
 
         $return = true;
 
-        $result = DB::table('travellers')->where('reservation_opera_confirmation',$opera_confirmation)->where('reservation_opera_id',$opera_id)->first();
+        $results = DB::table('travellers')->where('reservation_opera_confirmation',$opera_confirmation)->where('reservation_opera_id',$opera_id);
 
-        if(!empty($result)){
+        if(!empty($results)){
 
-            $res_traveller_data = DB::table('reservation_traveller')->where('traveller_id',$result->id)->first();
+            foreach($results as $result){
+                
+                $res_traveller_data = DB::table('reservation_traveller')->where('traveller_id',$result->id)->first();
 
-            if(!empty($res_traveller_data)){
+                if(!empty($res_traveller_data)){
 
-                $reservation = Reservation::findOrFail($res_traveller_data->reservation_id);
+                    $reservation = Reservation::findOrFail($res_traveller_data->reservation_id);
 
-                $return_reservation = false;
+                    $return_reservation = false;
 
-                $is_round_trip = false;
+                    $is_round_trip = false;
 
-                if(!$reservation){
-                    return "No reservation with OperaID: ".$opera_id.' \ Opera Confirmation: '.$opera_confirmation;
-                }
+                    if(!$reservation){
+                        return "No reservation with OperaID: ".$opera_id.' \ Opera Confirmation: '.$opera_confirmation;
+                    }
 
-                if(is_numeric($reservation->round_trip_id)){
-                    $is_round_trip = true;
-                    $return_reservation = Reservation::findOrFail($reservation->round_trip_id);
-                }
+                    if(is_numeric($reservation->round_trip_id)){
+                        $is_round_trip = true;
+                        $return_reservation = Reservation::findOrFail($reservation->round_trip_id);
+                    }
 
-                $reservation_date = Carbon::create($reservation->date_time)->toDateString();
-                $reservation_time = Carbon::create($reservation->date_time)->toTimeString();
+                    $reservation_date = Carbon::create($reservation->date_time)->toDateString();
+                    $reservation_time = Carbon::create($reservation->date_time)->toTimeString();
 
-                if($is_round_trip){
-                    $return_reservation_date = Carbon::create($return_reservation->date_time)->toDateString();
-                    $return_reservation_time = Carbon::create($return_reservation->date_time)->toTimeString();
-                }
+                    if($is_round_trip){
+                        $return_reservation_date = Carbon::create($return_reservation->date_time)->toDateString();
+                        $return_reservation_time = Carbon::create($return_reservation->date_time)->toTimeString();
+                    }
 
-                $this->api_handler->setReservationCodeFilter($result->reservation_number);
+                    $this->api_handler->setReservationCodeFilter($result->reservation_number);
 
-                $valamar_res_data = $this->api_handler->getReservationList();
+                    $valamar_res_data = $this->api_handler->getReservationList();
 
-                $is_round_trip = false;
+                    $is_round_trip = false;
 
-                if(!empty($valamar_res_data[$result->reservation_number])){
+                    if(!empty($valamar_res_data[$result->reservation_number])){
 
-                    #Check Reservation Status Change
-                    if($reservation->getOverallReservationStatus() == Reservation::STATUS_CONFIRMED){
+                        #Check Reservation Status Change
+                        if($reservation->getOverallReservationStatus() == Reservation::STATUS_CONFIRMED){
 
-                        $opera_res_status = $valamar_res_data[$result->reservation_number]['status'];
+                            $opera_res_status = $valamar_res_data[$result->reservation_number]['status'];
 
-                        switch ($opera_res_status){
+                            switch ($opera_res_status){
 
-                            case 'CANCEL':
-                            case 'NO SHOW':
+                                case 'CANCEL':
+                                case 'NO SHOW':
 
-                                $reservation->status = Reservation::STATUS_CANCELLED;
+                                    $reservation->status = Reservation::STATUS_CANCELLED;
 
-                                $cancel = new CancelReservation($reservation);
+                                    $cancel = new CancelReservation($reservation);
 
-                                $partner = Partner::findOrFail($reservation->partner_id);
+                                    $partner = Partner::findOrFail($reservation->partner_id);
 
-                                $now = Carbon::now();
+                                    $now = Carbon::now();
 
-                                $cancellationDate = $now->addHour();
+                                    $cancellationDate = $now->addHour();
 
-                                $transferDateTime = $reservation->date_time;
+                                    $transferDateTime = $reservation->date_time;
 
-                                #Calculate Hours Difference
-                                $hours_difference = $transferDateTime->diffInHours($now);
-
-
-                                $cancel_type = 0;
+                                    #Calculate Hours Difference
+                                    $hours_difference = $transferDateTime->diffInHours($now);
 
 
-                                switch ($hours_difference){
-                                    case $hours_difference > 24:
-                                        $cancellation_fee_nominal = 0;
-                                        $cancellation_fee_percent = 0;
-                                        break;
-                                    default:
-                                        if($hours_difference >= 12){
-                                            $cancel_type = 24;
-                                        }
+                                    $cancel_type = 0;
 
-                                        if($hours_difference < 12){
-                                            $cancel_type = 12;
-                                        }
 
-                                        $cancellation_fee_type = $partner->cf_type;
-
-                                        if($cancellation_fee_type == 'percent'){
-
-                                            $reservationTotal = $reservation->getPrice();
-
-                                            if($cancel_type == 24){
-                                                $cf_calc_amount = $partner->cf_amount_24;
-                                            }elseif ($cancel_type == 12){
-                                                $cf_calc_amount = $partner->cf_amount_12;
+                                    switch ($hours_difference){
+                                        case $hours_difference > 24:
+                                            $cancellation_fee_nominal = 0;
+                                            $cancellation_fee_percent = 0;
+                                            break;
+                                        default:
+                                            if($hours_difference >= 12){
+                                                $cancel_type = 24;
                                             }
 
-                                            $cf_amount = number_format($reservationTotal->formatByDecimal()*($cf_calc_amount/100),2);
+                                            if($hours_difference < 12){
+                                                $cancel_type = 12;
+                                            }
 
-                                            $cancellation_fee_nominal = $cf_amount;
-                                        }
-                                }
+                                            $cancellation_fee_type = $partner->cf_type;
+
+                                            if($cancellation_fee_type == 'percent'){
+
+                                                $reservationTotal = $reservation->getPrice();
+
+                                                if($cancel_type == 24){
+                                                    $cf_calc_amount = $partner->cf_amount_24;
+                                                }elseif ($cancel_type == 12){
+                                                    $cf_calc_amount = $partner->cf_amount_12;
+                                                }
+
+                                                $cf_amount = number_format($reservationTotal->formatByDecimal()*($cf_calc_amount/100),2);
+
+                                                $cancellation_fee_nominal = $cf_amount;
+                                            }
+                                    }
 
 
-                                $cancel->cancelReservation($cancellationDate,'cancellation',$cancellation_fee_nominal,true,29);
+                                    $cancel->cancelReservation($cancellationDate,'cancellation',$cancellation_fee_nominal,true,29);
 
-                                if($reservation->included_in_accommodation_reservation == 0){
+                                    if($reservation->included_in_accommodation_reservation == 0){
 
-                                    $operaAPI = new ValamarOperaApi();
+                                        $operaAPI = new ValamarOperaApi();
 
-                                    if($reservation->is_main){
-                                        $operaAPI->syncReservationWithOperaFull($reservation->id);
-                                        $fiskalValamar = new ValamarFiskalizacija($reservation->id);
-                                        $fiskalValamar->fiskalReservation();
-
-                                        if($reservation->hasCancellationFee()){
-                                            $fiskalValamar->fiskalReservationCF($reservation->getCancellationFeeAmount(true));
-                                        }
-
-                                    }else{
-                                        $main_res = Reservation::where('round_trip_id',$reservation->id)->get()->first();
-
-                                        if($main_res){
-
-                                            $operaAPI->syncReservationWithOperaFull($main_res->id);
-                                            $fiskalValamar = new ValamarFiskalizacija($main_res->id);
+                                        if($reservation->is_main){
+                                            $operaAPI->syncReservationWithOperaFull($reservation->id);
+                                            $fiskalValamar = new ValamarFiskalizacija($reservation->id);
                                             $fiskalValamar->fiskalReservation();
 
-                                            if($main_res->hasCancellationFee()){
-                                                $fiskalValamar->fiskalReservationCF($main_res->getCancellationFeeAmount(true));
+                                            if($reservation->hasCancellationFee()){
+                                                $fiskalValamar->fiskalReservationCF($reservation->getCancellationFeeAmount(true));
+                                            }
+
+                                        }else{
+                                            $main_res = Reservation::where('round_trip_id',$reservation->id)->get()->first();
+
+                                            if($main_res){
+
+                                                $operaAPI->syncReservationWithOperaFull($main_res->id);
+                                                $fiskalValamar = new ValamarFiskalizacija($main_res->id);
+                                                $fiskalValamar->fiskalReservation();
+
+                                                if($main_res->hasCancellationFee()){
+                                                    $fiskalValamar->fiskalReservationCF($main_res->getCancellationFeeAmount(true));
+                                                }
                                             }
                                         }
                                     }
-                                }
 
-                                $change = true;
+                                    $change = true;
 
-                                return true;
-                                break;
-                        }
-                    }
-
-                    $change = false;
-
-                    #Compare Data with the existing booking
-                    $current_accommodation_checkin = $valamar_res_data[$result->reservation_number]['checkIn'];
-                    $current_accommodation_checkout = $valamar_res_data[$result->reservation_number]['checkOut'];
-
-                    $res_type = 'outgoing';
-
-                    if(is_numeric($reservation->dropoff_address_id)){
-                        $point = Point::find($reservation->dropoff_address_id);
-
-                        if($point){
-                            if($point->type == Point::TYPE_ACCOMMODATION){
-                                $res_type = 'incoming';
+                                    return true;
+                                    break;
                             }
                         }
-                    }
 
-                    if($res_type == 'outgoing'){
+                        $change = false;
 
-                        if($current_accommodation_checkout != $reservation_date){
-
-                            $reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$reservation_time)->toDateTimeString();
-
-                            $updater = new UpdateReservation($reservation);
-                            $updater->setSendMailBool(true);
-
-                            $updater->updateReservation();
-                            $change = true;
-                        }
-
-                    }elseif($res_type == 'incoming'){
-
-                        if($current_accommodation_checkin != $reservation_date){
-                            $reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$reservation_time)->toDateTimeString();
-                            $updater = new UpdateReservation($reservation);
-                            $updater->setSendMailBool(true);
-
-                            $updater->updateReservation();
-
-                            $change = true;
-                        }
-                    }
-
-                    if($is_round_trip){
+                        #Compare Data with the existing booking
+                        $current_accommodation_checkin = $valamar_res_data[$result->reservation_number]['checkIn'];
+                        $current_accommodation_checkout = $valamar_res_data[$result->reservation_number]['checkOut'];
 
                         $res_type = 'outgoing';
 
-                        if(is_numeric($return_reservation->dropoff_address_id)){
-                            $point = Point::find($return_reservation->dropoff_address_id);
+                        if(is_numeric($reservation->dropoff_address_id)){
+                            $point = Point::find($reservation->dropoff_address_id);
 
                             if($point){
                                 if($point->type == Point::TYPE_ACCOMMODATION){
@@ -300,34 +262,77 @@ class NotifyController extends Controller
                         }
 
                         if($res_type == 'outgoing'){
-                            if($current_accommodation_checkout != $return_reservation_date){
-                                $return_reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$return_reservation_time)->toDateTimeString();
-                                $updater = new UpdateReservation($return_reservation);
+
+                            if($current_accommodation_checkout != $reservation_date){
+
+                                $reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$reservation_time)->toDateTimeString();
+
+                                $updater = new UpdateReservation($reservation);
                                 $updater->setSendMailBool(true);
 
                                 $updater->updateReservation();
                                 $change = true;
                             }
-                        }elseif($res_type == 'incoming'){
-                            if($current_accommodation_checkin != $return_reservation_date){
-                                $return_reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$return_reservation_time)->toDateTimeString();
 
-                                $updater = new UpdateReservation($return_reservation);
+                        }elseif($res_type == 'incoming'){
+
+                            if($current_accommodation_checkin != $reservation_date){
+                                $reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$reservation_time)->toDateTimeString();
+                                $updater = new UpdateReservation($reservation);
                                 $updater->setSendMailBool(true);
 
                                 $updater->updateReservation();
+
                                 $change = true;
                             }
                         }
+
+                        if($is_round_trip){
+
+                            $res_type = 'outgoing';
+
+                            if(is_numeric($return_reservation->dropoff_address_id)){
+                                $point = Point::find($return_reservation->dropoff_address_id);
+
+                                if($point){
+                                    if($point->type == Point::TYPE_ACCOMMODATION){
+                                        $res_type = 'incoming';
+                                    }
+                                }
+                            }
+
+                            if($res_type == 'outgoing'){
+                                if($current_accommodation_checkout != $return_reservation_date){
+                                    $return_reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$return_reservation_time)->toDateTimeString();
+                                    $updater = new UpdateReservation($return_reservation);
+                                    $updater->setSendMailBool(true);
+
+                                    $updater->updateReservation();
+                                    $change = true;
+                                }
+                            }elseif($res_type == 'incoming'){
+                                if($current_accommodation_checkin != $return_reservation_date){
+                                    $return_reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$return_reservation_time)->toDateTimeString();
+
+                                    $updater = new UpdateReservation($return_reservation);
+                                    $updater->setSendMailBool(true);
+
+                                    $updater->updateReservation();
+                                    $change = true;
+                                }
+                            }
+                        }
+
+                        return true;
+
+                    }else{
+                        return 'Unable to fetch reservation data for reservation '.$result->reservation_number;
                     }
 
-                    return true;
-
-                }else{
-                    return 'Unable to fetch reservation data for reservation '.$result->reservation_number;
                 }
-
             }
+
+
         }else{
             return 'Reservation not present in the system';
         }
