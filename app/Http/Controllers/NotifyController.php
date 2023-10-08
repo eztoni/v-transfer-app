@@ -156,6 +156,9 @@ class NotifyController extends Controller
 
                             $opera_res_status = $valamar_res_data[$result->reservation_number]['status'];
 
+
+                            $opera_res_status = 'CONFIRMED';
+
                             switch ($opera_res_status){
 
                                 case 'CANCEL':
@@ -243,90 +246,95 @@ class NotifyController extends Controller
 
                                     $change = true;
 
-                                    continue;
                                     break;
+
+                                case 'CONFIRMED':
+
+                                    $change = false;
+
+                                    #Compare Data with the existing booking
+                                    $current_accommodation_checkin = $valamar_res_data[$result->reservation_number]['checkIn'];
+                                    $current_accommodation_checkout = $valamar_res_data[$result->reservation_number]['checkOut'];
+
+                                    $res_type = 'outgoing';
+
+                                    if(is_numeric($reservation->dropoff_address_id)){
+
+                                        $point = Point::find($reservation->dropoff_address_id);
+
+                                        if($point){
+                                            if($point->type == Point::TYPE_ACCOMMODATION){
+                                                $res_type = 'incoming';
+                                            }
+                                        }
+                                    }
+
+                                    if($res_type == 'outgoing'){
+
+                                        if($current_accommodation_checkout != $reservation_date){
+
+                                            $reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$reservation_time)->toDateTimeString();
+
+                                            $updater = new UpdateReservation($reservation);
+                                            $updater->setSendMailBool(true);
+
+                                            $updater->updateReservation();
+                                            $change = true;
+                                        }
+
+                                    }elseif($res_type == 'incoming'){
+
+                                        if($current_accommodation_checkin != $reservation_date){
+                                            $reservation->date_time = Carbon::create($current_accommodation_checkin.' '.$reservation_time)->toDateTimeString();
+                                            $updater = new UpdateReservation($reservation);
+                                            $updater->setSendMailBool(true);
+
+                                            $updater->updateReservation();
+
+                                            $change = true;
+                                        }
+                                    }
+
+                                    if($is_round_trip){
+
+                                        $res_type = 'outgoing';
+
+                                        if(is_numeric($return_reservation->dropoff_address_id)){
+                                            $point = Point::find($return_reservation->dropoff_address_id);
+
+                                            if($point){
+                                                if($point->type == Point::TYPE_ACCOMMODATION){
+                                                    $res_type = 'incoming';
+                                                }
+                                            }
+                                        }
+
+                                        if($res_type == 'outgoing'){
+                                            if($current_accommodation_checkout != $return_reservation_date){
+                                                $return_reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$return_reservation_time)->toDateTimeString();
+                                                $updater = new UpdateReservation($return_reservation);
+                                                $updater->setSendMailBool(true);
+
+                                                $updater->updateReservation();
+                                                $change = true;
+                                            }
+                                        }elseif($res_type == 'incoming'){
+                                            if($current_accommodation_checkin != $return_reservation_date){
+                                                $return_reservation->date_time = Carbon::create($current_accommodation_checkin.' '.$return_reservation_time)->toDateTimeString();
+
+                                                $updater = new UpdateReservation($return_reservation);
+                                                $updater->setSendMailBool(true);
+
+                                                $updater->updateReservation();
+                                                $change = true;
+                                            }
+                                        }
+                                    }
+
+                                    break;
+
                             }
                         }
-
-//                        $change = false;
-//
-//                        #Compare Data with the existing booking
-//                        $current_accommodation_checkin = $valamar_res_data[$result->reservation_number]['checkIn'];
-//                        $current_accommodation_checkout = $valamar_res_data[$result->reservation_number]['checkOut'];
-//
-//                        $res_type = 'outgoing';
-//
-//                        if(is_numeric($reservation->dropoff_address_id)){
-//                            $point = Point::find($reservation->dropoff_address_id);
-//
-//                            if($point){
-//                                if($point->type == Point::TYPE_ACCOMMODATION){
-//                                    $res_type = 'incoming';
-//                                }
-//                            }
-//                        }
-//
-//                        if($res_type == 'outgoing'){
-//
-//                            if($current_accommodation_checkout != $reservation_date){
-//
-//                                $reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$reservation_time)->toDateTimeString();
-//
-//                                $updater = new UpdateReservation($reservation);
-//                                $updater->setSendMailBool(true);
-//
-//                                $updater->updateReservation();
-//                                $change = true;
-//                            }
-//
-//                        }elseif($res_type == 'incoming'){
-//
-//                            if($current_accommodation_checkin != $reservation_date){
-//                                $reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$reservation_time)->toDateTimeString();
-//                                $updater = new UpdateReservation($reservation);
-//                                $updater->setSendMailBool(true);
-//
-//                                $updater->updateReservation();
-//
-//                                $change = true;
-//                            }
-//                        }
-//
-//                        if($is_round_trip){
-//
-//                            $res_type = 'outgoing';
-//
-//                            if(is_numeric($return_reservation->dropoff_address_id)){
-//                                $point = Point::find($return_reservation->dropoff_address_id);
-//
-//                                if($point){
-//                                    if($point->type == Point::TYPE_ACCOMMODATION){
-//                                        $res_type = 'incoming';
-//                                    }
-//                                }
-//                            }
-//
-//                            if($res_type == 'outgoing'){
-//                                if($current_accommodation_checkout != $return_reservation_date){
-//                                    $return_reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$return_reservation_time)->toDateTimeString();
-//                                    $updater = new UpdateReservation($return_reservation);
-//                                    $updater->setSendMailBool(true);
-//
-//                                    $updater->updateReservation();
-//                                    $change = true;
-//                                }
-//                            }elseif($res_type == 'incoming'){
-//                                if($current_accommodation_checkin != $return_reservation_date){
-//                                    $return_reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$return_reservation_time)->toDateTimeString();
-//
-//                                    $updater = new UpdateReservation($return_reservation);
-//                                    $updater->setSendMailBool(true);
-//
-//                                    $updater->updateReservation();
-//                                    $change = true;
-//                                }
-//                            }
-//                        }
 
                         continue;
 
