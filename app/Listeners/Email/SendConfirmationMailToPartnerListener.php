@@ -43,6 +43,9 @@ class SendConfirmationMailToPartnerListener
                 $this->emailList['receptionMail'] = $receptionEmail;
             }
 
+            #Kontrola Najave
+            $this->emailList['safetyCopy'] = 'najava.transferi@valamar.com';
+
             if($this->emailList){
                 $this->sendConfirmationMail($event->reservation->id);
             }
