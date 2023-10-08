@@ -107,14 +107,19 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
 
         }
 
-        if($event == 'cancellation'){
-            ReservationCancelledEvent::dispatch($notification_model,[
-                ReservationCancelledEvent::SEND_MAIL_CONFIG_PARAM => true
-            ]);
-        }elseif($event == 'updated'){
-            ReservationUpdatedEvent::dispatch($notification_model,[ReservationUpdatedEvent::SEND_MAIL_CONFIG_PARAM => true]);
+        $this->sendMail = true;
+
+        if(!$main_booking->getInvoiceData('zki')){
+            $this->sendMail = false;
         }
 
+        if($event == 'cancellation'){
+            ReservationCancelledEvent::dispatch($notification_model,[
+                ReservationCancelledEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail
+            ]);
+        }elseif($event == 'updated'){
+            ReservationUpdatedEvent::dispatch($notification_model,[ReservationUpdatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail]);
+        }
 
     }
 }

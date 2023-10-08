@@ -19,6 +19,10 @@ class UpdateReservation extends \App\BusinessModels\Reservation\Reservation
             $api->syncReservationWithOperaFull($this->model->id);
         }
 
+        if(!$this->model->getInvoiceData('zki')){
+             $this->setSendMailBool(false);
+        }
+
         ReservationUpdatedEvent::dispatch($this->model,[ReservationUpdatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail]);
 
     }
