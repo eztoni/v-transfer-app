@@ -155,10 +155,7 @@ class NotifyController extends Controller
                         if($reservation->getOverallReservationStatus() == Reservation::STATUS_CONFIRMED){
 
                             $opera_res_status = $valamar_res_data[$result->reservation_number]['status'];
-
-
-                            $opera_res_status = 'CONFIRMED';
-
+                            
                             switch ($opera_res_status){
 
                                 case 'CANCEL':
@@ -263,6 +260,7 @@ class NotifyController extends Controller
                                         $point = Point::find($reservation->dropoff_address_id);
 
                                         if($point){
+                                            echo $point->type;die();
                                             if($point->type == Point::TYPE_ACCOMMODATION){
                                                 $res_type = 'incoming';
                                             }
