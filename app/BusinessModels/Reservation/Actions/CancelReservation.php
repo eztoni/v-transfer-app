@@ -34,6 +34,8 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
     public function cancelReservation($cancellationdate = false,$cancellation_type = 'cancellation',$cancellation_fee = 0,$cancel_round_trip = false,$user_id = false)
     {
 
+        $this->sendMail = true;
+
         $this->cancelRoundTrip = $cancel_round_trip;
 
         $this->model->status = Reservation::STATUS_CANCELLED;
@@ -85,6 +87,10 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
                     $fiskalValamar->fiskalReservationCF($this->model->getCancellationFeeAmount(true));
                 }
 
+                if(!$this->model->getInvoiceData('zki')){
+                    $this->sendMail = false;
+                }
+
             }else{
 
                 #Clicked on non-main way
@@ -103,16 +109,14 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
                     $fiskalValamar->fiskalReservationCF($main_booking->getCancellationFeeAmount(true));
                 }
 
+                if(!$main_booking->getInvoiceData('zki')){
+                    $this->sendMail = false;
+                }
+
             }
 
         }
-
-        $this->sendMail = true;
-
-        if(!$main_booking->getInvoiceData('zki')){
-            $this->sendMail = false;
-        }
-
+        
         if($event == 'cancellation'){
             ReservationCancelledEvent::dispatch($notification_model,[
                 ReservationCancelledEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail
