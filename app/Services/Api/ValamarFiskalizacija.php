@@ -126,7 +126,8 @@ class ValamarFiskalizacija{
                         1,
                         01,
                         02,
-                        number_format($price/100,'.','',2),$owner_location);
+                        number_format($price/100,2,'.',''),
+                        $owner_location);
 
                     $next_invoice = ($owner_location->fiskal_invoice_no+1);
 
