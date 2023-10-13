@@ -163,7 +163,7 @@ If you have any special requests, feel free to reply to this e-mail.
     'created_at'=>'Created at',
     'total_eur' => 'Total EUR',
     'total_hrk' => 'Total HRK',
-    'accommodation_reservation_number' => 'Accommodation Reservation Number',
+    'accommodation_reservation_number' => 'Accommodation reservation number',
     'transfer_reservation_confirmation' => 'Transfer reservation confirmation',
     'without_vat'=>'Without VAT',
     'vat'=>'VAT',
