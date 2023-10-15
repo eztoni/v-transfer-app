@@ -72,7 +72,7 @@
                             </td>
                             <td style="padding:5px 5px;border: 1px solid black;">{{Arr::get($pbItem,'transfer')}}</td>
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                                <b>{{Arr::get($pbItem,'price')}} €</b></td>
+                                <b>{{Arr::get($pbItem,'price')}}</b></td>
                         </tr>
 
                 @endforeach
@@ -84,7 +84,7 @@
                         <b>{{__('mail.total_eur')}}: </b>
                     </td>
                     <td style="border: 1px solid black;text-align: right;padding:5px 5px">
-                        <b>{{$reservation->getCancellationFeeItemBreakDown('items_total')}} €</b>
+                        <b>{{$reservation->getCancellationFeeItemBreakDown('items_total')}}</b>
                     </td>
                 </tr>
                 <tr>
@@ -92,7 +92,7 @@
                         <b>{{__('mail.total_hrk')}}: </b>
                     </td>
                     <td style="border: 1px solid black;text-align: right;padding:5px 5px">
-                        <b>{{$reservation->getCancellationFeeItemBreakDown('items_total_hrk')}} HRK</b>
+                        <b>{{$reservation->getCancellationFeeItemBreakDown('items_total_hrk')}}</b>
                     </td>
                 </tr>
                 </tfoot>
@@ -109,7 +109,7 @@
         <x-mail.row>
 
             @if(\Arr::get($reservation->transfer_price_state,'price_data.tax_level') == 'PPOM')
-                <br/><p style="float: right;font-style: italic;font-size:10px"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
+                <br/><p style="float: right;font-style: italic;font-size:8px"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
             @endif
             <div align="center" style="font-size: 13px !important">
                 <!-- Issue Location -->

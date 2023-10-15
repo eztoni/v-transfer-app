@@ -74,7 +74,7 @@
                             </td>
                             <td style="padding:5px 5px;border: 1px solid black;">{{$pbItem['transfer']}} </td>
                             <td style="padding:5px 5px;border: 1px solid black;text-align: right">
-                                <b>{{$pbItem['price']}}</b> €</td>
+                                <b>{{$pbItem['price']}}</b> </td>
                         </tr>
 
 
@@ -88,9 +88,9 @@
                     </td>
                     <td style="border: 1px solid black;text-align: right;padding:5px 5px">
                         @if($reservation->included_in_accommodation_reservation == 0 && $reservation->v_level_reservation == 0)
-                            <b>{{$reservation->getCancellationItemBreakDown('items_total')}} €</b>
+                            <b>{{$reservation->getCancellationItemBreakDown('items_total')}}</b>
                         @else
-                            <b>0,00 €</b>
+                            <b>0,00</b>
                         @endif
 
                     </td>
@@ -101,9 +101,9 @@
                     </td>
                     <td style="border: 1px solid black;text-align: right;padding:5px 5px">
                         @if($reservation->included_in_accommodation_reservation == 0 && $reservation->v_level_reservation == 0)
-                            <b>{{$reservation->getCancellationItemBreakDown('items_total_hrk')}} HRK</b>
+                            <b>{{$reservation->getCancellationItemBreakDown('items_total_hrk')}}</b>
                         @else
-                            <b>0,00 HRK</b>
+                            <b>0,00</b>
                         @endif
                     </td>
                 </tr>
@@ -132,7 +132,7 @@
 
             </div>
                 @if(\Arr::get($reservation->transfer_price_state,'price_data.tax_level') == 'PPOM')
-                    <br/><p style="float: right;font-style: italic;font-size:13px !important"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
+                    <br/><p style="float: right;font-style: italic;font-size:8px !important"> * Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u</p>
                 @endif
 
             <div class="" style="padding-top: 20px;"></div>
