@@ -121,7 +121,7 @@ Nadzornog odbora Mirko Herceg, predsjednik Uprave V. Bunić,'
 
 
     'booking_confirmation' => [
-        'terms_and_conditions' => 'Ovaj je paket sada rezerviran i dodan vašoj rezervaciji smještaja. Ukoliko je rezervacija smještaja već
+        'terms_and_conditions' => 'Ova je usluga sada rezervirana i dodana vašoj rezervaciji smještaja. Ukoliko je rezervacija smještaja već
 naplaćena u trenutku rezerviranja dodatnih usluga, iste ćete platiti prilikom prijave u objekt u kojem
 boravite.',
     ],
