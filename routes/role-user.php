@@ -1,4 +1,6 @@
 <?php
+
+use App\Models\Point;
 use App\Http\Livewire\BookingOverview;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\InternalReservation;
