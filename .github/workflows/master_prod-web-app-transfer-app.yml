@@ -62,5 +62,5 @@ jobs:
         with:
           app-name: 'prod-web-app-transfer-app'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_30997153614A441A990BAB809BAD469C }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7DEBDF9F04F24FCD8C6E54B9F598ABEE }}
           package: .
