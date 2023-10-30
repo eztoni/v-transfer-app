@@ -118,7 +118,7 @@
                         </x-icon>
                     </button>
                 @endif
-                <br/><br/>
+                 
                 <button success class="ds-btn  ds-btn-xs"
                         wire:loading.class="ds-loading"
                         wire:target="downloadVoucher"
