@@ -132,6 +132,12 @@ use Actions;
 
         $this->redirect('/download_document/booking-cancellation-fee/'.$id);
     }
+    public function downloadVoucher($id){
+
+        $reservation = Reservation::findOrFail($id);
+
+        $this->redirect('/download_document/download-voucher/'.$id);
+    }
 
 
     public function render()

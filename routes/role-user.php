@@ -67,6 +67,9 @@ Route::get('download_document/{type}/{reservation_id}',function($type,$reservati
             $view = 'attachments.booking_cancellation_fee';
             $file_name = 'BookingCancellationFee'.$reservation_id.'.pdf';
             break;
+        case 'download-voucher':
+            $view = 'attachments.voucher';
+            $file_name = 'BookingVoucher_'.$reservation_id.'.pdf';
     }
 
     return \Barryvdh\DomPDF\Facade\Pdf::loadView($view, ['reservation'=> $reservation])->download($file_name);

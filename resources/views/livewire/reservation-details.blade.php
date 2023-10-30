@@ -118,6 +118,15 @@
                         </x-icon>
                     </button>
                 @endif
+                <br/><br/>
+                <button success class="ds-btn  ds-btn-xs"
+                        wire:loading.class="ds-loading"
+                        wire:target="downloadVoucher"
+                        wire:click="downloadVoucher({{$reservation->id}})">
+                    Download Voucher
+                    <x-icon name="document-download" wire:loading.remove wire:target="downloadVoucher({{$reservation->id}})" class="w-4 h-4 ml-2">
+                    </x-icon>
+                </button>
                 <br/>
             </div>
 
