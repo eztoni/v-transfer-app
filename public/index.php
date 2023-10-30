@@ -1,7 +1,7 @@
 <?php
 
 ##Test
-echo "test";die();
+echo "testx";die();
 
 
 
