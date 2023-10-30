@@ -205,8 +205,10 @@
                         <td class="font-bold">Opera Confirmation Number:</td>
                         <td>{{$this->reservation->leadTraveller->reservation_opera_confirmation}}</td>
                     </tr>
-
-
+                    <tr>
+                        <td class="font-bold">Confirmation Language</td>
+                        <td>{{$this->reservation->confirmation_language}}</td>
+                    </tr>
                     </tbody>
                 </table>
                 @if($this->reservation->status === \App\Models\Reservation::STATUS_CONFIRMED && !$this->sentAgain && $this->reservation->is_main)
@@ -377,6 +379,14 @@
             ></x-input>
 
             @if($this->leadTravellerEdit)
+
+                <x-select
+                    wire:model="confirmation_lang"
+                    label="Confirmation Language:"
+                    :options="\App\Models\Reservation::CONFIRMATION_LANGUAGES"
+                    option-key-value
+                ></x-select>
+
                 <x-input
                     wire:model.defer="traveller.reservation_number"
                     label="Reservation Number:"

@@ -24,6 +24,7 @@ use Actions;
     public $otherTravellerComment;
     public $travellerModal;
     public $sentAgain = false;
+    public $confirmation_lang = 'en';
 
     protected function rules()
     {
@@ -53,6 +54,8 @@ use Actions;
     {
         $this->reservation = $reservation;
         $this->reservation->loadMissing(['pickupLocation','otherTravellers','leadTraveller','transfer','partner','extras']);
+        $this->confirmation_lang = $this->reservation->confirmation_language;
+
     }
 
     //MODAL
@@ -77,6 +80,8 @@ use Actions;
         #if(!Auth::user()->hasRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN]))
             #return;
 
+
+
         $this->validate();
 
         if($this->otherTravellerComment){
@@ -92,8 +97,14 @@ use Actions;
             );
         }
 
+
+
         $this->traveller->save();
+        $this->reservation->confirmation_language = $this->confirmation_lang;
+        $this->reservation->save();
+
         $this->notification()->success('Saved','Traveller data saved');
+
         $this->reservation->refresh();
         $this->closeTravellerModal();
     }
