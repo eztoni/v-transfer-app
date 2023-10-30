@@ -69,7 +69,7 @@ class PartnersOverview extends Component
     }
 
     public function closeCopyTermsModal(){
-        $this->copyPartnerModal = false;
+        $this->copyTermsModal = false;
     }
 
     protected function rules()
