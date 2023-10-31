@@ -187,7 +187,12 @@ class ValamarFiskalizacija{
 
                             $this->invoice = $invoice;
 
-                            if(config('valamar.valamar_opera_fiskalizacija_active')){
+                            ##Todo Remove
+                            #Opera Fiskalizacija
+                            # -
+                            $fisk_run = false;
+
+                            if(config('valamar.valamar_opera_fiskalizacija_active') && $fisk_run){
                                 $this->setAuthenticationHeaders();
                                 if($this->validateReservationNumber() && $this->validatePMSCode()){
                                     $this->buildRequestStruct();
