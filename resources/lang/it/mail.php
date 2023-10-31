@@ -11,7 +11,7 @@ return [
     'pickup_address' => 'Luogo dell’incontro',
     'dropoff_address' => 'Luogo d’arrivo',
     'pickup_date' => 'Data',
-    'pickup_time' => 'Orario di partenza',
+    'pickup_time' => 'Ora dell’incontro',
     'flight_number' => 'Numero del volo',
     'remark' => 'Nota',
     'please_note_round_trip' => 'Si prega di notare che questo viaggio è una prenotazione di trasferimento <b>A/R</b>. Le informazioni per il viaggio di andata e ritorno sono riportate di seguito:',
@@ -40,12 +40,12 @@ return [
 
     'pickup_and_meeting_point' => '  Orario e punto d’incontro',
     'li_1_1' => 'Orario d’incontro in aeroporto e punto d’incontro all\'arrivo: l\'autista aspetterà fuori dall\'area di ritiro bagagli al gate assegnato al numero di volo specificato, con un cartello con il nome del passeggero. La tempistica si riferisce al tempo di attesa quando il volo è in orario. In caso di ritardi, i tempi di attesa si prolungano di conseguenza. Nel caso in cui non si riesca a identificare il proprio trasferimento nel luogo designato, si prega di contattare',
-    'li_1_2' => '   Orario d’incontro dall\'hotel e punto d’incontro alla partenza: l\'orario del trasferimento di ritorno può essere modificato in base alle condizioni della strada. Si prega di confermare l\'orario e il punto d\'incontro alla reception il giorno prima della partenza.',
+    'li_1_2' => 'Orario d’incontro dall\'hotel e punto d’incontro alla partenza: l\'orario del trasferimento di ritorno può essere modificato in base alle condizioni della strada. Si prega di confermare l\'orario e il punto d\'incontro alla reception il giorno prima della partenza.',
     'li_1_3' => 'Si prega di arrivare almeno 10 minuti prima dell\'orario di partenza del trasferimento.',
     'li_2' => 'Nel caso in cui sia necessario modificare o annullare la prenotazione prima del viaggio, si prega di contattare ',
-    'li_3' => 'Ti preghiamo di rispettare le seguenti regole all\'interno del veicolo',
-    'li_3_1' => 'Fumare non è consentito',
-    'li_3_2' => 'Le cinture di sicurezza devono essere indossate sempre.',
+    'li_3' => 'Nel veicolo si devono rispettare le seguenti regole',
+    'li_3_1' => 'È vietato fumare',
+    'li_3_2' => 'Indossare sempre le cinture di sicurezza.',
 
 
     'terms_and_conditions' => 'TERMINI E CONDIZIONI:',

@@ -3,7 +3,7 @@ return [
     'dear' => 'Sehr geehrte(r) Herr/Frau',
     'thank_you_message'=>'Vielen Dank für Ihre Transferreservierung. Bitte bewahren Sie diese Reservierung für Ihre Reise auf.',
     'transfer_reservation'=>'Vielen Dank für Ihre Transferreservierung. Bitte bewahren Sie diese Reservierung für Ihre Reise auf.',
-    'reservation_number'=>'Reservierungsnummer',
+    'reservation_number'=>'Ihre Transfer-Reservierungsnummer',
     'name'=>'Vor und Nachname',
     'contact_phone'=>'Telefonnummer',
     'direction'=>'Richtung',

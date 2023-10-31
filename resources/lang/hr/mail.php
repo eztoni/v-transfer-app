@@ -11,7 +11,7 @@ return [
     'pickup_address'=>'Mjesto preuzimanja',
     'dropoff_address'=>'Mjesto dolaska',
     'pickup_date'=>'Datum',
-    'pickup_time'=>'Vrijeme',
+    'pickup_time'=>'Vrijeme preuzimanja',
     'flight_number'=>'Broj leta',
     'remark'=>'Napomena',
     'please_note_round_trip'=>'Imajte na umu da je ovo putovanje rezervirano za <b>dvosmjerni</b> prijevoz. Informacije o povratnom putovanju su u nastavku:',
@@ -31,7 +31,7 @@ return [
     'this_email_is_modification'=>'Ovaj email je izmjena rezervacije. Sačuvajte ovu rezervaciju za svoje putovanje.',
     'extra'=>'Dodatak',
     'transfer_price'=>'Cijena transfera',
-    'vehicle_type'=>'Tip vozila',
+    'vehicle_type'=>'Vrsta vozila',
 
     'important_notes'=>'Važne napomene o vašoj rezervaciji transfera, izmjenama i otkazivanju',
     'important_note_1' => 'Spremite svoju rezervaciju kako biste ju pokazali svojem vozaču (putem mobilnog telefona ili tiskane verzije) i kako biste potvrdili da ste stigli na pravi rezervirani transfer prema rasporedu.',
