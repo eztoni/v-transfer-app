@@ -421,9 +421,11 @@ class ValamarFiskalizacija{
                     self::STATUS_ERROR
                 );
 
-                $response->throw($response->serverError());
+                $this->reservation->connected_document_sync = 0;
+                $this->reservation->save();
 
             }else{
+
                 ValamarFiskalizacija::write_db_log(
                     $this->reservation_id,
                     'opera',
@@ -434,7 +436,8 @@ class ValamarFiskalizacija{
                     self::STATUS_ERROR
                 );
 
-                $response->throw($response->clientError());
+                $this->reservation->connected_document_sync = 0;
+                $this->reservation->save();
             }
 
         }else{
@@ -453,6 +456,9 @@ class ValamarFiskalizacija{
                     self::STATUS_ERROR
                 );
 
+                $this->reservation->connected_document_sync = 0;
+                $this->reservation->save();
+
             }else{
                 ValamarFiskalizacija::write_db_log(
                     $this->reservation_id,
@@ -463,7 +469,12 @@ class ValamarFiskalizacija{
                     $this->jir,
                     self::STATUS_SUCCESS
                 );
+
+                $this->reservation->connected_document_sync = 1;
+                $this->reservation->save();
             }
+
+
         }
 
         return $this;

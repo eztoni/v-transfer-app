@@ -13,6 +13,13 @@ class MainDrawer extends Component
     {
         $menuItems = [
             [
+                'icon' => 'fas fa-calendar',
+                'text' => 'Dashboard',
+                'active' => request()->routeIs('dashboard'),
+                'href' => route('dashboard'),
+                'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER),
+            ],
+            [
                 'icon' => 'fas fa-database',
                 'text' => 'Master Data',
                 'href' => route('dashboard'),

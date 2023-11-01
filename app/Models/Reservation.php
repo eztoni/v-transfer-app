@@ -68,6 +68,10 @@ class Reservation extends Model
         return (bool)$this->opera_sync;
     }
 
+    public function isDocumentConnectedSync(){
+        return (bool)$this->connected_document_sync;
+    }
+
     public function getIsRoundTripAttribute()
     {
         return !empty($this->round_trip_id);

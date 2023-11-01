@@ -46,7 +46,12 @@ class PartnersOverview extends Component
 
     public function getPartnersWithTermsProperty()
     {
-        return Partner::whereNotNull('terms')->where('id','!=',$this->partner->id)->get();
+        if($this->partner->id > 0){
+            return Partner::whereNotNull('terms')->where('id','!=',$this->partner->id)->get();
+        }else{
+            return Partner::whereNotNull('terms')->get();
+        }
+
     }
 
     public function openCopyTermsModal(){

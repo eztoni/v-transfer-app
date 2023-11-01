@@ -48,6 +48,12 @@
         <p class="text-right">E-mail not sent to the partner <x-icon name="exclamation" solid class="w-6 h-6  ml-4  text-red-400 float-right" ></x-icon></p>
     @endif
 
+    @if($reservation->isDocumentConnectedSync())
+        <p class="text-right">Connected document applied to Opera Res <x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>
+    @else
+        <p class="text-right">Connected document applied to Opera Res <x-icon name="exclamation" solid class="w-6 h-6  ml-4  text-red-400 float-right" ></x-icon></p>
+    @endif
+
     <br/>
 
     <div class="flex justify-end">
