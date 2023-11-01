@@ -162,7 +162,7 @@
 
                         </x-icon>
                         <div class="w-full">
-                            Connected Error Bookings
+                            Connected Document Errors ( Vezani Dokument )
                             <br>
                             For the following bookings, connected document ( VezaniDokument ) was not applied to Opera reservation
                         </div>
