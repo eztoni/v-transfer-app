@@ -21,6 +21,7 @@ use Actions;
     public bool $editModal = false;
     public bool $operaSyncModal = false;
     public bool $operaSyncLogModal = false;
+    public bool $documentSyncModal = false;
     public bool $fiskalSyncModal = false;
 
     public array $syncLog;
@@ -40,7 +41,9 @@ use Actions;
         'syncCancelled'   => 'closeSyncModal',
         'syncLogClosed'   => 'closeSyncLogModal',
         'cancelIssueInvoice' => 'closeIssueInvoice',
-        'invoiceIssueCompleted' => 'closeIssueInvoice'
+        'invoiceIssueCompleted' => 'closeIssueInvoice',
+        'cancelSyncDocument' => 'closeDocumentSyncModal',
+        'syncDocumentCompleted' => 'closeDocumentSyncModal'
     ];
 
     public function mount()
@@ -95,6 +98,15 @@ use Actions;
         $this->reservation = Reservation::findOrFail($id);
     }
 
+    public function openDocumentSyncModal($id){
+        $this->documentSyncModal = true;
+        $this->reservation = Reservation::findOrFail($id);
+    }
+
+    public function closeDocumentSyncModal(){
+        $this->documentSyncModal = false;
+    }
+
     public function openFiskalSyncModal($id){
         $this->fiskalSyncModal = true;
         $this->reservation = Reservation::findOrFail($id);
@@ -108,6 +120,11 @@ use Actions;
     public function updateCompleted(){
         $this->closeUpdateModal();
         $this->notification()->success('Reservation updated');
+    }
+
+    public function syncDocumentCompleted(){
+        $this->closeDocumentSyncModal();
+        $this->notification()->success('Connected document updated');
     }
 
     public function closeUpdateModal()

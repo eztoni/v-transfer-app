@@ -87,7 +87,15 @@
                 @endif
                 @endif
                 <br/>
-                <br/>
+                @if($reservation->isDocumentConnectedSync() && $reservation->getInvoiceData('jir'))
+                    <b class="text-sm">Connected Document Synced with Opera: </b>{{$reservation->getInvoiceData('invoice_number')}}</b>
+                    <br/><br/>
+                @else
+                    <b class="text-sm">Connected Document not Synced with Opera: </b><x-button primary xs wire:click="openDocumentSyncModal({{$reservation->id}})">Re-try</x-button>
+                    <br/><br/>
+                @endif
+
+
                 @if($reservation->getOverallReservationStatus() == 'cancelled')
                 <button success class="ds-btn  ds-btn-xs"
                      wire:loading.class="ds-loading"
@@ -211,6 +219,12 @@
     @if($operaSyncLogModal)
     <x-modal.card wire:model="operaSyncLogModal" lg max-width="5xl" title="Opera Reservation Sync Log - Reservation ID#{{$this->reservation->id}}">
         <livewire:sync-opera-transfer-reservation-log :reservation="$this->reservation"/>
+    </x-modal.card>
+    @endif
+
+    @if($documentSyncModal)
+    <x-modal.card wire:model="documentSyncModal" lg max-width="5xl" title="Opera Document Sync - Reservation ID#{{$this->reservation->id}}">
+        <livewire:sync-document-reservation :reservation="$this->reservation"/>
     </x-modal.card>
     @endif
 

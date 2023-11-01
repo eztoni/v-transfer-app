@@ -79,6 +79,7 @@ class ValamarFiskalizacija{
         $reservation_code = $traveller_info->reservation_number;
 
         $valamar_api = new ValamarClientApi();
+
         $valamar_api->setReservationCodeFilter($reservation_code);
 
         $opera_res_data = $valamar_api->getReservationList();
@@ -187,12 +188,7 @@ class ValamarFiskalizacija{
 
                             $this->invoice = $invoice;
 
-                            ##Todo Remove
-                            #Opera Fiskalizacija
-                            # -
-                            $fisk_run = false;
-
-                            if(config('valamar.valamar_opera_fiskalizacija_active') && $fisk_run){
+                            if(config('valamar.valamar_opera_fiskalizacija_active')){
                                 $this->setAuthenticationHeaders();
                                 if($this->validateReservationNumber() && $this->validatePMSCode()){
                                     $this->buildRequestStruct();
@@ -224,6 +220,65 @@ class ValamarFiskalizacija{
             );
         }
 
+    }
+
+    public function syncDocument(){
+
+        if(config('valamar.valamar_opera_fiskalizacija_active')) {
+
+
+            $error = false;
+
+            $invoice_type = 'reservation';
+            #Get End Location
+            $owner_location = false;
+
+            $reservation = $this->reservation;
+            
+            #Avoid Sending Invoice Cancellation
+            if ($reservation->getOverallReservationStatus() == 'cancelled') {
+                return true;
+            }
+
+            $traveller_info = $reservation->getLeadTravellerAttribute();
+
+            $reservation_code = $traveller_info->reservation_number;
+
+            $valamar_api = new ValamarClientApi();
+
+            $valamar_api->setReservationCodeFilter($reservation_code);
+
+            $opera_res_data = $valamar_api->getReservationList();
+
+
+            #Fetch the reservation from Opera
+            if (!empty($opera_res_data[$reservation_code])) {
+
+                $acc_opera_code = $opera_res_data[$reservation_code]['propertyOperaCode'];
+                $acc_opera_class = $opera_res_data[$reservation_code]['propertyOperaClass'];
+
+                $owner_location = Point::where('pms_code', '=', $acc_opera_code)
+                    ->where('pms_class', '=', $acc_opera_class)->get()->first();
+
+
+                if (!$owner_location) {
+                    $owner_location = Point::where('pms_code', '=', $acc_opera_code)->get()->first();
+                }
+                dd($owner_location);
+
+                if ($owner_location) {
+                    #Set Property Code
+                    $this->dropoffLocationPMSCode = $owner_location->pms_code;
+
+                    $this->setAuthenticationHeaders();
+
+                    if ($this->validateReservationNumber() && $this->validatePMSCode()) {
+                        $this->buildRequestStruct();
+                        $this->sendOperaRequest();
+                    }
+                }
+            }
+        }
     }
 
     public function fiskalReservationCF($cancellation_fee){
