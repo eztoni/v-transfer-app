@@ -17,6 +17,7 @@ class Dashboard extends Component
     public $partnerId = null;
     public $operaErrorBookings = false;
     public $fiscalizationErrorBookings = false;
+    public $connectedDocumentErrorBookings = false;
 
     public string $from;
     public string $to;
@@ -86,6 +87,10 @@ class Dashboard extends Component
             $this->fiscalizationErrorBookings = array();
         }
 
+        if($this->connectedDocumentErrorBookings === false) {
+            $this->connectedDocumentErrorBookings = array();
+        }
+
         foreach($bookings as $booking){
 
             if($booking->included_in_accommodation_reservation == 1 || $booking->v_level_reservation == 1){
@@ -97,6 +102,10 @@ class Dashboard extends Component
             }else{
                 if(!$booking->getInvoiceData('jir')){
                     $this->fiscalizationErrorBookings[] = $booking;
+                }else{
+                    if(!$booking->isDocumentConnectedSync()){
+                        $this->connectedDocumentErrorBookings[] = $booking;
+                    }
                 }
             }
         }
@@ -117,6 +126,10 @@ class Dashboard extends Component
             return true;
         }
 
+        if(!empty($this->connectedDocumentErrorBookings)){
+            return true;
+        }
+
         return $return;
     }
 
@@ -126,6 +139,10 @@ class Dashboard extends Component
 
     public function get_fiscalization_error_bookings(): array|\Illuminate\Database\Eloquent\Collection {
         return $this->fiscalizationErrorBookings;
+    }
+
+    public function get_connected_document_error_bookings() : array|\Illuminate\Database\Eloquent\Collection {
+        return $this->connectedDocumentErrorBookings;
     }
     public function search(){
         // Just rerender
