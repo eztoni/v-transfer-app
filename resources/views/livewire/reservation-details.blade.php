@@ -6,11 +6,16 @@
                 </p>
                 <p  class="text-sm"><b>Route: </b>{{$reservation->pickupAddress->name}} => {{$reservation->dropoffAddress->name}}
                 </p>
-                <strong class=" text-sm">Created by:{{$reservation->createdBy->name}}</strong>
+                <strong class=" text-sm">Created by: {{$reservation->createdBy->name}}</strong>
                 <strong class=" text-sm">@ {{\Carbon\Carbon::parse($reservation->created_at->format('d.m.Y H:i'))->addHour()->format('d.m.Y H:i')}}</strong>
                 @if($reservation->updated_by)
                     <br/>
-                    <strong class=" text-sm">Updated by: {{$reservation->updatedBy->name}}</strong>
+                    @if($reservation->getOverallReservationStatus() == 'cancelled')
+                        <strong class=" text-sm">Cancelled by: {{$reservation->updatedBy->name}}</strong>
+                    @else
+                        <strong class=" text-sm">Updated by: {{$reservation->updatedBy->name}}</strong>
+                    @endif
+
                         <strong class=" text-sm">@ {{ $reservation->updated_at->format('d.m.Y H:i') }}</strong>
                 @endif
 
