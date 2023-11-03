@@ -210,8 +210,10 @@ class DestinationReport extends Component
                         }
                     }
 
-                    $inv = $priceEur->subtract($i->total_commission_amount)->getMoney();
+                    $inv = $priceEur->multiply('0.20')->getMoney();
 
+                    $total_comm = $priceEur->subtract($priceEur->multiply('0.20'));
+                    
                     $invEur = \Cknow\Money\Money::EUR($inv->getAmount());
 
                     $pdv = $i->total_commission_amount->multiply('0.20');
@@ -236,7 +238,9 @@ class DestinationReport extends Component
                     $priceEur = preg_replace('!€!','',$priceEur);
 
 
-                    $total_comm = (string)$i->total_commission_amount;
+
+
+
                     $total_comm= preg_replace('!€!','',$total_comm);
 
                     $invEur = (string)$invEur;

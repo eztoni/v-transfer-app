@@ -16,7 +16,7 @@
             @endrole
 
             <x-flatpickr
-                label="Date from:"
+                label="Date from: ( datum realizacije )"
                 min-date=""
                 date-format="d.m.Y"
                 :enable-time="false"
@@ -25,7 +25,7 @@
             />
 
             <x-flatpickr
-                label="Date to:"
+                label="Date to: ( datum realizacije )"
                 min-date=""
                 date-format="d.m.Y"
                 :enable-time="false"
