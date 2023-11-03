@@ -155,7 +155,7 @@ class NotifyController extends Controller
                         if($reservation->getOverallReservationStatus() == Reservation::STATUS_CONFIRMED){
 
                             $opera_res_status = $valamar_res_data[$result->reservation_number]['status'];
-                            
+
                             switch ($opera_res_status){
 
                                 case 'CANCEL':
@@ -273,10 +273,10 @@ class NotifyController extends Controller
 
                                             $reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$reservation_time)->toDateTimeString();
 
-                                            $updater = new UpdateReservation($reservation);
-                                            $updater->setSendMailBool(true);
-
-                                            $updater->updateReservation();
+//                                            $updater = new UpdateReservation($reservation);
+//                                            $updater->setSendMailBool(true);
+//
+//                                            $updater->updateReservation();
                                             $change = true;
                                         }
 
@@ -284,10 +284,10 @@ class NotifyController extends Controller
 
                                         if($current_accommodation_checkin != $reservation_date){
                                             $reservation->date_time = Carbon::create($current_accommodation_checkin.' '.$reservation_time)->toDateTimeString();
-                                            $updater = new UpdateReservation($reservation);
-                                            $updater->setSendMailBool(true);
-
-                                            $updater->updateReservation();
+//                                            $updater = new UpdateReservation($reservation);
+//                                            $updater->setSendMailBool(true);
+//
+//                                            $updater->updateReservation();
 
                                             $change = true;
                                         }
@@ -310,20 +310,20 @@ class NotifyController extends Controller
                                         if($res_type == 'outgoing'){
                                             if($current_accommodation_checkout != $return_reservation_date){
                                                 $return_reservation->date_time = Carbon::create($current_accommodation_checkout.' '.$return_reservation_time)->toDateTimeString();
-                                                $updater = new UpdateReservation($return_reservation);
-                                                $updater->setSendMailBool(true);
-
-                                                $updater->updateReservation();
+//                                                $updater = new UpdateReservation($return_reservation);
+//                                                $updater->setSendMailBool(true);
+//
+//                                                $updater->updateReservation();
                                                 $change = true;
                                             }
                                         }elseif($res_type == 'incoming'){
                                             if($current_accommodation_checkin != $return_reservation_date){
                                                 $return_reservation->date_time = Carbon::create($current_accommodation_checkin.' '.$return_reservation_time)->toDateTimeString();
 
-                                                $updater = new UpdateReservation($return_reservation);
-                                                $updater->setSendMailBool(true);
-
-                                                $updater->updateReservation();
+//                                                $updater = new UpdateReservation($return_reservation);
+//                                                $updater->setSendMailBool(true);
+//
+//                                                $updater->updateReservation();
                                                 $change = true;
                                             }
                                         }
