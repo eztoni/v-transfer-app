@@ -152,7 +152,6 @@ use Actions;
 
         $this->notification()->success('Sent!','Reservation confirmation sent');
 
-        $this->sentAgain = true;
     }
 
     public function render()

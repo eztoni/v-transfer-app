@@ -211,7 +211,7 @@
                     </tr>
                     </tbody>
                 </table>
-                @if($this->reservation->status === \App\Models\Reservation::STATUS_CONFIRMED && !$this->sentAgain && $this->reservation->is_main)
+                @if($this->reservation->status === \App\Models\Reservation::STATUS_CONFIRMED && $this->reservation->is_main)
                     <x-button xs wire:click="sendAgainConfirmationDialog" class="float-right">Send confirmation again</x-button>
                 @endif
 
