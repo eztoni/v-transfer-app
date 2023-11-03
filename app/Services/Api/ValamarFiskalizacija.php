@@ -234,7 +234,7 @@ class ValamarFiskalizacija{
             $owner_location = false;
 
             $reservation = $this->reservation;
-            
+
             #Avoid Sending Invoice Cancellation
             if ($reservation->getOverallReservationStatus() == 'cancelled') {
                 return true;
@@ -264,9 +264,11 @@ class ValamarFiskalizacija{
                 if (!$owner_location) {
                     $owner_location = Point::where('pms_code', '=', $acc_opera_code)->get()->first();
                 }
-                dd($owner_location);
 
                 if ($owner_location) {
+
+                    $owner = Owner::findOrFail($owner_location->owner_id);
+                    $this->oib = $owner->oib;
                     #Set Property Code
                     $this->dropoffLocationPMSCode = $owner_location->pms_code;
 
@@ -431,17 +433,23 @@ class ValamarFiskalizacija{
         #PMSReservationID - Reservation Number
         $this->request['PMSReservationID'] = $this->reservation_opera_id;
         #ZKI
-        $this->request['ZKI'] = $this->zki;
+        $this->request['ZKI'] = $this->zki == null ? $this->reservation->getInvoiceData('zki') : $this->zki;
         #JIR
-        $this->request['JIR'] = $this->jir;
+        $this->request['JIR'] = $this->jir == null ? $this->reservation->getInvoiceData('jir') : $this->jir;
         #DocumentID
-        $this->request['DocumentID'] = $this->invoice->invoice_id.'/'.$this->invoice->invoice_establishment.'/'.$this->invoice->invoice_device;
+        if($this->reservation->getInvoiceData('invoice_number') != '-'){
+            $this->request['DocumentID'] = $this->reservation->getInvoiceData('invoice_number');
+        }else{
+            $this->request['DocumentID'] = $this->invoice->invoice_id.'/'.$this->invoice->invoice_establishment.'/'.$this->invoice->invoice_device;
+        }
+
         #OIB
         $this->request['OIB'] = $this->oib;
         #Total
-        $this->request['Total'] = $this->amount;
+        $this->request['Total'] = $this->amount == null ? $this->reservation->getDisplayPrice()->formatByDecimal() : $this->amount;
         #Timestamp
         $this->request['TimeStamp'] = Carbon::now()->toDateTimeString();
+
 
         return true;
     }
@@ -461,6 +469,7 @@ class ValamarFiskalizacija{
      */
     private function validateResponse(\Illuminate\Http\Client\Response $response) : ValamarFiskalizacija
     {
+
 
         if(!$response->successful()){
 
@@ -527,6 +536,7 @@ class ValamarFiskalizacija{
 
                 $this->reservation->connected_document_sync = 1;
                 $this->reservation->save();
+
             }
 
 
