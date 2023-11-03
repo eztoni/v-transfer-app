@@ -27,7 +27,10 @@ class SyncDocumentReservation extends Component
         if($this->reservation->is_main){
 
             $api = new ValamarFiskalizacija($this->reservation->id);
+
             $api->syncDocument();
+
+            $this->reservation->refresh();
 
             if($this->reservation->isDocumentConnectedSync()){
                 $this->notification()->success('Sync Completed');
