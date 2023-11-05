@@ -444,7 +444,7 @@ class ValamarFiskalizacija{
         }
 
         #OIB
-        $this->request['OIB'] = $this->oib;
+        $this->request['OIB'] = trim($this->oib);
         #Total
         $this->request['Total'] = $this->amount == null ? $this->reservation->getDisplayPrice()->formatByDecimal() : $this->amount;
         #Timestamp
