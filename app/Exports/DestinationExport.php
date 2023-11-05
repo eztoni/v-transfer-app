@@ -27,7 +27,21 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
     public function __construct(private array $array, private string $reportType)
     {
 
-        $this->data =  collect($array);
+        $data_to_collect = array();
+
+        if(!empty($array)){
+            foreach($array as $list){
+                if(!empty($list)){
+                    foreach($list as $ind){
+                        $data_to_collect[] = $ind;
+                    }
+                }
+            }
+        }
+
+        $this->data =  collect($data_to_collect);
+
+
         $this->format();
 
     }
@@ -61,13 +75,15 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
                 $data_array['voucher_id'] = $item['id'];
                 $data_array['nositelj_vouchera'] = $item['name'];
                 $data_array['postupak'] = $item['procedure'];
+                $data_array['opis'] = $item['description'];
                 $data_array['odrasli'] = $item['adults'];
-                $data_array['djeca'] = (int)$item['children']+(int)$item['infants'];
+                $data_array['djeca'] = (int)((int)$item['children']+(int)$item['infants']);
                 $data_array['bruto_prihod'] = $this->format_excel_price($item['price_eur']);
                 $data_array['trošak_ulaznog_računa'] = $this->format_excel_price($item['invoice_charge']);
                 $data_array['bruto_profit'] = $this->format_excel_price($item['commission_amount']);
                 $data_array['ugovorena_provizija'] = $item['commission'].'%';
                 $data_array['vrsta_proizvoda'] = 'Transfer';
+
             }
 
             if($this->reportType == 'ppom-report'){
@@ -102,7 +118,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
                 $data_array['datum_realizacije'] = $item['date_time'];
                 $data_array['broj_računa'] = gmdate('Y').'-'.$item['invoice_number'];
                 $data_array['proizvod'] = $item['transfer'];
-                $data_array['broj_potvrde_narudžbe_transfera'] =  gmdate('Y').'-'.$item['invoice_number'];  
+                $data_array['broj_potvrde_narudžbe_transfera'] =  gmdate('Y').'-'.$item['invoice_number'];
                 $data_array['količina'] = 1;
                 $data_array['bruto_prihod'] = $this->format_excel_price($item['price_eur']);
                 $data_array['bruto_profit'] = $this->format_excel_price($item['commission_amount']);
@@ -124,8 +140,21 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
             $headings[] = Str::of($key)->replace('_', ' ')->ucfirst()->value();
         }
 
+
+        switch ($this->reportType){
+            case 'partner-report':
+                $columns = ['Datum Od', 'Datum Do','','','','','','','','','','Ukupni Bruto Prihod','Ukupni Trošak Ulaznih Računa','Ukupni Bruto Profit','',''];
+                break;
+            case 'ppom-report':
+                $columns = ['Datum Od', 'Datum Do','','','','','','','','','Ukupni Bruto Prihod','','Ukupni Trošak Ulaznih Računa','Ukupni Bruto Profit','Ukupni PDV','Ukupni Neto Profit'];
+                break;
+            case 'rpo-report':
+                $columns = ['Datum Od', 'Datum Do','','','','','','','','','','Ukupni Bruto Prihod','Ukupni Bruto Profit','Ukupni Trošak Ulaznih Računa','',''];
+                break;
+        }
+
         return [
-            ['Datum Od', 'Datum Do'],
+            $columns,
             $this->filterData,
             [],
             $headings

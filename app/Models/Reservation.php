@@ -61,7 +61,28 @@ class Reservation extends Model
 
     public function isRoundTrip()
     {
+
         return !empty($this->round_trip_id);
+    }
+
+    public function isTotalRoundTrip(){
+
+        $return = false;
+
+        if(!empty($this->round_trip_id)){
+            if($this->status == Reservation::STATUS_CANCELLED || $this->returnReservation->status == Reservation::STATUS_CANCELLED){
+                if($this->status == Reservation::STATUS_CANCELLED && $this->returnReservation->status == Reservation::STATUS_CANCELLED){
+                    $return = true;
+                }else{
+                    $return = false;
+                }
+            }else{
+                $return = true;
+            }
+        }
+
+        return $return;
+
     }
 
     public function isSyncedWithOpera(){

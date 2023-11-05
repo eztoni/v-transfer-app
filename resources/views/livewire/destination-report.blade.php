@@ -77,46 +77,39 @@
 
             <div class="ds-stat">
 
-                <div class="ds-stat-title">Total Reservations</div>
-                <div class="ds-stat-value text-primary">{{count($filteredReservations)}}</div>
+                <div class="ds-stat-title">&nbsp;</div>
+                <div class="ds-stat-value text-primary">&nbsp;</div>
 
             </div>
 
             <div class="ds-stat ">
-
-                <div class="ds-stat-title">Total revenue</div>
-                <div class="ds-stat-value text-success">{{$this->totalEur}}</div>
+                <div class="ds-stat-title">Ukupan Bruto Prihod</div>
+                <div class="ds-stat-value text-primary">{{number_format($this->totalEur,2,'.',',')}} €</div>
             </div>
 
-            @if($this->isPartnerReporting)
             <div class="ds-stat ">
-
-                <div class="ds-stat-title">Total commission</div>
-                <div class="ds-stat-value text-warning-400">{{$this->totalCommission}}</div>
+                <div class="ds-stat-title">Ukupan Trošak Ulaznih Računa</div>
+                <div class="ds-stat-value text-primary">{{number_format($this->totalInvoiceCharge,2,'.',',')}} €</div>
             </div>
-@endif
-            <div class="ds-stat">
-                <div class="ds-stat-title">Confirmed reservations:</div>
 
-                <div class="ds-stat-value text-primary">
+            <div class="ds-stat ">
+                <div class="ds-stat-title">Ukupan Bruto Profit</div>
+                <div class="ds-stat-value text-primary">{{number_format($this->totalCommission,2,'.',',')}} €</div>
+            </div>
 
-                    @php
-                        echo count( Arr::where($filteredReservations, function ($value, $key) {
-                               return $value['status'] === \App\Models\Reservation::STATUS_CONFIRMED;
-                           }))
-                    @endphp
+            @if($this->isPPOMReporting)
+                <div class="ds-stat ">
+                    <div class="ds-stat-title">Ukupan PDV</div>
+                    <div class="ds-stat-value text-primary">{{number_format($this->totalPDV,2,'.',',')}} €</div>
                 </div>
 
-                <div class="ds-stat-desc font-bold">
-                    Cancelled reservations:
-                    @php
-                        echo count( Arr::where($filteredReservations, function ($value, $key) {
-                               return $value['status'] === \App\Models\Reservation::STATUS_CANCELLED;
-                           }))
-                    @endphp
+                <div class="ds-stat ">
+                    <div class="ds-stat-title">Ukupan Neto Profit</div>
+                    <div class="ds-stat-value text-primary">{{number_format($this->totalNetProfit,2,'.',',')}} €</div>
                 </div>
+            @endif
 
-            </div>
+
 
         </div>
         <div class="ds-divider"></div>
@@ -151,6 +144,7 @@
                         <th align="left">Datum Prodaje</th>
                         <th align="left">Datum Realizacije</th>
                         <th align="left">Postupak</th>
+                        <th align="left">Opis</th>
                         <th align="left">Bruto Prihod</th>
                         <th align="left">Ugovorena Provizija</th>
                         <th align="left">Trošak Ulaznog Računa</th>
@@ -165,6 +159,7 @@
                         <th align="left">Naziv Djelatnika</th>
                         <th align="left">Prodajno Mjesto</th>
                         <th align="left">Postupak</th>
+                        <th align="left">Opis</th>
                         <th align="left">Datum Prodaje</th>
                         <th align="left">Datum Realizacije</th>
                         <th align="left">Broj Računa</th>
@@ -186,6 +181,7 @@
                         <th align="left">Voucher ID</th>
                         <th align="left">Nositelj Vouchera</th>
                         <th align="left">Postupak</th>
+                        <th align="left">Opis</th>
                         <th align="left">Broj Odraslih</th>
                         <th align="left">Broj Djece</th>
                         <th align="left">Bruto Prihod</th>
@@ -209,33 +205,37 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($this->filteredReservations as $reservation)
-                    <tr>
-                        @if($this->isPPOMReporting)
-                            <td >{{Arr::get($reservation,'partner')}}</td>
-                            <td >{{Arr::get($reservation,'transfer')}}</td>
-                            <td >{{Arr::get($reservation,'sales_agent')}}</td>
-                            <td >{{Arr::get($reservation,'selling_place')}}</td>
-                            <td >REZERVACIJA NA SOBU</td>
-                            <td >{{Arr::get($reservation,'tax_level')}}</td>
-                            <td >{{gmdate('Y').'-'.Arr::get($reservation,'invoice_number')}}</td>
-                            <td >{{Arr::get($reservation,'voucher_date')}}</td>
-                            <td >{{Arr::get($reservation,'date_time')}}</td>
-                            <td >{{Arr::get($reservation,'procedure')}}</td>
-                            <td >{{Arr::get($reservation,'price_eur')}}</td>
-                            <td align="center" >{{Arr::get($reservation,'commission')}} %</td>
-                            <td align="center" >{{Arr::get($reservation,'invoice_charge')}}</td>
-                            <td align="center" >{{Arr::get($reservation,'commission_amount')}}</td>
-                            <td align="center" >{{Arr::get($reservation,'pdv')}}</td>
-                            <td align="center" >{{Arr::get($reservation,'net_income')}}</td>
-                        @endif
+                @foreach($this->filteredReservations as $reservations)
 
-                        @if($this->isRPOReporting)
+                    @foreach($reservations as $reservation)
+                        <tr>
+                            @if($this->isPPOMReporting)
+                                <td >{{Arr::get($reservation,'partner')}}</td>
+                                <td >{{Arr::get($reservation,'transfer')}}</td>
+                                <td >{{Arr::get($reservation,'sales_agent')}}</td>
+                                <td >{{Arr::get($reservation,'selling_place')}}</td>
+                                <td >REZERVACIJA NA SOBU</td>
+                                <td >{{Arr::get($reservation,'tax_level')}}</td>
+                                <td >{{gmdate('Y').'-'.Arr::get($reservation,'invoice_number')}}</td>
+                                <td >{{Arr::get($reservation,'voucher_date')}}</td>
+                                <td >{{Arr::get($reservation,'date_time')}}</td>
+                                <td >{{Arr::get($reservation,'procedure')}}</td>
+                                <td >{{Arr::get($reservation,'invoice_number')}}<br/>{{Arr::get($reservation,'description')}}</td>
+                                <td >{{Arr::get($reservation,'price_eur')}}</td>
+                                <td align="center" >{{Arr::get($reservation,'commission')}} %</td>
+                                <td align="center" >{{Arr::get($reservation,'invoice_charge')}}</td>
+                                <td align="center" >{{Arr::get($reservation,'commission_amount')}}</td>
+                                <td align="center" >{{Arr::get($reservation,'pdv')}}</td>
+                                <td align="center" >{{Arr::get($reservation,'net_income')}}</td>
+                            @endif
+
+                            @if($this->isRPOReporting)
                                 <td >{{Arr::get($reservation,'partner')}}</td>
                                 <td >{{Arr::get($reservation,'transfer')}}</td>
                                 <td >{{Arr::get($reservation,'sales_agent')}}</td>
                                 <td >{{Arr::get($reservation,'selling_place')}}</td>
                                 <td >{{Arr::get($reservation,'procedure')}}</td>
+                                <td >{{Arr::get($reservation,'invoice_number')}}<br/>{{Arr::get($reservation,'description')}}</td>
                                 <td >{{Arr::get($reservation,'voucher_date')}}</td>
                                 <td >{{Arr::get($reservation,'date_time')}}</td>
                                 <td >{{gmdate('Y').'-'.Arr::get($reservation,'invoice_number')}}</td>
@@ -248,9 +248,10 @@
                                 <td align="center" >{{Arr::get($reservation,'invoice_charge')}}</td>
                                 <td align="center" >{{Arr::get($reservation,'commission')}} %</td>
 
-                        @endif
+                            @endif
 
-                        @if($this->isPartnerReporting)
+                            @if($this->isPartnerReporting)
+
                                 <td >{{Arr::get($reservation,'partner')}}</td>
                                 <td >{{Arr::get($reservation,'voucher_date')}}</td>
                                 <td >{{Arr::get($reservation,'sales_agent')}}</td>
@@ -258,6 +259,7 @@
                                 <td >{{Arr::get($reservation,'id')}}</td>
                                 <td >{{Arr::get($reservation,'name')}}</td>
                                 <td >{{Arr::get($reservation,'procedure')}}</td>
+                                <td >{{Arr::get($reservation,'invoice_number')}}<br/>{{Arr::get($reservation,'description')}}</td>
                                 <td >{{Arr::get($reservation,'adults')}}</td>
                                 <td >{{Arr::get($reservation,'children')}}</td>
                                 <td >{{Arr::get($reservation,'price_eur')}}</td>
@@ -265,9 +267,11 @@
                                 <td align="center" >{{Arr::get($reservation,'commission_amount')}}</td>
                                 <td align="center" >{{Arr::get($reservation,'commission')}} %</td>
                                 <td >Transfer</td>
-                        @endif
+                            @endif
 
-                    </tr>
+                        </tr>
+                    @endforeach
+
                 @endforeach
                 </tbody>
             </table>

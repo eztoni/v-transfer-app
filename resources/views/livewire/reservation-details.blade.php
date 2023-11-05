@@ -63,34 +63,44 @@
                 @endif
 
                 @if($reservation->isRoundTrip && $reservation->returnReservation->status == 'cancelled')
+
                     <br/>
                     <br/>
-                    <p  class="text-sm font-bold"><u>Roundtrip Cancellation Details #{{$reservation->returnReservation->id}}</u>
+                    <p  class="text-sm font-bold" style="color:red"><u>{{$reservation->returnReservation->pickupLocation->name}} -> {{$reservation->returnReservation->dropoffLocation->name}} Cancellation Details #{{$reservation->returnReservation->id}}</u>
                     </p>
-                    <p  class="text-sm"><b>Route: </b>{{$reservation->returnReservation->pickupAddress->name}} => {{$reservation->returnReservation->dropoffAddress->name}}</p>
                     <p class="text-sm"><b>Cancellation DateTime: </b>{{$reservation->returnReservation->cancelled_at}}</p>
+                    @if($reservation->returnReservation->hasCancellationFee() > 0)
+                        <span class="font-extrabold text-info text-sm">Cancellation Fee Applied: </span>{{$reservation->returnReservation->cancellation_fee}} € ( {{$reservation->returnReservation->cancellation_type}} ) <br/></span>
+                        <!-- Cancellation Invoice Details -->
+                        <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number','cancellation_fee')}} ({{$reservation->getInvoiceData('amount','cancellation_fee')}})</span></span>
+                        <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->getInvoiceData('zki','cancellation_fee')}}</span></span>
+                        <span class="font-extrabold text-info text-sm">JIR: <span class="text-info font-normal">{{$reservation->getInvoiceData('jir','cancellation_fee')}}</span></span>
+
+                    @else
+                        <p class="text-sm"><b>Cancellation Fee:</b> No cancellation fee applied</p>
+                    @endif
                 @endif
 
-                @if($reservation->getOverallReservationStatus() == 'cancelled')
-                    <br/>
-                    <br/>
-                    <p  class="text-sm"><u>Cancellation Details</u></p>
-                    <p class="text-sm"><b>Cancellation DateTime: </b>{{$reservation->cancelled_at}}</p>
-                    <br/>
-                    @if($reservation->cancellation_fee > 0)
-                    <br/>
-                    <p  class="text-sm"><u>Cancellation Fee Details</u></p>
-                    <p class="text-sm">Cancellation Fee Applied: </b>{{$reservation->cancellation_fee}} € ( {{$reservation->cancellation_type}} ) </p>
-                    <!-- Cancellation Invoice Details -->
-                    <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number','cancellation_fee')}} ({{$reservation->getInvoiceData('amount','cancellation_fee')}})</span></span>
-                    <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->getInvoiceData('zki','cancellation_fee')}}</span></span>
-                    <span class="font-extrabold text-info text-sm">JIR: <span class="text-info font-normal">{{$reservation->getInvoiceData('jir','cancellation_fee')}}</span></span>
+                @if($reservation->status == 'cancelled')
 
-                   @else
-                    <p class="text-sm"><b>Cancellation Fee:</b> No cancellation fee applied</p>
+                    <br/>
+                    <br/>
+                    <p  class="text-sm font-bold" style="color:red"><u>{{$reservation->pickupLocation->name}} -> {{$reservation->dropoffLocation->name}} Cancellation Details #{{$reservation->id}}</u>
+                    </p>
+                    <p class="text-sm"><b>Cancellation DateTime: </b>{{$reservation->returnReservation->cancelled_at}}</p>
+                    @if($reservation->hasCancellationFee() > 0)
+                        <span class="font-extrabold text-info text-sm">Cancellation Fee Applied: </span>{{$reservation->cancellation_fee}} € ( {{$reservation->cancellation_type}} ) <br/></span>
+                        <!-- Cancellation Invoice Details -->
+                        <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number','cancellation_fee')}} ({{$reservation->getInvoiceData('amount','cancellation_fee')}})</span></span>
+                        <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->getInvoiceData('zki','cancellation_fee')}}</span></span>
+                        <span class="font-extrabold text-info text-sm">JIR: <span class="text-info font-normal">{{$reservation->getInvoiceData('jir','cancellation_fee')}}</span></span>
 
+                    @else
+                        <p class="text-sm"><b>Cancellation Fee:</b> No cancellation fee applied</p>
+                    @endif
                 @endif
-                @endif
+
+
                 <br/>
                 @if($reservation->isDocumentConnectedSync() && $reservation->getInvoiceData('jir'))
                     <b class="text-sm">Connected Document Synced with Opera: </b>{{$reservation->getInvoiceData('invoice_number')}}</b>

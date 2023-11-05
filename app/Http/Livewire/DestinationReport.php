@@ -35,8 +35,16 @@ class DestinationReport extends Component
     public $pickupLocation = 0;
     public $dropoffLocation = 0;
 
+    //Bruto Prihod
     public $totalEur;
+    //Bruto Profit
     public $totalCommission;
+    //PDV
+    public $totalPDV;
+    //Total Trošak Ulaznog Računa
+    public $totalInvoiceCharge;
+    //Neto Profit
+    public $totalNetProfit;
 
     public bool $isPartnerReporting = false;
     public bool $isPPOMReporting = false;
@@ -48,7 +56,7 @@ class DestinationReport extends Component
     protected $rules = [
         'destination' => 'required',
         'dateFrom' => 'required|date',
-        'dateTo' => 'required|date|after_or_equal:dateFrom',
+        'dateTo' => 'required|date',
         'partner' => 'required',
     ];
 
@@ -127,9 +135,12 @@ class DestinationReport extends Component
     public function generate(\Swap\Swap $swap)
     {
 
-
         $this->totalEur = Money::EUR(0);
         $this->totalCommission = \Cknow\Money\Money::EUR(0);
+        $this->totalPDV  =\Cknow\Money\Money::EUR(0);
+        $this->totalInvoiceCharge = \Cknow\Money\Money::EUR(0);
+        $this->totalNetProfit = \Cknow\Money\Money::EUR(0);
+
         $exchange = new SwapExchange($swap);
 
         $converter = new Converter(new ISOCurrencies(), $exchange);
@@ -186,88 +197,43 @@ class DestinationReport extends Component
 
                     $priceEur = \Cknow\Money\Money::EUR($i->price);
 
-                    if ($i->isConfirmed()) {
-                        $this->totalEur = $this->totalEur->add($priceEur->getMoney());
-                        $this->totalCommission = $this->totalCommission->add($i->total_commission_amount);
-                    }else{
+                    $priceOriginal = $priceEur;
 
-                        if($i->cancellation_type == 'cancellation'){
-
-                            if($i->cancellation_fee > 0){
-
-
-                                $cf_money = \CKnow\Money\Money::EUR($i->cancellation_fee*100);
-
-                                $this->totalEur = $this->totalEur->add($cf_money->getMoney());
-                                $this->totalCommission = $this->totalCommission->add($cf_money);
-                            }else{
-                                $this->totalEur = $this->totalEur->add($priceEur->getMoney());
-                                $this->totalCommission = $this->totalCommission->add($i->total_commission_amount);
-                            }
-                        }elseif($i->cancellation_type == 'no_show'){
-                            $this->totalEur = $this->totalEur->add($priceEur->getMoney());
-                            $this->totalCommission = $this->totalCommission->add($i->total_commission_amount);
-                        }
+                    if($i->isRoundTrip()){
+                        $priceEur = $priceEur->multiply(2);
                     }
+
+                    $transfer_desc = $i->pickupLocation->name.' -> '.$i->dropoffLocation->name;
+
+                    if($i->isRoundTrip()){
+                        $transfer_desc.= " <=> ".$i->dropoffLocation->name.' -> '.$i->pickupLocation->name;
+                    }
+
+                    $this->totalEur = $this->totalEur->add($priceEur->getMoney());
 
                     $inv = $priceEur->multiply('0.20')->getMoney();
 
                     $total_comm = $priceEur->subtract($priceEur->multiply('0.20'));
-                    
+                    #Add Total Commission - Bruto Profit
+                    $this->totalCommission = $this->totalCommission->add($total_comm);
+                    #Add Total Invoice Charge - Trošak Ulaznog Računa
+                    $this->totalInvoiceCharge = $this->totalInvoiceCharge->add($inv);
+
                     $invEur = \Cknow\Money\Money::EUR($inv->getAmount());
 
-                    $pdv = $i->total_commission_amount->multiply('0.20');
-                    $pdv = \Cknow\Money\Money::EUR($pdv->getAmount());
+                    $pdv = $total_comm->multiply('0.20');
+                    $this->totalPDV = $this->totalPDV->add($pdv);
 
                     $invoice_data = \DB::table('invoices')->where('reservation_id','=',$i->id)->first();
 
-                    $net_profit = $i->total_commission_amount->subtract($pdv)->getMoney();
+                    $net_profit = $total_comm->subtract($pdv->getMoney());
 
-                    $net_profit = \Cknow\Money\Money::EUR($net_profit->getAmount());
+                    $this->totalNetProfit = $this->totalNetProfit->add($net_profit);
 
                     $invoice_number = '-';
 
                     if(!empty($invoice_data)) {
-                        $invoice_number = $invoice_data->invoice_id.'/'.$invoice_data->invoice_establishment.'/'.$invoice_data->invoice_device;
-                    }
-
-                    $net_profit = (string)$net_profit;
-                    $net_profit = preg_replace('!€!','',$net_profit);
-
-                    $priceEur = (string)$priceEur;
-                    $priceEur = preg_replace('!€!','',$priceEur);
-
-
-
-
-
-                    $total_comm= preg_replace('!€!','',$total_comm);
-
-                    $invEur = (string)$invEur;
-                    $invEur = preg_replace('!€!','',$invEur);
-
-
-                    $pdv = (string)$pdv;
-                    $pdv = preg_replace('!€!','',$pdv);
-
-                    if($i->status == 'cancelled'){
-
-                        if($i->cancellation_type == 'cancellation'){
-
-                            if($i->cancellation_fee > 0){
-
-                                $cf_money = \CKnow\Money\Money::EUR($i->cancellation_fee*100);
-                                $priceEur = \Cknow\Money\Money::EUR($cf_money->getAmount());
-
-                                $priceEur = (string)$priceEur;
-                                $priceEur = preg_replace('!€!','',$priceEur);
-
-                                $net_profit = $priceEur;
-                                $total_comm = $priceEur;
-                                $pdv = 0;
-                                $invEur = 0;
-                            }
-                        }
+                        $invoice_number = $i->getInvoiceData('invoice_number');
                     }
 
                     $selling_place = '';
@@ -284,23 +250,13 @@ class DestinationReport extends Component
                         $sales_agent = $i->createdBy->name;
                     }
 
-
                     $status = 'RP';
 
-                    if($i->isCancelled()){
+                    $return = array();
 
-                        if($i->cancellation_type == 'no_show'){
-                            $status = 'No Show';
-                        }else{
-                            if($i->hasCancellationFee()){
-                                $status = 'CF';
-                            }else{
-                                $status = 'Storno';
-                            }
-                        }
-                    }
+                    $i->partner->name;
 
-                    return [
+                    $return[] =  [
                         'id' => $i->id,
                         'name' => $i->leadTraveller?->full_name,
                         'date_time' => $i->date_time?->format('d.m.Y'),
@@ -311,25 +267,359 @@ class DestinationReport extends Component
                         'transfer' => $i->transfer?->name,
                         'vehicle' => $i->transfer?->vehicle?->type,
                         'status' => $i->status,
-                        'price_eur' => $priceEur,
+                        'price_eur' => $priceEur->formatByDecimal(),
                         'round_trip' => $i->is_round_trip,
                         'round_trip_date' => $i->returnReservation?->date_time?->format('d.m.Y @ H:i'),
                         'voucher_date' => $i->created_at->format('d.m.Y'),
                         'tax_level'=>  $i->getRouteTransferTaxLevel(),
                         'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
-                        'commission_amount'=>  $total_comm,
-                        'net_income' => $net_profit,
-                        'invoice_charge' =>  $invEur,
+                        'commission_amount'=>  $total_comm->formatByDecimal(),
+                        'net_income' => $net_profit->formatByDecimal(),
+                        'invoice_charge' =>  $invEur->formatByDecimal(),
                         'invoice_number' => (string) $invoice_number,
-                        'pdv' => $pdv,
+                        'pdv' => $pdv->formatByDecimal(),
                         'procedure' => $status,
                         'selling_place' => $selling_place,
-                        'sales_agent' => $sales_agent
+                        'sales_agent' => $sales_agent,
+                        'description' => $transfer_desc
                     ];
+
+                    $has_cancellation = false;
+
+
+                    #Overall Cancel
+                    if($i->getOverallReservationStatus() == Reservation::STATUS_CANCELLED){
+
+                        $has_cancellation = true;
+
+                        $priceEur = $priceOriginal->negative();
+
+                        if($i->isRoundTrip()){
+                            $priceEur = $priceEur->multiply(2);
+                        }
+
+                        $this->totalEur = $this->totalEur->add($priceEur->getMoney());
+
+                        if($i->cancellation_type == 'no_show'){
+                            $status = 'No Show';
+                        }else{
+                            $status = 'Storno';
+                        }
+
+                        $priceEur = $priceEur->formatByDecimal();
+                        $this->totalCommission = $this->totalCommission->subtract($total_comm);
+                        $net_profit = $net_profit->negative();
+                        $invEur = $invEur->negative();
+                        $total_comm = $total_comm->negative();
+                        $pdv = $pdv->negative();
+
+                        $this->totalPDV = $this->totalPDV->add($pdv);
+                        $this->totalInvoiceCharge = $this->totalInvoiceCharge->add($invEur);
+                        $this->totalNetProfit = $this->totalNetProfit->add($net_profit);
+
+                        $return[] =  [
+                            'id' => $i->id,
+                            'name' => $i->leadTraveller?->full_name,
+                            'date_time' => $i->date_time?->format('d.m.Y'),
+                            'partner' => $i->partner->name,
+                            'adults' => $i->adults,
+                            'children' => $i->children,
+                            'infants' => $i->infants,
+                            'transfer' => $i->transfer?->name,
+                            'vehicle' => $i->transfer?->vehicle?->type,
+                            'status' => $i->status,
+                            'price_eur' => $priceEur,
+                            'round_trip' => $i->is_round_trip,
+                            'round_trip_date' => $i->returnReservation?->date_time?->format('d.m.Y @ H:i'),
+                            'voucher_date' => $i->created_at->format('d.m.Y'),
+                            'tax_level'=>  $i->getRouteTransferTaxLevel(),
+                            'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
+                            'commission_amount'=>  $total_comm->formatByDecimal(),
+                            'net_income' => $net_profit->formatByDecimal(),
+                            'invoice_charge' =>  $invEur->formatByDecimal(),
+                            'invoice_number' => (string) $invoice_number,
+                            'pdv' => $pdv->formatByDecimal(),
+                            'procedure' => $status,
+                            'selling_place' => $selling_place,
+                            'sales_agent' => $sales_agent,
+                            'description' => $transfer_desc
+                        ];
+
+                    }else{
+
+                        #Just One Confirmed
+                        if($i->isRoundTrip()){
+
+                            #If the Second Direction is Cancelled
+                            $return_direction_cancelled = $i->status == Reservation::STATUS_CONFIRMED &&  $i->returnReservation->status == Reservation::STATUS_CANCELLED;
+
+                            if($return_direction_cancelled){
+
+                                $transfer_desc = $i->returnReservation->pickupLocation->name.' -> '.$i->returnReservation->dropoffLocation->name;
+
+                                $has_cancellation = true;
+
+                                $priceEur = $i->getPrice();
+
+                                $this->totalEur = $this->totalEur->subtract($priceEur->getMoney());
+
+                                $status = 'Storno';
+
+                                $inv = $priceEur->multiply('0.20')->getMoney();
+
+                                $total_comm = $priceEur->subtract($priceEur->multiply('0.20'));
+
+                                $this->totalCommission = $this->totalCommission->subtract($total_comm);
+
+                                $invEur = \Cknow\Money\Money::EUR($inv->getAmount());
+
+                                $pdv = $i->total_commission_amount->multiply('0.20');
+                                $pdv = \Cknow\Money\Money::EUR($pdv->getAmount());
+
+                                $invoice_data = \DB::table('invoices')->where('reservation_id','=',$i->id)->first();
+
+                                $net_profit = $i->total_commission_amount->subtract($pdv)->getMoney();
+
+                                $net_profit = \Cknow\Money\Money::EUR($net_profit->getAmount());
+
+                                $this->totalNetProfit = $this->totalNetProfit->add($net_profit);
+
+                                $invoice_number = '-';
+
+                                if(!empty($invoice_data)) {
+                                    $invoice_number = $i->getInvoiceData('invoice_number');
+                                }
+
+
+                                $net_profit = $net_profit->negative();
+                                $priceEur = $priceEur->negative();
+                                $total_comm = $total_comm->negative();
+                                $invEur = $invEur->negative();
+                                $pdv = $pdv->negative();
+
+                                $this->totalPDV = $this->totalPDV->add($pdv);
+
+                                $return[] =  [
+                                    'id' => $i->id,
+                                    'name' => $i->leadTraveller?->full_name,
+                                    'date_time' => $i->date_time?->format('d.m.Y'),
+                                    'partner' => $i->partner->name,
+                                    'adults' => $i->adults,
+                                    'children' => $i->children,
+                                    'infants' => $i->infants,
+                                    'transfer' => $i->transfer?->name,
+                                    'vehicle' => $i->transfer?->vehicle?->type,
+                                    'status' => $i->status,
+                                    'price_eur' => $priceEur->formatByDecimal(),
+                                    'round_trip' => $i->is_round_trip,
+                                    'round_trip_date' => $i->returnReservation?->date_time?->format('d.m.Y @ H:i'),
+                                    'voucher_date' => $i->created_at->format('d.m.Y'),
+                                    'tax_level'=>  $i->getRouteTransferTaxLevel(),
+                                    'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
+                                    'commission_amount'=>  $total_comm->formatByDecimal(),
+                                    'net_income' => $net_profit->formatByDecimal(),
+                                    'invoice_charge' =>  $invEur->formatByDecimal(),
+                                    'invoice_number' => (string) $invoice_number,
+                                    'pdv' => $pdv->formatByDecimal(),
+                                    'procedure' => $status,
+                                    'selling_place' => $selling_place,
+                                    'sales_agent' => $sales_agent,
+                                    'description' => $transfer_desc
+                                ];
+                            }
+
+                            $main_direction_cancelled = $i->status == Reservation::STATUS_CANCELLED &&  $i->returnReservation->status == Reservation::STATUS_CONFIRMED;
+
+                            if($main_direction_cancelled){
+
+                                $transfer_desc = $i->pickupLocation->name.' -> '.$i->dropoffLocation->name;
+
+                                $has_cancellation = true;
+
+                                $priceEur = $i->getPrice();
+
+                                $this->totalEur = $this->totalEur->subtract($priceEur->getMoney());
+
+                                $status = 'Storno';
+
+                                $inv = $priceEur->multiply('0.20')->getMoney();
+
+                                $total_comm = $priceEur->subtract($priceEur->multiply('0.20'));
+
+                                $this->totalCommission = $this->totalCommission->subtract($total_comm);
+
+                                $invEur = \Cknow\Money\Money::EUR($inv->getAmount());
+
+
+                                $pdv = $i->total_commission_amount->multiply('0.20');
+                                $pdv = \Cknow\Money\Money::EUR($pdv->getAmount());
+
+                                $this->totalPDV = $this->totalPDV->add($pdv);
+
+                                $invoice_data = \DB::table('invoices')->where('reservation_id','=',$i->id)->first();
+
+                                $net_profit = $i->total_commission_amount->subtract($pdv)->getMoney();
+
+                                $net_profit = \Cknow\Money\Money::EUR($net_profit->getAmount());
+                                $this->totalNetProfit = $this->totalNetProfit->add($net_profit);
+                                $invoice_number = '-';
+
+                                if(!empty($invoice_data)) {
+                                    $invoice_number = $i->getInvoiceData('invoice_number');
+                                }
+
+                                $net_profit = $net_profit->negative();
+                                $priceEur = $priceEur->negative();
+                                $total_comm = $total_comm->negative();
+                                $invEur = $invEur->negative();
+                                $pdv = $pdv->negative();
+
+                                $this->totalInvoiceCharge = $this->totalInvoiceCharge->add($invEur);
+
+                                $return[] =  [
+                                    'id' => $i->id,
+                                    'name' => $i->leadTraveller?->full_name,
+                                    'date_time' => $i->date_time?->format('d.m.Y'),
+                                    'partner' => $i->partner->name,
+                                    'adults' => $i->adults,
+                                    'children' => $i->children,
+                                    'infants' => $i->infants,
+                                    'transfer' => $i->transfer?->name,
+                                    'vehicle' => $i->transfer?->vehicle?->type,
+                                    'status' => $i->status,
+                                    'price_eur' => $priceEur->formatByDecimal(),
+                                    'round_trip' => $i->is_round_trip,
+                                    'round_trip_date' => $i->returnReservation?->date_time?->format('d.m.Y @ H:i'),
+                                    'voucher_date' => $i->created_at->format('d.m.Y'),
+                                    'tax_level'=>  $i->getRouteTransferTaxLevel(),
+                                    'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
+                                    'commission_amount'=>  $total_comm->formatByDecimal(),
+                                    'net_income' => $net_profit->formatByDecimal(),
+                                    'invoice_charge' =>  $invEur->formatByDecimal(),
+                                    'invoice_number' => (string) $invoice_number,
+                                    'pdv' => $pdv->formatByDecimal(),
+                                    'procedure' => $status,
+                                    'selling_place' => $selling_place,
+                                    'sales_agent' => $sales_agent,
+                                    'description' => $transfer_desc
+                                ];
+                            }
+
+                        }
+                    }
+
+                    ##Check For Cancellation Fee
+                    if($has_cancellation){
+
+                        if($i->status == Reservation::STATUS_CANCELLED && $i->hasCancellationFee()){
+
+                            $invoice_number = $i->getInvoiceData('invoice_number','cancellation_fee');
+
+                            $status = 'CF';
+
+                            $priceEur = \Cknow\Money\Money::EUR($i->getCancellationFeeAmount(true)*100);
+
+                            $this->totalEur = $this->totalEur->add($priceEur->getMoney());
+
+                            $invEur = $priceEur->multiply('0.20');
+                            $this->totalInvoiceCharge = $this->totalInvoiceCharge->add($invEur);
+
+                            $total_comm = $priceEur->subtract($invEur->getMoney());
+                            $this->totalCommission = $this->totalCommission->add($total_comm->getMoney());
+
+                            $transfer_desc = $i->pickupLocation->name.' -> '.$i->dropoffLocation->name;
+
+                            $return[] =  [
+                                'id' => $i->id,
+                                'name' => $i->leadTraveller?->full_name,
+                                'date_time' => $i->date_time?->format('d.m.Y'),
+                                'partner' => $i->partner->name,
+                                'adults' => $i->adults,
+                                'children' => $i->children,
+                                'infants' => $i->infants,
+                                'transfer' => $i->transfer?->name,
+                                'vehicle' => $i->transfer?->vehicle?->type,
+                                'status' => $i->status,
+                                'price_eur' => $priceEur->formatByDecimal(),
+                                'round_trip' => $i->is_round_trip,
+                                'round_trip_date' => $i->returnReservation?->date_time?->format('d.m.Y @ H:i'),
+                                'voucher_date' => $i->created_at->format('d.m.Y'),
+                                'tax_level'=>  $i->getRouteTransferTaxLevel(),
+                                'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
+                                'commission_amount'=>  $total_comm->formatByDecimal(),
+                                'net_income' => $net_profit->formatByDecimal(),
+                                'invoice_charge' =>  $invEur->formatByDecimal(),
+                                'invoice_number' => (string) $invoice_number,
+                                'pdv' => $pdv,
+                                'procedure' => $status,
+                                'selling_place' => $selling_place,
+                                'sales_agent' => $sales_agent,
+                                'description' => $transfer_desc
+                            ];
+                        }
+
+                        if($i->isRoundTrip()){
+
+                            if($i->returnReservation->status == Reservation::STATUS_CANCELLED && $i->returnReservation->hasCancellationFee()){
+
+                                $invoice_number = $i->returnReservation->getInvoiceData('invoice_number','cancellation_fee');
+
+                                $priceEur = \Cknow\Money\Money::EUR($i->returnReservation->getCancellationFeeAmount(true)*100);
+
+                                $this->totalEur = $this->totalEur->add($priceEur->getMoney());
+
+                                $status = 'CF';
+
+                                $invEur = $priceEur->multiply('0.20');
+                                $this->totalInvoiceCharge = $this->totalInvoiceCharge->add($invEur);
+
+                                $total_comm = $priceEur->subtract($invEur->getMoney());
+
+                                $this->totalCommission = $this->totalCommission->add($total_comm->getMoney());
+
+                                $transfer_desc = $i->returnReservation->pickupLocation->name.' -> '.$i->returnReservation->dropoffLocation->name;
+
+                                $return[] =  [
+                                    'id' => $i->id,
+                                    'name' => $i->leadTraveller?->full_name,
+                                    'date_time' => $i->date_time?->format('d.m.Y'),
+                                    'partner' => $i->partner->name,
+                                    'adults' => $i->adults,
+                                    'children' => $i->children,
+                                    'infants' => $i->infants,
+                                    'transfer' => $i->transfer?->name,
+                                    'vehicle' => $i->transfer?->vehicle?->type,
+                                    'status' => $i->status,
+                                    'price_eur' => $priceEur->formatByDecimal(),
+                                    'round_trip' => $i->is_round_trip,
+                                    'round_trip_date' => $i->returnReservation?->date_time?->format('d.m.Y @ H:i'),
+                                    'voucher_date' => $i->created_at->format('d.m.Y'),
+                                    'tax_level'=>  $i->getRouteTransferTaxLevel(),
+                                    'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
+                                    'commission_amount'=>  $total_comm->formatByDecimal(),
+                                    'net_income' => $net_profit->formatByDecimal(),
+                                    'invoice_charge' =>  $invEur->formatByDecimal(),
+                                    'invoice_number' => (string) $invoice_number,
+                                    'pdv' => $pdv,
+                                    'procedure' => $status,
+                                    'selling_place' => $selling_place,
+                                    'sales_agent' => $sales_agent,
+                                    'description' => $transfer_desc
+                                ];
+                            }
+                        }
+                    }
+
+
+                    return $return;
+
                 })->toArray();
 
-        $this->totalEur = (string)\Cknow\Money\Money::fromMoney($this->totalEur);
-        $this->totalCommission = (string)$this->totalCommission;
+        $this->totalEur = \Cknow\Money\Money::fromMoney($this->totalEur)->formatByDecimal();
+        $this->totalCommission = $this->totalCommission->formatByDecimal();
+        $this->totalInvoiceCharge = $this->totalInvoiceCharge->formatByDecimal();
+        $this->totalPDV = $this->totalPDV->formatByDecimal();
+        $this->totalNetProfit = $this->totalNetProfit->formatByDecimal();
     }
 
     public function updated($property)
@@ -359,14 +649,94 @@ class DestinationReport extends Component
 
         $export = new DestinationExport($this->filteredReservations,$this->reportType);
 
-        $export->setFilterData([
+        switch ($this->reportType){
+            case 'partner-report':
+                $export->setFilterData([
 
-                Carbon::make($this->dateFrom)->format('d.m.Y'),
-                Carbon::make($this->dateTo)->format('d.m.Y'),
-//                $this->totalEur,
-//                $this->totalCommission
+                    Carbon::make($this->dateFrom)->format('d.m.Y'),
+                    Carbon::make($this->dateTo)->format('d.m.Y'),
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    $this->totalEur,
+                    $this->totalInvoiceCharge,
+                    $this->totalCommission,
+                    '',
+                    '',
+                ]);
+                break;
+            case 'ppom-report':
+                $export->setFilterData([
 
-        ]);
+                    Carbon::make($this->dateFrom)->format('d.m.Y'),
+                    Carbon::make($this->dateTo)->format('d.m.Y'),
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    $this->totalEur,
+                    '',
+                    $this->totalInvoiceCharge,
+                    $this->totalCommission,
+                    $this->totalPDV,
+                    $this->totalNetProfit,
+                ]);
+                break;
+            case 'rpo-report':
+                $export->setFilterData([
+
+                    Carbon::make($this->dateFrom)->format('d.m.Y'),
+                    Carbon::make($this->dateTo)->format('d.m.Y'),
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    $this->totalEur,
+                    $this->totalCommission,
+                    $this->totalInvoiceCharge,
+                    '',
+                    '',
+                ]);
+                break;
+            default:
+                $export->setFilterData([
+
+                    Carbon::make($this->dateFrom)->format('d.m.Y'),
+                    Carbon::make($this->dateTo)->format('d.m.Y'),
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    $this->totalEur,
+                    $this->totalInvoiceCharge,
+                    $this->totalCommission,
+                    '',
+                    '',
+
+                ]);
+        }
+
+
 
         switch($this->reportType){
             case 'partner-report':
