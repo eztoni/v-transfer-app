@@ -237,7 +237,7 @@ class ValamarFiskalizacija{
 
             #Avoid Sending Invoice Cancellation
             if ($reservation->getOverallReservationStatus() == 'cancelled') {
-                return true;
+               return 'Cannot Sync Document - Reservation Already Cancelled';
             }
 
             $traveller_info = $reservation->getLeadTravellerAttribute();

@@ -28,7 +28,7 @@ class SyncDocumentReservation extends Component
 
             $api = new ValamarFiskalizacija($this->reservation->id);
 
-            $api->syncDocument();
+            $response = $api->syncDocument();
 
             $this->reservation->refresh();
 
@@ -36,7 +36,14 @@ class SyncDocumentReservation extends Component
                 $this->notification()->success('Sync Completed');
                 $this->emit('syncDocumentCompleted');
             }else{
-                $this->notification()->error('Unable to sync the document with Opera');
+
+                $message = 'Unable to sync the document with Opera';
+
+                if(!empty($response)){
+                    $message = $response;
+                }
+
+                $this->notification()->error($message);
             }
         }
     }
