@@ -21,9 +21,19 @@ class ReservationCancellationMail extends Mailable
         $booking_cancellation = 'Booking Cancellation';
         $booking_cancellation_fee = 'CancellationFee';
 
-        if($locale == 'hr'){
-            $booking_cancellation = 'Otkaz Rezervacije';
-            $booking_cancellation_fee = 'Naknada Štete';
+        switch ($this->reservation->confirmation_language){
+            case 'hr':
+                $booking_cancellation_fee = 'Naknada Štete';
+                $booking_cancellation = 'Otkaz Rezervacije';
+                break;
+            case 'de':
+                $booking_cancellation_fee = 'Stornogebühr';
+                $booking_cancellation = 'Stornierung der Buchung';
+                break;
+            case 'it':
+                $booking_cancellation_fee = 'Tassa di cancellazione';
+                $booking_cancellation = 'Cancellazione della prenotazione';
+                break;
         }
 
         $this->subject(__('mail.guest.cancellation_mail.subject'));

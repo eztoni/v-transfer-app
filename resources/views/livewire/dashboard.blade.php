@@ -24,6 +24,7 @@
                     </x-badge>
                 </div>
                 @foreach($this->get_opera_error_bookings() as $reservation)
+
                     <x-card cardClasses="mb-4" title="Transfer #{{$reservation->id}}">
                         <x-slot name="action">
                             <div class="flex gap-4 items-center">
@@ -170,6 +171,7 @@
                     </x-badge>
                 </div>
                 @foreach($this->get_connected_document_error_bookings() as $reservation)
+
                     <x-card cardClasses="mb-4" title="Transfer #{{$reservation->id}}">
                         <x-slot name="action">
                             <div class="flex gap-4 items-center">

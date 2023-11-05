@@ -19,10 +19,21 @@ class ReservationConfirmationMail extends Mailable
 
         $this->subject(__('mail.guest.confirmation_mail.subject'));
 
-        $booking_confirmation = 'Booking Confirmation';
+        switch ($this->reservation->confirmation_language){
+            case 'en':
+                $booking_confirmation = 'Booking Confirmation';
+                break;
+            case 'hr':
+                $booking_confirmation = 'Potvrda Rezervacije';
+                break;
 
-        if($locale == 'hr'){
-            $booking_confirmation = 'Potvrda Rezervacije';
+            case 'de':
+                $booking_confirmation = 'Buchungsbestätigung';
+                break;
+
+            case 'it':
+                $booking_confirmation = 'Conferma della prenotazione';
+                break;
         }
 
         $pdf = PDF::loadView('attachments.voucher', ['reservation'=>$this->reservation]);
