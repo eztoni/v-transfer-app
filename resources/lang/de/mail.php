@@ -56,6 +56,7 @@ Im Anhang befindet sich die Buchungsbestätigung.
 Bei dem erfolgreichen Kauf wurde der unten aufgeführte Kaufvertrag zu dem/den angegebenen Preis/Preisen und Kosten abgeschlossen.
 Teil dieses Vertrages sind die Allgemeinen Kaufbedingungen, in denen Ihre Rechte und Pflichten im Detail erklärt werden.
 ',
+                
                 'your_valamar_team' => 'Ihr ValamarTeam'
             ]
         ],
@@ -153,5 +154,5 @@ werden, bezahlen Sie diese beim Check-in im Objekt Ihres Aufenthaltes.',
     'amount' => 'Menge',
     'reservation_cancellation' => 'Stornierung der Reservierung'
 
-    
+
 ];
