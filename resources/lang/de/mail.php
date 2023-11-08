@@ -152,4 +152,6 @@ werden, bezahlen Sie diese beim Check-in im Objekt Ihres Aufenthaltes.',
     'price_info' => 'Der Betrag wird in Euro berechnet. Preis in kroatischen Kuna in informativ zum festen Umrechnungskurs von 1 EUR = 7,5340 HRK',
     'amount' => 'Menge',
     'reservation_cancellation' => 'Stornierung der Reservierung'
+
+    
 ];
