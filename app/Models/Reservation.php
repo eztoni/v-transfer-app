@@ -961,4 +961,27 @@ class Reservation extends Model
             },
         );
     }
+
+    public function hasModifications(){
+
+        $return = false;
+
+        $modification_logs = \DB::table('reservation_modification')->where('reservation_id','=',$this->id)->get()->last();
+
+        if(!empty($modification_logs)){
+            foreach($modification_logs as $parameter => $value){
+                if($value == 1 && $parameter != 'updated_by'){
+                    if($return === false){
+                        $return = array();
+                    }
+                    $return[] = $parameter;
+                }
+            }
+        }
+
+        return $return;
+
+    }
+
+
 }

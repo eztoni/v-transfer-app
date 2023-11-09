@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 
 use App\Mail\Guest\ReservationConfirmationMail;
+use App\Mail\Partner\ReservationModificationMail;
 use App\Models\Reservation;
 use App\Models\Traveller;
 use App\Models\User;
@@ -138,6 +139,21 @@ use Actions;
         ]);
     }
 
+    public function sendAgainModificationDialog(){
+        $this->dialog()->confirm([
+            'title'       => 'You are about to send a reservation modification details email again',
+            'description' => 'Proceed with this action?',
+            'icon'        => 'question',
+            'accept'      => [
+                'label'  => 'Yes, send',
+                'method' => 'sendModificationAgain',
+            ],
+            'reject' => [
+                'label'  => 'No, cancel',
+            ],
+        ]);
+    }
+
     public function sendAgain(): void
     {
 
@@ -151,6 +167,26 @@ use Actions;
         }
 
         $this->notification()->success('Sent!','Reservation confirmation sent');
+
+    }
+
+    public function sendModificationAgain(): void
+    {
+
+        if(!$this->reservation->is_main){
+            dd("nije glavna reza");
+        }
+
+        // Add email to email list
+        if($travellerMail = $this->reservation->leadTraveller?->email){
+            Mail::to($travellerMail)->locale($this->reservation->confirmation_language)->send(new ReservationConfirmationMail($this->reservation->id,$this->reservation->confirmation_language??'en'));
+        }
+
+        if($partnerMail = $this->reservation->partner->email){
+            Mail::to($partnerMail)->send(new ReservationModificationMail($this->reservation->id));
+        }
+
+        $this->notification()->success('Sent!','Reservation modification sent');
 
     }
 

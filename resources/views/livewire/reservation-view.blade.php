@@ -211,6 +211,10 @@
                     </tr>
                     </tbody>
                 </table>
+                @if($reservation->hasModifications())
+                    <x-button xs wire:click="sendAgainModificationDialog" class="float-right">Send Modifications again</x-button>
+                @endif
+
                 @if($this->reservation->status === \App\Models\Reservation::STATUS_CONFIRMED && $this->reservation->is_main)
                     <x-button xs wire:click="sendAgainConfirmationDialog" class="float-right">Send confirmation again</x-button>
                 @endif

@@ -112,6 +112,7 @@
 <p>
     U privitku nalazi se modificirana potvrda rezervacije transfera.
 </p>
+<p>{{$this->reservation->id }}</p>
 <br>
 
 <p> Vaš Valamar tim</p>
