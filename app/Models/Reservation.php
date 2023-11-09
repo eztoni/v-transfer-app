@@ -1117,8 +1117,6 @@ class Reservation extends Model
             }
         }
 
-        dd($return);
-
         return $return;
     }
 
