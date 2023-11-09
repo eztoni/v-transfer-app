@@ -81,9 +81,9 @@ use Actions;
         #if(!Auth::user()->hasRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN]))
             #return;
 
-
-
         $this->validate();
+
+
 
         if($this->otherTravellerComment){
             \DB::table('reservation_traveller')->updateOrInsert(
@@ -98,11 +98,45 @@ use Actions;
             );
         }
 
+        ##Check Fields
+        $modified = array();
 
+        if($this->leadTraveller->first_name != $this->traveller->first_name){
+            $modified[] = 'first_name';
+        }
+
+        if($this->leadTraveller->last_name != $this->traveller->last_name){
+            $modified[] = 'last_name';
+        }
+
+        if($this->leadTraveller->phone != $this->traveller->phone){
+            $modified[] = 'phone';
+        }
+
+        if($this->leadTraveller->email != $this->traveller->email){
+            $modified[] = 'email';
+        }
 
         $this->traveller->save();
         $this->reservation->confirmation_language = $this->confirmation_lang;
         $this->reservation->save();
+
+        if(!empty($modified)){
+
+            $array = array();
+
+            $array['reservation_id'] = $this->reservation->id;
+
+            foreach($modified as $mod){
+                $array[$mod] = 1;
+            }
+            $array['sent'] = 0;
+            $array['updated_by'] = 1;
+
+            \DB::table('reservation_modification')->insert(
+                $array
+            );
+        }
 
         $this->notification()->success('Saved','Traveller data saved');
 

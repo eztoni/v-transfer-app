@@ -17,10 +17,24 @@ use Actions;
     public $sendModifyMail = 1;
 
     public $date;
+    public $adults;
+    public $infants;
+    public $children;
+    public $luggage;
+    public $flight_number;
+    public $remark;
 
     public function mount()
     {
         $this->date = $this->reservation->date_time->format('d.m.Y H:i');
+
+        $this->adults = $this->reservation->adults;
+        $this->infants = $this->reservation->infants;
+        $this->children = $this->reservation->children;
+        $this->luggage = $this->reservation->luggage;
+        $this->flight_number = $this->reservation->flight_number;
+        $this->remark = $this->reservation->remark;
+
     }
 
 
@@ -91,6 +105,63 @@ use Actions;
     {
 
         $this->validate($this->rules(),[],$this->fieldNames);
+
+        $modify = array();
+
+        $res_time = substr($this->reservation->date_time->toTimeString(),0,5);
+        $res_date = substr($this->reservation->date_time->toDateTimeString(),0,10);
+        $save_date = \Carbon\Carbon::parse(substr($this->date,0,10))->format('Y-m-d');
+        $save_time = substr($this->date,11,5);
+
+
+        if($res_date != $save_date){
+            $modify[] = 'date';
+        }
+
+        if($res_time != $save_time){
+            $modify[] = 'time';
+        }
+
+        if($this->adults != $this->reservation->adults){
+            $modify[] = 'adults';
+        }
+
+        if($this->children != $this->reservation->children){
+            $modify[] = 'children';
+        }
+
+        if($this->infants != $this->reservation->infants){
+            $modify[] = 'infants';
+        }
+
+        if($this->flight_number != $this->reservation->flight_number){
+            $modify[] = 'flight_number';
+        }
+
+        if($this->remark != $this->reservation->remark){
+            $modify[] = 'remark';
+        }
+
+        if($this->luggage != $this->reservation->luggage){
+            $modify[] = 'luggage';
+        }
+
+        if(!empty($modify)){
+
+            $array = array();
+
+            $array['reservation_id'] = $this->reservation->id;
+
+            foreach($modify as $mod){
+                $array[$mod] = 1;
+            }
+            $array['sent'] = 0;
+            $array['updated_by'] = 1;
+
+            \DB::table('reservation_modification')->insert(
+                $array
+            );
+        }
 
         $this->reservation->date_time = $this->date;
 

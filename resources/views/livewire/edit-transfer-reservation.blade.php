@@ -12,40 +12,40 @@
 
 
     <x-input :class="$reservation->isDirty('adults')?'border-success':''"
-                          wire:model.defer="reservation.adults"
+                          wire:model.defer="adults"
              type="number"
                           label="Adults"
     />
     <x-input
         :class="$reservation->isDirty('children')?'border-success':''"
-        wire:model.defer="reservation.children"
+        wire:model.defer="children"
         type="number"
 
         label="Children"
     />
     <x-input
         :class="$reservation->isDirty('infants')?'border-success':''"
-        wire:model.defer="reservation.infants"
+        wire:model.defer="infants"
         type="number"
 
         label="Infants"
     />
     <x-input
         :class="$reservation->isDirty('luggage')?'border-success':''"
-        wire:model.defer="reservation.luggage"
+        wire:model.defer="luggage"
         type="number"
 
         label="Luggage"
     />
     <x-input
         :class="$reservation->isDirty('flight_number')?'border-success':''"
-        wire:model.defer="reservation.flight_number"
+        wire:model.defer="flight_number"
                           label="Flight number"
     />
 
     <x-textarea
         label="Remark:"
-        wire:model.defer="reservation.remark"
+        wire:model.defer="remark"
     />
 
     <x-native-select

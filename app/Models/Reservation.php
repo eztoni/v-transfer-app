@@ -979,26 +979,145 @@ class Reservation extends Model
 
         $return = false;
 
-        $modification_logs = \DB::table('reservation_modification')->where('reservation_id','=',$this->id)->where('sent','=',0)->get()->last();
+        if($this->is_main && $this->status == 'confirmed'){
 
-        if(!empty($modification_logs)){
+            $modification_logs = \DB::table('reservation_modification')->where('reservation_id','=',$this->id)->where('sent','=',0)->get();
 
-            foreach($modification_logs as $parameter => $value){
-                if($value == 1 && $parameter != 'updated_by'){
-                    if($return === false){
-                        $return = array();
+            if(!empty($modification_logs)){
+
+                foreach($modification_logs as $log){
+                    foreach($log as $parameter => $value){
+
+                        if($value == 1 && $parameter != 'updated_by'){
+                            if($return === false){
+                                $return = array();
+                            }
+
+
+                            if(isset($return[$this->id])){
+                                if(!in_array(self::MOD_FIELD_TRANSLATIONS[$parameter],$return[$this->id]['modifications'])){
+                                    $return[$this->id]['modifications'][] = self::MOD_FIELD_TRANSLATIONS[$parameter];
+                                }
+                            }else{
+                                $return[$this->id]['modifications'][] = self::MOD_FIELD_TRANSLATIONS[$parameter];
+                            }
+
+                        }
+
+                        if(!empty($return[$this->id])){
+                            $return[$this->id]['direction'] = $this->pickupLocation->name.' => '.$this->dropoffLocation->name;
+                        }
                     }
-                    $return[$this->id]['modifications'][] = self::MOD_FIELD_TRANSLATIONS[$parameter];
-                }
 
-                if(!empty($return[$this->id])){
-                    $return[$this->id]['direction'] = $this->pickupLocation->name.' => '.$this->dropoffLocation->name;
+                }
+            }
+
+            if($this->isRoundTrip() && $this->returnReservation->status == 'confirmed'){
+                $modification_logs = \DB::table('reservation_modification')->where('reservation_id','=',$this->returnReservation->id)->where('sent','=',0)->get();
+
+                if(!empty($modification_logs)){
+
+                    foreach($modification_logs as $log){
+                        foreach($log as $parameter => $value){
+
+                            if($value == 1 && $parameter != 'updated_by'){
+                                if($return === false){
+                                    $return = array();
+                                }
+
+
+                                if(isset($return[$this->returnReservation->id])){
+                                    if(!in_array(self::MOD_FIELD_TRANSLATIONS[$parameter],$return[$this->returnReservation->id]['modifications'])){
+                                        $return[$this->returnReservation->id]['modifications'][] = self::MOD_FIELD_TRANSLATIONS[$parameter];
+                                    }
+                                }else{
+                                    $return[$this->returnReservation->id]['modifications'][] = self::MOD_FIELD_TRANSLATIONS[$parameter];
+                                }
+
+                            }
+
+                            if(!empty($return[$this->returnReservation->id])){
+                                $return[$this->returnReservation->id]['direction'] = $this->returnReservation->pickupLocation->name.' => '.$this->returnReservation->dropoffLocation->name;
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        if(!$this->is_main){
+
+            $main_res = Reservation::where('round_trip_id','=',$this->id)->get()->first();
+
+            $modification_logs = \DB::table('reservation_modification')->where('reservation_id','=',$main_res->id)->where('sent','=',0)->get();
+
+            if(!empty($modification_logs)){
+
+                foreach($modification_logs as $log){
+                    foreach($log as $parameter => $value){
+
+                        if($value == 1 && $parameter != 'updated_by'){
+                            if($return === false){
+                                $return = array();
+                            }
+
+
+                            if(isset($return[$main_res->id])){
+                                if(!in_array(self::MOD_FIELD_TRANSLATIONS[$parameter],$return[$main_res->id]['modifications'])){
+                                    $return[$main_res->id]['modifications'][] = self::MOD_FIELD_TRANSLATIONS[$parameter];
+                                }
+                            }else{
+                                $return[$main_res->id]['modifications'][] = self::MOD_FIELD_TRANSLATIONS[$parameter];
+                            }
+
+                        }
+
+                        if(!empty($return[$main_res->id])){
+
+                            $return[$main_res->id]['direction'] = $main_res->pickupLocation->name.' => '.$main_res->dropoffLocation->name;
+                        }
+                    }
+
+                }
+            }
+
+            if($main_res->isRoundTrip() && $main_res->returnReservation->status == 'confirmed'){
+
+                $modification_logs = \DB::table('reservation_modification')->where('reservation_id','=',$main_res->returnReservation->id)->where('sent','=',0)->get();
+
+                if(!empty($modification_logs)){
+
+                    foreach($modification_logs as $log){
+                        foreach($log as $parameter => $value){
+
+                            if($value == 1 && $parameter != 'updated_by'){
+                                if($return === false){
+                                    $return = array();
+                                }
+
+
+                                if(isset($return[$main_res->returnReservation->id])){
+                                    if(!in_array(self::MOD_FIELD_TRANSLATIONS[$parameter],$return[$main_res->returnReservation->id]['modifications'])){
+                                        $return[$main_res->returnReservation->id]['modifications'][] = self::MOD_FIELD_TRANSLATIONS[$parameter];
+                                    }
+                                }else{
+                                    $return[$main_res->returnReservation->id]['modifications'][] = self::MOD_FIELD_TRANSLATIONS[$parameter];
+                                }
+
+                            }
+
+                            if(!empty($return[$main_res->returnReservation->id])){
+                                $return[$main_res->returnReservation->id]['direction'] = $main_res->pickupLocation->name.' => '.$main_res->returnReservation->dropoffLocation->name;
+                            }
+                        }
+
+                    }
                 }
             }
         }
 
         return $return;
-
     }
 
     public function setModificationsAsSent(){
