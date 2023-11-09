@@ -207,10 +207,6 @@ use Actions;
     public function sendModificationAgain(): void
     {
 
-        if(!$this->reservation->is_main){
-            dd("nije glavna reza");
-        }
-
         // Add email to email list
         if($travellerMail = $this->reservation->leadTraveller?->email){
             Mail::to($travellerMail)->locale($this->reservation->confirmation_language)->send(new ReservationConfirmationMail($this->reservation->id,$this->reservation->confirmation_language??'en'));
@@ -218,6 +214,10 @@ use Actions;
 
         if($partnerMail = $this->reservation->partner->email){
             Mail::to($partnerMail)->send(new ReservationModificationMail($this->reservation->id));
+        }
+
+        if($this->reservation->hasModifications()){
+            $this->reservation->setModificationsAsSent();
         }
 
         $this->notification()->success('Sent!','Reservation modification sent');
