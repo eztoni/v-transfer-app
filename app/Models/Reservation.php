@@ -975,7 +975,7 @@ class Reservation extends Model
                     if($return === false){
                         $return = array();
                     }
-                    $return[$this->id]['modification'][] =$parameter;
+                    $return[$this->id]['modifications'][] =$parameter;
                 }
 
                 if(!empty($return[$this->id])){
