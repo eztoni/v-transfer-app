@@ -10,6 +10,7 @@ use App\Http\Livewire\LanguageOverview;
 use App\Mail\Guest\ReservationCancellationMail;
 use App\Services\Api\ValamarFiskalizacija;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Reservation;
 
 /*
     |--------------------------------------------------------------------------
@@ -32,10 +33,9 @@ Route::get('activity-log-dashboard', ActivityLogDashboard::class)->name('activit
 
 Route::get('/test', function () {
 
-    $mail = new ReservationCancellationMail(94,$locale??'en');
-    $userEmails = array('njiric.toni@gmail.com');
+  $mail = new \App\Mail\Partner\ReservationModificationMail(255);
 
-    Mail::to($userEmails)->locale($locale??'en')->send($mail);
+  dd($mail);
 
 });
 
