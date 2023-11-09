@@ -35,7 +35,8 @@ Route::get('/test', function () {
 
   $mail = new \App\Mail\Partner\ReservationModificationMail(255);
 
-  dd($mail);
+  $mail->build();
+
 
 });
 
