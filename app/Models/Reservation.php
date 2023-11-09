@@ -7,6 +7,7 @@ use App\Scopes\DestinationScope;
 use App\Services\Api\ValamarOperaApi;
 use Carbon\Carbon;
 use Database\Seeders\TransferExtrasPriceSeeder;
+use FontLib\Table\Type\maxp;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -45,7 +46,19 @@ class Reservation extends Model
         'ms' => 'Ms',
     ];
 
-
+    public const MOD_FIELD_TRANSLATIONS = array(
+      'first_name' => 'Ime',
+      'last_name' => 'Prezime',
+      'email' => 'Email',
+      'phone' => 'Telefon',
+      'date' => 'Datum',
+      'time' => 'Vrijeme',
+      'adults'=> 'Odrasli',
+      'children' => 'Djeca',
+      'remark' => 'Popratni komentar',
+      'flight_number' => 'Broj Leta',
+      'luggage' => 'Prtljaga'
+    );
 
     public function isCancelled(){
         return $this->status === self::STATUS_CANCELLED;
@@ -975,7 +988,7 @@ class Reservation extends Model
                     if($return === false){
                         $return = array();
                     }
-                    $return[$this->id]['modifications'][] =$parameter;
+                    $return[$this->id]['modifications'][] = self::MOD_FIELD_TRANSLATIONS[$parameter];
                 }
 
                 if(!empty($return[$this->id])){
