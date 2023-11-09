@@ -978,8 +978,7 @@ class Reservation extends Model
     public function hasModifications(){
 
         $return = false;
-        dd($this->status);
-        dd("toni");
+
         if($this->is_main && $this->status == 'confirmed'){
 
             $modification_logs = \DB::table('reservation_modification')->where('reservation_id','=',$this->id)->where('sent','=',0)->get();
@@ -1117,6 +1116,8 @@ class Reservation extends Model
                 }
             }
         }
+
+        dd($return);
 
         return $return;
     }
