@@ -170,6 +170,10 @@ use Actions;
 
         $updater->updateReservation();
 
+        if($this->sendModifyMail){
+            $this->reservation->setModificationsAsSent();
+        }
+
         ##Check if the modification has caused max number of occupants to be bigger than supported occupancy
         if($this->reservation->getNumPassangersAttribute() > $this->reservation->Transfer->Vehicle->max_occ){
 
