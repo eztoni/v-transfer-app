@@ -969,12 +969,17 @@ class Reservation extends Model
         $modification_logs = \DB::table('reservation_modification')->where('reservation_id','=',$this->id)->get()->last();
 
         if(!empty($modification_logs)){
+
             foreach($modification_logs as $parameter => $value){
                 if($value == 1 && $parameter != 'updated_by'){
                     if($return === false){
                         $return = array();
                     }
-                    $return[] = $parameter;
+                    $return[$this->id]['modification'][] =$parameter;
+                }
+
+                if(!empty($return[$this->id])){
+                    $return[$this->id]['direction'] = $this->pickupLocation->name.' => '.$this->dropoffLocation->name;
                 }
             }
         }

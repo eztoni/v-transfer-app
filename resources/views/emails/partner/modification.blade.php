@@ -112,7 +112,17 @@
 <p>
     U privitku nalazi se modificirana potvrda rezervacije transfera.
 </p>
-<p>{{$reservation->id }}</p>
+@if($modifications = $reservation->hasModifications())
+    <p>Molimo da obratite pozornost na slijedeće podatke koji su izmjenjeni:</p>
+    @foreach($modifications as $mod_id => $data)
+        <p><b>Smijer: </b>{{$data['direction']}}</p>
+        <ul>
+        @foreach($data['modifications'] as $param)
+          <li>{{$param}}</li>
+        @endforeach
+        </ul>
+    @endfor
+@endif
 <br>
 
 <p> Vaš Valamar tim</p>
