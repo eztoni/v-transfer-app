@@ -121,7 +121,7 @@
           <li>{{$param}}</li>
         @endforeach
         </ul>
-    @endfor
+    @endforeach
 @endif
 <br>
 
