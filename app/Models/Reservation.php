@@ -978,7 +978,7 @@ class Reservation extends Model
     public function hasModifications(){
 
         $return = false;
-        dd($this->is_main);
+        dd($this->status);
         dd("toni");
         if($this->is_main && $this->status == 'confirmed'){
 
