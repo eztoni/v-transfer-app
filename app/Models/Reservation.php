@@ -979,7 +979,7 @@ class Reservation extends Model
 
         $return = false;
 
-        $modification_logs = \DB::table('reservation_modification')->where('reservation_id','=',$this->id)->get()->last();
+        $modification_logs = \DB::table('reservation_modification')->where('reservation_id','=',$this->id)->where('sent','=',0)->get()->last();
 
         if(!empty($modification_logs)){
 
@@ -1001,5 +1001,20 @@ class Reservation extends Model
 
     }
 
+    public function setModificationsAsSent(){
+
+        $mods = $this->hasModifications();
+
+        if(!empty($mods)){
+
+            $res = array_unique(array_keys($mods));
+
+            if(!empty($res)){
+                foreach($res as $res_id){
+                    \DB::table('reservation_modification')->where('reservation_id','=',$res_id)->update(['sent' => 1]);
+                }
+            }
+        }
+    }
 
 }

@@ -20,6 +20,10 @@ class ReservationModificationMail extends Mailable
         $pdf = PDF::loadView('attachments.voucher', ['reservation'=>$this->reservation]);
         $this->attachData($pdf->output(),"Voucher_{$reservation_id}.pdf");
 
+
+        if(!empty($this->reservation->hasModifications())){
+            $this->reservation->setModificationsAsSent();
+        }
     }
 
     public function build()
