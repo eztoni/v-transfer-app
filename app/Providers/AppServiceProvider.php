@@ -49,5 +49,9 @@ class  AppServiceProvider extends ServiceProvider
         });
 
         Registry::register('hnb', HnbService::class);
+
+        if(App::environment('production')){
+            URL::forceScheme('https');
+        }
     }
 }
