@@ -9,7 +9,7 @@
         @if(!empty($this->get_opera_error_bookings()))
         <div class="mb-4">
             <x-card title="Booking errors overview">
-                <div class="">
+                <div class="mb-4">
                     <x-badge negative outline>
 
                         <x-icon name="exclamation" class="w-12 h-4" >
@@ -25,7 +25,7 @@
                 </div>
                 @foreach($this->get_opera_error_bookings() as $reservation)
 
-                    <x-card cardClasses="mb-4" title="Transfer #{{$reservation->id}}">
+                    <x-card cardClasses="mb-4 border" title="Transfer #{{$reservation->id}}">
                         <x-slot name="action">
                             <div class="flex gap-4 items-center">
                                 {{--                        Div below is used to compile these dynamic classes    --}}
@@ -98,7 +98,7 @@
                     </x-badge>
                 </div>
                 @foreach($this->get_fiscalization_error_bookings() as $reservation)
-                    <x-card cardClasses="mb-4" title="Transfer #{{$reservation->id}}">
+                    <x-card cardClasses="mb-4 border" title="Transfer #{{$reservation->id}}">
                         <x-slot name="action">
                             <div class="flex gap-4 items-center">
                                 {{--                        Div below is used to compile these dynamic classes    --}}
@@ -172,7 +172,7 @@
                 </div>
                 @foreach($this->get_connected_document_error_bookings() as $reservation)
 
-                    <x-card cardClasses="mb-4" title="Transfer #{{$reservation->id}}">
+                    <x-card cardClasses="mb-4 border" title="Transfer #{{$reservation->id}}">
                         <x-slot name="action">
                             <div class="flex gap-4 items-center">
                                 {{--                        Div below is used to compile these dynamic classes    --}}
