@@ -250,11 +250,14 @@ class DestinationReport extends Component
                         $sales_agent = $i->createdBy->name;
                     }
 
+                    #Change Added By Stefano . 16.11
                     $status = $i->getRouteTransferTaxLevel();
 
                     $return = array();
 
                     $i->partner->name;
+
+
 
                     $return[] =  [
                         'id' => $i->id,
@@ -273,9 +276,9 @@ class DestinationReport extends Component
                         'voucher_date' => $i->created_at->format('d.m.Y'),
                         'tax_level'=>  $i->getRouteTransferTaxLevel(),
                         'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
-                        'commission_amount'=>  $total_comm->formatByDecimal(),
+                        'commission_amount'=>  $invEur->formatByDecimal(),
                         'net_income' => $net_profit->formatByDecimal(),
-                        'invoice_charge' =>  $invEur->formatByDecimal(),
+                        'invoice_charge' =>  $total_comm->formatByDecimal(),
                         'invoice_number' => (string) $invoice_number,
                         'pdv' => $pdv->formatByDecimal(),
                         'procedure' => $status,
@@ -334,9 +337,9 @@ class DestinationReport extends Component
                             'voucher_date' => $i->created_at->format('d.m.Y'),
                             'tax_level'=>  $i->getRouteTransferTaxLevel(),
                             'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
-                            'commission_amount'=>  $total_comm->formatByDecimal(),
+                            'commission_amount'=>  $invEur->formatByDecimal(),
                             'net_income' => $net_profit->formatByDecimal(),
-                            'invoice_charge' =>  $invEur->formatByDecimal(),
+                            'invoice_charge' =>  $total_comm->formatByDecimal() ,
                             'invoice_number' => (string) $invoice_number,
                             'pdv' => $pdv->formatByDecimal(),
                             'procedure' => $status,
@@ -416,9 +419,9 @@ class DestinationReport extends Component
                                     'voucher_date' => $i->created_at->format('d.m.Y'),
                                     'tax_level'=>  $i->getRouteTransferTaxLevel(),
                                     'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
-                                    'commission_amount'=>  $total_comm->formatByDecimal(),
+                                    'commission_amount'=>  $invEur->formatByDecimal(),
                                     'net_income' => $net_profit->formatByDecimal(),
-                                    'invoice_charge' =>  $invEur->formatByDecimal(),
+                                    'invoice_charge' =>  $total_comm->formatByDecimal(),
                                     'invoice_number' => (string) $invoice_number,
                                     'pdv' => $pdv->formatByDecimal(),
                                     'procedure' => $status,
@@ -493,9 +496,9 @@ class DestinationReport extends Component
                                     'voucher_date' => $i->created_at->format('d.m.Y'),
                                     'tax_level'=>  $i->getRouteTransferTaxLevel(),
                                     'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
-                                    'commission_amount'=>  $total_comm->formatByDecimal(),
+                                    'commission_amount'=>  $invEur->formatByDecimal(),
                                     'net_income' => $net_profit->formatByDecimal(),
-                                    'invoice_charge' =>  $invEur->formatByDecimal(),
+                                    'invoice_charge' =>  $total_comm->formatByDecimal(),
                                     'invoice_number' => (string) $invoice_number,
                                     'pdv' => $pdv->formatByDecimal(),
                                     'procedure' => $status,
@@ -546,9 +549,9 @@ class DestinationReport extends Component
                                 'voucher_date' => $i->created_at->format('d.m.Y'),
                                 'tax_level'=>  $i->getRouteTransferTaxLevel(),
                                 'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
-                                'commission_amount'=>  $total_comm->formatByDecimal(),
+                                'commission_amount'=>  $invEur->formatByDecimal(),
                                 'net_income' => $net_profit->formatByDecimal(),
-                                'invoice_charge' =>  $invEur->formatByDecimal(),
+                                'invoice_charge' =>  $total_comm->formatByDecimal(),
                                 'invoice_number' => (string) $invoice_number,
                                 'pdv' => $pdv,
                                 'procedure' => $status,
@@ -596,9 +599,9 @@ class DestinationReport extends Component
                                     'voucher_date' => $i->created_at->format('d.m.Y'),
                                     'tax_level'=>  $i->getRouteTransferTaxLevel(),
                                     'commission'=>  \Arr::get($i->transfer_price_state,'price_data.commission'),
-                                    'commission_amount'=>  $total_comm->formatByDecimal(),
+                                    'commission_amount'=>  $invEur->formatByDecimal(),
                                     'net_income' => $net_profit->formatByDecimal(),
-                                    'invoice_charge' =>  $invEur->formatByDecimal(),
+                                    'invoice_charge' =>  $total_comm->formatByDecimal(),
                                     'invoice_number' => (string) $invoice_number,
                                     'pdv' => $pdv,
                                     'procedure' => $status,
@@ -616,8 +619,11 @@ class DestinationReport extends Component
                 })->toArray();
 
         $this->totalEur = \Cknow\Money\Money::fromMoney($this->totalEur)->formatByDecimal();
-        $this->totalCommission = $this->totalCommission->formatByDecimal();
-        $this->totalInvoiceCharge = $this->totalInvoiceCharge->formatByDecimal();
+
+        $total_comm = $this->totalInvoiceCharge->formatByDecimal();
+        $total_inv_charge = $this->totalCommission->formatByDecimal();
+        $this->totalCommission = $total_comm;
+        $this->totalInvoiceCharge = $total_inv_charge;
         $this->totalPDV = $this->totalPDV->formatByDecimal();
         $this->totalNetProfit = $this->totalNetProfit->formatByDecimal();
     }
