@@ -250,7 +250,7 @@ class DestinationReport extends Component
                         $sales_agent = $i->createdBy->name;
                     }
 
-                    $status = 'RP';
+                    $status = $i->getRouteTransferTaxLevel();
 
                     $return = array();
 
