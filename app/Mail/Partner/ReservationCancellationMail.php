@@ -23,9 +23,6 @@ class ReservationCancellationMail extends Mailable
         $pdf = PDF::loadView('attachments.voucher', ['reservation'=>$this->reservation]);
         $this->attachData($pdf->output(),"Voucher_{$reservation_id}.pdf");
 
-        $pdf = PDF::loadView('attachments.voucher', ['reservation'=>$this->reservation]);
-        $this->attachData($pdf->output(),"Voucher_{$reservation_id}.pdf");
-
         $pdf = PDF::loadView('attachments.booking_confirmation', ['reservation'=>$this->reservation]);
         $this->attachData($pdf->output(),"OtkazRezervacije_{$reservation_id}.pdf");
 
