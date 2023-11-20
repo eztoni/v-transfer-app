@@ -19,18 +19,18 @@ class ReservationModificationMail extends Mailable
 
         switch ($this->reservation->confirmation_language){
             case 'en':
-                $booking_confirmation = 'Booking Confirmation';
+                $booking_confirmation = 'Confirmation of your transfer modification';
                 break;
             case 'hr':
-                $booking_confirmation = 'Potvrda Rezervacije';
+                $booking_confirmation = 'Potvrda vaše modifikacije transfer';
                 break;
 
             case 'de':
-                $booking_confirmation = 'Buchungsbestätigung';
+                $booking_confirmation = 'Bestätigung Ihrer Überweisungsän derung';
                 break;
 
             case 'it':
-                $booking_confirmation = 'Conferma della prenotazione';
+                $booking_confirmation = 'Conferma della modifica del trasferimento';
                 break;
         }
 

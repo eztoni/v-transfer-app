@@ -18,21 +18,21 @@ class ReservationCancellationMail extends Mailable
 
         \App::setLocale($locale);
 
-        $booking_cancellation = 'Booking Cancellation';
+        $booking_cancellation = 'Your Reservation Cancellation';
         $booking_cancellation_fee = 'CancellationFee';
 
         switch ($this->reservation->confirmation_language){
             case 'hr':
                 $booking_cancellation_fee = 'Naknada Štete';
-                $booking_cancellation = 'Otkaz Rezervacije';
+                $booking_cancellation = 'Otkaz vaše Rezervacije';
                 break;
             case 'de':
                 $booking_cancellation_fee = 'Stornogebühr';
-                $booking_cancellation = 'Stornierung der Buchung';
+                $booking_cancellation = 'Ihre Bestätigung der Stornierung';
                 break;
             case 'it':
                 $booking_cancellation_fee = 'Tassa di cancellazione';
-                $booking_cancellation = 'Cancellazione della prenotazione';
+                $booking_cancellation = 'La Sua cancellazione della prenotazione';
                 break;
         }
 
