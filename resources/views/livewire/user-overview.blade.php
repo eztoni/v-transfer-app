@@ -32,7 +32,7 @@
                         </td>
                     @else
                         <td class="text-center">
-                            <x-button.circle primary  icon="pencil">
+                            <x-button.circle primary  wire:click="updateUser({{$user_data->id}})" icon="pencil">
                             </x-button.circle>
                         </td>
                    @endif
