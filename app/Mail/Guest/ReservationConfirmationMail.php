@@ -36,10 +36,10 @@ class ReservationConfirmationMail extends Mailable
                 break;
         }
 
-        $pdf = PDF::loadView('attachments.voucher', ['reservation'=>$this->reservation]);
+        $pdf = PDF::loadView('attachments.voucher', ['reservation'=>$this->reservation])->setPaper('A4', 'portrait');
         $this->attachData($pdf->output(),"Voucher_{$reservation_id}.pdf");
 
-        $pdf = PDF::loadView('attachments.booking_confirmation', ['reservation'=>$this->reservation]);
+        $pdf = PDF::loadView('attachments.booking_confirmation', ['reservation'=>$this->reservation])->setPaper('A4', 'portrait');
         $this->attachData($pdf->output(),"{$booking_confirmation}_{$reservation_id}.pdf");
 
     }

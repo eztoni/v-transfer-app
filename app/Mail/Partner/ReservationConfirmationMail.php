@@ -19,10 +19,10 @@ class ReservationConfirmationMail extends Mailable
 
         $this->subject('Potvrda rezervacije transfera #'.$reservation_id);
 
-        $pdf = PDF::loadView('attachments.voucher', ['reservation'=>$this->reservation]);
+        $pdf = PDF::loadView('attachments.voucher', ['reservation'=>$this->reservation])->setPaper('A4', 'portrait');
         $this->attachData($pdf->output(),"Voucher_{$reservation_id}.pdf");
 
-        $pdf = PDF::loadView('attachments.booking_confirmation', ['reservation'=>$this->reservation]);
+        $pdf = PDF::loadView('attachments.booking_confirmation', ['reservation'=>$this->reservation])->setPaper('A4', 'portrait');
         $this->attachData($pdf->output(),"Potvrda rezervacije_{$reservation_id}.pdf");
 
     }
