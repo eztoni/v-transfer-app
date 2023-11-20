@@ -1,6 +1,6 @@
 <?php
 return [
-    'dear' => 'Poštovani/na',
+    'dear' => 'Poštovani',
     'thank_you_message'=>'Zahvaljujemo na rezervaciji transfera. Sačuvajte ovu rezervaciju za svoje putovanje.',
     'transfer_reservation'=>'Zahvaljujemo na rezervaciji transfera. Sačuvajte ovu rezervaciju za svoje putovanje.',
     'reservation_number'=>'Broj vaše rezervacije transfera',

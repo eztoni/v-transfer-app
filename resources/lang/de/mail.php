@@ -1,6 +1,6 @@
 <?php
 return [
-    'dear' => 'Sehr geehrte(r) Herr/Frau',
+    'dear' => 'Lieber Gast',
     'thank_you_message'=>'Vielen Dank für Ihre Transferreservierung. Bitte bewahren Sie diese Reservierung für Ihre Reise auf.',
     'transfer_reservation'=>'Vielen Dank für Ihre Transferreservierung. Bitte bewahren Sie diese Reservierung für Ihre Reise auf.',
     'reservation_number'=>'Ihre Transfer-Reservierungsnummer',
@@ -56,7 +56,7 @@ Im Anhang befindet sich die Buchungsbestätigung.
 Bei dem erfolgreichen Kauf wurde der unten aufgeführte Kaufvertrag zu dem/den angegebenen Preis/Preisen und Kosten abgeschlossen.
 Teil dieses Vertrages sind die Allgemeinen Kaufbedingungen, in denen Ihre Rechte und Pflichten im Detail erklärt werden.
 ',
-                
+
                 'your_valamar_team' => 'Ihr ValamarTeam'
             ]
         ],

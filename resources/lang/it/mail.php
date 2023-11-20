@@ -1,6 +1,6 @@
 <?php
 return [
-    'dear' => 'Gentile',
+    'dear' => 'Gentile ospite',
     'thank_you_message' => 'Grazie per la sua prenotazione del trasferimento. Conservi questa prenotazione per il suo viaggio.',
     'transfer_reservation' => 'Grazie per la sua prenotazione del trasferimento. Conservi questa prenotazione per il suo viaggio.',
     'reservation_number' => 'Il suo numero di prenotazione del trasferimento',
