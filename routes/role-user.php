@@ -72,5 +72,6 @@ Route::get('download_document/{type}/{reservation_id}',function($type,$reservati
             $file_name = 'BookingVoucher_'.$reservation_id.'.pdf';
     }
 
-    return \Barryvdh\DomPDF\Facade\Pdf::loadView($view, ['reservation'=> $reservation])->setPaper('A4', 'portrait')->download($file_name);
+
+    return \Barryvdh\DomPDF\Facade\Pdf::loadView($view, ['reservation'=> $reservation])->setPaper('A4', 'portrait')->set_option('isRemoteEnabled', true)->download($file_name);
 });
