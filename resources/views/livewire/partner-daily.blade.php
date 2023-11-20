@@ -30,10 +30,11 @@
                 x-init="3"
 
             ></x-select>
-            <div class="ds-divider"></div>
+            <br/>
             <div class="ds-form-control flex-col justify-end">
                 <x-button primary wire:click="generate">{{ $button_message }}</x-button>
             </div>
+            <br/>
             <div class="ds-form-control flex-col justify-end">
                 <small class="ds-alert-warning ds-form-control flex-col text-center">{{ $message }}</small>
             </div>
