@@ -13,7 +13,7 @@
                                     <tbody>
                                     <tr style="width: 100%">
                                         <td style="width:200px;">
-                                            <img height="auto" src="https://transferi.valamar.hr/storage/static_images/valamar_horizontal.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="128" />
+                                            <img height="auto" src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/storage/static_images/valamar_horizontal.png'))) }}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="128" />
                                         </td>
 
 
