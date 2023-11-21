@@ -110,9 +110,10 @@
 </p>
 <br>
 <p>
-    U privitku nalazi se modificirana potvrda rezervacije transfera.
+    U nastavku nalazi se potvrda modificiranog transfera.
 </p>
 <br/>
+
 @if($modifications = $reservation->hasModifications())
     <p>Molimo da obratite pozornost na slijedeće podatke koji su izmjenjeni:</p>
     @foreach($modifications as $mod_id => $data)

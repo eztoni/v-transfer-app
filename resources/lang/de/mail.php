@@ -25,7 +25,7 @@ return [
     'transfer_price_breakdown'=>'Preisaufschlüsselung für den Transfer',
     'total_price'=>'Gesamtpreis',
     'valamar_transfer_service'=>'Valamar Transfer Service',
-    'not_fiscalized'=>'Dies ist keine fiskalische Rechnung.',
+    'not_fiscalized'=>'Dies ist keine Steuerrechnung.',
     'your_res_modified'=>'Ihre Reservierung wurde geändert.',
     'this_email_is_modification'=>'Diese E-Mail ist eine Änderung der Reservierung. Bitte speichern Sie diese Reservierung für Ihre Reise.',
     'extra'=>'Extra',

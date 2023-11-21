@@ -112,7 +112,7 @@
         <p>Poštovani,
         </p>
         <br>
-        <p> U nastavku nalazi se potvrda o otkazu rezervacije.</p>
+        <p> U nastavku nalazi se otkazani voucher rezervacije transfera.</p>
         <br>
         <p> Vaš Valamar Tim</p>
     </div>
