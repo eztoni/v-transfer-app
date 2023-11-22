@@ -87,7 +87,7 @@
                     <br/>
                     <p  class="text-sm font-bold" style="color:red"><u>{{$reservation->pickupLocation->name}} -> {{$reservation->dropoffLocation->name}} Cancellation Details #{{$reservation->id}}</u>
                     </p>
-                    <p class="text-sm"><b>Cancellation DateTime: </b>{{$reservation->returnReservation->cancelled_at}}</p>
+                    <p class="text-sm"><b>Cancellation DateTime: </b>{{$reservation->cancelled_at}}</p>
                     @if($reservation->hasCancellationFee() > 0)
                         <span class="font-extrabold text-info text-sm">Cancellation Fee Applied: </span>{{$reservation->cancellation_fee}} € ( {{$reservation->cancellation_type}} ) <br/></span>
                         <!-- Cancellation Invoice Details -->
