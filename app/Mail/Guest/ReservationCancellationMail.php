@@ -41,7 +41,17 @@ class ReservationCancellationMail extends Mailable
         $pdf = PDF::loadView('attachments.booking_cancellation', ['reservation'=>$this->reservation])->setPaper('A4', 'portrait');
         $this->attachData($pdf->output(),"{$booking_cancellation}_{$reservation_id}.pdf");
 
-        if($this->reservation->hasCancellationFee()){
+        $cf_null = 0;
+
+        if($this->reservation->cf_null == 1){
+            $cf_null = 1;
+        }elseif($this->reservation->isRoundTrip()){
+            if($this->reservation->returnReservation->cf_null == 1){
+                $cf_null = 1;
+            }
+        }
+
+        if($this->reservation->hasCancellationFee() && $cf_null != 0){
             $pdf_cf = PDF::loadView('attachments.booking_cancellation_fee',['reservation'=>$this->reservation])->setPaper('A4', 'portrait');
             $this->attachData($pdf_cf->output(),"{$booking_cancellation_fee}_{$reservation_id}.pdf");
         }
