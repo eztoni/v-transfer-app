@@ -31,6 +31,7 @@ class ValamarOperaApi{
     private Route $route;
     private Route $return_route;
 
+    private $cf_only = false;
     const STATUS_SUCCESS = 'success';
     const STATUS_ERROR = 'error';
 
@@ -45,7 +46,9 @@ class ValamarOperaApi{
         $this->setAuthenticationHeaders();
     }
 
-    public function syncReservationWithOperaFull($reservation_id){
+    public function syncReservationWithOperaFull($reservation_id,$cf_only = false){
+
+        $this->cf_only = $cf_only;
 
         $this->reservation = Reservation::findOrFail($reservation_id);
 
@@ -527,18 +530,20 @@ class ValamarOperaApi{
                     }
                 }
 
-                $return[] = array(
-                    #Quantity 0 - Cancelling the old package
-                    'Quantity' => 0,
-                    'PackageID' => $this->packageID,
-                    'PricePerUnit' => $this->parsePackagePrice($reservation),
-                    'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
-                    'ExternalCartID' => $reservation->id,
-                    'ExternalCartItemID' => $reservation->id,
-                    'StartDate' => $package_start,
-                    'EndDate' => $package_end,
-                    'Comment' => $this->buildPackageComment($reservation),
-                );
+                if(!$this->cf_only){
+                    $return[] = array(
+                        #Quantity 0 - Cancelling the old package
+                        'Quantity' => 0,
+                        'PackageID' => $this->packageID,
+                        'PricePerUnit' => $this->parsePackagePrice($reservation),
+                        'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
+                        'ExternalCartID' => $reservation->id,
+                        'ExternalCartItemID' => $reservation->id,
+                        'StartDate' => $package_start,
+                        'EndDate' => $package_end,
+                        'Comment' => $this->buildPackageComment($reservation),
+                    );
+                }
 
                 ##See if there is a cancellation Fee
                 if($reservation->hasCancellationFee()){
@@ -546,7 +551,16 @@ class ValamarOperaApi{
                     $this->validateCFReservationMapping($reservation->cancellation_type == 'no_show' ? true : false);
 
                     if(empty($this->errors)){
-                        $return[] = $this->buildCFPackage($reservation,$reservation->cancellation_fee,$reservation->cancellation_type == 'no_show' ? true : false);
+
+                        $cf = $reservation->cancellation_fee;
+
+                        if($this->reservation->cf_null == 1){
+                            $cf = 0;
+                        }
+
+                        $return[] = $this->buildCFPackage($reservation,$cf,$reservation->cancellation_type == 'no_show' ? true : false);
+
+                        dd($return);
                     }
                 }
 
@@ -560,6 +574,8 @@ class ValamarOperaApi{
 
             $return = array();
 
+
+
             #If main reservation is triggered
             if($reservation->is_main){
 
@@ -572,28 +588,41 @@ class ValamarOperaApi{
                     $package_start = $reservation->date_time->subDays(1)->toDateString();
                 }
 
+                if(!$this->cf_only){
+                    $return[] = array(
+                        #1 if booking is active - 0 if cancelled
+                        'Quantity' => $reservation->status == Reservation::STATUS_CONFIRMED ? 1 : 0,
+                        'PackageID' => $this->packageID,
+                        'PricePerUnit' => $this->parsePackagePrice($reservation,1),
+                        'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
+                        'ExternalCartID' => $reservation->id,
+                        'ExternalCartItemID' => $reservation->id,
+                        'StartDate' => $package_start,
+                        'EndDate' => $package_end,
+                        'Comment' => $this->buildPackageComment($reservation),
+                    );
+                }
 
-                $return[] = array(
-                    #1 if booking is active - 0 if cancelled
-                    'Quantity' => $reservation->status == Reservation::STATUS_CONFIRMED ? 1 : 0,
-                    'PackageID' => $this->packageID,
-                    'PricePerUnit' => $this->parsePackagePrice($reservation,1),
-                    'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
-                    'ExternalCartID' => $reservation->id,
-                    'ExternalCartItemID' => $reservation->id,
-                    'StartDate' => $package_start,
-                    'EndDate' => $package_end,
-                    'Comment' => $this->buildPackageComment($reservation),
-                );
 
                 #Check Cancellation Fee For The Booking
                 if($reservation->isCancelled() && $reservation->hasCancellationFee()){
                     $this->validateCFReservationMapping($reservation->cancellation_type == 'no_show' ? true : false);
 
+
                     if(empty($this->errors)){
-                        $return[] = $this->buildCFPackage($reservation,$reservation->cancellation_fee,$reservation->cancellation_type == 'no_show' ? true : false);
+
+                        $cf = $reservation->cancellation_fee;
+
+                        if($reservation->cf_null == 1){
+                            $cf = 0;
+                        }
+
+                        $return[] = $this->buildCFPackage($reservation,$cf,$reservation->cancellation_type == 'no_show' ? true : false);
+
                     }
                 }
+
+
 
                 $this->round_trip_reservation = Reservation::findOrFail($reservation->round_trip_id);
 
@@ -605,28 +634,35 @@ class ValamarOperaApi{
                     $package_start = $this->round_trip_reservation->date_time->subDays(1)->toDateString();
                 }
 
-                #Round Trip Booking
-                $return[] = array(
-                    #1 if booking is active - 0 if cancelled
-                    'Quantity' => $this->round_trip_reservation->status == Reservation::STATUS_CONFIRMED ? 1 : 0,
-                    'PackageID' => $this->returnPackageID,
-                    'PricePerUnit' => $this->parsePackagePrice($this->round_trip_reservation,2),
-                    'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
-                    'ExternalCartID' => $this->round_trip_reservation->id,
-                    'ExternalCartItemID' => $this->round_trip_reservation->id,
-                    'StartDate' => $package_start,
-                    'EndDate' => $package_end,
-                    'Comment' => $this->buildPackageComment($this->round_trip_reservation),
-                );
-
-
+                if(!$this->cf_only){
+                    #Round Trip Booking
+                    $return[] = array(
+                        #1 if booking is active - 0 if cancelled
+                        'Quantity' => $this->round_trip_reservation->status == Reservation::STATUS_CONFIRMED ? 1 : 0,
+                        'PackageID' => $this->returnPackageID,
+                        'PricePerUnit' => $this->parsePackagePrice($this->round_trip_reservation,2),
+                        'PackageType' => ValamarOperaApi::VARIABLE_PACKAGE_PRICE,
+                        'ExternalCartID' => $this->round_trip_reservation->id,
+                        'ExternalCartItemID' => $this->round_trip_reservation->id,
+                        'StartDate' => $package_start,
+                        'EndDate' => $package_end,
+                        'Comment' => $this->buildPackageComment($this->round_trip_reservation),
+                    );
+                }
 
                 if($this->round_trip_reservation->isCancelled() && $this->round_trip_reservation->hasCancellationFee()){
 
                     $this->validateCFReservationMapping($this->round_trip_reservation->cancellation_type == 'no_show' ? true : false);
 
                     if(empty($this->errors)){
-                        $return[] = $this->buildCFPackage($this->round_trip_reservation,$this->round_trip_reservation->cancellation_fee,$this->round_trip_reservation->cancellation_type == 'no_show' ? true : false);
+
+                        $cf = $this->round_trip_reservation->cancellation_fee;
+
+                        if($this->round_trip_reservation->cf_null == 1){
+                            $cf = 0;
+                        }
+
+                        $return[] = $this->buildCFPackage($this->round_trip_reservation,$cf,$this->round_trip_reservation->cancellation_type == 'no_show' ? true : false);
                     }
                 }
 

@@ -32,6 +32,7 @@ use Actions;
     public $cfpDisabled = 1;
     public $cfnDisabled = 1;
 
+    public $cf_null = 0;
     public $cancellationTypeOptions = array(
         'cancellation' => 'Cancel - Cancellation',
         'refund' => 'Cancel - Refund',
@@ -65,6 +66,8 @@ use Actions;
             $this->cancellationDate = Carbon::now()->format('Y-m-d H:i:s');
         }
 
+        $this->reservation->cf_null = $this->cf_null;
+
         $cancelAction = new CancelReservation($this->reservation);
 
         $cancelAction->cancelReservation(
@@ -80,9 +83,9 @@ use Actions;
 
                 if($this->reservation->included_in_accommodation_reservation == 0 && $this->reservation->v_level_reservation == 0){
                     $operaAPI->syncReservationWithOperaFull($this->reservation->id);
+                }elseif ($this->reservation->cf_null == 1){
+                    $operaAPI->syncReservationWithOperaFull($this->reservation->id,true);
                 }
-
-
 
             }else{
                 $main_res = Reservation::where('round_trip_id',$this->reservation->id)->get()->first();
@@ -91,6 +94,8 @@ use Actions;
 
                     if($this->reservation->included_in_accommodation_reservation == 0 && $this->reservation->v_level_reservation == 0) {
                         $operaAPI->syncReservationWithOperaFull($main_res->id);
+                    }elseif ($main_res->cf_null == 1){
+                        $operaAPI->syncReservationWithOperaFull($main_res->id,true);
                     }
 
                 }
@@ -174,6 +179,9 @@ use Actions;
                     break;
             }
 
+            if($this->reservation->included_in_accommodation_reservation || $this->reservation->v_level_reservation){
+                $this->cf_null = 1;
+            }
 
             switch ($hours_difference){
                 case $hours_difference > 24:

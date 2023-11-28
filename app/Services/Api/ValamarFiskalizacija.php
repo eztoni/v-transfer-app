@@ -68,7 +68,6 @@ class ValamarFiskalizacija{
 
         $reservation = $this->reservation;
 
-
         #Avoid Sending Invoice Cancellation
         if($reservation->getOverallReservationStatus() == 'cancelled'){
             return true;
@@ -340,6 +339,10 @@ class ValamarFiskalizacija{
                     }
 
                     $amount = number_format($cancellation_fee,2,'.','');
+
+                    if($this->reservation->cf_null == 1){
+                        $amount = 0;
+                    }
 
                     $this->amount = $amount;
 
