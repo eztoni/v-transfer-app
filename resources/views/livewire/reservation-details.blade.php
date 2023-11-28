@@ -79,11 +79,10 @@
                             <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number','cancellation_fee')}} ({{$reservation->getInvoiceData('amount','cancellation_fee')}})</span></span>
                             <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->getInvoiceData('zki','cancellation_fee')}}</span></span>
                             <span class="font-extrabold text-info text-sm">JIR: <span class="text-info font-normal">{{$reservation->getInvoiceData('jir','cancellation_fee')}}</span></span>
-
                         @else
                             <span class="font-extrabold text-info text-sm">Cancellation Fee Applied: </span>{{$reservation->cancellation_fee}} € ( {{$reservation->cancellation_type}}  - sent as 0.00€ to Opera) <br/></span>
                         @endif
-
+                        <x-button xs icon="external-link" wire:click="openOperaSyncLogModal({{$reservation->id}})">View Sync Log</x-button>
 
                     @else
                         <p class="text-sm"><b>Cancellation Fee:</b> No cancellation fee applied</p>
@@ -118,6 +117,7 @@
                         @else
                             <span class="font-extrabold text-info text-sm">Cancellation Fee Applied: </span>{{$reservation->returnReservation->cancellation_fee}} € ( {{$reservation->returnReservation->cancellation_type}} - sent as 0.00€ to Opera ) <br/></span>
                         @endif
+                            <x-button xs icon="external-link" wire:click="openOperaSyncLogModal({{$reservation->id}})">View Sync Log</x-button>
                     @else
                         <p class="text-sm"><b>Cancellation Fee:</b> No cancellation fee applied</p>
                     @endif
