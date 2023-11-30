@@ -400,6 +400,7 @@ class DestinationReport extends Component
                                 $invEur = $invEur->negative();
                                 $pdv = $pdv->negative();
 
+                                $this->totalInvoiceCharge = $this->totalInvoiceCharge->add($invEur);
                                 $this->totalPDV = $this->totalPDV->add($pdv);
 
                                 $return[] =  [
@@ -525,6 +526,8 @@ class DestinationReport extends Component
                             $this->totalEur = $this->totalEur->add($priceEur->getMoney());
 
                             $invEur = $priceEur->multiply('0.20');
+
+
                             $this->totalInvoiceCharge = $this->totalInvoiceCharge->add($invEur);
 
                             $total_comm = $priceEur->subtract($invEur->getMoney());
@@ -619,6 +622,8 @@ class DestinationReport extends Component
                 })->toArray();
 
         $this->totalEur = \Cknow\Money\Money::fromMoney($this->totalEur)->formatByDecimal();
+
+
 
         $total_comm = $this->totalInvoiceCharge->formatByDecimal();
         $total_inv_charge = $this->totalCommission->formatByDecimal();
