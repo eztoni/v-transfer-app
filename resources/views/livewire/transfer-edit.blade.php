@@ -121,7 +121,7 @@
                         placeholder="Select a destination"
                         option-label="name"
                         option-value="id"
-                        :options="\App\Models\Destination::all()->map(fn ($m) => ['id'=>$m->id,'name'=>$m->name])->toArray() "
+                        :options="$this->destinationList->map(fn ($m) => ['id'=>$m->id,'name'=>$m->name])->toArray() "
                         wire:model="destinationId"
                     />
                 </div>

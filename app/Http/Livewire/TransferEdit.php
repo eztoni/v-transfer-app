@@ -21,6 +21,7 @@ use Actions;
     public $transferId;
     public $vehicleId = null;
     public $destinationId = null;
+    public $destinationList;
 
     public $companyLanguages = ['en'];
     public $transferName = [
@@ -57,11 +58,20 @@ use Actions;
         $this->transfer = Transfer::find($this->transferId);
 
         $this->vehicleId = $this->transfer->vehicle->id;
+
+
         $this->destinationId = $this->transfer->destination_id;
 
         foreach ($this->companyLanguages as $lang) {
             $this->transferName[$lang] = $this->transfer->getTranslation('name', $lang, false);
         }
+
+        if($this->destinationId > 0){
+            $this->destinationList = \App\Models\Destination::where('id',11)->get();
+        }else{
+            $this->destinationList = \App\Models\Destination::all();
+        }
+
 
     }
     public function getAllTransfersForSelectProperty()
