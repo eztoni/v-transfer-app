@@ -60,6 +60,8 @@ use Actions;
             return Vehicle::whereNull('transfer_id')->when($this->transfer->exists, function ($q) {
                 $q->orWhere('transfer_id', $this->transfer->vehicle->id);
             })->get()->prepend(['type'=>'Select vehicle','id'=>null],null);
+        }else{
+            return Vehicle::whereNull('transfer_id')->get();
         }
 
         return collect();
