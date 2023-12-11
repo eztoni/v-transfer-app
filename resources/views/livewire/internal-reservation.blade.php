@@ -439,13 +439,20 @@
                                     </div>
 
                                     <span class="  ">Price: <b>
-                                            @if($item->included_in_accommodation == 0)
+
+                                            @if($item->included_in_accommodation == 0 && $this->stepTwoFields['vlevelrateplanReservation'] === false)
                                              {{\App\Facades\EzMoney::format($this->roundTrip
                                                     ?$item->price_round_trip
                                                     :$item->price)}}
                                                     EUR</b></span>
                                     @else
-                                        0,00 EUR</b><small><br/>Included in Accommodation Reservation</small></span>
+                                        0,00 EUR</b>
+                                        @if($item->included_in_accommodation > 0)
+                                            <small><br/>Included in Accommodation Reservation</small></span>
+                                        @else
+                                            <small><br/>V Level Reservation</small></span>
+                                        @endif
+
                                     @endif
 
                                     <x-button

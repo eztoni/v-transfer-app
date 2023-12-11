@@ -420,6 +420,20 @@ class InternalReservation extends Component
 
         }
 
+        if(preg_match('!VL!',$this->stepOneFields['rate_plan'])){
+            if($this->stepTwoFields['vlevelrateplanReservation'] == false){
+                $this->stepTwoFields['vlevelrateplanReservation'] = true;
+                $this->getAvailableTransfersProperty();
+            }
+        }else{
+
+            if($this->stepTwoFields['vlevelrateplanReservation'] == true){
+                $this->stepTwoFields['vlevelrateplanReservation'] = false;
+                $this->getAvailableTransfersProperty();
+            }
+
+        }
+
     }
 
     public function resetAdresses()
@@ -527,8 +541,6 @@ class InternalReservation extends Component
 
         $this->stepTwoFields['leadTraveller']['check_in'] = $checkInDate->format('d.m.Y');
         $this->stepTwoFields['leadTraveller']['check_out'] = $checkOutDate->format('d.m.Y');
-
-
 
         $this->notification()->success('Data pulled');
 
