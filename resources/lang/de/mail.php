@@ -31,7 +31,7 @@ return [
     'extra'=>'Extra',
     'transfer_price'=>'Transferpreis',
     'vehicle_type'=>'Fahrzeugtyp',
-
+    'seats' => 'Kindersitze',
     'important_notes'=>'Wichtige Hinweise zu Ihrer Transfer-reservierung, Änderungen und Stornierungen',
     'important_note_1' => 'Bitte halten Sie Ihre Reservierung bereit, um sie dem Fahrer zu zeigen (per Mobiltelefon oder in ausgedruckter Form) und zu bestätigen, dass Sie den richtigen Transferservice wie geplant und reserviert in Anspruch nehmen.',
     'pickup_and_meeting_point'=>'Abholzeit und Treffpunkt',

@@ -43,7 +43,7 @@ return [
     'li_3'=>'Poštujte sljedeća pravila u vozilu',
     'li_3_1'=>'Pušenje nije dopušteno.',
     'li_3_2'=>'Sigurnosni pojasevi moraju biti vezani cijelo vrijeme.',
-
+    'seats' => 'Sjedalice',
 
 
     'terms_and_conditions' => 'ODREDBE I UVJETI:',

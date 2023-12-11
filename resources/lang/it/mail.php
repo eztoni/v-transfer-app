@@ -26,7 +26,7 @@ return [
     'total_price' => 'Prezzo totale',
     'valamar_transfer_service' => 'Servizio di trasferimento Valamar',
     'not_fiscalized' => 'Non è una ricevuta fiscale.',
-
+    'seats' => 'Seggiolini',
     'your_res_modified' => 'La tua prenotazione è stata modificata.',
     'this_email_is_modification' => 'Questa email è la modifica della prenotazione. Ti preghiamo di salvare questa prenotazione per il tuo viaggio.',
     'extra' => 'Extra',

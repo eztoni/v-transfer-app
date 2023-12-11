@@ -46,7 +46,7 @@ return [
     'li_3' => 'Please respect the following rules in the vehicle',
     'li_3_1' => 'Smoking is not allowed',
     'li_3_2' => 'Seat belts must be worn at all times.',
-
+    'seats' => 'Seats',
     'terms_and_conditions' => 'Terms and conditions',
 
     'guest' => [

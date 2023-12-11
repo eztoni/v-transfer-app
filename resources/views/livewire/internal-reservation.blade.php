@@ -640,7 +640,7 @@
 
                                 @foreach($this->stepTwoFields['seats'] as $seat)
                                     <div class="col-span-2">
-                                        <x-select
+                                        <x-native-select
                                             label="Seat #{{($loop->index +1)}}:"
                                             wire:model="stepTwoFields.seats.{{$loop->index}}"
                                             :options="\App\Models\Transfer::CHILD_SEATS"

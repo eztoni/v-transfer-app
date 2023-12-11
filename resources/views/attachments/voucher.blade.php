@@ -98,7 +98,17 @@
 
                 @if(count($reservation->extras) > 0)
                     <p style="font-size: 14px"><b>{{__('mail.extras')}}
-                            : </b> {{$reservation->get_extras_list()}}</p>
+                            : </b> {{$reservation->get_extras_list()}}
+
+                    </p>
+                @endif
+
+                @if(count($reservation->child_seats) > 0)
+                    <b>{{__('mail.seats')}}
+                        : </b>
+                    @foreach($reservation->child_seats as $seat)
+                        <p style="font-size: 14px">{{\App\Models\Transfer::CHILD_SEATS[$seat]}}</p>
+                    @endforeach
                 @endif
 
                 @if($reservation->remark)
