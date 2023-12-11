@@ -124,26 +124,33 @@ use Actions;
 
         if($this->adults != $this->reservation->adults){
             $modify[] = 'adults';
+            $this->reservation->adults = $this->adults;
         }
 
         if($this->children != $this->reservation->children){
             $modify[] = 'children';
+            $this->reservation->children = $this->children;
         }
 
         if($this->infants != $this->reservation->infants){
             $modify[] = 'infants';
+            $this->reservation->infants = $this->infants;
+
         }
 
         if($this->flight_number != $this->reservation->flight_number){
             $modify[] = 'flight_number';
+            $this->reservation->flight_number = $this->flight_number;
         }
 
         if($this->remark != $this->reservation->remark){
             $modify[] = 'remark';
+            $this->reservation->remark = $this->remark;
         }
 
         if($this->luggage != $this->reservation->luggage){
             $modify[] = 'luggage';
+            $this->reservation->luggage = $this->luggage;
         }
 
         if(!empty($modify)){

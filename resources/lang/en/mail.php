@@ -14,7 +14,7 @@ return [
     'pickup_time' => 'Pick-up time',
     'flight_number' => 'Flight number',
     'remark' => 'Remark',
-    'please_note_round_trip' => 'Please note that this trip is a<b>two-way</b> transfer reservation. Round trip information are below:',
+    'please_note_round_trip' => 'Please note that this trip is a <b>two-way</b> transfer reservation. Round trip information are below:',
     'rt_pickup' => 'Round trip pickup',
     'rt_dropoff' => 'Round trip dropoff',
     'rt_date' => 'Round trip date',

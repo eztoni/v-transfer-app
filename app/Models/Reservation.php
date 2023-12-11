@@ -55,6 +55,7 @@ class Reservation extends Model
       'time' => 'Vrijeme',
       'adults'=> 'Odrasli',
       'children' => 'Djeca',
+      'infants' => 'Dojenčad',
       'remark' => 'Popratni komentar',
       'flight_number' => 'Broj Leta',
       'luggage' => 'Prtljaga'
