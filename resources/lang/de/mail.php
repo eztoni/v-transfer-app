@@ -70,6 +70,8 @@ Bei dem erfolgreichen Kauf wurde der unten aufgeführte Kaufvertrag zu dem/den a
 Teil dieses Vertrages sind die Allgemeinen Kaufbedingungen, in denen Ihre Rechte und Pflichten im Detail erklärt werden.
 ',
                 'your_valamar_team' => 'Ihr Valamar Tim'
+
+                
             ]
         ],
         'cancellation_mail' => [
