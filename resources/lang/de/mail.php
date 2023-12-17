@@ -71,7 +71,7 @@ Teil dieses Vertrages sind die Allgemeinen Kaufbedingungen, in denen Ihre Rechte
 ',
                 'your_valamar_team' => 'Ihr Valamar Tim'
 
-                
+
             ]
         ],
         'cancellation_mail' => [
@@ -154,6 +154,7 @@ werden, bezahlen Sie diese beim Check-in im Objekt Ihres Aufenthaltes.',
     'transfer' => 'Transfer',
     'price_info' => 'Der Betrag wird in Euro berechnet. Preis in kroatischen Kuna in informativ zum festen Umrechnungskurs von 1 EUR = 7,5340 HRK',
     'amount' => 'Menge',
+    
     'reservation_cancellation' => 'Stornierung der Reservierung'
 
 
