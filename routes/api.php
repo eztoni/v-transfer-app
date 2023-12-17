@@ -26,6 +26,9 @@ Route::get('/remap-bookings',[\App\Http\Controllers\ReservationMapperController:
 
 Route::get('/reservation-alert',[\App\Http\Controllers\ReservationAlertController::class,'update']);
 
+Route::get('/price-load',[\App\Http\Controllers\PriceUpdateController::class,'update']);
+
+
 // LOG CONTROLLER
 Route::get('/logs', [\App\Http\Controllers\LogController::class, 'show'])->name('logs');
 

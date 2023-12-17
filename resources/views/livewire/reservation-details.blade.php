@@ -213,7 +213,7 @@
                 @endif
 
                 <strong>Round Trip Reservation</strong>
-                @if(!$reservation->isCancelled())
+                @if(!$reservation->returnReservation->isCancelled())
 
                     <x-button x-show="tab === 'round-trip-reservation'"
                               class=" absolute right-2"
