@@ -154,4 +154,5 @@ momento del check-in presso la struttura in cui soggiornate.',
     'amount' => 'Quantità',
     'reservation_cancellation' => 'Cancellazione della prenotazione',
     'telephone' => 'Telefono'
+    
 ];
