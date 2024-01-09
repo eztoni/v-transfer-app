@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Point;
 use App\Services\Api\ValamarFiskalizacija;
+use App\Models\Reservation;
+use App\Services\Helpers\ReservationPartnerOrderCache;
 use DateTime;
 use DOMDocument;
 use DOMElement;
@@ -20,7 +22,7 @@ class Fiskal
             $oib = config('valamar.valamar_fiskalizacija_demo_oib');
         }
 
-        $certificate_data = Fiskal::GetCertificate($point->fiskal_id);
+        $certificate_data = Fiskal::GetCertificate($point->owner_id);
 
         if ($certificate_data === false) {
 
@@ -48,6 +50,7 @@ class Fiskal
 
             return $response;
         }
+
 
         $ns = 'tns';
         $uri_id = uniqid();
@@ -369,6 +372,7 @@ class Fiskal
         $certificate_file = '';
 
 
+
         if (config('valamar.valamar_fiskalizacija_demo_mode')) {
             $certificate_password = config('valamar.valamar_fiskalizacija_demo_cert_pw');
             $certificate_file = storage_path().'/certificates/'. config('valamar.valamar_fiskalizacija_demo_cert');
@@ -390,10 +394,8 @@ class Fiskal
 
         if ($certificate_file != '') {
 
-
             $certificate = null;
             openssl_pkcs12_read(file_get_contents($certificate_file), $certificate, $certificate_password);
-
 
             if ($certificate == null) {
                 return false;
@@ -408,6 +410,8 @@ class Fiskal
                 'public_certificate_data' => openssl_x509_parse($public_certificate)
             ];
         }
+
+
 
         return false;
     }
