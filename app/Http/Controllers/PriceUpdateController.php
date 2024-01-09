@@ -19,8 +19,11 @@ class PriceUpdateController extends Controller
 {
 
     private $update_destinations = array(
-        12, #Dubrovnik,
-        1
+        5,
+        13,
+        3,
+        11,
+        4
     );
 
     function __construct()
@@ -158,10 +161,10 @@ Makarska,Simply Adria,Minivan transfer,Makarska - Dubrovnik,300,600,RPO,20,6271,
 Makarska,Simply Adria,Minivan transfer,Dubrovnik - Makarska ,300,600,RPO,20,6272,13,27,12,71
 Makarska,Simply Adria,Minivan transfer,Makarska - Zadar,300,600,RPO,20,6277,13,27,12,72
 Makarska,Simply Adria,Minivan transfer,Zadar - Makarska,300,600,RPO,20,6278,13,27,12,73
-Poreč,Babić transport d.o.o.,Car transfer,Poreč - Airport Pula,150,300,RPO,20,6001,3,2,2,2
-Poreč,Babić transport d.o.o.,Car transfer,Airport Pula - Poreč ,150,300,RPO,20,6002,3,2,2,3
-Poreč,Babić transport d.o.o.,Car transfer,Poreč - Airport Ronchi dei Legionari (Trst),320,640,RPO,20,6005,3,2,2,4
-Poreč,Babić transport d.o.o.,Car transfer,Airport Ronchi dei Legionari (Trst) - Poreč,320,640,RPO,20,6006,3,2,2,5
+Poreč,Babić transport d.o.o.,Car transfer,Poreč - Airport Pula,125,250,RPO,20,6001,3,2,2,2
+Poreč,Babić transport d.o.o.,Car transfer,Airport Pula - Poreč ,125,250,RPO,20,6002,3,2,2,3
+Poreč,Babić transport d.o.o.,Car transfer,Poreč - Airport Ronchi dei Legionari (Trst),300,600,RPO,20,6005,3,2,2,4
+Poreč,Babić transport d.o.o.,Car transfer,Airport Ronchi dei Legionari (Trst) - Poreč,300,600,RPO,20,6006,3,2,2,5
 Poreč,Babić transport d.o.o.,Car transfer,Poreč - Airport Marco Polo (Venice),440,880,RPO,20,6009,3,2,2,6
 Poreč,Babić transport d.o.o.,Car transfer,Airport Marco Polo (Venice) - Poreč,440,880,RPO,20,6010,3,2,2,7
 Poreč,Babić transport d.o.o.,Car transfer,Poreč - Airport Treviso-Sant`Angelo,440,880,RPO,20,6013,3,2,2,8
@@ -170,22 +173,22 @@ Poreč,Babić transport d.o.o.,Car transfer,Poreč - Airport Joze Pucnik (Ljublj
 Poreč,Babić transport d.o.o.,Car transfer,Airport Joze Pucnik (Ljubljana) - Poreč,440,880,RPO,20,6018,3,2,2,11
 Poreč,Babić transport d.o.o.,Car transfer,Poreč - Airport Franjo Ruđman (Zagreb),440,880,RPO,20,6021,3,2,2,12
 Poreč,Babić transport d.o.o.,Car transfer,Airport Franjo Ruđman (Zagreb) - Poreč,440,880,RPO,20,6022,3,2,2,13
-Poreč,Babić transport d.o.o.,Car transfer,Poreč - Airport Rijeka (Rijeka/Krk),320,640,RPO,20,6025,3,2,2,14
-Poreč,Babić transport d.o.o.,Car transfer,Airport Rijeka (Rijeka/Krk) - Poreč,320,640,RPO,20,6026,3,2,2,15
-Poreč,Babić transport d.o.o.,Transfer kombijem,Poreč - Airport Pula,180,360,RPO,20,6003,3,4,2,2
-Poreč,Babić transport d.o.o.,Transfer kombijem,Airport Pula - Poreč ,180,360,RPO,20,6004,3,4,2,3
-Poreč,Babić transport d.o.o.,Transfer kombijem,Poreč - Airport Ronchi dei Legionari (Trst),400,800,RPO,20,6007,3,4,2,4
-Poreč,Babić transport d.o.o.,Transfer kombijem,Airport Ronchi dei Legionari (Trst) - Poreč,400,800,RPO,20,6008,3,4,2,5
-Poreč,Babić transport d.o.o.,Transfer kombijem,Poreč - Airport Marco Polo (Venice),550,1100,RPO,20,6011,3,4,2,6
-Poreč,Babić transport d.o.o.,Transfer kombijem,Airport Marco Polo (Venice) - Poreč,550,1100,RPO,20,6012,3,4,2,7
-Poreč,Babić transport d.o.o.,Transfer kombijem,Poreč - Airport Treviso-Sant`Angelo,550,1100,RPO,20,6015,3,4,2,8
-Poreč,Babić transport d.o.o.,Transfer kombijem,Airport Treviso-Sant`Angelo - Poreč,550,1100,RPO,20,6016,3,4,2,9
-Poreč,Babić transport d.o.o.,Transfer kombijem,Poreč - Airport Joze Pucnik (Ljubljana),550,1100,RPO,20,6019,3,4,2,10
-Poreč,Babić transport d.o.o.,Transfer kombijem,Airport Joze Pucnik (Ljubljana) - Poreč,550,1100,RPO,20,6020,3,4,2,11
-Poreč,Babić transport d.o.o.,Transfer kombijem,Poreč - Airport Franjo Ruđman (Zagreb),550,1100,RPO,20,6023,3,4,2,12
-Poreč,Babić transport d.o.o.,Transfer kombijem,Airport Franjo Ruđman (Zagreb) - Poreč,550,1100,RPO,20,6024,3,4,2,13
-Poreč,Babić transport d.o.o.,Transfer kombijem,Poreč - Airport Rijeka (Rijeka/Krk),400,800,RPO,20,6027,3,4,2,14
-Poreč,Babić transport d.o.o.,Transfer kombijem,Airport Rijeka (Rijeka/Krk) - Poreč,400,800,RPO,20,6028,3,4,2,15
+Poreč,Babić transport d.o.o.,Car transfer,Poreč - Airport Rijeka (Rijeka/Krk),300,600,RPO,20,6025,3,2,2,14
+Poreč,Babić transport d.o.o.,Car transfer,Airport Rijeka (Rijeka/Krk) - Poreč,300,600,RPO,20,6026,3,2,2,15
+Poreč,Babić transport d.o.o.,Transfer kombijem,Poreč - Airport Pula,150,300,RPO,20,6003,3,4,2,2
+Poreč,Babić transport d.o.o.,Transfer kombijem,Airport Pula - Poreč ,150,300,RPO,20,6004,3,4,2,3
+Poreč,Babić transport d.o.o.,Transfer kombijem,Poreč - Airport Ronchi dei Legionari (Trst),300,600,RPO,20,6007,3,4,2,4
+Poreč,Babić transport d.o.o.,Transfer kombijem,Airport Ronchi dei Legionari (Trst) - Poreč,300,600,RPO,20,6008,3,4,2,5
+Poreč,Babić transport d.o.o.,Transfer kombijem,Poreč - Airport Marco Polo (Venice),500,1000,RPO,20,6011,3,4,2,6
+Poreč,Babić transport d.o.o.,Transfer kombijem,Airport Marco Polo (Venice) - Poreč,500,1000,RPO,20,6012,3,4,2,7
+Poreč,Babić transport d.o.o.,Transfer kombijem,Poreč - Airport Treviso-Sant`Angelo,500,1000,RPO,20,6015,3,4,2,8
+Poreč,Babić transport d.o.o.,Transfer kombijem,Airport Treviso-Sant`Angelo - Poreč,500,1000,RPO,20,6016,3,4,2,9
+Poreč,Babić transport d.o.o.,Transfer kombijem,Poreč - Airport Joze Pucnik (Ljubljana),500,1000,RPO,20,6019,3,4,2,10
+Poreč,Babić transport d.o.o.,Transfer kombijem,Airport Joze Pucnik (Ljubljana) - Poreč,500,1000,RPO,20,6020,3,4,2,11
+Poreč,Babić transport d.o.o.,Transfer kombijem,Poreč - Airport Franjo Ruđman (Zagreb),500,1000,RPO,20,6023,3,4,2,12
+Poreč,Babić transport d.o.o.,Transfer kombijem,Airport Franjo Ruđman (Zagreb) - Poreč,500,1000,RPO,20,6024,3,4,2,13
+Poreč,Babić transport d.o.o.,Transfer kombijem,Poreč - Airport Rijeka (Rijeka/Krk),350,700,RPO,20,6027,3,4,2,14
+Poreč,Babić transport d.o.o.,Transfer kombijem,Airport Rijeka (Rijeka/Krk) - Poreč,350,700,RPO,20,6028,3,4,2,15
 Poreč,Greenway,Car transfer,Poreč - Airport Pula,100,200,RPO,20,6029,3,2,3,2
 Poreč,Greenway,Car transfer,Airport Pula - Poreč ,100,200,RPO,20,6030,3,2,3,3
 Poreč,Greenway,Car transfer,Poreč - Airport Ronchi dei Legionari (Trst),200,400,RPO,20,6035,3,2,3,4
@@ -203,29 +206,29 @@ Poreč,Greenway,Car transfer,Airport Rijeka (Rijeka/Krk) - Poreč,200,400,RPO,20
 Poreč,Greenway,Luxury car transfer,Poreč - Airport Pula,140,280,RPO,20,6031,3,3,3,2
 Poreč,Greenway,Luxury car transfer,Airport Pula - Poreč ,140,280,RPO,20,6032,3,3,3,3
 Poreč,Greenway,Luxury car transfer,Poreč - Airport Ronchi dei Legionari (Trst),250,500,RPO,20,6037,3,3,3,4
-Poreč,Greenway,Luxury car transfer,Airport Ronchi dei Legionari (Trst) - Poreč,250,500,RPO,20,6039,3,3,3,5
+Poreč,Greenway,Luxury car transfer,Airport Ronchi dei Legionari (Trst) - Poreč,250,500,RPO,20,6038,3,3,3,5
 Poreč,Greenway,Luxury car transfer,Poreč - Airport Marco Polo (Venice),450,900,RPO,20,6043,3,3,3,6
 Poreč,Greenway,Luxury car transfer,Airport Marco Polo (Venice) - Poreč,450,900,RPO,20,6044,3,3,3,7
-Poreč,Greenway,Luxury car transfer,Poreč - Airport Treviso-Sant`Angelo,420,840,RPO,20,6049,3,3,3,8
-Poreč,Greenway,Luxury car transfer,Airport Treviso-Sant`Angelo - Poreč,420,840,RPO,20,6050,3,3,3,9
-Poreč,Greenway,Luxury car transfer,Poreč - Airport Joze Pucnik (Ljubljana),320,640,RPO,20,6055,3,3,3,10
-Poreč,Greenway,Luxury car transfer,Airport Joze Pucnik (Ljubljana) - Poreč,320,640,RPO,20,6056,3,3,3,11
-Poreč,Greenway,Luxury car transfer,Poreč - Airport Franjo Ruđman (Zagreb),420,840,RPO,20,6061,3,3,3,12
-Poreč,Greenway,Luxury car transfer,Airport Franjo Ruđman (Zagreb) - Poreč,420,840,RPO,20,6062,3,3,3,13
+Poreč,Greenway,Luxury car transfer,Poreč - Airport Treviso-Sant`Angelo,450,900,RPO,20,6049,3,3,3,8
+Poreč,Greenway,Luxury car transfer,Airport Treviso-Sant`Angelo - Poreč,450,900,RPO,20,6050,3,3,3,9
+Poreč,Greenway,Luxury car transfer,Poreč - Airport Joze Pucnik (Ljubljana),350,700,RPO,20,6055,3,3,3,10
+Poreč,Greenway,Luxury car transfer,Airport Joze Pucnik (Ljubljana) - Poreč,350,700,RPO,20,6056,3,3,3,11
+Poreč,Greenway,Luxury car transfer,Poreč - Airport Franjo Ruđman (Zagreb),450,900,RPO,20,6061,3,3,3,12
+Poreč,Greenway,Luxury car transfer,Airport Franjo Ruđman (Zagreb) - Poreč,450,900,RPO,20,6062,3,3,3,13
 Poreč,Greenway,Luxury car transfer,Poreč - Airport Rijeka (Rijeka/Krk),250,500,RPO,20,6067,3,3,3,14
 Poreč,Greenway,Luxury car transfer,Airport Rijeka (Rijeka/Krk) - Poreč,250,500,RPO,20,6068,3,3,3,15
 Poreč,Greenway,Transfer kombijem,Poreč - Airport Pula,120,240,RPO,20,6033,3,4,3,2
 Poreč,Greenway,Transfer kombijem,Airport Pula - Poreč ,120,240,RPO,20,6034,3,4,3,3
 Poreč,Greenway,Transfer kombijem,Poreč - Airport Ronchi dei Legionari (Trst),220,440,RPO,20,6039,3,4,3,4
 Poreč,Greenway,Transfer kombijem,Airport Ronchi dei Legionari (Trst) - Poreč,220,440,RPO,20,6040,3,4,3,5
-Poreč,Greenway,Transfer kombijem,Poreč - Airport Marco Polo (Venice),380,760,RPO,20,6045,3,4,3,6
-Poreč,Greenway,Transfer kombijem,Airport Marco Polo (Venice) - Poreč,380,760,RPO,20,6046,3,4,3,7
-Poreč,Greenway,Transfer kombijem,Poreč - Airport Treviso-Sant`Angelo,380,760,RPO,20,6051,3,4,3,8
-Poreč,Greenway,Transfer kombijem,Airport Treviso-Sant`Angelo - Poreč,380,760,RPO,20,6052,3,4,3,9
-Poreč,Greenway,Transfer kombijem,Poreč - Airport Joze Pucnik (Ljubljana),280,560,RPO,20,6057,3,4,3,10
-Poreč,Greenway,Transfer kombijem,Airport Joze Pucnik (Ljubljana) - Poreč,280,560,RPO,20,6058,3,4,3,11
-Poreč,Greenway,Transfer kombijem,Poreč - Airport Franjo Ruđman (Zagreb),380,760,RPO,20,6063,3,4,3,12
-Poreč,Greenway,Transfer kombijem,Airport Franjo Ruđman (Zagreb) - Poreč,380,760,RPO,20,6064,3,4,3,13
+Poreč,Greenway,Transfer kombijem,Poreč - Airport Marco Polo (Venice),420,840,RPO,20,6045,3,4,3,6
+Poreč,Greenway,Transfer kombijem,Airport Marco Polo (Venice) - Poreč,420,840,RPO,20,6046,3,4,3,7
+Poreč,Greenway,Transfer kombijem,Poreč - Airport Treviso-Sant`Angelo,420,840,RPO,20,6051,3,4,3,8
+Poreč,Greenway,Transfer kombijem,Airport Treviso-Sant`Angelo - Poreč,420,840,RPO,20,6052,3,4,3,9
+Poreč,Greenway,Transfer kombijem,Poreč - Airport Joze Pucnik (Ljubljana),320,640,RPO,20,6057,3,4,3,10
+Poreč,Greenway,Transfer kombijem,Airport Joze Pucnik (Ljubljana) - Poreč,320,640,RPO,20,6058,3,4,3,11
+Poreč,Greenway,Transfer kombijem,Poreč - Airport Franjo Ruđman (Zagreb),420,840,RPO,20,6063,3,4,3,12
+Poreč,Greenway,Transfer kombijem,Airport Franjo Ruđman (Zagreb) - Poreč,420,840,RPO,20,6064,3,4,3,13
 Poreč,Greenway,Transfer kombijem,Poreč - Airport Rijeka (Rijeka/Krk),220,440,RPO,20,6069,3,4,3,14
 Poreč,Greenway,Transfer kombijem,Airport Rijeka (Rijeka/Krk) - Poreč,220,440,RPO,20,6070,3,4,3,15
 Poreč,Greenway,Transfer luksuznim kombijem,Poreč - Airport Pula,170,340,RPO,20,6241,3,5,3,2
@@ -250,8 +253,8 @@ Poreč,Greenway ,Car transfer,Airport Marco Polo (Venecija) - Poreč,380,760,RPO
 Poreč,Greenway ,Car transfer,Poreč - Airport Marco Polo (Venecija) ,380,760,RPO,20,6041,11,10,7,27
 Poreč,Greenway ,Car transfer,Poreč - Airport Joze Pucnik (Ljubljana),280,560,RPO,20,6053,11,10,7,28
 Poreč,Greenway ,Car transfer,Airport Joze Pucnik (Ljubljana) - Poreč - ,280,560,RPO,20,6054,11,10,7,29
-Poreč,Greenway ,Car transfer,Airport Franjo Ruđman (Zagreb) - Poreč ,380,760,RPO,20,6060,11,10,7,30
-Poreč,Greenway ,Car transfer,Poreč  - Airport Franjo Ruđman (Zagreb),380,760,RPO,20,6059,11,10,7,31
+Poreč,Greenway ,Car transfer,Airport Franjo Tuđman (Zagreb) - Poreč,380,760,RPO,20,6060,11,10,7,30
+Poreč,Greenway ,Car transfer,Poreč  - Airport Franjo Tuđman (Zagreb),380,760,RPO,20,6059,11,10,7,31
 Poreč,Greenway ,Car transfer,Poreč  - Airport Rijeka (Rijeka/Krk),200,400,RPO,20,6065,11,10,7,32
 Poreč,Greenway ,Car transfer,Airport Rijeka (Rijeka/Krk) - Poreč ,200,400,RPO,20,6066,11,10,7,33
 Poreč,Greenway ,Car transfer,Poreč - Airport Treviso-Sant`Angelo,380,760,RPO,20,6047,11,10,7,110
@@ -262,28 +265,28 @@ Poreč,Greenway ,Luxury car transfer,Poreč - Airport Ronchi dei Legionari (Trst
 Poreč,Greenway ,Luxury car transfer,Airport Ronchi dei Legionari (Trst) - Poreč,250,500,RPO,20,6038,11,11,7,25
 Poreč,Greenway ,Luxury car transfer,Airport Marco Polo (Venecija) - Poreč,450,900,RPO,20,6044,11,11,7,26
 Poreč,Greenway ,Luxury car transfer,Poreč - Airport Marco Polo (Venecija) ,450,900,RPO,20,6043,11,11,7,27
-Poreč,Greenway ,Luxury car transfer,Poreč - Airport Joze Pucnik (Ljubljana),320,640,RPO,20,6055,11,11,7,28
-Poreč,Greenway ,Luxury car transfer,Airport Joze Pucnik (Ljubljana) - Poreč - ,320,640,RPO,20,6056,11,11,7,29
-Poreč,Greenway ,Luxury car transfer,Airport Franjo Ruđman (Zagreb) - Poreč ,420,840,RPO,20,6062,11,11,7,30
-Poreč,Greenway ,Luxury car transfer,Poreč  - Airport Franjo Ruđman (Zagreb),420,840,RPO,20,6061,11,11,7,31
+Poreč,Greenway ,Luxury car transfer,Poreč - Airport Joze Pucnik (Ljubljana),350,700,RPO,20,6055,11,11,7,28
+Poreč,Greenway ,Luxury car transfer,Airport Joze Pucnik (Ljubljana) - Poreč - ,350,700,RPO,20,6056,11,11,7,29
+Poreč,Greenway ,Luxury car transfer,Airport Franjo Ruđman (Zagreb) - Poreč ,450,900,RPO,20,6062,11,11,7,30
+Poreč,Greenway ,Luxury car transfer,Poreč  - Airport Franjo Ruđman (Zagreb),450,900,RPO,20,6061,11,11,7,31
 Poreč,Greenway ,Luxury car transfer,Poreč  - Airport Rijeka (Rijeka/Krk),250,500,RPO,20,6067,11,11,7,32
 Poreč,Greenway ,Luxury car transfer,Airport Rijeka (Rijeka/Krk) - Poreč ,250,500,RPO,20,6068,11,11,7,33
-Poreč,Greenway ,Luxury car transfer,Poreč - Airport Treviso-Sant`Angelo,420,840,RPO,20,6049,11,11,7,110
-Poreč,Greenway ,Luxury car transfer,Airport Treviso-Sant`Angelo - Poreč,420,840,RPO,20,6050,11,11,7,111
+Poreč,Greenway ,Luxury car transfer,Poreč - Airport Treviso-Sant`Angelo,450,900,RPO,20,6049,11,11,7,110
+Poreč,Greenway ,Luxury car transfer,Airport Treviso-Sant`Angelo - Poreč,450,900,RPO,20,6050,11,11,7,111
 Poreč,Greenway ,Minivan transfer,Poreč - Airport Pula,120,240,RPO,20,6033,11,12,7,22
 Poreč,Greenway ,Minivan transfer,Airport Pula - Poreč ,120,240,RPO,20,6034,11,12,7,23
 Poreč,Greenway ,Minivan transfer,Poreč - Airport Ronchi dei Legionari (Trst),220,440,RPO,20,6039,11,12,7,24
 Poreč,Greenway ,Minivan transfer,Airport Ronchi dei Legionari (Trst) - Poreč,220,440,RPO,20,6040,11,12,7,25
-Poreč,Greenway ,Minivan transfer,Airport Marco Polo (Venecija) - Poreč,380,760,RPO,20,6046,11,12,7,26
-Poreč,Greenway ,Minivan transfer,Poreč - Airport Marco Polo (Venecija) ,380,760,RPO,20,6045,11,12,7,27
-Poreč,Greenway ,Minivan transfer,Poreč - Airport Joze Pucnik (Ljubljana),280,560,RPO,20,6057,11,12,7,28
-Poreč,Greenway ,Minivan transfer,Airport Joze Pucnik (Ljubljana) - Poreč - ,280,560,RPO,20,6058,11,12,7,29
-Poreč,Greenway ,Minivan transfer,Airport Franjo Ruđman (Zagreb) - Poreč ,380,760,RPO,20,6064,11,12,7,30
-Poreč,Greenway ,Minivan transfer,Poreč  - Airport Franjo Ruđman (Zagreb),380,760,RPO,20,6063,11,12,7,31
+Poreč,Greenway ,Minivan transfer,Airport Marco Polo (Venecija) - Poreč,420,840,RPO,20,6046,11,12,7,26
+Poreč,Greenway ,Minivan transfer,Poreč - Airport Marco Polo (Venecija) ,420,840,RPO,20,6045,11,12,7,27
+Poreč,Greenway ,Minivan transfer,Poreč - Airport Joze Pucnik (Ljubljana),320,640,RPO,20,6057,11,12,7,28
+Poreč,Greenway ,Minivan transfer,Airport Joze Pucnik (Ljubljana) - Poreč - ,320,640,RPO,20,6058,11,12,7,29
+Poreč,Greenway ,Minivan transfer,Airport Franjo Ruđman (Zagreb) - Poreč ,420,840,RPO,20,6064,11,12,7,30
+Poreč,Greenway ,Minivan transfer,Poreč  - Airport Franjo Ruđman (Zagreb),420,840,RPO,20,6063,11,12,7,31
 Poreč,Greenway ,Minivan transfer,Poreč  - Airport Rijeka (Rijeka/Krk),220,440,RPO,20,6069,11,12,7,32
 Poreč,Greenway ,Minivan transfer,Airport Rijeka (Rijeka/Krk) - Poreč ,220,440,RPO,20,6070,11,12,7,33
-Poreč,Greenway ,Minivan transfer,Poreč - Airport Treviso-Sant`Angelo,380,760,RPO,20,6051,11,12,7,110
-Poreč,Greenway ,Minivan transfer,Airport Treviso-Sant`Angelo - Poreč,380,760,RPO,20,6052,11,12,7,111
+Poreč,Greenway ,Minivan transfer,Poreč - Airport Treviso-Sant`Angelo,420,840,RPO,20,6051,11,12,7,110
+Poreč,Greenway ,Minivan transfer,Airport Treviso-Sant`Angelo - Poreč,420,840,RPO,20,6052,11,12,7,111
 Poreč,Greenway ,Luxury minivan transfer,Poreč - Airport Pula,170,340,RPO,20,6241,11,13,7,22
 Poreč,Greenway ,Luxury minivan transfer,Airport Pula - Poreč ,170,340,RPO,20,6242,11,13,7,23
 Poreč,Greenway ,Luxury minivan transfer,Poreč - Airport Ronchi dei Legionari (Trst),280,560,RPO,20,6243,11,13,7,24
@@ -301,7 +304,7 @@ Poreč,Greenway ,Luxury minivan transfer,Airport Treviso-Sant`Angelo - Poreč,48
 Poreč,Istra taxi,Car transfer,Poreč - Airport Pula,110,220,RPO,20,6073,3,2,17,2
 Poreč,Istra taxi,Car transfer,Airport Pula - Poreč ,110,220,RPO,20,6074,3,2,17,3
 Poreč,Istra taxi,Car transfer,Poreč - Airport Ronchi dei Legionari (Trst),200,400,RPO,20,6077,3,2,17,4
-Poreč,Istra taxi,Car transfer,Airport Ronchi dei Legionari (Trst) - Poreč,200,400,RPO,20,6075,3,2,17,5
+Poreč,Istra taxi,Car transfer,Airport Ronchi dei Legionari (Trst) - Poreč,200,400,RPO,20,6078,3,2,17,5
 Poreč,Istra taxi,Car transfer,Poreč - Airport Marco Polo (Venice),380,760,RPO,20,6081,3,2,17,6
 Poreč,Istra taxi,Car transfer,Airport Marco Polo (Venice) - Poreč,380,760,RPO,20,6082,3,2,17,7
 Poreč,Istra taxi,Car transfer,Poreč - Airport Treviso-Sant`Angelo,380,760,RPO,20,6085,3,2,17,8
@@ -359,21 +362,21 @@ Rabac,Greenway,Luxury Minivan Transfer,Airport Joze Pucnik (Ljubljana) - Rabac,4
 Rabac,Greenway,Luxury Minivan Transfer,Rabac - Airport Franjo Tuđman (Zagreb),520,1040,RPO,20,6139,4,31,3,84
 Rabac,Greenway,Luxury Minivan Transfer,Airport Franjo Tuđman (Zagreb) - Rabac,520,1040,RPO,20,6140,4,31,3,85
 Rabac,Greenway,Luxury Minivan Transfer,Rabac - Airport Rijeka (RIjeka/Krk),270,540,RPO,20,6147,4,31,3,86
-Rabac,Greenway,Luxury Minivan Transfer,Airport Rijeka (RIjeka/Krk) - Rabac,270,540,RPO,20,6148,4,31,3,87
+Rabac,Greenway,Luxury Minivan Transfer,Airport Rijeka (Rijeka/Krk) - Rabac,270,540,RPO,20,6148,4,31,3,87
 Rabac,Greenway,Luxury Car Transfer,Airport Pula - Rabac,140,280,RPO,20,6104,4,32,3,20
 Rabac,Greenway,Luxury Car Transfer,Rabac - Airport Pula,140,280,RPO,20,6103,4,32,3,21
-Rabac,Greenway,Luxury Car Transfer,Rabac - Airport Marco Polo,470,940,RPO,20,6119,4,32,3,74
-Rabac,Greenway,Luxury Car Transfer,Airport Marco Polo - Rabac ,470,940,RPO,20,61,4,32,3,75
-Rabac,Greenway,Luxury Car Transfer,Rabac - Airport Ronchi dei Legionari (Trst),280,560,RPO,20,6111,4,32,3,76
-Rabac,Greenway,Luxury Car Transfer, Airport Ronchi dei Legionari (Trst) - Rabac,280,560,RPO,20,6112,4,32,3,77
-Rabac,Greenway,Luxury Car Transfer,Rabac - Airport San`t Angelo (Treviso),470,940,RPO,20,6257,4,32,3,80
-Rabac,Greenway,Luxury Car Transfer,Airport San`t Angelo (Treviso) - Rabac,470,940,RPO,20,6258,4,32,3,81
-Rabac,Greenway,Luxury Car Transfer,Rabac - Airport Joze Pucnik (Ljubljana),350,700,RPO,20,6127,4,32,3,82
-Rabac,Greenway,Luxury Car Transfer,Airport Joze Pucnik (Ljubljana) - Rabac,350,700,RPO,20,6128,4,32,3,83
-Rabac,Greenway,Luxury Car Transfer,Rabac - Airport Franjo Tuđman (Zagreb),430,860,RPO,20,6135,4,32,3,84
-Rabac,Greenway,Luxury Car Transfer,Airport Franjo Tuđman (Zagreb) - Rabac,430,860,RPO,20,6136,4,32,3,85
-Rabac,Greenway,Luxury Car Transfer,Rabac - Airport Rijeka (RIjeka/Krk),200,400,RPO,20,6143,4,32,3,86
-Rabac,Greenway,Luxury Car Transfer,Airport Rijeka (RIjeka/Krk) - Rabac,200,400,RPO,20,6144,4,32,3,87
+Rabac,Greenway,Luxury Car Transfer,Rabac - Airport Marco Polo,500,1000,RPO,20,6119,4,32,3,74
+Rabac,Greenway,Luxury Car Transfer,Airport Marco Polo - Rabac ,500,1000,RPO,20,6120,4,32,3,75
+Rabac,Greenway,Luxury Car Transfer,Rabac - Airport Ronchi dei Legionari (Trst),310,620,RPO,20,6111,4,32,3,76
+Rabac,Greenway,Luxury Car Transfer, Airport Ronchi dei Legionari (Trst) - Rabac,310,620,RPO,20,6112,4,32,3,77
+Rabac,Greenway,Luxury Car Transfer,Rabac - Airport San`t Angelo (Treviso),500,1000,RPO,20,6257,4,32,3,80
+Rabac,Greenway,Luxury Car Transfer,Airport San`t Angelo (Treviso) - Rabac,500,1000,RPO,20,6258,4,32,3,81
+Rabac,Greenway,Luxury Car Transfer,Rabac - Airport Joze Pucnik (Ljubljana),380,760,RPO,20,6127,4,32,3,82
+Rabac,Greenway,Luxury Car Transfer,Airport Joze Pucnik (Ljubljana) - Rabac,380,760,RPO,20,6128,4,32,3,83
+Rabac,Greenway,Luxury Car Transfer,Rabac - Airport Franjo Tuđman (Zagreb),470,940,RPO,20,6135,4,32,3,84
+Rabac,Greenway,Luxury Car Transfer,Airport Franjo Tuđman (Zagreb) - Rabac,470,940,RPO,20,6136,4,32,3,85
+Rabac,Greenway,Luxury Car Transfer,Rabac - Airport Rijeka (RIjeka/Krk),230,460,RPO,20,6143,4,32,3,86
+Rabac,Greenway,Luxury Car Transfer,Airport Rijeka (RIjeka/Krk) - Rabac,230,460,RPO,20,6144,4,32,3,87
 Rabac,Greenway,Car Transfer,Airport Pula - Rabac,100,200,RPO,20,6102,4,8,3,20
 Rabac,Greenway,Car Transfer,Rabac - Airport Pula,100,200,RPO,20,6101,4,8,3,21
 Rabac,Greenway,Car Transfer,Rabac - Airport Marco Polo,440,880,RPO,20,6117,4,8,3,74
