@@ -200,6 +200,14 @@ use Actions;
             Mail::to($travellerMail)->locale($this->reservation->confirmation_language)->send(new ReservationConfirmationMail($this->reservation->id,$this->reservation->confirmation_language??'en'));
         }
 
+        if($partnerMail = $this->reservation->partner->email){
+            Mail::to($partnerMail)->locale($this->reservation->confirmation_language)->send(new ReservationConfirmationMail($this->reservation->id,$this->reservation->confirmation_language??'en'));
+        }
+
+        if($receptionMail = $this->reservation->getReservationReceptionEmail()){
+            Mail::to($receptionMail)->locale($this->reservation->confirmation_language)->send(new ReservationConfirmationMail($this->reservation->id,$this->reservation->confirmation_language??'en'));
+        }
+
         $this->notification()->success('Sent!','Reservation confirmation sent');
 
     }
