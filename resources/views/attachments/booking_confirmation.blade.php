@@ -96,25 +96,25 @@
 
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="3" style="border: 1px solid black; text-align: right;padding:5px 5px">
-                        <b>{{__('mail.total_hrk')}}: </b>
-                    </td>
-                    <td style="border: 1px solid black;text-align: right;padding:5px 5px">
-                        @if($reservation->included_in_accommodation_reservation == 0 && $reservation->v_level_reservation == 0)
-                            <b>{{$reservation->getConfirmationItemBreakdown('items_total_hrk')}}</b>
-                        @else
-                            <b>0,00</b>
-                        @endif
-                    </td>
-                </tr>
+{{--                <tr>--}}
+{{--                    <td colspan="3" style="border: 1px solid black; text-align: right;padding:5px 5px">--}}
+{{--                        <b>{{__('mail.total_hrk')}}: </b>--}}
+{{--                    </td>--}}
+{{--                    <td style="border: 1px solid black;text-align: right;padding:5px 5px">--}}
+{{--                        @if($reservation->included_in_accommodation_reservation == 0 && $reservation->v_level_reservation == 0)--}}
+{{--                            <b>{{$reservation->getConfirmationItemBreakdown('items_total_hrk')}}</b>--}}
+{{--                        @else--}}
+{{--                            <b>0,00</b>--}}
+{{--                        @endif--}}
+{{--                    </td>--}}
+{{--                </tr>--}}
 
 
                 </tfoot>
 
             </table>
 
-            <p style="float: right;font-style: italic;font-size:10px;padding:2px">{{__('mail.price_info')}}</p>
+{{--            <p style="float: right;font-style: italic;font-size:10px;padding:2px">{{__('mail.price_info')}}</p>--}}
 
 
         </x-mail.row>

@@ -85,35 +85,10 @@ U slučaju posebnih zahtjeva s vaše strane slobodno se javite povratno na ovaj 
         ],
 
         'footer' => [
-            'valamar' => 'Trgovački sud u Pazinu, MBS 040020883, OIB: 36201212847; tvrtka: Valamar Riviera dioničko
-društvo za turizam; skraćeni naziv: Valamar Riviera d.d.; 1.672.021.210,00 kuna/221.915.350,72 €*
-Temeljnog kapitala, u cijelosti uplaćen; izdane 126.027.524 dionice; MB 3474771; računi ADDIKO
-BANK d.d. Zagreb IBAN HR 2625000091101024767, SWIFT: HAABHR22; ZAGREBAČKA BANKA
-d.d. Zagreb IBAN: HR 4123600001101319202, SWIFT: ZABAHR2X, ERSTE&amp;STEIERMӒRKISCHE
-BANK d.d. Rijeka IBAN: HR 062402006110038945 SWIFT: ES- BCHR22; PRIVREDNA BANKA
-ZAGREB d.d. Zagreb IBAN: HR 4723400091100153498, SWIFT: PBZGHR2X; RAIFFEISEN BANK
-AUSTRIA d.d. Zagreb IBAN: HR 1624840081102134625, SWIFT: RZBHHR2X; NOVA HRVATSKA
-BANKA d.d. Zagreb IBAN: HR 9025030071100039991, SWIFT: VBCRHR22; ISTARSKA KREDITNA
-BANKA UMAG d.d. Umag IBAN: HR 7423800061110009020, SWIFT: ISKBHR2X; OTP BANKA d.d.
-Zadar IBAN: HR 4724070001100365752, SWIFT: OTPVHR2X; HRVATSKA POŠTANSKA BANKA
-d.d. Zagreb IBAN: HR1123900011101322250, SWIFT: HPBZHR2X;
-www.valamar-riviera.com, Predsjednik Uprave: Željko Kukurin, članovi Uprave: Marko Čižmek i Ivana
-Budin Arhanić; Predsjednik Nadzornog odbora: Gustav Wurmböck
-*iznos temeljnog kapitala u EUR valuti informativno je prikazan po fiksnom tečaju konverzije 7.53450,
-a do provedbe usklađenja i upisa temeljnog kapitala u EUR valuti sukladno Zakonu o izmjenama
-Zakona o trgovačkim društvima (&quot;Narodne novine&quot; broj 114/22.)',
-            'imperial' => 'Trgovački sud u Rijeci; MBS: 040000124; OIB: 90896496260; temeljni kapital: 1.516.434.188,42 kuna/201.265.404,26 eura*, uplaćen u cijelosti, podijeljen na 2.279.473 dionice; Računi: ERSTE &
-STEIERMÄRKISCHE BANK d.d. Rijeka, IBAN: HR8124020061100210497, SWIFT:ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb, IBAN: HR5023400091117030474,
-SWIFT:PBZGHR2X; ZAGREBAČKA BANKA d.d. Zagreb, IBAN: HR1923600001101686064, SWIFT: ZABAHR2X; OTP banka d.d., IBAN: HR1224070001100234074, SWIFT:
-OTPVHR2X. Predsjednik Uprave: Alen Benković; član Uprave: Sebastian Palma; Predsjednik Nadzornog odbora: Boris Galić
-*iznos temeljnog kapitala u EUR valuti informativno je prikazan po fiksnom tečaju konverzije 7.53450, a do provedbe usklađenja i upisa temeljnog kapitala u EUR valuti sukladno Zakonu o izmjenama Zakona o trgovačkim društvima ("Narodne novine" broj 114/22.)',
-            'helios_faros' => 'HELIOS FAROS d.d., Stari Grad, Naselje Helios br. 5, Trgovački sud u Splitu, MBS 060213634, OIB
-48594515409
-
-PRIVREDNA BANKA ZAGREB d.d., Zagreb, Radnička cesta 50, IBAN: HR3323400091111074980;
-OTP Banka d.d., Split, Domovinskog rata 61, IBAN: HR8824070001100628757
-temeljni kapital 235.957.660,00 kuna uplaćen u cijelosti, broj dionica 23.595.766; predsjednik
-Nadzornog odbora Mirko Herceg, predsjednik Uprave V. Bunić,'
+            'valamar' => 'Trgovački sud u Pazinu, MBS 040020883, OIB: 36201212847; tvrtka: Valamar Riviera dioničko društvo za turizam; skraćeni naziv: Valamar Riviera d.d.; 221.915.350,00 € temeljnog kapitala, u cijelosti uplaćen; izdane 126.027.542 dionice; MB 3474771; računi
+ADDIKO BANK d.d. Zagreb IBAN HR 2625000091101024767, SWIFT: HAABHR22; ZAGREBAČKA BANKA d.d. Zagreb IBAN: HR 4123600001101319202, SWIFT: ZABAHR2X, ERSTE&STEIERMӒRKISCHE BANK d.d. Rijeka IBAN: HR 0624020061100389454 SWIFT: ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb IBAN: HR 4723400091100153498, SWIFT: PBZGHR2X; RAIFFEISEN BANK AUSTRIA d.d. Zagreb IBAN: HR 1624840081102134625,SWIFT: RZBHHR2X; ISTARSKA KREDITNA BANKA UMAG d.d. Umag IBAN: HR 7423800061110009020, SWIFT: ISKBHR2X; OTP BANKA d.d. Zadar IBAN: HR 4724070001100365752, SWIFT: OTPVHR2X; HRVATSKA POŠTANSKA BANKA d.d. Zagreb IBAN: HR 1123900011101322250, SWIFT: HPBZHR2X; RAIFFEISENBANK LUNGAU EGEN Tamsweg (za Podružnicu Austrija) IBAN: AT 193506300042106385, SWIFT: RVSAAT2S063; www.valamar-riviera.com, Predsjednik Uprave: Željko Kukurin, članovi Uprave: Marko Čižmek i Ivana Budin Arhanić; Predsjednik Nadzornog odbora: Franz Lanschützer',
+            'imperial' => 'Trgovački sud u Pazinu, MBS 040020883, OIB: 36201212847; tvrtka: Valamar Riviera dioničko društvo za turizam; skraćeni naziv: Valamar Riviera d.d.; 221.915.350,00 € temeljnog kapitala, u cijelosti uplaćen; izdane 126.027.542 dionice; MB 3474771; računi
+ADDIKO BANK d.d. Zagreb IBAN HR 2625000091101024767, SWIFT: HAABHR22; ZAGREBAČKA BANKA d.d. Zagreb IBAN: HR 4123600001101319202, SWIFT: ZABAHR2X, ERSTE&STEIERMӒRKISCHE BANK d.d. Rijeka IBAN: HR 0624020061100389454 SWIFT: ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb IBAN: HR 4723400091100153498, SWIFT: PBZGHR2X; RAIFFEISEN BANK AUSTRIA d.d. Zagreb IBAN: HR 1624840081102134625,SWIFT: RZBHHR2X; ISTARSKA KREDITNA BANKA UMAG d.d. Umag IBAN: HR 7423800061110009020, SWIFT: ISKBHR2X; OTP BANKA d.d. Zadar IBAN: HR 4724070001100365752, SWIFT: OTPVHR2X; HRVATSKA POŠTANSKA BANKA d.d. Zagreb IBAN: HR 1123900011101322250, SWIFT: HPBZHR2X; RAIFFEISENBANK LUNGAU EGEN Tamsweg (za Podružnicu Austrija) IBAN: AT 193506300042106385, SWIFT: RVSAAT2S063; www.valamar-riviera.com, Predsjednik Uprave: Željko Kukurin, članovi Uprave: Marko Čižmek i Ivana Budin Arhanić; Predsjednik Nadzornog odbora: Franz Lanschützer',
         ],
 
     ],
@@ -150,5 +125,6 @@ boravite.',
     'price_info' => 'Iznos će biti naplaćen u EURima. Cijena iskazana u kunama je informativnog karaktera, koristeći fiksnu konverziju EUR 1 = HRK 7.5340',
     'amount' => 'Iznos',
     'reservation_cancellation' => 'Otkaz rezervacije',
-    'telephone' => 'Telefon'
+    'telephone' => 'Telefon',
+    'flight_time' => 'Vrijeme Leta'
 ];

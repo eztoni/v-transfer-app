@@ -79,36 +79,9 @@ If you have any special requests, feel free to reply to this e-mail.
         ],
 
         'footer' => [
-            'valamar' => 'Commercial Court in Pazin, MBS 040020883, Tax No. (OIB): 36201212847; Company: Valamar
-                            Riviera dioničko društvo za turizam; abbreviated: Valamar Riviera d.d.; 1.672.021.210,00
-                            kn/221.915.350,72 €* of share capital, paid in full; issued 126.027.524 shares; MB 3474771; accounts
-                            of ADDIKO BANK d.d. Zagreb IBAN: HR 2625000091101024767, SWIFT: HAABHR22;
-                            ZAGREBAČKA BANKA d.d. Zagreb IBAN: HR 4123600001101319202, SWIFT: ZABAHR2X; ERSTE
-                            &amp;STEIERMÄRKISCHE0 BANK d.d. Rijeka IBAN HR 062402006110038945 SWIFT: ES- BCHR22;
-                            PRIVREDNA BANKA ZAGREB d.d. Zagreb IBAN: HR 4723400091100153498, SWIFT: PBZGHR2X;
-                            RAIFFEISEN BANK AUSTRIA d.d. Zagreb IBAN: HR 1624840081102134625, SWIFT: RZBHHR2X;
-                            NOVA HRVATSKA BANKA d.d. Zagreb IBAN: HR 9025030071100039991, SWIFT: VBCRHR22;
-                            ISTARSKA KREDITNA BANKA UMAG d.d. Umag IBAN: HR 7423800061110009020, SWIFT:
-                            ISKBHR2X; OTP BANKA d.d. Zadar IBAN: HR 4724070001100365752, SWIFT: OTPVHR2X;
-                            HRVATSKA POŠTANSKA BANKA d.d. Zagreb IBAN: HR1123900011101322250, SWIFT:
-                            HPBZHR2X
-                            www.valamar-riviera.com, President of the Board: Željko Kukurin, members of the Board: Marko
-                            Čižmek and Ivana Budin Arhanić; President of the Supervisory Board: Gustav Wurmböck
-                            *the amount of share capital in EUR currency is presented for information at a fixed conversion rate of
-                            7.53450, pending the implementation of the adjustment and registration of share capital in EUR
-                            currency in accordance with the Act on Amendments to the Companies Act (&quot;Official Gazette&quot; No.
-                            114/22.)',
-            'imperial' => 'Commercial Court in Rijeka; Company Reg. No.: 040000124; PIN: 90896496260; share capital: 1,516,434,188.42 HRK/201.265.404,26 EUR*, paid in full, divided into 2,279,473 shares; Bank
-                            accounts: ERSTE & STEIERMÄRKISCHE BANK d.d. Rijeka, IBAN: HR8124020061100210497, SWIFT:ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb, IBAN:
-                            HR5023400091117030474, SWIFT:PBZGHR2X; ZAGREBAČKA BANKA d.d. Zagreb, IBAN: HR1923600001101686064, SWIFT: ZABAHR2X; OTP banka d.d., IBAN:
-                            HR1224070001100234074, SWIFT: OTPVHR2X. President of the Board: Alen Benković; Member of the Board: Sebastian Palma; President of the Supervisory Board: Boris
-                            Galić.
-                            *the amount of share capital in EUR currency is presented for information at a fixed conversion rate of 7.53450, pending the implementation of the adjustment and registration of share capital in EUR currency in accordance with the Act on Amendments to the Companies Act ("Official Gazette" No. 114/22.)',
-            'helios_faros' => 'HELIOS FAROS d.d., Stari Grad, Helios no. 5, Commercial Court in Split, PIN 060213634, OIB
-                            48594515409, PRIVREDNA BANKA ZAGREB d.d., Zagreb, Radnička cesta 50, , IBAN:
-                            HR3323400091111074980; ; OTP Banka d.d., Split, Domovinskog rata 61, IBAN:
-                            HR8824070001100628757; share capital 235.957.660,00 kuna paid in full, number of shares
-                            23.595.766; President of the Supervisory Board: Mirko Herceg, President of the Board: V. Bunić'
+            'valamar' => 'Commercial Court in Pazin, Company Registry Number 040020883, VAT identification number HR36201212847; Company: Valamar Riviera Joint Stock Company for Tourism; shortened company name: Valamar Riviera d.d.; 221.915.350,00 € of shared capital, fully paid; 126,027,542 shares; Registry Number 3474771: Accounts: ADDIKO BANK d.d. Zagreb IBAN: HR 2625000091101024767, SWIFT: HAABHR22; ZAGREBAČKA BANKA d.d. Zagreb IBAN: HR 4123600001101319202, SWIFT: ZABAHR2X, ERSTE & STEIERMÄRKISCHE BANK d.d. Rijeka IBAN: HR 0624020061100389454, SWIFT: ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb IBAN: HR 4723400091100153498, SWIFT: PBZGHR2X; RAIFFEISEN BANK AUSTRIA d.d. Zagreb IBAN: HR 1624840081102134625, SWIFT: RZBHHR2X; ISTARSKA KREDITNA BANKA UMAG d.d. Umag IBAN: HR 7423800061110009020, SWIFT: ISKBHR2X; OTP BANKA d.d. Zadar IBAN: HR 4724070001100365752, SWIFT: OTPVHR2X; HRVATSKA POŠTANSKA BANKA d.d. Zagreb IBAN: HR 1123900011101322250, SWIFT: HPBZHR2X; RAIFFEISENBANK LUNGAU EGEN Tamsweg (for Austria Branch Office) IBAN: AT 193506300042106385, SWIFT: RVSAAT2S063; www.valamar-riviera.com, President of the Management Board: Željko Kukurin, Members of the Management Board: Marko Čižmek and Ivana Budin Arhanić; Chairman of the Supervisory Board: Franz Lanschützer',
+            'imperial' => 'Commercial Court in Pazin, Company Registry Number 040020883, VAT identification number HR36201212847; Company: Valamar Riviera Joint Stock Company for Tourism; shortened company name: Valamar Riviera d.d.; 221.915.350,00 € of shared capital, fully paid; 126,027,542 shares; Registry Number 3474771: Accounts: ADDIKO BANK d.d. Zagreb IBAN: HR 2625000091101024767, SWIFT: HAABHR22; ZAGREBAČKA BANKA d.d. Zagreb IBAN: HR 4123600001101319202, SWIFT: ZABAHR2X, ERSTE & STEIERMÄRKISCHE BANK d.d. Rijeka IBAN: HR 0624020061100389454, SWIFT: ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb IBAN: HR 4723400091100153498, SWIFT: PBZGHR2X; RAIFFEISEN BANK AUSTRIA d.d. Zagreb IBAN: HR 1624840081102134625, SWIFT: RZBHHR2X; ISTARSKA KREDITNA BANKA UMAG d.d. Umag IBAN: HR 7423800061110009020, SWIFT: ISKBHR2X; OTP BANKA d.d. Zadar IBAN: HR 4724070001100365752, SWIFT: OTPVHR2X; HRVATSKA POŠTANSKA BANKA d.d. Zagreb IBAN: HR 1123900011101322250, SWIFT: HPBZHR2X; RAIFFEISENBANK LUNGAU EGEN Tamsweg (for Austria Branch Office) IBAN: AT 193506300042106385, SWIFT: RVSAAT2S063; www.valamar-riviera.com, President of the Management Board: Željko Kukurin, Members of the Management Board: Marko Čižmek and Ivana Budin Arhanić; Chairman of the Supervisory Board: Franz Lanschützer',
+            'helios_faros' => 'Commercial Court in Pazin, Company Registry Number 040020883, VAT identification number HR36201212847; Company: Valamar Riviera Joint Stock Company for Tourism; shortened company name: Valamar Riviera d.d.; 221.915.350,00 € of shared capital, fully paid; 126,027,542 shares; Registry Number 3474771: Accounts: ADDIKO BANK d.d. Zagreb IBAN: HR 2625000091101024767, SWIFT: HAABHR22; ZAGREBAČKA BANKA d.d. Zagreb IBAN: HR 4123600001101319202, SWIFT: ZABAHR2X, ERSTE & STEIERMÄRKISCHE BANK d.d. Rijeka IBAN: HR 0624020061100389454, SWIFT: ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb IBAN: HR 4723400091100153498, SWIFT: PBZGHR2X; RAIFFEISEN BANK AUSTRIA d.d. Zagreb IBAN: HR 1624840081102134625, SWIFT: RZBHHR2X; ISTARSKA KREDITNA BANKA UMAG d.d. Umag IBAN: HR 7423800061110009020, SWIFT: ISKBHR2X; OTP BANKA d.d. Zadar IBAN: HR 4724070001100365752, SWIFT: OTPVHR2X; HRVATSKA POŠTANSKA BANKA d.d. Zagreb IBAN: HR 1123900011101322250, SWIFT: HPBZHR2X; RAIFFEISENBANK LUNGAU EGEN Tamsweg (for Austria Branch Office) IBAN: AT 193506300042106385, SWIFT: RVSAAT2S063; www.valamar-riviera.com, President of the Management Board: Željko Kukurin, Members of the Management Board: Marko Čižmek and Ivana Budin Arhanić; Chairman of the Supervisory Board: Franz Lanschützer'
         ],
 
     ],
@@ -179,5 +152,6 @@ If you have any special requests, feel free to reply to this e-mail.
     'price_info' => 'The amount will be charged in Euros. Price in Croatian kunas in informative at fixed conversion rate of EUR 1 = HRK 7.5340',
     'amount' => 'Amount',
     'reservation_cancellation' => 'Reservation Cancellation',
-    'telephone' => 'Telephone'
+    'telephone' => 'Telephone',
+    'flight_time' => 'Flight Time'
 ];

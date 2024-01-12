@@ -87,19 +87,19 @@
                         <b>{{$reservation->getCancellationFeeItemBreakDown('items_total')}}</b>
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="3" style="border: 1px solid black; text-align: right;padding:5px 5px">
-                        <b>{{__('mail.total_hrk')}}: </b>
-                    </td>
-                    <td style="border: 1px solid black;text-align: right;padding:5px 5px">
-                        <b>{{$reservation->getCancellationFeeItemBreakDown('items_total_hrk')}}</b>
-                    </td>
-                </tr>
+{{--                <tr>--}}
+{{--                    <td colspan="3" style="border: 1px solid black; text-align: right;padding:5px 5px">--}}
+{{--                        <b>{{__('mail.total_hrk')}}: </b>--}}
+{{--                    </td>--}}
+{{--                    <td style="border: 1px solid black;text-align: right;padding:5px 5px">--}}
+{{--                        <b>{{$reservation->getCancellationFeeItemBreakDown('items_total_hrk')}}</b>--}}
+{{--                    </td>--}}
+{{--                </tr>--}}
                 </tfoot>
 
             </table>
             <br/>
-            <p style="float: right;font-style: italic;font-size:13px !important">{{__('mail.price_info')}}</p>
+{{--            <p style="float: right;font-style: italic;font-size:13px !important">{{__('mail.price_info')}}</p>--}}
 
         </x-mail.row>
 

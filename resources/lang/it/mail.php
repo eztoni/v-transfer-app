@@ -87,39 +87,8 @@ In caso di domande, si rivolga direttamente a questa e-mail.
         ],
 
         'footer' => [
-            'valamar' => 'Tribunale commerciale di Pazin-Pisino, MBS 040020883, codice OIB: 36201212847; denominazione
-sociale: Valamar Riviera dioničko društvo za turizam (Valamar Riviera società per azioni per il
-turismo); denominazione sociale in forma abbreviata: Valamar Riviera d.d.; capitale sociale
-nell&#39;importo di 1.672.021.210,00 kn/221.915.350,72 €*, interamente versato; sono state emesse
-126.027.524 azioni; MB (n. di identificazione) 3474771; c/c: ADDIKO BANK d.d. Zagreb IBAN HR
-2625000091101024767, SWIFT: HAABHR22; ZAGREBAČKA BANKA d.d. Zagreb IBAN: HR
-4123600001101319202, SWIFT: ZABAHR2X, ERSTE&amp;STEIERMӒRKISCHE BANK d.d. Rijeka IBAN:
-HR 062402006110038945 SWIFT: ES- BCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb IBAN:
-HR 4723400091100153498, SWIFT: PBZGHR2X; RAIFFEISEN BANK AUSTRIA d.d. Zagreb IBAN:
-HR 1624840081102134625,
-SWIFT: RZBHHR2X; NOVA HRVATSKA BANKA d.d. Zagreb IBAN: HR 9025030071100039991,
-SWIFT: VBCRHR22; ISTARSKA KREDITNA BANKA UMAG d.d. Umag IBAN: HR
-7423800061110009020, SWIFT: ISKBHR2X; OTP BANKA d.d. Zadar IBAN: HR
-4724070001100365752, SWIFT: OTPVHR2X; HRVATSKA POŠTANSKA BANKA d.d. Zagreb IBAN:
-HR1123900011101322250, SWIFT: HPBZHR2X; www.valamar-riviera.com Presidente del Consiglio
-di Gestione: Željko Kukurin, membri del Consiglio di Gestione: Marko Čižmek e Ivana Budin Arhanić;
-Presidente del Consiglio di Sorveglianza: Gustav Wurmböck
-*l&#39;importo del capitale sociale in valuta EUR è presentato per informazione a un tasso di conversione
-fisso di 7,53450, in attesa dell&#39;attuazione dell&#39;adeguamento e della registrazione del capitale sociale in
-valuta EUR in conformità con la legge sulle modifiche alla legge sulle società (&quot;Gazzetta ufficiale &quot; N.
-114/22.)',
-            'imperial' => 'Tribunale commerciale di Rijeka (Fiume); N. identificativo dell\'impresa: (MBS): 040000124; Codice OIB: 90896496260; Capitale sociale: dell\'importo di 1.516.434.188,42 kuna/201.265.404,26 euro*,
-interamente versato, diviso in 2.279.473 azioni; Conti presso la banca: ERSTE & STEIERMÄRKISCHE BANK d.d. Rijeka, IBAN: HR8124020061100210497,
-SWIFT:ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb, IBAN: HR5023400091117030474, SWIFT:PBZGHR2X; ZAGREBAČKA BANKA d.d. Zagreb, IBAN:
-HR1923600001101686064, SWIFT: ZABAHR2X; OTP banka d.d., IBAN: HR1224070001100234074, SWIFT: OTPVHR2X. Presidente del Consiglio di Gestione: Alen Benković;
-Membro del Consiglio di Gestione: Sebastian Palma; Presidente del Consiglio di Sorveglianza: Boris Galić.
-*l\'importo del capitale sociale in valuta EUR è presentato per informazione a un tasso di conversione fisso di 7,53450, in attesa dell\'attuazione dell\'adeguamento e della registrazione del capitale sociale in valuta EUR in conformità con la legge sulle modifiche alla legge sulle società ("Gazzetta ufficiale " N. 114/22.)',
-            'helios_faros' => 'HELIO FAROS d.d., Stari Grad, Naselje Helios n. 5, Tribunale commerciale di Split, N. identificativo
-dell&#39;impresa (MBS): 060213634, Codice OIB: 48594515409, PRIVREDNA BANKA ZAGREB d.d.,
-Zagreb, Radnička cesta 50, IBAN: HR3323400091111074980; OTP Banka d.d., Split, Domovinskog
-rata 61, IBAN: HR8824070001100628757, Capitale sociale: 235.957.660,00 kuna, interamente
-versato, n. di cindivisioni 23.595.766, Presidente del Consiglio di Sorveglianza: Mirko Herceg,
-Presidente del Consiglio di Gestione: V. Bunić'
+            'valamar' => 'Tribunale commerciale di Pazin-Pisino, MBS 040020883, codice OIB: 36201212847; denominazione sociale: Valamar Riviera dioničko društvo za turizam (Valamar Riviera società per azioni per il turismo); denominazione sociale in forma abbreviata: Valamar Riviera d.d.; capitale sociale nell\'importo di 221.915.350,00 €, interamente versato; sono state emesse 126.027.542 azioni; MB (n. di identificazione) 3474771; c/c: ADDIKO BANK d.d. Zagreb IBAN HR 2625000091101024767, SWIFT: HAABHR22; ZAGREBAČKA BANKA d.d. Zagreb IBAN: HR 4123600001101319202, SWIFT: ZABAHR2X, ERSTE&STEIERMӒRKISCHE BANK d.d. Rijeka IBAN: HR 062402006110038945 SWIFT: ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb IBAN: HR 4723400091100153498, SWIFT: PBZGHR2X; RAIFFEISEN BANK AUSTRIA d.d. Zagreb IBAN: HR 1624840081102134625, SWIFT: RZBHHR2X; ISTARSKA KREDITNA BANKA UMAG d.d. Umag IBAN: HR 7423800061110009020, SWIFT: ISKBHR2X; OTP BANKA d.d. Zadar IBAN: HR 4724070001100365752, SWIFT: OTPVHR2X; HRVATSKA POŠTANSKA BANKA d.d. Zagreb IBAN: HR1123900011101322250, SWIFT: HPBZHR2X; RAIFFEISENBANK LUNGAU EGEN Tamsweg (per la filiale austriaca) IBAN: AT 193506300042106385, SWIFT: RVSAAT2S063; www.valamar-riviera.com Presidente del Consiglio di Gestione: Željko Kukurin, membri del Consiglio di Gestione: Marko Čižmek e Ivana Budin Arhanić; Presidente del Consiglio di Sorveglianza: Franz Lanschützer',
+            'imperial' => 'Tribunale commerciale di Pazin-Pisino, MBS 040020883, codice OIB: 36201212847; denominazione sociale: Valamar Riviera dioničko društvo za turizam (Valamar Riviera società per azioni per il turismo); denominazione sociale in forma abbreviata: Valamar Riviera d.d.; capitale sociale nell\'importo di 221.915.350,00 €, interamente versato; sono state emesse 126.027.542 azioni; MB (n. di identificazione) 3474771; c/c: ADDIKO BANK d.d. Zagreb IBAN HR 2625000091101024767, SWIFT: HAABHR22; ZAGREBAČKA BANKA d.d. Zagreb IBAN: HR 4123600001101319202, SWIFT: ZABAHR2X, ERSTE&STEIERMӒRKISCHE BANK d.d. Rijeka IBAN: HR 062402006110038945 SWIFT: ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb IBAN: HR 4723400091100153498, SWIFT: PBZGHR2X; RAIFFEISEN BANK AUSTRIA d.d. Zagreb IBAN: HR 1624840081102134625, SWIFT: RZBHHR2X; ISTARSKA KREDITNA BANKA UMAG d.d. Umag IBAN: HR 7423800061110009020, SWIFT: ISKBHR2X; OTP BANKA d.d. Zadar IBAN: HR 4724070001100365752, SWIFT: OTPVHR2X; HRVATSKA POŠTANSKA BANKA d.d. Zagreb IBAN: HR1123900011101322250, SWIFT: HPBZHR2X; RAIFFEISENBANK LUNGAU EGEN Tamsweg (per la filiale austriaca) IBAN: AT 193506300042106385, SWIFT: RVSAAT2S063; www.valamar-riviera.com Presidente del Consiglio di Gestione: Željko Kukurin, membri del Consiglio di Gestione: Marko Čižmek e Ivana Budin Arhanić; Presidente del Consiglio di Sorveglianza: Franz Lanschützer'
         ],
 
     ],
@@ -153,6 +122,7 @@ momento del check-in presso la struttura in cui soggiornate.',
     'price_info' => 'L\'importo sarà addebitato in EUR. Prezzo in kune croate in informativo al tasso di conversione fisso di EUR 1 = HRK 7.5340',
     'amount' => 'Quantità',
     'reservation_cancellation' => 'Cancellazione della prenotazione',
-    'telephone' => 'Telefono'
-    
+    'telephone' => 'Telefono',
+    'flight_time' => 'Tempo di volo'
+
 ];
