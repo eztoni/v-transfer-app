@@ -459,13 +459,26 @@ Rabac,Greenway,Minivan Transfer,Airport Rijeka (RIjeka/Krk) - Rabac,200,400,RPO,
                     ->where('partner_id',$log['partner_id'])
                     ->where('route_id',$log['route_id'])
                     ->update(
+                        ['price' => 0],
+                        ['price_round_trip' => 0],
+                        ['tax_level' => $log['razred']],
+                        ['commission' => $log['provizija']],
+                        ['opera_package_id' => $log['opera_code']],
+                    );
+
+
+                \DB::table("route_transfer")
+                    ->where('transfer_id',$log['transfer_id'])
+                    ->where('partner_id',$log['partner_id'])
+                    ->where('route_id',$log['route_id'])
+                    ->update(
                         ['price' => $log['price_one_way']],
                         ['price_round_trip' => $log['price_two_way']],
                         ['tax_level' => $log['razred']],
                         ['commission' => $log['provizija']],
                         ['opera_package_id' => $log['opera_code']],
                 );
-
+                
             }
 
 
