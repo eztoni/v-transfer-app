@@ -131,7 +131,20 @@ class DestinationReport extends Component
             ->toArray();
     }
 
+    private function getCommissionMultiplier(Reservation $i){
 
+        $return = '0.20';
+
+        if(!empty($i->price_breakdown[0]['price_data'])){
+            if(is_numeric($i->price_breakdown[0]['price_data']['commission'])){
+                $return = number_format($i->price_breakdown[0]['price_data']['commission']/100,2);
+            }
+        }
+
+
+
+        return $return;
+    }
     public function generate(\Swap\Swap $swap)
     {
 
@@ -195,6 +208,8 @@ class DestinationReport extends Component
                 })
                 ->map(function (Reservation $i) use ($converter) {
 
+                    $partnerCommissionMultiplier = $this->getCommissionMultiplier($i);
+
                     $priceEur = \Cknow\Money\Money::EUR($i->price);
 
                     $priceOriginal = $priceEur;
@@ -211,9 +226,9 @@ class DestinationReport extends Component
 
                     $this->totalEur = $this->totalEur->add($priceEur->getMoney());
 
-                    $inv = $priceEur->multiply('0.20')->getMoney();
+                    $inv = $priceEur->multiply($partnerCommissionMultiplier)->getMoney();
 
-                    $total_comm = $priceEur->subtract($priceEur->multiply('0.20'));
+                    $total_comm = $priceEur->subtract($priceEur->multiply($partnerCommissionMultiplier));
                     #Add Total Commission - Bruto Profit
                     $this->totalCommission = $this->totalCommission->add($total_comm);
                     #Add Total Invoice Charge - Trošak Ulaznog Računa
@@ -221,7 +236,7 @@ class DestinationReport extends Component
 
                     $invEur = \Cknow\Money\Money::EUR($inv->getAmount());
 
-                    $pdv = $total_comm->multiply('0.20');
+                    $pdv = $total_comm->multiply($partnerCommissionMultiplier);
                     $this->totalPDV = $this->totalPDV->add($pdv);
 
                     $invoice_data = \DB::table('invoices')->where('reservation_id','=',$i->id)->first();
@@ -368,15 +383,15 @@ class DestinationReport extends Component
 
                                 $status = 'Storno';
 
-                                $inv = $priceEur->multiply('0.20')->getMoney();
+                                $inv = $priceEur->multiply($partnerCommissionMultiplier)->getMoney();
 
-                                $total_comm = $priceEur->subtract($priceEur->multiply('0.20'));
+                                $total_comm = $priceEur->subtract($priceEur->multiply($partnerCommissionMultiplier));
 
                                 $this->totalCommission = $this->totalCommission->subtract($total_comm);
 
                                 $invEur = \Cknow\Money\Money::EUR($inv->getAmount());
 
-                                $pdv = $i->total_commission_amount->multiply('0.20');
+                                $pdv = $i->total_commission_amount->multiply($partnerCommissionMultiplier);
                                 $pdv = \Cknow\Money\Money::EUR($pdv->getAmount());
 
                                 $invoice_data = \DB::table('invoices')->where('reservation_id','=',$i->id)->first();
@@ -446,16 +461,16 @@ class DestinationReport extends Component
 
                                 $status = 'Storno';
 
-                                $inv = $priceEur->multiply('0.20')->getMoney();
+                                $inv = $priceEur->multiply($partnerCommissionMultiplier)->getMoney();
 
-                                $total_comm = $priceEur->subtract($priceEur->multiply('0.20'));
+                                $total_comm = $priceEur->subtract($priceEur->multiply($partnerCommissionMultiplier));
 
                                 $this->totalCommission = $this->totalCommission->subtract($total_comm);
 
                                 $invEur = \Cknow\Money\Money::EUR($inv->getAmount());
 
 
-                                $pdv = $i->total_commission_amount->multiply('0.20');
+                                $pdv = $i->total_commission_amount->multiply($partnerCommissionMultiplier);
                                 $pdv = \Cknow\Money\Money::EUR($pdv->getAmount());
 
                                 $this->totalPDV = $this->totalPDV->add($pdv);
@@ -525,7 +540,7 @@ class DestinationReport extends Component
 
                             $this->totalEur = $this->totalEur->add($priceEur->getMoney());
 
-                            $invEur = $priceEur->multiply('0.20');
+                            $invEur = $priceEur->multiply($partnerCommissionMultiplier);
 
 
                             $this->totalInvoiceCharge = $this->totalInvoiceCharge->add($invEur);
@@ -576,7 +591,7 @@ class DestinationReport extends Component
 
                                 $status = 'CF';
 
-                                $invEur = $priceEur->multiply('0.20');
+                                $invEur = $priceEur->multiply($partnerCommissionMultiplier);
                                 $this->totalInvoiceCharge = $this->totalInvoiceCharge->add($invEur);
 
                                 $total_comm = $priceEur->subtract($invEur->getMoney());
