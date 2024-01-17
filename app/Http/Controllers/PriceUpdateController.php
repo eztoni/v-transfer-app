@@ -19,11 +19,7 @@ class PriceUpdateController extends Controller
 {
 
     private $update_destinations = array(
-        5,
-        13,
-        3,
-        11,
-        4
+        11
     );
 
     function __construct()
@@ -453,7 +449,7 @@ Rabac,Greenway,Minivan Transfer,Airport Rijeka (RIjeka/Krk) - Rabac,200,400,RPO,
         if(!empty($write_log)) {
 
             foreach($write_log as $log){
-                
+
                 \DB::table("route_transfer")
                     ->where('transfer_id',$log['transfer_id'])
                     ->where('partner_id',$log['partner_id'])
