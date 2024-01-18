@@ -152,7 +152,7 @@ class AgentEfficiency extends Component
                 $priceEur = $i->getPrice()->formatByDecimal();
 
                 $this->totalEur = $this->totalEur + $priceEur;
-
+               
                 return [
                     'id' => $i->id,
                     'agent_name' => $i->createdBy->name,
@@ -163,7 +163,7 @@ class AgentEfficiency extends Component
                     'price' => $priceEur,
                     'partner' => $i->partner->name,
                     'transfer' => $i->transfer?->name,
-                    'name' => $i->leadTraveller?->first()->full_name,
+                    'name' => $i->leadTraveller?->full_name,
                     'route' => $i->pickupAddress->name.' => '.$i->dropoffAddress->name
                 ];
             })->toArray();
