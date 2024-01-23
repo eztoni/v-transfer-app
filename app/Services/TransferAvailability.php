@@ -50,8 +50,8 @@ class TransferAvailability
             ->whereHas('transfer.vehicle', function ($q) {
                 $q->where('max_luggage', '>=', $this->luggage)
                     ->where('max_occ', '>=', $this->getTotalNumOfPeople())
-                    ->where('destination_id','!=',4);
-                    
+                    ->where('destination_id','!=',16);
+
             })
             ->get()
             ->sortByDesc(function ($item) use ($order) {
