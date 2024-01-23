@@ -25,7 +25,7 @@ return [
     'transfer_price_breakdown'=>'Cijene transfera',
     'total_price'=>'Ukupna cijena',
     'valamar_transfer_service'=>'Valamar Transfer Service',
-    'not_fiscalized'=>'Ovo nije fiskalizirani račun.',
+    'not_fiscalized'=>'Ovo nije fiskalizirani '.utf8_encode('račun'),
     'your_res_modified'=>'Vaša rezervacija je modificirana',
     'this_email_is_modification'=>'Ovaj email je izmjena rezervacije. Sačuvajte ovu rezervaciju za svoje putovanje.',
     'extra'=>'Dodatak',
