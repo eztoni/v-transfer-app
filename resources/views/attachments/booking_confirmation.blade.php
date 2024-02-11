@@ -156,9 +156,9 @@
             <div class="" style="padding-bottom: 20px;"></div>
         </x-mail.row>
 
-        <x-mail.footer style="position: fixed;bottom:0 !important">
+        <x-mail.footer style="position: fixed;bottom:0 !important;">
             {{__('mail.valamar_transfer_service')}}<br>
-            {{__('mail.not_fiscalized')}}
+            {{utf8_decode(__('mail.not_fiscalized'))}}
             <div class="" style="padding-top: 20px;"></div>
             <x-mail.footer-below>
 

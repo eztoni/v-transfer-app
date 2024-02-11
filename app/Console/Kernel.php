@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Services\AzureStorageController;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Services\Sync;
@@ -31,6 +32,13 @@ class Kernel extends ConsoleKernel
             $valamarPropertySync = new \App\Services\Sync\ValamarPropertySync();
             $valamarPropertySync->sync();
         })->weekly()->sundays('23:00');
+
+        #Check Folder and upload documents
+        $schedule->call(function(){
+            $azureController = new AzureStorageController();
+            $azureController->uploadDocuments();
+
+        })->everyMinute();
     }
 
     /**

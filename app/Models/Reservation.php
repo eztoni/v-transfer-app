@@ -11,6 +11,7 @@ use FontLib\Table\Type\maxp;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Cknow\Money\Money;
 use Illuminate\Validation\Rules\In;
 
@@ -420,7 +421,6 @@ class Reservation extends Model
      */
     public function getConfirmationItemBreakdown($segment){
 
-
         $return['items'] = array();
 
         ##One Way Transfer
@@ -553,6 +553,37 @@ class Reservation extends Model
             $return['items_total_base'] = number_format($return['items_total']*((100-$return['tax_group'])/100),2);
 
         return $return[$segment];
+    }
+
+    public function saveConfirmationDocument(){
+
+        $document_name = 'res_'.$this->id.'_booking_confirmation.pdf';
+
+        PDF::loadView('attachments.booking_confirmation', ['reservation'=>Reservation::find($this->id)])->save(storage_path().'/app/public/temp_pdf/'.$document_name);
+
+    }
+    public function saveCancellationDocument(){
+
+        $document_name = 'res_'.$this->id.'_booking_cancellation.pdf';
+
+        PDF::loadView('attachments.booking_cancellation', ['reservation'=>Reservation::find($this->id)])->save(storage_path().'/app/public/temp_pdf/'.$document_name);
+
+    }
+
+    public function saveModificationDocument(){
+
+        $document_name = 'res_'.$this->id.'_booking_modification_'.time().'.pdf';
+
+        PDF::loadView('attachments.booking_confirmation', ['reservation'=>Reservation::find($this->id)])->save(storage_path().'/app/public/temp_pdf/'.$document_name);
+
+    }
+
+    public function saveCancellationFeeDocument(){
+
+        $document_name = 'res_'.$this->id.'_booking_cancellation_fee.pdf';
+
+        PDF::loadView('attachments.booking_cancellation_fee', ['reservation'=>Reservation::find($this->id)])->save(storage_path().'/app/public/temp_pdf/'.$document_name);
+
     }
 
     public function getCancellationItemBreakDown($segment){

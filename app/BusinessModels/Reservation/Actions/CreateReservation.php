@@ -110,6 +110,8 @@ class CreateReservation extends Reservation
         $partnerOrder = new ReservationPartnerOrderCache($this->model->destination_id);
         $partnerOrder->cacheDestinationPartners();
 
+        $this->model->saveConfirmationDocument();
+
         return $this->model->id;
     }
 

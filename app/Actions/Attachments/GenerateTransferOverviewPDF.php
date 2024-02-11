@@ -33,7 +33,7 @@ class GenerateTransferOverviewPDF
 
             $bookings[] = [
                 'id' => $i->id,
-                'name' => $i->leadTraveller?->first()->full_name,
+                'name' => $i->leadTraveller?->full_name,
                 'date_time' => $i->date_time?->format('d.m.Y @ H:i'),
                 'partner' => $i->partner->name,
                 'adults' => $i->adults,

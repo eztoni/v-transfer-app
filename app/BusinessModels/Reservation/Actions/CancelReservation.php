@@ -116,14 +116,25 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
             }
 
         }
-        
+
         if($event == 'cancellation'){
             ReservationCancelledEvent::dispatch($notification_model,[
                 ReservationCancelledEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail
             ]);
+
+            $notification_model->saveCancellationDocument();
+
         }elseif($event == 'updated'){
             ReservationUpdatedEvent::dispatch($notification_model,[ReservationUpdatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail]);
+
+            $notification_model->saveModificationDocument();
         }
+
+        if($notification_model->hasCancellationFee()){
+            $notification_model->saveCancellationFeeDocument();
+        }
+
+
 
     }
 }
