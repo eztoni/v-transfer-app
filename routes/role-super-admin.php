@@ -31,12 +31,14 @@ Route::get('/language-overview', LanguageOverview::class)->name('language-overvi
 Route::get('edit-user/{user}', [EditUserController::class, 'showUser'])->name('edit-user');
 Route::get('/company-overview', CompanyOverview::class)->name('company-overview');
 Route::get('activity-log-dashboard', ActivityLogDashboard::class)->name('activity-log-dashboard');
+
 Route::get('/test', function () {
-    
+
     $res = Reservation::findOrFail(487);
 
     $res->saveConfirmationDocument();
 });
+
 
 Route::get('/dev-mail-preview', DevMailPreview::class)->name('dev-mail-preview');
 Route::get('/res-mail-render/{type}/{id}', [MailRenderingController::class, 'renderReservationMail'])->name('res-mail-render');
