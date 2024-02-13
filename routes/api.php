@@ -28,6 +28,7 @@ Route::get('/reservation-alert',[\App\Http\Controllers\ReservationAlertControlle
 
 Route::get('/price-load',[\App\Http\Controllers\PriceUpdateController::class,'update']);
 
+Route::get('/scheduler', [\App\Http\Controllers\SchedulerRunController::class,'update']);
 
 // LOG CONTROLLER
 Route::get('/logs', [\App\Http\Controllers\LogController::class, 'show'])->name('logs');
