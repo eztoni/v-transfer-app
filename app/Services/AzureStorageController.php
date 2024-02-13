@@ -146,13 +146,17 @@ class AzureStorageController{
 
         if(!empty($file_names)){
 
-            $fileToUpload = $temp_file_location.$file_name;
+            foreach($file_names as $f_name){
 
-            $uploaded = $this->uploadBlob($fileToUpload,$file_name);
+                $fileToUpload = $temp_file_location.$f_name;
 
-            if($uploaded == 1){
-                unlink($fileToUpload);
+                $uploaded = $this->uploadBlob($fileToUpload,$f_name);
+
+                if($uploaded == 1){
+                    unlink($fileToUpload);
+                }
             }
+
 
         }
     }
