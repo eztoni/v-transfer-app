@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Response;
 use Carbon\Carbon;
 use App\Models\Reservation;
 use App\Models\Point;
+use Illuminate\Support\Facades\Artisan;
 use DB;
 
 class SchedulerRunController extends Controller
