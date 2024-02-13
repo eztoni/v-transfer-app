@@ -8,6 +8,7 @@ use App\Events\ReservationAlertEvent;
 use App\Models\Traveller;
 use App\Services\Api\ValamarClientApi;
 use App\Services\Api\ValamarOperaApi;
+use App\Services\AzureStorageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Carbon\Carbon;
@@ -29,7 +30,10 @@ class SchedulerRunController extends Controller
     }
 
     public function update(){
-        Artisan::call('schedule:run');
+
+        $azure = new AzureStorageController();
+        $azure->uploadDocuments();
+
     }
 
 
