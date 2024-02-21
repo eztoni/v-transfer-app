@@ -25,7 +25,7 @@ return [
     'transfer_price_breakdown' => 'Transfer price breakdown',
     'total_price' => 'Total price',
     'valamar_transfer_service' => 'Valamar Transfer Service',
-    'not_fiscalized'=>'Ovo nije fiskalizirani '.utf8_encode('račun'),
+    'not_fiscalized'=>'This is not fiscalised invoice.',
 
     'your_res_modified' => 'Your reservation has been modified.',
     'this_email_is_modification' => 'This email is modification of the reservation. Please save this reservation for your travel.',
