@@ -440,7 +440,7 @@
 
                                     <span class="  ">Price: <b>
 
-                                            @if($item->included_in_accommodation == 0 && $this->stepTwoFields['vlevelrateplanReservation'] === false)
+                                            @if($item->included_in_accommodation == 0)
                                              {{\App\Facades\EzMoney::format($this->roundTrip
                                                     ?$item->price_round_trip
                                                     :$item->price)}}
