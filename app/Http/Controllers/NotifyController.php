@@ -169,7 +169,7 @@ class NotifyController extends Controller
 
                                     $now = Carbon::now();
 
-                                    $cancellationDate = $now->addHour();
+                                    $cancellationDate = $now;
 
                                     $transferDateTime = $reservation->date_time;
 

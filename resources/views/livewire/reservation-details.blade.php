@@ -7,7 +7,7 @@
                 <p  class="text-sm"><b>Route: </b>{{$reservation->pickupAddress->name}} => {{$reservation->dropoffAddress->name}}
                 </p>
                 <strong class=" text-sm">Created by: {{$reservation->createdBy->name}}</strong>
-                <strong class=" text-sm">@ {{\Carbon\Carbon::parse($reservation->created_at->format('d.m.Y H:i'))->addHour()->format('d.m.Y H:i')}}</strong>
+                <strong class=" text-sm">@ {{\Carbon\Carbon::parse($reservation->created_at->format('d.m.Y H:i'))->format('d.m.Y H:i')}}</strong>
                 @if($reservation->updated_by)
                     <br/>
                     @if($reservation->getOverallReservationStatus() == 'cancelled')

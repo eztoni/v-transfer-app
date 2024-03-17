@@ -124,7 +124,7 @@
                 <br/>
                 <p><b>Issue Location:</b> {{$reservation->getAccommodationData('name')}}</p>
                 <!-- Issue Date and Time -->
-                <p><b>Issue Date and Time:</b>  {{\Carbon\Carbon::parse($reservation->created_at->format('d.m.Y H:i'))->addHour()->format('d.m.Y H:i')}}</p>
+                <p><b>Issue Date and Time:</b>  {{\Carbon\Carbon::parse($reservation->created_at->format('d.m.Y H:i'))->format('d.m.Y H:i')}}</p>
                 <!-- Operator -->
                 <p><b>Operator:</b> {{$reservation->getOperatorName()}}</p>
 

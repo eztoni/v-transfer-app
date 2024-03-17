@@ -132,7 +132,7 @@ use Actions;
                 break;
         }
 
-        $this->cancellationDate = Carbon::now()->addHour()->format('Y-m-d H:i:s');
+        $this->cancellationDate = Carbon::now()->format('Y-m-d H:i:s');
 
         if($this->cancellationType == 'no_show'){
             $this->cancellation_fee_percent = 100;
@@ -161,7 +161,7 @@ use Actions;
 
             $now = Carbon::now();
 
-            $this->cancellationDate = $now->addHour();
+            $this->cancellationDate = $now;
 
             $transferDateTime = $this->reservation->date_time;
 
