@@ -19,7 +19,8 @@ class PriceUpdateController extends Controller
 {
 
     private $update_destinations = array(
-        11
+        12,
+        1
     );
 
     function __construct()
