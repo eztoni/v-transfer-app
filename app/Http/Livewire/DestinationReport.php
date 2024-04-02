@@ -142,7 +142,6 @@ class DestinationReport extends Component
         }
 
 
-
         return $return;
     }
     public function generate(\Swap\Swap $swap)
@@ -236,12 +235,12 @@ class DestinationReport extends Component
 
                     $invEur = \Cknow\Money\Money::EUR($inv->getAmount());
 
-                    $pdv = $total_comm->multiply($partnerCommissionMultiplier);
+                    $pdv = $invEur->multiply('0.20');
                     $this->totalPDV = $this->totalPDV->add($pdv);
 
                     $invoice_data = \DB::table('invoices')->where('reservation_id','=',$i->id)->first();
 
-                    $net_profit = $total_comm->subtract($pdv->getMoney());
+                    $net_profit = $invEur->subtract($pdv->getMoney());
 
                     $this->totalNetProfit = $this->totalNetProfit->add($net_profit);
 
@@ -391,12 +390,12 @@ class DestinationReport extends Component
 
                                 $invEur = \Cknow\Money\Money::EUR($inv->getAmount());
 
-                                $pdv = $i->total_commission_amount->multiply($partnerCommissionMultiplier);
+                                $pdv = $invEur->multiply('0.20');
                                 $pdv = \Cknow\Money\Money::EUR($pdv->getAmount());
 
                                 $invoice_data = \DB::table('invoices')->where('reservation_id','=',$i->id)->first();
 
-                                $net_profit = $i->total_commission_amount->subtract($pdv)->getMoney();
+                                $net_profit = $invEur->subtract($pdv)->getMoney();
 
                                 $net_profit = \Cknow\Money\Money::EUR($net_profit->getAmount());
 
@@ -470,14 +469,14 @@ class DestinationReport extends Component
                                 $invEur = \Cknow\Money\Money::EUR($inv->getAmount());
 
 
-                                $pdv = $i->total_commission_amount->multiply($partnerCommissionMultiplier);
+                                $pdv = $invEur->multiply('0.20');
                                 $pdv = \Cknow\Money\Money::EUR($pdv->getAmount());
 
                                 $this->totalPDV = $this->totalPDV->add($pdv);
 
                                 $invoice_data = \DB::table('invoices')->where('reservation_id','=',$i->id)->first();
 
-                                $net_profit = $i->total_commission_amount->subtract($pdv)->getMoney();
+                                $net_profit = $invEur->subtract($pdv)->getMoney();
 
                                 $net_profit = \Cknow\Money\Money::EUR($net_profit->getAmount());
                                 $this->totalNetProfit = $this->totalNetProfit->add($net_profit);
