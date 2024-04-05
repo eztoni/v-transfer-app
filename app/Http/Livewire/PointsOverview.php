@@ -242,8 +242,8 @@ use Actions;
     public function render()
     {
         $destinations = Destination::all();
-
-        $points = Point::whereDestinationId(Auth::user()->destination_id)->paginate(15);
+        //$destinations = Destination::search('name',$this->search)->paginate(10);
+        $points = Point::whereDestinationId(Auth::user()->destination_id)->search('name',$this->search)->paginate(15);
 
         $this->valamarPropertiesFromApi = collect();
 
