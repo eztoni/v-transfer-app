@@ -518,15 +518,15 @@
                                  wire:model="stepTwoFields.leadTraveller.lastName"
                         ></x-input>
 
-                        <x-input label="Reservation number"
+                        <x-input label="Reservation number **"
                                  wire:model="stepTwoFields.leadTraveller.reservationNumber"
                         ></x-input>
 
-                        <x-input label="Reservation Opera ID"
+                        <x-input label="Reservation Opera ID **"
                                  wire:model="stepTwoFields.leadTraveller.reservationOperaID"
                         ></x-input>
 
-                        <x-input label="Opera Confirmation Number"
+                        <x-input label="Opera Confirmation Number **"
                                  wire:model="stepTwoFields.leadTraveller.reservationOperaConfirmation"
                         ></x-input>
                         <x-input label="Email"
@@ -552,6 +552,7 @@
                         />
 
                     </div>
+                    <small style="color:red">** These fields should be populated via Pull Data, and not manually.</small>
                 </x-card>
 
             </div>
