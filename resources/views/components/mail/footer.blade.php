@@ -17,7 +17,7 @@
                         <tr>
                             <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                 <div
-                                    style="font-family:Arial, sans-serif;font-size:13px;line-height:22px;text-align:center;color:#ffffff;">
+                                    style="font-size:13px;line-height:22px;text-align:center;color:#ffffff;">
                                     {{$slot}}
 
                                 </div>
