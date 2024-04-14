@@ -141,6 +141,7 @@
                         <th align="left">Vrsta Plaćanja</th>
                         <th align="left">Porezna grupa</th>
                         <th align="left">Broj potvrde narudžbe transfera</th>
+                        <th align="left">Ime Gosta</th>
                         <th align="left">Datum Prodaje</th>
                         <th align="left">Datum Realizacije</th>
                         <th align="left">Postupak</th>
@@ -166,6 +167,7 @@
                         <th align="left">Proizvod</th>
                         <th align="left">Porezna grupa</th>
                         <th align="left">Broj potvrde narudžbe transfera</th>
+                        <th align="left">Ime Gosta</th>
                         <th align="left">Količina</th>
                         <th align="left">Bruto prihod</th>
                         <th align="left">Bruto profit</th>
@@ -217,6 +219,7 @@
                                 <td >REZERVACIJA NA SOBU</td>
                                 <td >{{Arr::get($reservation,'tax_level')}}</td>
                                 <td >{{gmdate('Y').'-'.Arr::get($reservation,'invoice_number')}}</td>
+                                <td >{{Arr::get($reservation,'name')}}</td>
                                 <td >{{Arr::get($reservation,'voucher_date')}}</td>
                                 <td >{{Arr::get($reservation,'date_time')}}</td>
                                 <td >{{Arr::get($reservation,'procedure')}}</td>
@@ -242,6 +245,7 @@
                                 <td >{{Arr::get($reservation,'transfer')}}</td>
                                 <td >{{Arr::get($reservation,'tax_level')}}</td>
                                 <td >{{gmdate('Y').'-'.Arr::get($reservation,'invoice_number')}}</td>
+                                <td >{{Arr::get($reservation,'name')}}</td>
                                 <td >1</td>
                                 <td >{{Arr::get($reservation,'price_eur')}}</td>
                                 <td align="center" >{{Arr::get($reservation,'commission_amount')}}</td>
