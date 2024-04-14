@@ -21,6 +21,7 @@ class ShowReservationStatus extends Component
 use Actions;
 
     public Reservation $reservation;
+    public bool $review = false;
 
     public function close()
     {

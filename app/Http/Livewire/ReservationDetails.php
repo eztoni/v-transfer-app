@@ -14,7 +14,6 @@ class ReservationDetails extends Component
 use Actions;
 
     public Reservation|null $reservation;
-
     public Reservation|null $editReservation = null;
     public Reservation|null $cancelReservation = null;
     public bool $cancelModal = false;
@@ -23,6 +22,7 @@ use Actions;
     public bool $operaSyncLogModal = false;
     public bool $documentSyncModal = false;
     public bool $fiskalSyncModal = false;
+    public bool $reservationStatusModal = false;
 
     public array $syncLog;
 
@@ -30,7 +30,6 @@ use Actions;
         'editReservations'=>'nullable',
         'cancelReservation'=>'nullable',
     ];
-
 
     protected $listeners = [
         'updateCancelled' => 'closeUpdateModal',
@@ -100,6 +99,12 @@ use Actions;
 
     public function openDocumentSyncModal($id){
         $this->documentSyncModal = true;
+        $this->reservation = Reservation::findOrFail($id);
+    }
+
+
+    public function openReservationStatusModal($id){
+        $this->reservationStatusModal = true;
         $this->reservation = Reservation::findOrFail($id);
     }
 

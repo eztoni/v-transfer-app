@@ -64,8 +64,12 @@
 
     <div class="flex justify-end">
         <x-button label="View Reservation Details" positive wire:click="showReservation()"/>
-        <x-button label="Add New Booking"  wire:click="newBooking()"/>
-        <x-button label="Close" negative wire:click="close"/>
+
+        @if(!$review)
+            <x-button label="Add New Booking"  wire:click="newBooking()"/>
+            <x-button label="Close" negative wire:click="close"/>
+        @endif
+
     </div>
 
 
