@@ -46,6 +46,39 @@ class SendConfirmationMailToPartnerListener
             #Kontrola Najave
             $this->emailList['safetyCopy'] = 'najava.transferi@valamar.com';
 
+            $acc_id = 0;
+
+            if($event->reservation->pickupAddress->type == 'accommodation'){
+                $acc_id = $event->reservation->pickupAddress->id;
+            }else{
+                $acc_id = $event->reservation->dropoffAddress->id;
+            }
+
+            if($acc_id > 0){
+                switch($acc_id){
+                    #LaCroma
+                    case 34:
+                        $this->emailList['recPersonalCopy'] = 'ozana.Simunovic@imperial.hr';
+                        break;
+                    #Tirena
+                    case 65:
+                        $this->emailList['recPersonalCopy'] = 'dragan.stankovic@imperial.hr';
+                        break;
+                    #Solitudo Camping
+                    case 134:
+                        $this->emailList['recPersonalCopy'] = 'ivona.Camo@valamar.com';
+                        break;
+                    #Argosy
+                    case 18:
+                        $this->emailList['recPersonalCopy'] = '	mirko.Komnenovic@valamar.com';
+                        break;
+                    case 17:
+                        #President
+                        $this->emailList['recPersonalCopy'] = 'jasmina.kneziccumo@valamar.com';
+                    break;
+                }
+            }
+
             if($this->emailList){
                 $this->sendConfirmationMail($event->reservation->id);
             }
