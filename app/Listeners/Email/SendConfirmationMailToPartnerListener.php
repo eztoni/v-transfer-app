@@ -58,7 +58,7 @@ class SendConfirmationMailToPartnerListener
                 switch($acc_id){
                     #LaCroma
                     case 34:
-                        $this->emailList['recPersonalCopy'] = 'ozana.Simunovic@imperial.hr';
+                        $this->emailList['recPersonalCopy'] = 'ozana.simunovic@imperial.hr';
                         break;
                     #Tirena
                     case 65:
@@ -66,15 +66,19 @@ class SendConfirmationMailToPartnerListener
                         break;
                     #Solitudo Camping
                     case 134:
-                        $this->emailList['recPersonalCopy'] = 'ivona.Camo@valamar.com';
+                        $this->emailList['recPersonalCopy'] = 'ivona.camo@valamar.com';
                         break;
                     #Argosy
                     case 18:
-                        $this->emailList['recPersonalCopy'] = '	mirko.Komnenovic@valamar.com';
+                        $this->emailList['recPersonalCopy'] = '	mirko.komnenovic@valamar.com';
                         break;
                     case 17:
                         #President
                         $this->emailList['recPersonalCopy'] = 'jasmina.kneziccumo@valamar.com';
+                    break;
+                    case 35:
+                        #President
+                        $this->emailList['recPersonalCopy'] = 'josip.begusic@imperial.hr';
                     break;
                 }
             }
