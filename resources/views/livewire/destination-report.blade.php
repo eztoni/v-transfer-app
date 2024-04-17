@@ -141,7 +141,7 @@
                         <th align="left">Vrsta Plaćanja</th>
                         <th align="left">Porezna grupa</th>
                         <th align="left">Broj potvrde narudžbe transfera</th>
-                        <th align="left">Ime Gosta</th>
+                        <th align="left">Ime i Prezime Gosta</th>
                         <th align="left">Datum Prodaje</th>
                         <th align="left">Datum Realizacije</th>
                         <th align="left">Postupak</th>
@@ -167,7 +167,7 @@
                         <th align="left">Proizvod</th>
                         <th align="left">Porezna grupa</th>
                         <th align="left">Broj potvrde narudžbe transfera</th>
-                        <th align="left">Ime Gosta</th>
+                        <th align="left">Ime i Prezime Gosta</th>
                         <th align="left">Količina</th>
                         <th align="left">Bruto prihod</th>
                         <th align="left">Bruto profit</th>
