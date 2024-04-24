@@ -25,7 +25,7 @@ return [
     'transfer_price_breakdown' => 'Transfer price breakdown',
     'total_price' => 'Total price',
     'valamar_transfer_service' => 'Valamar Transfer Service',
-    'not_fiscalized'=>'This is not fiscalised invoice.',
+    'not_fiscalized'=>'This is not a fiscalised invoice.',
 
     'your_res_modified' => 'Your reservation has been modified.',
     'this_email_is_modification' => 'This email is modification of the reservation. Please save this reservation for your travel.',
@@ -79,9 +79,15 @@ If you have any special requests, feel free to reply to this e-mail.
         ],
 
         'footer' => [
-            'valamar' => 'Commercial Court in Pazin, Company Registry Number 040020883, VAT identification number HR36201212847; Company: Valamar Riviera Joint Stock Company for Tourism; shortened company name: Valamar Riviera d.d.; 221.915.350,00 € of shared capital, fully paid; 126,027,542 shares; Registry Number 3474771: Accounts: ADDIKO BANK d.d. Zagreb IBAN: HR 2625000091101024767, SWIFT: HAABHR22; ZAGREBAČKA BANKA d.d. Zagreb IBAN: HR 4123600001101319202, SWIFT: ZABAHR2X, ERSTE & STEIERMÄRKISCHE BANK d.d. Rijeka IBAN: HR 0624020061100389454, SWIFT: ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb IBAN: HR 4723400091100153498, SWIFT: PBZGHR2X; RAIFFEISEN BANK AUSTRIA d.d. Zagreb IBAN: HR 1624840081102134625, SWIFT: RZBHHR2X; ISTARSKA KREDITNA BANKA UMAG d.d. Umag IBAN: HR 7423800061110009020, SWIFT: ISKBHR2X; OTP BANKA d.d. Zadar IBAN: HR 4724070001100365752, SWIFT: OTPVHR2X; HRVATSKA POŠTANSKA BANKA d.d. Zagreb IBAN: HR 1123900011101322250, SWIFT: HPBZHR2X; RAIFFEISENBANK LUNGAU EGEN Tamsweg (for Austria Branch Office) IBAN: AT 193506300042106385, SWIFT: RVSAAT2S063; www.valamar-riviera.com, President of the Management Board: Željko Kukurin, Members of the Management Board: Marko Čižmek and Ivana Budin Arhanić; Chairman of the Supervisory Board: Franz Lanschützer',
-            'imperial' => 'Commercial Court in Pazin, Company Registry Number 040020883, VAT identification number HR36201212847; Company: Valamar Riviera Joint Stock Company for Tourism; shortened company name: Valamar Riviera d.d.; 221.915.350,00 € of shared capital, fully paid; 126,027,542 shares; Registry Number 3474771: Accounts: ADDIKO BANK d.d. Zagreb IBAN: HR 2625000091101024767, SWIFT: HAABHR22; ZAGREBAČKA BANKA d.d. Zagreb IBAN: HR 4123600001101319202, SWIFT: ZABAHR2X, ERSTE & STEIERMÄRKISCHE BANK d.d. Rijeka IBAN: HR 0624020061100389454, SWIFT: ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb IBAN: HR 4723400091100153498, SWIFT: PBZGHR2X; RAIFFEISEN BANK AUSTRIA d.d. Zagreb IBAN: HR 1624840081102134625, SWIFT: RZBHHR2X; ISTARSKA KREDITNA BANKA UMAG d.d. Umag IBAN: HR 7423800061110009020, SWIFT: ISKBHR2X; OTP BANKA d.d. Zadar IBAN: HR 4724070001100365752, SWIFT: OTPVHR2X; HRVATSKA POŠTANSKA BANKA d.d. Zagreb IBAN: HR 1123900011101322250, SWIFT: HPBZHR2X; RAIFFEISENBANK LUNGAU EGEN Tamsweg (for Austria Branch Office) IBAN: AT 193506300042106385, SWIFT: RVSAAT2S063; www.valamar-riviera.com, President of the Management Board: Željko Kukurin, Members of the Management Board: Marko Čižmek and Ivana Budin Arhanić; Chairman of the Supervisory Board: Franz Lanschützer',
-            'helios_faros' => 'Commercial Court in Pazin, Company Registry Number 040020883, VAT identification number HR36201212847; Company: Valamar Riviera Joint Stock Company for Tourism; shortened company name: Valamar Riviera d.d.; 221.915.350,00 € of shared capital, fully paid; 126,027,542 shares; Registry Number 3474771: Accounts: ADDIKO BANK d.d. Zagreb IBAN: HR 2625000091101024767, SWIFT: HAABHR22; ZAGREBAČKA BANKA d.d. Zagreb IBAN: HR 4123600001101319202, SWIFT: ZABAHR2X, ERSTE & STEIERMÄRKISCHE BANK d.d. Rijeka IBAN: HR 0624020061100389454, SWIFT: ESBCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb IBAN: HR 4723400091100153498, SWIFT: PBZGHR2X; RAIFFEISEN BANK AUSTRIA d.d. Zagreb IBAN: HR 1624840081102134625, SWIFT: RZBHHR2X; ISTARSKA KREDITNA BANKA UMAG d.d. Umag IBAN: HR 7423800061110009020, SWIFT: ISKBHR2X; OTP BANKA d.d. Zadar IBAN: HR 4724070001100365752, SWIFT: OTPVHR2X; HRVATSKA POŠTANSKA BANKA d.d. Zagreb IBAN: HR 1123900011101322250, SWIFT: HPBZHR2X; RAIFFEISENBANK LUNGAU EGEN Tamsweg (for Austria Branch Office) IBAN: AT 193506300042106385, SWIFT: RVSAAT2S063; www.valamar-riviera.com, President of the Management Board: Željko Kukurin, Members of the Management Board: Marko Čižmek and Ivana Budin Arhanić; Chairman of the Supervisory Board: Franz Lanschützer'
+            'valamar' => 'Commercial Court in Pazin, MBS 040020883, Tax No. (OIB): 36201212847; Company: Valamar Riviera dioničko društvo za turizam; abbreviated: Valamar Riviera d.d.; 1.672.021.210,00 kn/221.915.350,72 €* of share capital, paid in full; issued 126.027.524 shares; MB 3474771; accounts of ADDIKO BANK d.d. Zagreb IBAN: HR 2625000091101024767, SWIFT: HAABHR22; ZAGREBAČKA BANKA d.d. Zagreb IBAN: HR 4123600001101319202, SWIFT: ZABAHR2X; ERSTE &STEIERMÄRKISCHE0 BANK d.d. Rijeka IBAN HR 062402006110038945 SWIFT: ES- BCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb IBAN: HR 4723400091100153498, SWIFT: PBZGHR2X; RAIFFEISEN BANK AUSTRIA d.d. Zagreb IBAN: HR 1624840081102134625, SWIFT: RZBHHR2X; NOVA HRVATSKA BANKA d.d. Zagreb IBAN: HR 9025030071100039991, SWIFT: VBCRHR22; ISTARSKA KREDITNA BANKA UMAG d.d. Umag IBAN: HR 7423800061110009020, SWIFT: ISKBHR2X; OTP BANKA d.d. Zadar IBAN: HR 4724070001100365752, SWIFT: OTPVHR2X; HRVATSKA POŠTANSKA BANKA d.d. Zagreb IBAN: HR1123900011101322250, SWIFT: HPBZHR2X
+www.valamar-riviera.com, President of the Board: Željko Kukurin, members of the Board: Marko Čižmek and Ivana Budin Arhanić; President of the Supervisory Board: Gustav Wurmböck
+*the amount of share capital in EUR currency is presented for information at a fixed conversion rate of 7.53450, pending the implementation of the adjustment and registration of share capital in EUR currency in accordance with the Act on Amendments to the Companies Act ("Official Gazette" No. 114/22.)',
+            'imperial' => 'Commercial Court in Pazin, MBS 040020883, Tax No. (OIB): 36201212847; Company: Valamar Riviera dioničko društvo za turizam; abbreviated: Valamar Riviera d.d.; 1.672.021.210,00 kn/221.915.350,72 €* of share capital, paid in full; issued 126.027.524 shares; MB 3474771; accounts of ADDIKO BANK d.d. Zagreb IBAN: HR 2625000091101024767, SWIFT: HAABHR22; ZAGREBAČKA BANKA d.d. Zagreb IBAN: HR 4123600001101319202, SWIFT: ZABAHR2X; ERSTE &STEIERMÄRKISCHE0 BANK d.d. Rijeka IBAN HR 062402006110038945 SWIFT: ES- BCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb IBAN: HR 4723400091100153498, SWIFT: PBZGHR2X; RAIFFEISEN BANK AUSTRIA d.d. Zagreb IBAN: HR 1624840081102134625, SWIFT: RZBHHR2X; NOVA HRVATSKA BANKA d.d. Zagreb IBAN: HR 9025030071100039991, SWIFT: VBCRHR22; ISTARSKA KREDITNA BANKA UMAG d.d. Umag IBAN: HR 7423800061110009020, SWIFT: ISKBHR2X; OTP BANKA d.d. Zadar IBAN: HR 4724070001100365752, SWIFT: OTPVHR2X; HRVATSKA POŠTANSKA BANKA d.d. Zagreb IBAN: HR1123900011101322250, SWIFT: HPBZHR2X
+www.valamar-riviera.com, President of the Board: Željko Kukurin, members of the Board: Marko Čižmek and Ivana Budin Arhanić; President of the Supervisory Board: Gustav Wurmböck
+*the amount of share capital in EUR currency is presented for information at a fixed conversion rate of 7.53450, pending the implementation of the adjustment and registration of share capital in EUR currency in accordance with the Act on Amendments to the Companies Act ("Official Gazette" No. 114/22.)',
+            'helios_faros' => 'Commercial Court in Pazin, MBS 040020883, Tax No. (OIB): 36201212847; Company: Valamar Riviera dioničko društvo za turizam; abbreviated: Valamar Riviera d.d.; 1.672.021.210,00 kn/221.915.350,72 €* of share capital, paid in full; issued 126.027.524 shares; MB 3474771; accounts of ADDIKO BANK d.d. Zagreb IBAN: HR 2625000091101024767, SWIFT: HAABHR22; ZAGREBAČKA BANKA d.d. Zagreb IBAN: HR 4123600001101319202, SWIFT: ZABAHR2X; ERSTE &STEIERMÄRKISCHE0 BANK d.d. Rijeka IBAN HR 062402006110038945 SWIFT: ES- BCHR22; PRIVREDNA BANKA ZAGREB d.d. Zagreb IBAN: HR 4723400091100153498, SWIFT: PBZGHR2X; RAIFFEISEN BANK AUSTRIA d.d. Zagreb IBAN: HR 1624840081102134625, SWIFT: RZBHHR2X; NOVA HRVATSKA BANKA d.d. Zagreb IBAN: HR 9025030071100039991, SWIFT: VBCRHR22; ISTARSKA KREDITNA BANKA UMAG d.d. Umag IBAN: HR 7423800061110009020, SWIFT: ISKBHR2X; OTP BANKA d.d. Zadar IBAN: HR 4724070001100365752, SWIFT: OTPVHR2X; HRVATSKA POŠTANSKA BANKA d.d. Zagreb IBAN: HR1123900011101322250, SWIFT: HPBZHR2X
+www.valamar-riviera.com, President of the Board: Željko Kukurin, members of the Board: Marko Čižmek and Ivana Budin Arhanić; President of the Supervisory Board: Gustav Wurmböck
+*the amount of share capital in EUR currency is presented for information at a fixed conversion rate of 7.53450, pending the implementation of the adjustment and registration of share capital in EUR currency in accordance with the Act on Amendments to the Companies Act ("Official Gazette" No. 114/22.)',
         ],
 
     ],
@@ -118,26 +124,23 @@ If you have any special requests, feel free to reply to this e-mail.
 
 
     'booking_confirmation' => [
-        'terms_and_conditions' => '
-            This package is now reserved and added to your reservation of accommodation. If you have already
-            paid for your reservation, any additional services you might book will be charged when checking into
-            the facility you are staying at.',
+        'terms_and_conditions' => 'This experience is now reserved and added to your accommodation reservation. Payment is made exclusively at the hotel reception when settling the bill for accommodation. Valamar Riviera d.d. is a provider of reserved services and takes responsibility for their execution. Find other general business conditions at https://www.valamar-experience.com/terms-and-conditions/3/',
     ],
 
     'invoice_no' => 'Invoice Number',
     'no' => 'No.',
     'code' => 'Code',
-    'service_name' => 'Service Name',
+    'service_name' => 'Service name',
     'total' => 'Total',
 
     'included_in_accommodation_reservation'=>'This transfer is included in accommodation reservation',
     'reservation_holder'=>'Reservation holder',
-    'accommodation_reservation_holder'=>'Accommodation reservation holder',
+    'accommodation_reservation_holder'=>'Reservation holder',
     'created_at'=>'Created at',
     'total_eur' => 'Total EUR',
     'total_hrk' => 'Total HRK',
     'accommodation_reservation_number' => 'Accommodation reservation number',
-    'transfer_reservation_confirmation' => 'Transfer reservation confirmation',
+    'transfer_reservation_confirmation' => 'Reservation confirmation',
     'without_vat'=>'Without VAT',
     'vat'=>'VAT',
     'vat_amount'=>'VAT amount',
@@ -149,9 +152,25 @@ If you have any special requests, feel free to reply to this e-mail.
     'other_travellers' => 'Other Travellers',
     'price' => 'Price',
     'transfer' => 'Transfer',
-    'price_info' => 'The amount will be charged in Euros. Price in Croatian kunas in informative at fixed conversion rate of EUR 1 = HRK 7.5340',
+    'price_info' => 'Due to the accession of the Republic of Croatia to the Eurozone, prices in kuna are expressed using the fixed exchange rate of EUR 1 = HRK 7.53450 and are for informational purposes only.',
     'amount' => 'Amount',
     'reservation_cancellation' => 'Reservation Cancellation',
     'telephone' => 'Telephone',
-    'flight_time' => 'Flight Time'
+    'flight_time' => 'Flight Time',
+    'issue_location' => 'Issue Location',
+    'issue_date_and_time' => 'Issue Date and Time',
+    'operator' => 'Operator',
+    'accommodation' => 'Object',
+    'voucher_number' => 'Voucher Number',
+    'special_taxing' => 'Special procedure for the taxation of travel agencies pursuant to Article 91 of the VAT Act.',
+    'gdpr_title' => 'INFORMATION ON PERSONAL DATA WHEN PURCHASING OR RESERVING VALAMAR EXPERIENCE CONCIERGE SERVICES',
+    'gdpr_1' => 'Manager of personal data processing: Valamar Riviera d.d., Republic of Croatia, Poreč, Stancija Kaligari 1',
+    'gdpr_2' => 'Transfer of data to other processors: Some of your personal data Valamar Riviera d.d. will, if necessary, deliver experiences and goods to those companies that offer certain services for the execution of the contract, that is, organize experiences that you have purchased or booked, and in the case of delivery of goods to delivery services.',
+    'gdpr_3' => 'Purpose: purchase or reservation of services, experiences and goods.',
+    'gdpr_4' => 'Legal basis: performance of the contract or reservation',
+    'gdpr_5' => 'Your rights: You can ask for access to, modification or correction of your personal data at any time free of charge, you can request data transmission (the right to portability) as well as erasure or restriction of processing of your personal data (the right to be forgotten) via the email address: support@valamar-experience.com. You also have other rights prescribed by the General Data Protection Regulation (EU) 2016/679. Revoking the consent shall not affect the legality of the processing that was based on the consent prior to its revocation.',
+    'gdpr_6' => 'Information contact:info@valamar-experience.com',
+    'gdpr_7' => 'Personal data protection policy: https://valamar-riviera.com/en/privacy-policy/',
+    'gdpr_8' => 'Controller\'s contact for data protection complaints:dpo@valamar.com',
+    'gdpr_9' => 'I confirm that I am aware of my right to lodge a complaint to the supervisory authority.'
 ];

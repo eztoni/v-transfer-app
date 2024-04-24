@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 
 <head>
-    
+
     <title>
     </title>
     <!--[if !mso]><!-->
@@ -109,7 +109,7 @@
     </style>
 </head>
 
-<body style="word-spacing:normal;background-color:#F4F4F4;padding-top: 40px;padding-bottom: 40px">
+<body style="word-spacing:normal;background-color:white;padding-top: 40px;padding-bottom: 40px">
 {{$slot}}
 </body>
 

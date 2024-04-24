@@ -225,20 +225,20 @@
             <br/>
 
             <ul>
-                <li>{{__('mail.pickup_and_meeting_point')}}:
-                    <ul>
-                        <li>{{__('mail.li_1_1')}} <b>{{$reservation->partner->email}} {{$reservation->partner->phone}}</b></li>
-                        <li>{{__('mail.li_1_2')}}</li>
-                        <li>{{__('mail.li_1_3')}}</li>
-                        <li>{{__('mail.li_2')}} <b style="font-weight: 700;">transfer@valamar.com   +385 (0)52 465 000</b></li>
+                <li  style="list-style-type: none;">1. {{__('mail.pickup_and_meeting_point')}}:
+                    <ul style="margin-bottom:2%">
+                        <li style="list-style-type: none;margin-bottom:2%"><b>1.1.</b> {{__('mail.li_1_1')}} <b>{{$reservation->partner->email}} {{$reservation->partner->phone}}</b></li>
+                        <li  style="list-style-type: none;margin-bottom:2%"><b>1.2.</b> {{__('mail.li_1_2')}}</li>
+                        <li style="list-style-type: none;margin-bottom:2%"><b>1.3.</b> {{__('mail.li_1_3')}}</li>
+                        <li  style="list-style-type: none;margin-bottom:2%"><b>1.4.</b> {{__('mail.li_2')}} <b style="font-weight: 700;">transfer@valamar.com   +385 (0)52 465 000</b></li>
                     </ul>
 
                 </li>
-
-                <li>{{__('mail.li_3')}}:
+                <br/>
+                <li  style="list-style-type: none;" ><b>2. </b> {{__('mail.li_3')}}:
                     <ul>
-                        <li>{{__('mail.li_3_1')}}</li>
-                        <li>{{__('mail.li_3_2')}}</li>
+                        <li  style="list-style-type: none;"><b>2.1. </b>{{__('mail.li_3_1')}}</li>
+                        <li  style="list-style-type: none;"><b>2.2. </b>{{__('mail.li_3_2')}}</li>
                     </ul>
                 </li>
             </ul>
