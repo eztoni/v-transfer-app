@@ -9,7 +9,6 @@ use Illuminate\Mail\Mailable;
 
 class ReservationReceptionReportMail extends Mailable
 {
-    public Reservation $reservation;
     public $accommodation_name;
 
     public function __construct($reservation_list,$subject,$date_from,$date_to,$accommodation_name)
