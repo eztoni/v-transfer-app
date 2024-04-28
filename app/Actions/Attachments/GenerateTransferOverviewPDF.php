@@ -6,6 +6,7 @@ use App\Models\Reservation;
 use Barryvdh\DomPDF\PDF;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use App\Models\Point;
 
 class GenerateTransferOverviewPDF
 {
@@ -31,6 +32,34 @@ class GenerateTransferOverviewPDF
                 }
             }
 
+
+            $date_time = $i->date_time?->format('Y-m-d');
+
+            $pickup_point = Point::findOrFail($i->pickup_address_id);
+            $dropoff_point = Point::findOrFail($i->dropoff_address_id);
+
+
+            $route = $pickup_point->name.' => '.$dropoff_point->name;
+
+            $return_date = $i->returnReservation?->date_time?->format('Y-m-d');
+
+            if($return_date){
+                if($return_date <= $to->format('Y-m-d') && $return_date >= $from->format('Y-m-d')){
+
+                    $date_time = $i->returnReservation?->date_time?->format('d.m.Y @ H:i');
+
+                    $pickup_point = Point::findOrFail($i->returnReservation->pickup_address_id);
+                    $dropoff_point = Point::findOrFail($i->returnReservation->dropoff_address_id);
+
+                    $route = $pickup_point->name.' => '.$dropoff_point->name;
+
+                }else{
+                    $date_time = $i->date_time?->format('d.m.Y @ H:i');
+                }
+            }else{
+                $date_time = $i->date_time?->format('d.m.Y @ H:i');
+            }
+
             $bookings[] = [
                 'id' => $i->id,
                 'name' => $i->leadTraveller?->full_name,
@@ -44,7 +73,9 @@ class GenerateTransferOverviewPDF
                 'reservation'=>$i,
                 'price' => $i->getPrice()->formatByDecimal(),
                 'opera_resv_id' => $opera_resv_id,
-                'opera_confirmation_id' => $opera_confirmation_id
+                'opera_confirmation_id' => $opera_confirmation_id,
+                'formatted_route' => $route,
+                'formatted_date_time' => $date_time
             ];
         }
 

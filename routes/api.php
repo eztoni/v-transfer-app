@@ -35,3 +35,5 @@ Route::get('/logs', [\App\Http\Controllers\LogController::class, 'show'])->name(
 
 //emailsend
 Route::post('email', [\App\Http\Controllers\AlarmMailController::class, 'sendEmail']);
+
+Route::get('/reception-report', [\App\Http\Controllers\ReservationReceptionNotifyController::class,'update']);

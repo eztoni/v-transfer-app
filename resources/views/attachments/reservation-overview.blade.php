@@ -47,23 +47,17 @@
 
                     @endphp
                     <tr>
-                        <td style="border: 1px solid black;">{{Arr::get($reservation,'id')}}</td>
-                        <td style="border: 1px solid black;">{{Arr::get($reservation,'name')}}</td>
-                        <td style="border: 1px solid black; ">
+                        <td style="border: 1px solid black;" align="center">{{Arr::get($reservation,'id')}}</td>
+                        <td style="border: 1px solid black;" align="center">{{Arr::get($reservation,'name')}}</td>
+                        <td style="border: 1px solid black;" align="center">
                             <p class="flex gap-2">
 
-                                <label>   &#8594; {{Arr::get($reservation,'date_time')}}</label>
+                                <label> {{Arr::get($reservation,'formatted_date_time')}}</label>
                             </p>
-                            @if(Arr::get($reservation,'round_trip'))
-                                <p class="flex gap-2">
-
-                                    <label>&#8592; {{Arr::get($reservation,'round_trip_date')}}</label>
-                                </p>
-                            @endif
 
                         </td>
-                        <td style="border: 1px solid black;">{{Arr::get($reservation,'partner')}}</td>
-                        <td style="border: 1px solid black;">
+                        <td style="border: 1px solid black;" align="center">{{Arr::get($reservation,'partner')}}</td>
+                        <td style="border: 1px solid black;" align="center">
                             <span>Odrasli: {{Arr::get($reservation,'adults')}}</span>
 
                             @if(Arr::get($reservation,'children'))
@@ -77,28 +71,14 @@
                             @endif
 
                         </td>
-                        <td style="border: 1px solid black;">
+                        <td style="border: 1px solid black;" align="center">
                             <p class="flex gap-2">
-                                <label>  {{$rObject->pickupLocation->name}}
-                                    <b> ({{$rObject->pickup_address}})</b></label>
+                                <label>  {{Arr::get($reservation,'formatted_route')}}
                             </p>
-                            @if(Arr::get($reservation,'round_trip'))
-                                &#8596;
-                            @else
-                                &#8594;
-
-                            @endif
-
-                            <p class="flex gap-2">
-
-                                <label>  {{$rObject->dropoffLocation->name}}
-                                   <b> ({{$rObject->dropoff_address}})</b></label>
-                            </p>
-
                         </td>
 
-                        <td style="border: 1px solid black;"><p class="flex gap-2">{{Arr::get($reservation,'price')}} €</p></td>
-                        <td class="flex gap-2" style="border: 1px solid black;"><b>Resv ID</b><br/>{{Arr::get($reservation,'opera_resv_id')}}<br/><b>Conf. ID</b><br/>{{Arr::get($reservation,'opera_confirmation_id')}}</td>
+                        <td style="border: 1px solid black;" align="center"><p class="flex gap-2">{{Arr::get($reservation,'price')}} €</p></td>
+                        <td class="flex gap-2" style="border: 1px solid black;" align="center"><b>Resv ID</b><br/>{{Arr::get($reservation,'opera_resv_id')}}<br/><b>Conf. ID</b><br/>{{Arr::get($reservation,'opera_confirmation_id')}}</td>
                     </tr>
                 @endforeach
                 </tbody>
