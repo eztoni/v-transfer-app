@@ -83,8 +83,7 @@ class ReservationReceptionNotifyController extends Controller
 
                 Mail::to($travellerMail)->locale('hr')->send(new ReservationReceptionReportMail($reservation_list,$subject,$date_from,$date_to,$accommodation_name));
 
-                echo "email sent";
-
+                break;
             }
         }
 
