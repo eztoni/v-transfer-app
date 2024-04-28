@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\BusinessModels\Reservation\Actions\CancelReservation;
 use App\BusinessModels\Reservation\Actions\UpdateReservation;
+use App\Events\ReservationAlertEvent;
+use App\Events\ReservationReportEvent;
 use App\Mail\Guest\ReservationConfirmationMail;
 use App\Mail\Guest\ReservationReceptionReportMail;
 use App\Models\Traveller;
@@ -64,8 +66,7 @@ class ReservationReceptionNotifyController extends Controller
             }
         }
 
-        echo "Broj rezevacija je ".count($reservations);
-
+   
         if(!empty($this->bookings_per_property)){
             foreach($this->bookings_per_property as $accommodation_id => $reservation_list){
 
@@ -81,6 +82,9 @@ class ReservationReceptionNotifyController extends Controller
                 $subject = $accommodation_name.': Popis rezervacija za datum '.$date_from.' - '.$accommodation_name;
 
                 Mail::to($travellerMail)->locale('hr')->send(new ReservationReceptionReportMail($reservation_list,$subject,$date_from,$date_to,$accommodation_name));
+
+                echo "email sent";
+
             }
         }
 
