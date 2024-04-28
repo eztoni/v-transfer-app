@@ -76,12 +76,15 @@ class ReservationReceptionNotifyController extends Controller
                     $accommodation_name = $this->accommodation_loader[$accommodation_id]->name;
                 }
 
-                $travellerMail = 'njiric.toni@gmail.com';
+                $email_list = array($this->accommodation_loader[$accommodation_id]->reception_email);
+
+                $email_list = array('njiric.toni@gmail.com','tnjiric@yahoo.com');
+
                 $reservation_list = collect($reservation_list);
 
                 $subject = $accommodation_name.': Popis rezervacija za datum '.$date_from.' - '.$accommodation_name;
 
-                Mail::to($travellerMail)->locale('hr')->send(new ReservationReceptionReportMail($reservation_list,$subject,$date_from,$date_to,$accommodation_name));
+                Mail::to($email_list)->locale('hr')->send(new ReservationReceptionReportMail($reservation_list,$subject,$date_from,$date_to,$accommodation_name));
 
                 break;
             }
