@@ -66,7 +66,7 @@ class ReservationReceptionNotifyController extends Controller
             }
         }
 
-   
+
         if(!empty($this->bookings_per_property)){
             foreach($this->bookings_per_property as $accommodation_id => $reservation_list){
 
@@ -76,7 +76,7 @@ class ReservationReceptionNotifyController extends Controller
                     $accommodation_name = $this->accommodation_loader[$accommodation_id]->name;
                 }
 
-                $travellerMail = 'njiric.toni@mail.com';
+                $travellerMail = 'njiric.toni@gmail.com';
                 $reservation_list = collect($reservation_list);
 
                 $subject = $accommodation_name.': Popis rezervacija za datum '.$date_from.' - '.$accommodation_name;
