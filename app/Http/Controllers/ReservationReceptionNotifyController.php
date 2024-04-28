@@ -78,14 +78,50 @@ class ReservationReceptionNotifyController extends Controller
 
                 $email_list = array($this->accommodation_loader[$accommodation_id]->reception_email);
 
-                $email_list = array('njiric.toni@gmail.com','tnjiric@yahoo.com');
-
                 $reservation_list = collect($reservation_list);
+
+                if($accommodation_id > 0){
+                    switch($accommodation_id){
+                        #LaCroma
+                        case 34:
+                            $email_list[] = 'ozana.simunovic@imperial.hr';
+                            $email_list[] = 'transfer.dubrovnik@traveler.agency';
+                            break;
+                        #Tirena
+                        case 65:
+                            $email_list[] = 'dragan.stankovic@imperial.hr';
+                            $email_list[] = 'transfer.dubrovnik@traveler.agency';
+                            break;
+                        #Solitudo Camping
+                        case 134:
+                            $email_list[] = 'ivona.camo@valamar.com';
+                            $email_list[] = 'transfer.dubrovnik@traveler.agency';
+                            break;
+                        #Argosy
+                        case 18:
+                            $email_list[] = 'mirko.komnenovic@valamar.com';
+                            $email_list[] = 'transfer.dubrovnik@traveler.agency';
+                            break;
+                        case 17:
+                            #President
+                            $email_list[] = 'jasmina.kneziccumo@valamar.com';
+                            $email_list[] = 'transfer.dubrovnik@traveler.agency';
+                            break;
+                        case 35:
+                            #President
+                            $email_list[] = 'josip.begusic@imperial.hr';
+                            $email_list[] = 'transfer.dubrovnik@traveler.agency';
+                            break;
+                    }
+                }
+
+                dd($email_list);
+                /*
 
                 $subject = $accommodation_name.': Popis rezervacija za datum '.$date_from.' - '.$accommodation_name;
 
                 Mail::to($email_list)->locale('hr')->send(new ReservationReceptionReportMail($reservation_list,$subject,$date_from,$date_to,$accommodation_name));
-
+*/
                 break;
             }
         }
