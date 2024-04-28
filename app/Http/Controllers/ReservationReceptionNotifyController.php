@@ -114,7 +114,8 @@ class ReservationReceptionNotifyController extends Controller
                             break;
                     }
                 }
-                
+
+                #Test Report
                 $email_list[] = 'njiric.toni@gmail.com';
 
                 $subject = $accommodation_name.': Popis rezervacija za datum '.$date_from.' - '.$accommodation_name;
