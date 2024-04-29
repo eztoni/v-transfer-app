@@ -76,7 +76,17 @@ class ReservationReceptionNotifyController extends Controller
                     $accommodation_name = $this->accommodation_loader[$accommodation_id]->name;
                 }
 
-                $email_list = array($this->accommodation_loader[$accommodation_id]->reception_email);
+                $accommodation_email = $this->accommodation_loader[$accommodation_id]->reception_email
+
+                $email_list = array();
+                if(!empty($accommodation_email)){
+                    $email_list[] = $accommodation_email;
+                }else{
+                    dd($accommodation_name).' '.$accommodation_id;
+                }
+
+
+
 
                 $reservation_list = collect($reservation_list);
 
@@ -117,8 +127,6 @@ class ReservationReceptionNotifyController extends Controller
 
                 #Test Report
                 $email_list[] = 'njiric.toni@gmail.com';
-
-                dd($email_list);
 
                 $subject = $accommodation_name.': Popis rezervacija za datum '.$date_from.' - '.$accommodation_name;
 
