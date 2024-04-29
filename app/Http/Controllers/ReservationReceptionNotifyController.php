@@ -76,7 +76,7 @@ class ReservationReceptionNotifyController extends Controller
                     $accommodation_name = $this->accommodation_loader[$accommodation_id]->name;
                 }
 
-                $accommodation_email = $this->accommodation_loader[$accommodation_id]->reception_email
+                $accommodation_email = $this->accommodation_loader[$accommodation_id]->reception_email;
 
                 $email_list = array();
                 if(!empty($accommodation_email)){
