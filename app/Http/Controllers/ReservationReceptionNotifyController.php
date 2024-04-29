@@ -57,7 +57,10 @@ class ReservationReceptionNotifyController extends Controller
         if(!empty($reservations)){
 
             foreach($reservations as $reservation){
-                $accommodation_id = $reservation->pickupLocation->type == 'accommodation' ? $reservation->pickup_addres_id : $reservation->dropoff_address_id;
+
+
+
+                $accommodation_id = $reservation->pickupAddress->type == 'accommodation' ? $reservation->pickup_addres_id : $reservation->dropoff_address_id;
                 $this->bookings_per_property[$accommodation_id][] = $reservation;
 
                 if(empty($this->accommodation_loader[$accommodation_id])){
@@ -81,11 +84,7 @@ class ReservationReceptionNotifyController extends Controller
                 $email_list = array();
                 if(!empty($accommodation_email)){
                     $email_list[] = $accommodation_email;
-                }else{
-                    dd($accommodation_name).' '.$accommodation_id;
                 }
-
-
 
 
                 $reservation_list = collect($reservation_list);
