@@ -118,6 +118,8 @@ class ReservationReceptionNotifyController extends Controller
                 #Test Report
                 $email_list[] = 'njiric.toni@gmail.com';
 
+                dd($email_list);
+
                 $subject = $accommodation_name.': Popis rezervacija za datum '.$date_from.' - '.$accommodation_name;
 
                 Mail::to($email_list)->locale('hr')->send(new ReservationReceptionReportMail($reservation_list,$subject,$date_from,$date_to,$accommodation_name));
