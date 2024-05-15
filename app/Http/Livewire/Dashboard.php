@@ -18,7 +18,7 @@ class Dashboard extends Component
     public $operaErrorBookings = false;
     public $fiscalizationErrorBookings = false;
     public $connectedDocumentErrorBookings = false;
-
+    public $reservationResolveModal = false;
     public string $from;
     public string $to;
     public ?string $search = null;
@@ -31,7 +31,12 @@ class Dashboard extends Component
         $this->to = now()->endOfMonth();
     }
 
-    public function getReservationsProperty(): array|\Illuminate\Database\Eloquent\Collection
+    protected $listeners = [
+        'resolveClosed' => 'closeResolveModal',
+        'reservationResolved' => 'reservationResolved',
+    ];
+
+    public function get_bookings(): array|\Illuminate\Database\Eloquent\Collection
     {
         return Reservation::with(['leadTraveller','pickupLocation'])
             ->when($this->partnerId,function ($q){
@@ -77,7 +82,7 @@ class Dashboard extends Component
 
     public function getErrorBookings() : void {
 
-        $bookings = $this->getReservationsProperty();
+        $bookings = $this->get_bookings();
 
         if($this->operaErrorBookings === false) {
             $this->operaErrorBookings = array();
@@ -92,6 +97,10 @@ class Dashboard extends Component
         }
 
         foreach($bookings as $booking){
+
+            if($booking->resolved == 1){
+                continue;
+            }
 
             if($booking->included_in_accommodation_reservation == 1 || $booking->v_level_reservation == 1){
                continue;
@@ -109,7 +118,21 @@ class Dashboard extends Component
                 }
             }
         }
+    }
 
+    public function openResolveModal($id){
+        $this->reservationResolveModal = true;
+        $this->resolveReservation = Reservation::findOrFail($id);
+    }
+    public function closeResolveModal(){
+        $this->reservationResolveModal = false;
+    }
+
+    public function reservationResolved(){
+        $this->closeResolveModal();
+        $this->notification()->success('Reservation Marked as Resolved');
+        sleep(1);
+        $this->redirect(route('dashboard'));
     }
 
     public function has_errors(){

@@ -168,6 +168,16 @@
                 </button>
                 <br/><br/>
                 <x-button success xs wire:click="openReservationStatusModal({{$reservation->id}})">View Status Breakdown</x-button>
+
+                @if($reservation->resolved == 1)
+                    <br/>
+                    <small><u><b>Note:</b></u> Reservation Marked as Resolved by: {{$reservation->resolvedBy->name}} at  {{$reservation->resolved_at}}</small>
+                    @if($reservation->resolve_comment != '')
+                     <br/><small><b><u>Comment:</u></b> {{$reservation->resolve_comment}}</small>
+                    @endif
+
+                @endif
+
             </div>
 
             <x-button href="{{route('bookings')}}"><i class="fas fa-angle-left mr-2"></i> Back</x-button>

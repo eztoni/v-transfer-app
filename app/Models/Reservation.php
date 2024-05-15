@@ -255,6 +255,10 @@ class Reservation extends Model
     {
         return $this->hasOne(User::class, 'id', 'updated_by');
     }
+    public function resolvedBy()
+    {
+        return $this->hasOne(User::class, 'id', 'resolved_by');
+    }
 
     protected function getTransferPriceCommissionAttribute(): Money
     {

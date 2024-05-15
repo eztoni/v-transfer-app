@@ -3,7 +3,6 @@
 ?>
 <div>
 
-
     @if($this->has_errors())
 
         @if(!empty($this->get_opera_error_bookings()))
@@ -23,7 +22,13 @@
 
                     </x-badge>
                 </div>
-                @foreach($this->get_opera_error_bookings() as $reservation)
+                @if(!empty($this->get_opera_error_bookings()))
+                    @foreach($this->get_opera_error_bookings() as $reservation)
+
+
+                        @if(is_array($reservation))
+                            @continue;
+                        @endif
 
                     <x-card cardClasses="mb-4 border" title="Transfer #{{$reservation->id}}">
                         <x-slot name="action">
@@ -39,6 +44,7 @@
                                 @endif
 
                                 <x-button sm icon="external-link" target="_blank" href="{{route('reservation-details',$reservation->id)}}">View</x-button>
+                                <x-button positive xs icon="check" wire:click="openResolveModal({{$reservation->id}})">Mark as Resolved</x-button>
                             </div>
                         </x-slot>
 
@@ -76,6 +82,7 @@
                         </div>
                     </x-card>
                 @endforeach
+                @endif
             </x-card>
         </div>
         @endif
@@ -98,6 +105,11 @@
                     </x-badge>
                 </div>
                 @foreach($this->get_fiscalization_error_bookings() as $reservation)
+
+                    @if(is_array($reservation))
+                        @continue;
+                    @endif;
+
                     <x-card cardClasses="mb-4 border" title="Transfer #{{$reservation->id}}">
                         <x-slot name="action">
                             <div class="flex gap-4 items-center">
@@ -112,6 +124,7 @@
                                 @endif
 
                                 <x-button sm icon="external-link" target="_blank" href="{{route('reservation-details',$reservation->id)}}">View</x-button>
+                                <x-button positive xs icon="check" wire:click="openResolveModal({{$reservation->id}})">Mark as Resolved</x-button>
                             </div>
                         </x-slot>
 
@@ -172,6 +185,11 @@
                 </div>
                 @foreach($this->get_connected_document_error_bookings() as $reservation)
 
+
+                    @if(is_array($reservation))
+                        @continue;
+                    @endif
+
                     <x-card cardClasses="mb-4 border" title="Transfer #{{$reservation->id}}">
                         <x-slot name="action">
                             <div class="flex gap-4 items-center">
@@ -186,6 +204,7 @@
                                 @endif
 
                                 <x-button sm icon="external-link" target="_blank" href="{{route('reservation-details',$reservation->id)}}">View</x-button>
+                                <x-button positive xs icon="check" wire:click="openResolveModal({{$reservation->id}})">Mark as Resolved</x-button>
                             </div>
                         </x-slot>
 
@@ -247,6 +266,12 @@
         </div>
     @endif
 
-
+    @if($reservationResolveModal)
+            <x-modal.card wire:model="reservationResolveModal" title="Mark Reservation as Resolved #{{$this->resolveReservation->id}}">
+                <livewire:resolve-reservation :reservation="$this->resolveReservation"/>
+            </x-modal.card>
+    @endif
 
 </div>
+
+
