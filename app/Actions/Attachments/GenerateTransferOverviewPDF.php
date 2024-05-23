@@ -60,6 +60,12 @@ class GenerateTransferOverviewPDF
                 $date_time = $i->date_time?->format('d.m.Y @ H:i');
             }
 
+            $price = $i->getPrice()->formatByDecimal();
+
+            if($i->included_in_accommodation_reservation == 1 || $i->v_level_reservation == 1){
+                $price = '0.00';
+            }
+
             $bookings[] = [
                 'id' => $i->id,
                 'name' => $i->leadTraveller?->full_name,
@@ -71,7 +77,7 @@ class GenerateTransferOverviewPDF
                 'round_trip' => $i->is_round_trip,
                 'round_trip_date' => $i->returnReservation?->date_time?->format('d.m.Y @ H:i'),
                 'reservation'=>$i,
-                'price' => $i->getPrice()->formatByDecimal(),
+                'price' => $price,
                 'opera_resv_id' => $opera_resv_id,
                 'opera_confirmation_id' => $opera_confirmation_id,
                 'formatted_route' => $route,
