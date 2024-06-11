@@ -16,7 +16,7 @@ class DestinationSwitcher extends Component
 use Actions;
 
     public function changeDestination($destinationId){
-        if(!Auth::user()->hasAnyRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN,User::ROLE_USER,User::ROLE_RECEPTION]))
+        if(!Auth::user()->hasAnyRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN,User::ROLE_USER,User::ROLE_RECEPTION,User::ROLE_REPORTAGENT]))
             return;
 
         $user = Auth::user();
@@ -31,7 +31,7 @@ use Actions;
     {
 
         $destinations = Destination::all();
-        
+
         $userDestinationName = 'Destinations';
         if($destinations->isNotEmpty())
             $userDestinationName = $destinations->where('id','=',Auth::user()->destination_id)->first()->name;

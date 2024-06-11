@@ -64,49 +64,49 @@ class MainDrawer extends Component
                 'text' => 'Transfer Reservation',
                 'active' => request()->routeIs('internal-reservation'),
                 'href' => route('internal-reservation'),
-                'show' => true,
+                'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER),
             ],
             [
                 'icon' => 'fas fa-book',
                 'text' => 'Bookings',
                 'active' => request()->routeIs('bookings'),
                 'href' => route('bookings'),
-                'show' => true
+                'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER,User::ROLE_REPORTAGENT),
             ],
             [
                 'icon' => 'fas fa-chart-bar',
                 'text' => 'Reports',
-                'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN, User::ROLE_RECEPTION),
+                'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN, User::ROLE_RECEPTION, User::ROLE_REPORTAGENT),
                 'items' => [
                     [
                         'text' => 'Partner Report',
                         'active' => request()->routeIs('partner-report'),
                         'href' => route('partner-report'),
-                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER)
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER, User::ROLE_REPORTAGENT)
                     ],
                     [
                         'text' => 'PPOM Report',
                         'active' => request()->routeIs('ppom-report'),
                         'href' => route('ppom-report'),
-                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER)
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER, User::ROLE_REPORTAGENT)
                     ],
                     [
                         'text' => 'RPO Report',
                         'active' => request()->routeIs('rpo-report'),
                         'href' => route('rpo-report'),
-                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER)
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER, User::ROLE_REPORTAGENT)
                     ],
                     [
                         'text' => 'Reception Daily Report',
                         'active' => request()->routeIs('partner-daily'),
                         'href' => route('partner-daily'),
-                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER, User::ROLE_RECEPTION),
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER, User::ROLE_RECEPTION, User::ROLE_REPORTAGENT),
                     ],
                     [
                         'text' => 'Agent Efficiency Report',
                         'active' => request()->routeIs('agent-efficiency'),
                         'href' => route('agent-efficiency'),
-                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER)
+                        'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER, User::ROLE_REPORTAGENT)
                     ],
 
                 ]

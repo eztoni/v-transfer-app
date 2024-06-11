@@ -15,7 +15,7 @@ class OwnerSwitcher extends Component
 use Actions;
 
     public function changeOwner($ownerId){
-        if(!Auth::user()->hasAnyRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN,User::ROLE_USER]))
+        if(!Auth::user()->hasAnyRole([User::ROLE_SUPER_ADMIN,User::ROLE_ADMIN,User::ROLE_USER,User::ROLE_REPORTAGENT]))
             return;
 
         $owner = Owner::findOrFail($ownerId);
@@ -37,6 +37,7 @@ use Actions;
 
     public function render()
     {
+
         $owners = Owner::all();
         $userOwnerName = 'Owners';
         if($owners->isNotEmpty())

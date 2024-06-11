@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
     Route::middleware(
-        ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN . '|' . User::ROLE_USER. '|' .User::ROLE_RECEPTION]
+        ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN . '|' . User::ROLE_USER. '|' .User::ROLE_RECEPTION.'|'.User::ROLE_REPORTAGENT]
     )->group(callback: function () {
 
         /*
@@ -26,7 +26,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
             | User routes
             |--------------------------------------------------------------------------
         */
-
+       include 'role-reportagent.php';
 
        include 'role-user.php';
 
@@ -45,7 +45,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
 
         Route::middleware(
-            ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN]
+            ['role:' . User::ROLE_SUPER_ADMIN . '|' . User::ROLE_ADMIN.'|'.User::ROLE_REPORTAGENT]
         )->group(function () {
             /*
                 |--------------------------------------------------------------------------
@@ -65,8 +65,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
                 */
                 include_once 'role-super-admin.php';
             });
-        });
-    });
 
+
+        });
+
+    });
 });
 

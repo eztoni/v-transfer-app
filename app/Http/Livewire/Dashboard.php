@@ -171,6 +171,33 @@ class Dashboard extends Component
         // Just rerender
     }
 
+    public function isUser(){
+
+        $return = false;
+
+        if(!empty(auth()->user()->roles[0])){
+            if(auth()->user()->roles[0]->name == 'user'){
+                $return = true;
+            }
+        }
+
+        return $return;
+
+    }
+
+    public function isAdmin(){
+
+        $return = false;
+
+        if(!empty(auth()->user()->roles[0])){
+            if(auth()->user()->roles[0]->name == 'admin'){
+                $return = true;
+            }
+        }
+
+        return $return;
+    }
+
 
     public function render()
     {

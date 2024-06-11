@@ -17,13 +17,13 @@
     </div>
     @endrole
 
-    @hasanyrole(\App\Models\User::ROLE_SUPER_ADMIN.'|'.\App\Models\User::ROLE_ADMIN.'|'.\App\Models\User::ROLE_USER.'|'.\App\Models\User::ROLE_RECEPTION)
+    @hasanyrole(\App\Models\User::ROLE_SUPER_ADMIN.'|'.\App\Models\User::ROLE_ADMIN.'|'.\App\Models\User::ROLE_USER.'|'.\App\Models\User::ROLE_RECEPTION.'|'.\App\Models\User::ROLE_REPORTAGENT)
     <div class="flex-none hidden px-2 mx-2 lg:flex">
         <livewire:owner-switcher></livewire:owner-switcher>
     </div>
     @endhasanyrole
 
-    @hasanyrole(\App\Models\User::ROLE_SUPER_ADMIN.'|'.\App\Models\User::ROLE_ADMIN.'|'.\App\Models\User::ROLE_USER.'|'.\App\Models\User::ROLE_RECEPTION)
+    @hasanyrole(\App\Models\User::ROLE_SUPER_ADMIN.'|'.\App\Models\User::ROLE_ADMIN.'|'.\App\Models\User::ROLE_USER.'|'.\App\Models\User::ROLE_RECEPTION.'|'.\App\Models\User::ROLE_REPORTAGENT)
     <div class="flex-none hidden px-2 mx-2 lg:flex">
         <livewire:destination-switcher></livewire:destination-switcher>
     </div>
