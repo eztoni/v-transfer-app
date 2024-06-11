@@ -4,8 +4,10 @@ namespace App\Http\Livewire;
 
 use App\Models\Destination;
 use App\Models\Owner;
+use App\Models\Reservation;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Livewire\Component;
@@ -21,6 +23,12 @@ use Actions;
 
         $user = Auth::user();
         $user->destination_id = $destinationId;
+
+        $owner_id = DB::table('destinations')->where('id',$destinationId)->first()->owner_id;
+        
+
+        $user->owner_id = $owner_id;
+
         $user->save();
 
         $this->emit('destination_changed');
