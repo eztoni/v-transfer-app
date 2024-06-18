@@ -64,7 +64,7 @@ class MainDrawer extends Component
                 'text' => 'Transfer Reservation',
                 'active' => request()->routeIs('internal-reservation'),
                 'href' => route('internal-reservation'),
-                'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER),
+                'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN,User::ROLE_USER, User::ROLE_REPORTAGENT),
             ],
             [
                 'icon' => 'fas fa-book',
