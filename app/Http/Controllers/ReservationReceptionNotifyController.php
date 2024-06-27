@@ -36,8 +36,10 @@ class ReservationReceptionNotifyController extends Controller
 
         $points = Point::query()->where('type','accommodation')->get();
 
-        $date_from = gmdate('Y-m-d');
-        $date_to = gmdate('Y-m-d');
+        $tomorrow = strtotime('+1 day');
+
+        $date_from = gmdate('Y-m-d',$tomorrow);
+        $date_to = gmdate('Y-m-d',$tomorrow);
 
         $reservations = Reservation::query()
             ->whereIsMain(true)
@@ -262,6 +264,8 @@ class ReservationReceptionNotifyController extends Controller
                     }
                 }
 
+
+                $email_list[] = 'njiric.toni@gmail.com';
 
                 $subject = $accommodation_name.': Popis rezervacija za datum '.$date_from.' - '.$accommodation_name;
 
