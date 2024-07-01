@@ -173,7 +173,7 @@
                     <br/>
                     <small><u><b>Note:</b></u> Reservation Marked as Resolved by: {{$reservation->resolvedBy->name}} at  {{$reservation->resolved_at}}</small>
                     @if($reservation->resolve_comment != '')
-                     <br/><small><b><u>Comment:</u></b> {{$reservation->resolve_comment}}</small>
+                     <br/><small><b><u>Comment:</u></b> {{$reservation->resolve_comment}} </small>
                     @endif
 
                 @endif
