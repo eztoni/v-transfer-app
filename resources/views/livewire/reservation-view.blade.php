@@ -143,7 +143,7 @@
                         <td>{{$this->reservation->flight_number}}</td>
                     </tr>
                     <tr>
-                        <td class="font-bold">Remarkxxx:</td>
+                        <td class="font-bold">Remark:</td>
                         <td><textarea rows="10" cols="55" readonly >{{$this->reservation->remark}}</textarea></td>
                     </tr>
                     </tbody>
