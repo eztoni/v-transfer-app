@@ -89,13 +89,7 @@ class ValamarFiskalizacija{
             $acc_opera_code = $opera_res_data[$reservation_code]['propertyOperaCode'];
             $acc_opera_class = $opera_res_data[$reservation_code]['propertyOperaClass'];
 
-            $owner_location = Point::where('pms_code','=',$acc_opera_code)
-                                    ->where('pms_class','=',$acc_opera_class)->get()->first();
-
-            if(!$owner_location){
-                $owner_location = Point::where('pms_code','=',$acc_opera_code)->get()->first();
-            }
-
+            $owner_location = $this->getOwnerLocation($acc_opera_code,$acc_opera_class);
 
             if($owner_location){
 
@@ -120,6 +114,7 @@ class ValamarFiskalizacija{
                         $price = $this->reservation->returnReservation->price;
                     }
 
+
                     $zki =   Fiskal::GenerateZKI(
                         Carbon::now(),
                         $owner->oib,
@@ -143,6 +138,8 @@ class ValamarFiskalizacija{
                     $amount = number_format($price/100,2,'.','');
 
                     $this->amount = $amount;
+
+
 
                     $response = Fiskal::Fiskal(
                         $this->reservation_id,
@@ -219,6 +216,55 @@ class ValamarFiskalizacija{
             );
         }
 
+    }
+
+    private function getOwnerLocation($acc_opera_code,$acc_opera_class){
+
+        $owner_location = false;
+
+        $owner_location = Point::where('pms_code','=',$acc_opera_code)
+            ->where('pms_class','=',$acc_opera_class)->get()->first();
+
+        if(!$owner_location){
+            $owner_location = Point::where('pms_code','=',$acc_opera_code)->get()->first();
+        }
+
+        if(empty($owner_location)){
+
+            $points = Point::all();
+            $candidates = array();
+
+            if(!empty($points)){
+                foreach($points as $point){
+
+                    $p_codes = explode(',',$point->pms_code);
+
+                    if(in_array($acc_opera_code,$p_codes)){
+                        $candidates[] = $point;
+                    }
+                }
+
+                if(!empty($candidates)){
+
+                    if(count($candidates) == 1){
+                        $owner_location = $candidates[0];
+                    }else{
+                        #Check if both code and class are  existent
+                        foreach($candidates as $candidate){
+                            if($candidate->pms_class == $acc_opera_class){
+                                $owner_location = $candidate;
+                            }
+                        }
+                    }
+
+
+
+                }
+            }
+
+        }
+
+        return $owner_location;
     }
 
     public function syncDocument(){
@@ -298,18 +344,14 @@ class ValamarFiskalizacija{
 
         $opera_res_data = $valamar_api->getReservationList();
 
+
         #Fetch the reservation from Opera
         if(!empty($opera_res_data[$reservation_code])){
 
             $acc_opera_code = $opera_res_data[$reservation_code]['propertyOperaCode'];
             $acc_opera_class = $opera_res_data[$reservation_code]['propertyOperaClass'];
 
-            $owner_location = Point::where('pms_code','=',$acc_opera_code)
-                                    ->where('pms_class','=',$acc_opera_class)->get()->first();
-
-            if(!$owner_location){
-                $owner_location = Point::where('pms_code','=',$acc_opera_code)->get()->first();
-            }
+            $owner_location = $this->getOwnerLocation($acc_opera_code,$acc_opera_class);
 
             if($owner_location){
 
