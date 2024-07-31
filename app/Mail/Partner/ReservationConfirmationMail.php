@@ -17,7 +17,9 @@ class ReservationConfirmationMail extends Mailable
 
         \App::setLocale('hr');
 
-        $this->subject('Potvrda rezervacije transfera #'.$reservation_id);
+        $subject = 'Potvrda rezervacije transfera #'.$reservation_id.' - '.$this->reservation->getAccommodationReservationCode();
+
+        $this->subject($subject);
 
         $pdf = PDF::loadView('attachments.voucher', ['reservation'=>$this->reservation])->setPaper('A4', 'portrait');
         $this->attachData($pdf->output(),"Voucher_{$reservation_id}.pdf");

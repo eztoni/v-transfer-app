@@ -18,7 +18,7 @@ class ReservationCancellationMail extends Mailable
 
         \App::setLocale('hr');
 
-        $this->subject('Otkaz rezervacije transfera #'.$reservation_id);
+        $this->subject('Otkaz rezervacije transfera #'.$reservation_id.' - '.$this->reservation->getAccommodationReservationCode());
 
         $pdf = PDF::loadView('attachments.voucher', ['reservation'=>$this->reservation]);
         $this->attachData($pdf->output(),"Voucher_{$reservation_id}.pdf");

@@ -14,15 +14,18 @@ class ReservationModificationMail extends Mailable
     {
         $this->reservation = Reservation::findOrFail($reservation_id);
         \App::setLocale('hr');
-
+        $res_code = $this->reservation->getAccommodationReservationCode();
         $display_id = $reservation_id;
 
         if($this->reservation->is_main != 1){
             $main_booking = Reservation::where('round_trip_id',$reservation_id)->get()->first();
+            $res_code = $main_booking->getAccommodationReservationCode();
             if(!empty($main_booking->status) && $main_booking->status == 'confirmed'){
                 $display_id = $main_booking->id;
             }
         }
+
+        $subject = 'Potvrda modifikacije transfera #'.$display_id.' - '.$res_code;
 
         $this->subject('Potvrda modifikacije transfera #'.$display_id);
 
