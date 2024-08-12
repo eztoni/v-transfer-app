@@ -98,8 +98,9 @@
                 placeholder="Select a role"
                 wire:model="userRole"
                 label="Role:"
+                option-key-value
                 :options="$roles->mapWithKeys(function ($i) {
-            return [$i->id => $i->name];
+            return [$i->name => $this->translateUserRole($i->name)];
         })->toArray()"
             />
 @error('*')

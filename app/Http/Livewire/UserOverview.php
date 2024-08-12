@@ -21,8 +21,6 @@ use Actions;
     public $userRole = '';
     public $selectedDestinations = [];
 
-
-
     protected function rules()
     {
         return [
@@ -155,13 +153,16 @@ use Actions;
 
         switch ($userRole){
             case User::ROLE_USER:
-                $return = 'VEC';
+                $return = 'VRC';
                 break;
             case User::ROLE_ADMIN:
                 $return = 'Administrator';
                 break;
             case User::ROLE_RECEPTION:
                 $return = 'Reception';
+                break;
+            case User::ROLE_REPORTAGENT:
+                $return = 'Report Agent';
                 break;
         }
         return $return;
