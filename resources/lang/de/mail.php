@@ -101,7 +101,7 @@ www.valamar-riviera.com Vorstandsvorsitzender: Željko Kukurin, Vorstandsmitglie
 
 
     'booking_confirmation' => [
-        'terms_and_conditions' => 'Dieses Erlebnis ist jetzt reserviert und Ihrer Unterkunftsreservierung hinzugefügt. Die Bezahlung erfolgt ausschließlich an der Hotelrezeption bei Begleichung der Übernachtungsrechnung. Valamar Riviera d.d. ist  Anbieter reservierter Dienstleistungen und übernimmt  Verantwortung für deren Ausführung. Weitere allgemeine Geschäftsbedingungen finden Sie unter https://www.valamar-experience.com/de/geschaftsbedingungen/3/',
+        'terms_and_conditions' => 'Dieses Erlebnis ist jetzt reserviert und Ihrer Unterkunftsreservierung hinzugefügt. Die Bezahlung erfolgt ausschließlich an der Hotelrezeption bei Begleichung der Übernachtungsrechnung. Valamar Riviera d.d. ist  Anbieter reservierter Dienstleistungen und übernimmt  Verantwortung für deren Ausführung. ',
     ],
 
     'invoice_no' => 'Rechnungsnummer',

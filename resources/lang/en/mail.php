@@ -124,7 +124,7 @@ If you have any special requests, feel free to reply to this e-mail.
 
 
     'booking_confirmation' => [
-        'terms_and_conditions' => 'This experience is now reserved and added to your accommodation reservation. Payment is made exclusively at the hotel reception when settling the bill for accommodation. Valamar Riviera d.d. is a provider of reserved services and takes responsibility for their execution. Find other general business conditions at https://www.valamar-experience.com/terms-and-conditions/3/',
+        'terms_and_conditions' => 'This experience is now reserved and added to your accommodation reservation. Payment is made exclusively at the hotel reception when settling the bill for accommodation. Valamar Riviera d.d. is a provider of reserved services and takes responsibility for their execution. ',
     ],
 
     'invoice_no' => 'Invoice Number',

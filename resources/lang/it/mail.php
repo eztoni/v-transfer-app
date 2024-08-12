@@ -93,7 +93,7 @@ In caso di domande, si rivolga direttamente a questa e-mail.
 
     ],
     'booking_confirmation' => [
-        'terms_and_conditions' => 'Questa esperienza è ora riservata e aggiunta alla prenotazione dell\'alloggio. Il pagamento si effettua esclusivamente presso la reception dell\'hotel previo saldo del conto del soggiorno. Valamar Riviera d.d. è un fornitore di servizi riservati e si assume alcuna responsabilità per la loro esecuzione. Puoi trovare condizioni più generali su https://www.valamar-experience.com/it/termini-e-condizioni/3/',
+        'terms_and_conditions' => 'Questa esperienza è ora riservata e aggiunta alla prenotazione dell\'alloggio. Il pagamento si effettua esclusivamente presso la reception dell\'hotel previo saldo del conto del soggiorno. Valamar Riviera d.d. è un fornitore di servizi riservati e si assume alcuna responsabilità per la loro esecuzione. ',
     ],
 
     'invoice_no' => 'Numero di fattura',

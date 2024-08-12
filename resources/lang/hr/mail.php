@@ -95,7 +95,7 @@ www.valamar-riviera.com, Predsjednik Uprave: Željko Kukurin, članovi Uprave: M
 
 
     'booking_confirmation' => [
-        'terms_and_conditions' => 'Ovaj je doživljaj sada rezerviran i dodan vašoj rezervaciji smještaja. Plaćanje se vrši isključivo na recepciji hotela prilikom podmirenja računa za smještaj. Valamar Riviera d.d. je pružatelj rezerviranih usluga i preuzima odgovornost vezano uz izvršenje istih. Ostale opće uvjete poslovanja nađite na https://www.valamar-experience.com/hr/uvjeti-i-odredbe/3/',
+        'terms_and_conditions' => 'Ovaj je doživljaj sada rezerviran i dodan vašoj rezervaciji smještaja. Plaćanje se vrši isključivo na recepciji hotela prilikom podmirenja računa za smještaj. Valamar Riviera d.d. je pružatelj rezerviranih usluga i preuzima odgovornost vezano uz izvršenje istih. ',
     ],
     'special_taxing' => 'Posebni postupak oporezivanja putničkih agencija sukladno čl. 91. Zakona o PDV-u',
     'invoice_no' => 'Broj Računa',
