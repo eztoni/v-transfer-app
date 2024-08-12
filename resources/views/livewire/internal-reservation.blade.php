@@ -919,6 +919,12 @@
             <livewire:show-reservation-status  :reservation="$this->reservationStatus"/>
         </x-modal.card>
     @endif
+
+    @if($reservationWarningModal)
+        <x-modal.card wire:model="reservationWarningModal"  title="Transfer Already Downloaded">
+            <livewire:show-reservation-warning :reservation="$this->duplicateBooking" />
+        </x-modal.card>
+    @endif
 </div>
 
 <script>

@@ -168,6 +168,10 @@
                 </button>
                 <br/><br/>
                 <x-button success xs wire:click="openReservationStatusModal({{$reservation->id}})">View Status Breakdown</x-button>
+                @if($modifications = $reservation->getRawModifications())
+                    <x-button success xs wire:click="openReservationHistoryModal({{$reservation->id}})">View Reservation History</x-button>
+                @endif
+
 
                 @if($reservation->resolved == 1)
                     <br/>
@@ -300,6 +304,12 @@
     @if($reservationStatusModal)
         <x-modal.card wire:model="reservationStatusModal"  title="Reservation Status Breakdown #{{$this->reservation->id}}">
             <livewire:show-reservation-status  :reservation="$this->reservation" :review="true" />
+        </x-modal.card>
+    @endif
+
+    @if($reservationHistoryModal)
+        <x-modal.card wire:model="reservationHistoryModal"  title="Reservation History Breakdown #{{$this->reservation->id}}">
+            <livewire:show-reservation-history  :reservation="$this->reservation"  />
         </x-modal.card>
     @endif
 

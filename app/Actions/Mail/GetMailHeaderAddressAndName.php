@@ -29,7 +29,7 @@ class GetMailHeaderAddressAndName
                             $header .= "<i>Normativa sulla Privacy: https://www.valamar.com/it/normativa-sulla-privacy</i>";
                             break;
                       case 'en':
-                          $header .= "<i>Privacy policy: https://valamar-riviera.com/en/privacy-policy/</i>";
+                          $header .= "<i>Privacy policy: https://valamar.com/en/privacy-policy/</i>";
                           break;
                       case 'hr':
                           $header .= "<i>Politika Privatnosti: https://www.valamar.com/hr/izjava-o-privatnosti</i>";
@@ -59,7 +59,7 @@ class GetMailHeaderAddressAndName
                         $header .= "<i>Normativa sulla Privacy: https://www.valamar.com/it/normativa-sulla-privacy</i>";
                         break;
                     case 'en':
-                        $header .= "<i>Privacy policy: https://valamar-riviera.com/en/privacy-policy/</i>";
+                        $header .= "<i>Privacy policy: https://valamar.com/en/privacy-policy/</i>";
                         break;
                     case 'hr':
                         $header .= "<i>Politika Privatnosti: https://www.valamar.com/hr/izjava-o-privatnosti</i>";

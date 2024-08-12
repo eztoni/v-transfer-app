@@ -163,7 +163,7 @@ use Actions;
                 $array[$mod] = 1;
             }
             $array['sent'] = 0;
-            $array['updated_by'] = 1;
+            $array['updated_by'] = Auth::id();
 
             \DB::table('reservation_modification')->insert(
                 $array

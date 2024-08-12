@@ -23,6 +23,7 @@ use Actions;
     public bool $documentSyncModal = false;
     public bool $fiskalSyncModal = false;
     public bool $reservationStatusModal = false;
+    public bool $reservationHistoryModal = false;
 
     public array $syncLog;
 
@@ -105,6 +106,11 @@ use Actions;
 
     public function openReservationStatusModal($id){
         $this->reservationStatusModal = true;
+        $this->reservation = Reservation::findOrFail($id);
+    }
+
+    public function openReservationHistoryModal($id){
+        $this->reservationHistoryModal = true;
         $this->reservation = Reservation::findOrFail($id);
     }
 

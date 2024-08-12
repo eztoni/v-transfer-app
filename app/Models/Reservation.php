@@ -1011,6 +1011,92 @@ class Reservation extends Model
         );
     }
 
+    public function getRawModifications(){
+
+        $return = false;
+
+        if($this->is_main){
+
+            $logs = \DB::table('reservation_modification')->where('reservation_id','=',$this->id)->get();
+
+            if(!empty($logs)){
+                foreach($logs as $log){
+
+                    if($return === false){
+                        $return = array();
+                    }
+
+                    $return[$this->id][$log->updated_time]['modifications'] = array();
+
+                    if($log->updated_by == 1){
+                        $user_update = 'Valamar';
+                    }else{
+                        $user_update = User::findOrFail($log->updated_by)->name;
+                    }
+
+                    $return[$this->id][$log->updated_time]['updated_by_user'] = $user_update;
+
+                    foreach($log as $parameter => $value){
+
+                        if($value == 1 && $parameter != 'updated_by' && $parameter != 'sent'){
+
+                            if(isset($return[$this->id])){
+                                if(!in_array(self::MOD_FIELD_TRANSLATIONS[$parameter],$return[$this->id][$log->updated_time]['modifications'])){
+                                    $return[$this->id][$log->updated_time]['modifications'][] = self::MOD_FIELD_TRANSLATIONS[$parameter];
+                                }
+                            }else{
+                                $return[$this->id][$log->updated_time]['modifications'][] = self::MOD_FIELD_TRANSLATIONS[$parameter];
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            if($this->isRoundTrip() && $this->returnReservation->status == 'confirmed'){
+
+                $logs = \DB::table('reservation_modification')->where('reservation_id','=',$this->returnReservation)->get();
+
+                if(!empty($logs)){
+                    foreach($logs as $log){
+
+                        if($return === false){
+                            $return = array();
+                        }
+
+                        $return[$this->id][$log->updated_time]['modifications'] = array();
+
+                        if($log->updated_by == 1){
+                            $user_update = 'Valamar';
+                        }else{
+                            $user_update = User::findOrFail($log->updated_by)->name;
+                        }
+
+                        $return[$this->returnReservation->id][$log->updated_time]['updated_by_user'] = $user_update;
+
+                        foreach($log as $parameter => $value){
+
+                            if($value == 1 && $parameter != 'updated_by' && $parameter != 'sent'){
+
+                                if(isset($return[$this->id])){
+                                    if(!in_array(self::MOD_FIELD_TRANSLATIONS[$parameter],$return[$this->returnReservation->id][$log->updated_time]['modifications'])){
+                                        $return[$this->returnReservation->id][$log->updated_time]['modifications'][] = self::MOD_FIELD_TRANSLATIONS[$parameter];
+                                    }
+                                }else{
+                                    $return[$this->returnReservation->id][$log->updated_time]['modifications'][] = self::MOD_FIELD_TRANSLATIONS[$parameter];
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        return $return;
+    }
+
     public function hasModifications(){
 
         $return = false;

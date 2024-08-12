@@ -219,6 +219,8 @@ class InternalReservation extends Component
 
     public Reservation|null $reservationStatus = null;
     public bool $reservationStatusModal = false;
+
+    public bool $reservationWarningModal = false;
     public bool $roundTrip = false;
     public int $step = 1;
     public $selectedTransfer = null;
@@ -228,7 +230,7 @@ class InternalReservation extends Component
     public $activateExtras = false;
     public $emailList = array();
     public $completeReservation = 'Complete Reservation';
-
+    public $duplicateBooking = false;
     public function getExtrasProperty()
     {
         return Extra::getExtrasByPartnerIdWithPrice($this->selectedPartner, ['media']);
@@ -467,8 +469,8 @@ class InternalReservation extends Component
 
     public function pullData()
     {
-        $this->validate($this->pullDataRules(), [], $this->pullDataFieldNames);
 
+        $this->validate($this->pullDataRules(), [], $this->pullDataFieldNames);
 
         $api = new \App\Services\Api\ValamarClientApi();
 
@@ -491,6 +493,14 @@ class InternalReservation extends Component
     public function openPullModal()
     {
         $this->pullModal = true;
+    }
+
+    public function openWarningModal(){
+        $this->reservationWarningModal = true;
+    }
+
+    public function closeWarningModal(){
+        $this->reservationWarningModal = true;
     }
 
     public function closePullModal()
@@ -547,6 +557,39 @@ class InternalReservation extends Component
         $this->setOtherTravellers();
 
         $this->closePullModal();
+
+        $this->checkExistingBooking($i);
+
+    }
+
+    private function checkExistingBooking($reservation_code){
+
+        $reservation_code = "ph20169181";
+
+        $booking = \DB::table('travellers')->where('reservation_number',$reservation_code)->first();
+
+        if(!empty($booking)){
+
+            $traveller_id = $booking->id;
+
+            $reservation_traveller = \DB::table('reservation_traveller')->where('traveller_id',$traveller_id)->first();
+
+            if(!empty($reservation_traveller)){
+                $res_id = $reservation_traveller->reservation_id;
+
+                if((int)$res_id > 0){
+
+
+                    $reservation = Reservation::find($res_id);
+
+                    if(!empty($reservation)){
+                        $this->duplicateBooking = $reservation;
+                        $this->openWarningModal();
+                    }
+                }
+            }
+
+        }
     }
 
     //reset the points when we change destination
