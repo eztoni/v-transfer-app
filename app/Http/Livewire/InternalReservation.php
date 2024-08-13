@@ -564,8 +564,6 @@ class InternalReservation extends Component
 
     private function checkExistingBooking($reservation_code){
 
-        $reservation_code = "ph20169181";
-
         $booking = \DB::table('travellers')->where('reservation_number',$reservation_code)->first();
 
         if(!empty($booking)){
