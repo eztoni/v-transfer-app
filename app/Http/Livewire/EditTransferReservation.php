@@ -8,6 +8,7 @@ use App\Models\Reservation;
 use Carbon\Carbon;
 use Livewire\Component;
 use WireUi\Traits\Actions;
+use Illuminate\Support\Facades\Auth;
 
 
 class EditTransferReservation extends Component
