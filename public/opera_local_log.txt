@@ -1,0 +1,28 @@
+[2024-07-01 10:08:21]
+Array
+(
+    [SysUser] => VGEAPI
+    [SysPass] => V3cVa1aMa2019@123
+    [Resort] => IHLAC
+    [PMSReservationID] => 19120754
+    [TransactionID] => 3116
+    [Packages] => Array
+        (
+            [0] => Array
+                (
+                    [Quantity] => 1
+                    [PackageID] => 6216
+                    [PricePerUnit] => 58.00
+                    [PackageType] => ARTICLE
+                    [ExternalCartID] => 3116
+                    [ExternalCartItemID] => 3116
+                    [StartDate] => 2024-07-08
+                    [EndDate] => 2024-07-08
+                    [Comment] => Transfer:Time: 07:45 From: Airport Čilipi To: Dubrovnik Flight Number: EZS1505 Remark: Baggage number: 2x23kg
+                )
+
+        )
+
+)
+
+

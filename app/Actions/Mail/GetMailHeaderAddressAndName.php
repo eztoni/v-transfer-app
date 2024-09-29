@@ -14,7 +14,6 @@ class GetMailHeaderAddressAndName
 
         switch ($reservation->destination->owner_id){
             case 1:
-            case 2:
                 $header = "Valamar Riviera d.d<br/>
 
                     Stancija Kaligari 1<br/>
@@ -40,11 +39,11 @@ class GetMailHeaderAddressAndName
                   }
 
                 break;
-            case 55:
+            case 2:
+            case 3:
                 $header = "Valamar Riviera d.d<br/>
                     Stancija Kaligari 1<br/>
                     Poreč, Republika Hrvatska<br/>
-                   <br/>
                    OIB: 36201212847
                    <br/>
                    <i>On behalf of and for the account</i><br/>

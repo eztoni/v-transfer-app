@@ -874,7 +874,7 @@
                             <x-card>
                                 <x-toggle
                                     lg
-                                    wire:model.defer="stepTwoFields.vlevelrateplanReservation"
+                                    wire:model="stepTwoFields.vlevelrateplanReservation"
                                 label="V Level Rate Plan Reservation"
                                 ></x-toggle>
                             <hr class="my-4">

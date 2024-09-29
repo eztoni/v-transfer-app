@@ -266,6 +266,8 @@ class InternalReservation extends Component
     public function saveReservation()
     {
 
+        dd($this->stepTwoFields);
+
         $this->validate($this->stepTwoRules(), [], $this->fieldNames);
 
         $this->completeReservation = 'Saving Reservation ...';
@@ -380,6 +382,8 @@ class InternalReservation extends Component
 
     public function updated($property)
     {
+
+
         $this->validateOnly($property, array_merge($this->stepOneRules(), $this->stepTwoRules()), [], $this->fieldNames);
 
 
@@ -422,20 +426,23 @@ class InternalReservation extends Component
 
         }
 
-        if(preg_match('!VL!',$this->stepOneFields['rate_plan'])){
-            if($this->stepTwoFields['vlevelrateplanReservation'] == false){
-                $this->stepTwoFields['vlevelrateplanReservation'] = true;
-                $this->getAvailableTransfersProperty();
-            }
-        }else{
 
-            if($this->stepTwoFields['vlevelrateplanReservation'] == true){
-                $this->stepTwoFields['vlevelrateplanReservation'] = false;
-                $this->getAvailableTransfersProperty();
-            }
+        //Special Case - overriden V Level Rate Plan
+        if($property != 'stepTwoFields.vlevelrateplanReservation'){
+            if(preg_match('!VL!',$this->stepOneFields['rate_plan'])){
+                if($this->stepTwoFields['vlevelrateplanReservation'] == false){
+                    $this->stepTwoFields['vlevelrateplanReservation'] = true;
+                    $this->getAvailableTransfersProperty();
+                }
+            }else{
 
+                if($this->stepTwoFields['vlevelrateplanReservation'] == true){
+                    $this->stepTwoFields['vlevelrateplanReservation'] = false;
+                    $this->getAvailableTransfersProperty();
+                }
+
+            }
         }
-
     }
 
     public function resetAdresses()

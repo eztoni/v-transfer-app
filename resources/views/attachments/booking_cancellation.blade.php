@@ -4,7 +4,6 @@ $locale = app()->getLocale();
 
 $res_type = $reservation->isRoundTrip() ? '2' : '1';
 
-
 $locale_configuration = array(
     'hr' => array(
         1 => array(
@@ -56,6 +55,61 @@ $locale_configuration = array(
     )
 );
 
+
+if($reservation->destination->owner_id > 1){
+
+    $locale_configuration = array(
+        'hr' => array(
+            1 => array(
+                'footer-font-size' => 6,
+                'footer-upper-padding' => 15,
+                'footer-above-padding' => 0
+            ),
+            2 => array(
+                'footer-font-size' => 3.2,
+                'footer-upper-padding' => 0,
+                'footer-above-padding' => 10
+            )
+        ),
+        'en' => array(
+            1 => array(
+                'footer-font-size' => 6,
+                'footer-upper-padding' => 15,
+                'footer-above-padding' => 0
+            ),
+            2 => array(
+                'footer-font-size' => 3.2,
+                'footer-upper-padding' => 0,
+                'footer-above-padding' => 10
+            )
+        ),
+        'de' => array(
+            1 => array(
+                'footer-font-size' => 5,
+                'footer-upper-padding' => 15,
+                'footer-above-padding' => 0
+            ),
+            2 => array(
+                'footer-font-size' => 3.2,
+                'footer-upper-padding' => 0,
+                'footer-above-padding' => 5
+            )
+        ),
+        'it' => array(
+            1 => array(
+                'footer-font-size' => 5,
+                'footer-upper-padding' => 15,
+                'footer-above-padding' => 0
+            ),
+            2 => array(
+                'footer-font-size' => 3.2,
+                'footer-upper-padding' => 0,
+                'footer-above-padding' => 10
+            )
+        )
+    );
+}
+
 ?>
 <x-mail.layouts.main>
 
@@ -78,7 +132,7 @@ $locale_configuration = array(
     <x-mail.body>
 
         <x-mail.logo>
-            <div class="" style="padding: 3px 25px 0 0; text-align: right ;width: 100%;font-size:12px">
+            <div class="" style="padding: 3px 25px 0 0; text-align: right ;width: 100%;font-size:10px">
                 <p style="width: 100%">
                     {!! \App\Actions\Mail\GetMailHeaderAddressAndName::run($reservation) !!}
                     <br/>
@@ -242,7 +296,7 @@ $locale_configuration = array(
             <div class="" style="padding-top: 10px;"></div>
         </x-mail.footer>
         <x-mail.logo>
-            <div class="" style="padding: 3px 25px 0 0; text-align: right ;width: 100%;font-size:12px">
+            <div class="" style="padding: 3px 25px 0 0; text-align: right ;width: 100%;font-size:10px">
                 <p style="width: 100%">
                     {!! \App\Actions\Mail\GetMailHeaderAddressAndName::run($reservation) !!}
                     <br/>

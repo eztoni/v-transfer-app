@@ -70,6 +70,66 @@
         )
     );
 
+    if($reservation->destination->owner_id > 1){
+        $locale_configuration = array(
+            'hr' => array(
+                1 => array(
+                    'footer-font-size' => 7,
+                    'footer-upper-padding' => 10
+                ),
+                2 => array(
+                    'footer-font-size' => 5,
+                    'footer-upper-padding' => 10
+                ),
+                3 => array(
+                    'footer-font-size' => 4,
+                    'footer-upper-padding' => 5
+                )
+            ),
+            'en' => array(
+                1 => array(
+                    'footer-font-size' => 7,
+                    'footer-upper-padding' => 10
+                ),
+                2 => array(
+                    'footer-font-size' => 5,
+                    'footer-upper-padding' => 10
+                ),
+                3 => array(
+                    'footer-font-size' => 4,
+                    'footer-upper-padding' => 5
+                )
+            ),
+            'de' => array(
+                1 => array(
+                    'footer-font-size' => 6,
+                    'footer-upper-padding' => 10
+                ),
+                2 => array(
+                    'footer-font-size' => 5,
+                    'footer-upper-padding' => 10
+                ),
+                3 => array(
+                    'footer-font-size' => 4,
+                    'footer-upper-padding' => 5
+                )
+            ),
+            'it' => array(
+                1 => array(
+                    'footer-font-size' => 5,
+                    'footer-upper-padding' => 10
+                ),
+                2 => array(
+                    'footer-font-size' => 4,
+                    'footer-upper-padding' => 10
+                ),
+                3 => array(
+                    'footer-font-size' => 4,
+                    'footer-upper-padding' => 5
+                )
+            )
+        );
+    }
 ?>
 <x-mail.layouts.main>
 
@@ -92,7 +152,7 @@
     <x-mail.body>
 
         <x-mail.logo>
-            <div class="" style="padding: 3px 25px 0 0; text-align: right ;width: 100%;font-size:12px">
+            <div class="" style="padding: 3px 25px 0 0; text-align: right ;width: 100%;font-size:10px">
                 <p style="width: 100%">
                     {!! \App\Actions\Mail\GetMailHeaderAddressAndName::run($reservation) !!}
                     <br/>
@@ -258,7 +318,7 @@
             <div class="" style="padding-top: 10px;"></div>
         </x-mail.footer>
         <x-mail.logo>
-            <div class="" style="padding: 3px 25px 0 0; text-align: right ;width: 100%;font-size:12px">
+            <div class="" style="padding: 3px 25px 0 0; text-align: right ;width: 100%;font-size:9px">
                 <p style="width: 100%">
                     {!! \App\Actions\Mail\GetMailHeaderAddressAndName::run($reservation) !!}
                     <br/>
