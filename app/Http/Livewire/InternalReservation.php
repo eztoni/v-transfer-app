@@ -265,9 +265,7 @@ class InternalReservation extends Component
 
     public function saveReservation()
     {
-
-        dd($this->stepTwoFields);
-
+        
         $this->validate($this->stepTwoRules(), [], $this->fieldNames);
 
         $this->completeReservation = 'Saving Reservation ...';
