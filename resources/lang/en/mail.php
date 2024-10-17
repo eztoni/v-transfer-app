@@ -158,6 +158,7 @@ If you have any special requests, feel free to reply to this e-mail.
     'special_taxing' => 'Special procedure for the taxation of travel agencies pursuant to Article 91 of the VAT Act.',
     'gdpr_title' => 'INFORMATION ON PERSONAL DATA WHEN PURCHASING OR RESERVING VALAMAR EXPERIENCE CONCIERGE SERVICES',
     'gdpr_1' => 'Manager of personal data processing: Valamar Riviera d.d., Republic of Croatia, Poreč, Stancija Kaligari 1',
+    'gdpr_1_imp' => 'Manager of personal data processing: Valamar Riviera d.d., Republic of Croatia, Poreč, Stancija Kaligari 1 and Imperial Riviera d.d., Republic of Croatia, Rab,  Jurja Barakovića 2',
     'gdpr_2' => 'Transfer of data to other processors: Some of your personal data Valamar Riviera d.d. will, if necessary, deliver experiences and goods to those companies that offer certain services for the execution of the contract, that is, organize experiences that you have purchased or booked, and in the case of delivery of goods to delivery services.',
     'gdpr_3' => 'Purpose: purchase or reservation of services, experiences and goods.',
     'gdpr_4' => 'Legal basis: performance of the contract or reservation',

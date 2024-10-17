@@ -134,6 +134,7 @@ ADDIKO BANK d.d. Zagreb IBAN HR 2625000091101024767, SWIFT: HAABHR22; ZAGREBAČK
     'voucher_number' => 'Broj Vaučera',
     'gdpr_title' => 'INFORMACIJE O OSOBNIM PODACIMA PRILIKOM KUPNJE ODNOSNO REZERVACIJE USLUGA VALAMAR EXPERIENCE CONCIERGE-A',
     'gdpr_1' => 'Voditelj obrade osobnih podataka: Valamar Riviera d.d., Republika Hrvatska, Poreč, Stancija Kaligari 1',
+    'gdpr_1_imp' => 'Voditelj obrade osobnih podataka: Valamar Riviera d.d., Republika Hrvatska, Poreč, Stancija Kaligari 1 i Imperial Riviera d.d., Republika Hrvatska, Rab, Jurja Barakovića 2',
     'gdpr_2' => 'Prosljeđivanje podataka drugim voditeljima obrade: Neke Vaše osobne podatke Valamar Riviera d.d. će po potrebi, radi izvršenja ugovora, dostaviti onim  društvima koja  nude pojedine usluge, doživljaje i robu odnosno organiziraju doživljaje koje ste kupili odnosno rezervirali, a u slučaju dostave robe i dostavnim službama.',
     'gdpr_3' => 'Svrha: kupnja odnosno rezervacija usluga, doživljaja i robe.',
     'gdpr_4' => 'Pravna osnova: izvršenje ugovora odnosno rezervacije',

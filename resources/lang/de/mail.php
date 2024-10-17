@@ -135,6 +135,7 @@ Im Falle von besonderen Forderungen Ihrerseits, können Sie diese im Nachgang zu
     'voucher_number' => 'Gutschein-Nr.',
     'gdpr_title' => 'INFORMATIONEN ZU PERSONENBEZOGENEN DATEN BEIM KAUF ODER RESERVIERUNG DER SERVICES VON VALAMAR EXPERIENCE CONCIERGE',
     'gdpr_1' => 'Verantwortlicher für die Verarbeitung personenbezogener Daten: Valamar Riviera d.d., Republik Kroatien, Poreč, Stancija Kaligari 1',
+    'gdpr_1_imp' => 'Verantwortlicher für die Verarbeitung personenbezogener Daten: Valamar Riviera d.d., Republik Kroatien, Poreč, Stancija Kaligari 1 und Imperial Riviera d.d., Republik Kroatien, Rab,  Jurja Barakovića 2',
     'gdpr_2' => 'Datenaustausch mit anderen Datenverantwortlichen: Einige Ihrer personenbezogenen Daten Valamar Riviera d.d. kann zur Abwicklung von Verträgen an Unternehmen liefern, die bestimmte Dienstleistungen, Erlebnisse und Waren anbieten, d. h. die von Ihnen erworbenen oder gebuchten Erlebnisse organisieren und im Falle der Lieferung von Waren an Lieferdienste.',
     'gdpr_3' => 'Zweck: Kauf oder Reservierung von Dienstleistungen, Erlebnissen und Waren.',
     'gdpr_4' => 'Rechtsgrundlage: Vertragsabwicklung bzw. Reservierung',

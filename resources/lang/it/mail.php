@@ -133,6 +133,7 @@ In caso di domande, si rivolga direttamente a questa e-mail.
     'voucher_number' => 'Numero voucher',
     'gdpr_title' => 'INFORMAZIONI SUI DATI PERSONALI ALL\'ACQUISTO O ALLA PRENOTAZIONE DEI SERVIZI VALAMAR EXPERIENCE CONCIERGE',
     'gdpr_1' => 'Responsabile del trattamento dei dati personali: Valamar Riviera d.d., Repubblica di Croazia, Parenzo, Stancija Kaligari 1',
+    'gdpr_1_imp' => 'Responsabile del trattamento dei dati personali: Valamar Riviera d.d., Repubblica di Croazia, Parenzo, Stancija Kaligari 1 e Imperial Riviera d.d., Repubblica di Croazia, Rab,  Jurja Barakovića 2',
     'gdpr_2' => 'Inoltro dei dati ad altri responsabili del trattamento: alcuni dei vostri dati personali Valamar Riviera d.d. provvederà, se necessario, ai fini dell\'esecuzione del contratto, a consegnare a quelle società che offrono determinati servizi, esperienze e beni, ovvero ad organizzare le esperienze che hai acquistato o prenotato e, in caso di consegna di beni, ai servizi di consegna.',
     'gdpr_3' => 'Obiettivo: acquisto o prenotazione di servizi, esperienze e merce.',
     'gdpr_4' => 'Base giuridica: esecuzione del contratto o prenotazione',

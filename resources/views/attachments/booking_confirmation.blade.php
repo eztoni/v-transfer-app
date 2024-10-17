@@ -334,7 +334,12 @@
             <p style="font-size: 11px !important"><b>{{__('mail.gdpr_title')}}:</b></p>
             <br>
             <ul style="font-size: 11px !important;  list-style-type: circle;" >
-                <li style="margin-left:2%">{{__('mail.gdpr_1')}}</li>
+                @if($reservation->destination->owner_id == 2)
+                    <li style="margin-left:2%">{{__('mail.gdpr_1_imp')}}</li>
+                @else
+                    <li style="margin-left:2%">{{__('mail.gdpr_1')}}</li>
+                @endif
+
                 <li style="margin-left:2%">{{__('mail.gdpr_2')}}</li>
                 <li style="margin-left:2%">{{__('mail.gdpr_3')}}</li>
                 <li style="margin-left:2%">{{__('mail.gdpr_4')}}</li>
