@@ -127,6 +127,7 @@ ADDIKO BANK d.d. Zagreb IBAN HR 2625000091101024767, SWIFT: HAABHR22; ZAGREBAČK
     'reservation_cancellation' => 'Otkaz rezervacije',
     'telephone' => 'Telefon',
     'flight_time' => 'Vrijeme Leta',
+    'flight_pickup_time' => 'Preuzimanje gosta',
     'issue_location' => 'Mjesto izdavanja',
     'issue_date_and_time' => 'Datum i vrijeme izdavanja',
     'operator' => 'Operater',
