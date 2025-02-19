@@ -1,3 +1,6 @@
+<?php
+use Carbon\Carbon;
+?>
 <x-mail.layouts.main>
 
     <x-slot name="head_after">
@@ -81,14 +84,22 @@
                 {{__('mail.transfer_itinerary')}}
                 </span>
             </h3>
-            @if($reservation->status == 'confirmed')
+            @if($reservation->status == 'confirmed' || $reservation->status == 'cancelled')
                 <p style="font-size: 14px"><b>{{__('mail.pickup_date')}}: </b> {{$reservation->date_time->format('d.m.Y')}}
                 </p>
                 @if($reservation->flight_number)
                     <p style="font-size: 14px"><b>{{__('mail.flight_number')}}:</b> {{$reservation->flight_number}}</p>
                 @endif
-                <p style="font-size: 14px"><b>{{__('mail.pickup_address')}}: </b> {{$reservation->pickup_address}}</p>
                 <p style="font-size: 14px"><b>{{__('mail.flight_time')}}: </b> {{$reservation->date_time->format('H:i')}}
+
+
+                <p style="font-size: 14px"><b>{{__('mail.pickup_address')}}: </b> {{$reservation->pickup_address}}</p>
+                @if($reservation->flight_pickup_time)
+
+                    @if($reservation->is_main == 1 && $reservation->pickupAddress->type == 'accommodation')
+                        <p style="font-size: 14px"><b>{{__('mail.flight_pickup_time')}}:</b> {{Carbon::parse($reservation->flight_pickup_time)->format('d.m.Y @ H:i')}}</p>
+                    @endif
+                @endif
                 </p>
                 <p style="font-size: 14px"><b>{{__('mail.dropoff_address')}}: </b> {{$reservation->dropoff_address}}</p>
                 @if($reservation->transfer?->vehicle?->type)
@@ -112,6 +123,7 @@
                 @endif
 
                 @if($reservation->remark)
+                    <br/>
                     <p style="font-size: 14px"><b>{{__('mail.remark')}}:</b> {{$reservation->remark}}</p>
                 @endif
             @endif
@@ -124,19 +136,62 @@
 
                 <p style="font-size: 14px"><b>{{__('mail.pickup_date')}}
                         : </b> {{$reservation->returnReservation->date_time->format('d.m.Y')}}</p>
-                @if($reservation->flight_number)
+                @if($reservation->returnReservation->flight_number)
                     <p style="font-size: 14px"><b>{{__('mail.flight_number')}}
                             :</b> {{$reservation->returnReservation->flight_number}}</p>
                 @endif
+
+                    <p style="font-size: 14px"><b>{{__('mail.flight_time')}}
+                            : </b> {{$reservation->returnReservation->date_time->format('H:i')}}</p>
+
                 <p style="font-size: 14px"><b>{{__('mail.pickup_address')}}
                         : </b> {{$reservation->returnReservation->pickup_address}}</p>
+                    @if($reservation->returnReservation->flight_pickup_time)
 
-                <p style="font-size: 14px"><b>{{__('mail.flight_time')}}
-                        : </b> {{$reservation->returnReservation->date_time->format('H:i')}}</p>
+                        @php
+
+                        $out = false;
+
+                        $main_reservation =  \App\Models\Reservation::where('round_trip_id',$reservation->returnReservation->id)->get()->first();
+
+                        if($main_reservation){
+                            if($main_reservation->pickupAddress->type == 'airport'){
+                                $out = true;
+                            }
+                        }
+
+                        @endphp
+                            @if($out)
+                                <p style="font-size: 14px"><b>{{__('mail.flight_pickup_time')}}:</b> {{Carbon::parse($reservation->returnReservation->flight_pickup_time)->format('d.m.Y @ H:i')}}</p>
+                            @endif
+                    @endif
 
                 <p style="font-size: 14px"><b>{{__('mail.dropoff_address')}}
                         : </b> {{$reservation->returnReservation->dropoff_address}}</p>
+                    @if($reservation->returnReservation->transfer?->vehicle?->type)
+                        <p style="font-size: 14px"><b>{{__('mail.vehicle_type')}}
+                                : </b> {{$reservation->returnReservation->transfer->vehicle->type}}</p>
+                    @endif
 
+                    @if(count($reservation->returnReservation->extras) > 0)
+                        <p style="font-size: 14px"><b>{{__('mail.extras')}}
+                                : </b> {{$reservation->returnReservation->get_extras_list()}}
+
+                        </p>
+                    @endif
+
+                    @if(count($reservation->returnReservation->child_seats) > 0)
+                        <b>{{__('mail.seats')}}
+                            : </b>
+                        @foreach($reservation->returnReservation->child_seats as $seat)
+                            <p style="font-size: 14px">{{\App\Models\Transfer::CHILD_SEATS[$seat]}}</p>
+                        @endforeach
+                    @endif
+
+                    @if($reservation->returnReservation->remark)
+                        <br/>
+                        <p style="font-size: 14px"><b>{{__('mail.remark')}}:</b> {{$reservation->returnReservation->remark}}</p>
+                    @endif
             @endif
 
         </x-mail.row>

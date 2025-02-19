@@ -52,6 +52,14 @@ class ValamarOperaApi{
 
         $this->reservation = Reservation::findOrFail($reservation_id);
 
+        if($this->reservation->isVLevelReservation()){
+
+            $valamarAlertAPI = new ValamarAlertApi();
+            $valamarAlertAPI->setReservation($this->reservation);
+            $valamarAlertAPI->sendAlert();
+            return true;
+        }
+
         $this->validateReservationMapping();
 
         if(empty($this->errors)){
@@ -59,7 +67,6 @@ class ValamarOperaApi{
             $this->buildCoreRequestStruct();
 
             $this->request['Packages'] = $this->buildReservationPackages($this->reservation);
-            
 
             if(empty($this->errors)){
                 $this->sendOperaRequest();
@@ -794,7 +801,7 @@ class ValamarOperaApi{
 
         }
 
-        $money = new Money($total,new Currency('EUR'));
+        $money = new Money($reservation->price,new Currency('EUR'));
 
         return number_format($money->getAmount()/100, 2, '.', '');
     }

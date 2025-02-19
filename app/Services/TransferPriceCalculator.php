@@ -36,6 +36,7 @@ class TransferPriceCalculator
         $this->routeId = $routeId;
         $this->roundTrip = $roundTrip;
         $this->extraIds = $extraIds;
+
         $this->setPriceData();
         $this->setExtrasPriceData();
         $this->calculatePrice();
@@ -70,9 +71,19 @@ class TransferPriceCalculator
             return null;
         }
 
-        $price = Money::EUR(
-            $this->priceData->price
-        );
+        if($this->roundTrip){
+
+            $roundTripPrice = $this->priceData->price_round_trip/2;
+
+            $price = Money::EUR(
+                $roundTripPrice
+            );
+
+        }else{
+            $price = Money::EUR(
+                $this->priceData->price
+            );
+        }
 
         $this->breakdownArray[] = [
             'item' => 'transfer_price',
@@ -83,18 +94,27 @@ class TransferPriceCalculator
         /** @var ExtraPartner $exPrice */
         foreach ($this->extrasPriceData as $exPrice) {
 
+            $extra_quantity = !empty($this->extraIds[$exPrice->extra_id]) ? $this->extraIds[$exPrice->extra_id] : 0;
+
             $money = Money::EUR(
                 $exPrice->price
             );
-            $this->breakdownArray[] = [
-                'item' => 'extra',
-                'item_id' => $exPrice->extra->id,
-                'model' => $exPrice->extra->toArray(),
-                'amount' => $money,
-                'price_data' => $exPrice->withoutRelations()->toArray()
-            ];
 
-            $price = $price->add($money->getMoney());
+            if($extra_quantity > 0){
+
+                for($i = 0;$i < $extra_quantity;$i++){
+
+                    $this->breakdownArray[] = [
+                        'item' => 'extra',
+                        'item_id' => $exPrice->extra->id,
+                        'model' => $exPrice->extra->toArray(),
+                        'amount' => $money,
+                        'price_data' => $exPrice->withoutRelations()->toArray()
+                    ];
+
+                    $price = $price->add($money->getMoney());
+                }
+            }
         }
 
         $this->price = $price;
@@ -125,8 +145,9 @@ class TransferPriceCalculator
     {
         $this->extrasPriceData =  ExtraPartner::where('partner_id', $this->partnerId)
             ->with('extra')
-            ->whereIn('extra_id', $this->extraIds)
+            ->whereIn('extra_id', array_keys($this->extraIds))
             ->get();
+
     }
 
     /**

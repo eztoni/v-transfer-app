@@ -485,32 +485,57 @@
             <div class="mb-2">
 
                 <x-card title="Transfer details">
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class="grid grid-cols-2 gap-4 p-4">
+                        <!-- Remark Fields in One Column -->
+                        <div>
+                            <x-textarea
+                                label="Remark:"
+                                wire:model="stepTwoFields.remark"
+                            />
 
-                        <x-textarea
-                            label="Remark:"
-                            wire:model="stepTwoFields.remark"
-                        />
+                            @if($roundTrip)
+                                <x-textarea
+                                    label="RoundTrip Remark:"
+                                    wire:model="stepTwoFields.roundtrip_remark"
+                                />
+                            @endif
+                        </div>
 
-                        <x-input wire:model="stepTwoFields.arrivalFlightNumber"
-                                 label="Flight number {{$roundTrip?'#1':''}}"
-                        ></x-input>
-
-                        @if($roundTrip)
-                            <x-input label="Flight number #2"
-                                     wire:model="stepTwoFields.departureFlightNumber"
+                        <!-- Other Fields Stacked in Second Column -->
+                        <div class="flex flex-col space-y-4">
+                            <x-input
+                                wire:model="stepTwoFields.arrivalFlightNumber"
+                                label="Flight number {{$roundTrip ? '#1' : ''}}"
                             ></x-input>
-                        @endif
-                    </div>
 
+                            @if($roundTrip)
+
+
+                                <x-input
+                                    label="Flight number #2"
+                                    wire:model="stepTwoFields.departureFlightNumber"
+                                ></x-input>
+
+                                <x-flatpickr
+                                    label="Guest Pick up time:"
+                                    :default-date="$this->stepOneFields['returnDateTime']"
+                                    wire:model="stepTwoFields.departureFlightPickupTime"
+                                ></x-flatpickr>
+                            @elseif($this->is_one_way_out_transfer())
+                                <x-flatpickr
+                                    label="Guest Pick up time:"
+                                    :default-date="$this->stepOneFields['returnDateTime']"
+                                    wire:model="stepTwoFields.departureFlightPickupTime"
+                                ></x-flatpickr>
+                            @endif
+                        </div>
+                    </div>
                 </x-card>
+
             </div>
             <div class="mb-2">
                 <x-card title="Lead traveller details">
                     <div class="grid grid-cols-3 gap-4">
-
-
-
                         <x-input label="First name"
                                  wire:model="stepTwoFields.leadTraveller.firstName"
                         ></x-input>
@@ -573,47 +598,50 @@
                 <div class="mb-4">
                     <x-card class="mb-4" title="Extras">
                         @if($this->extras->isNotEmpty())
-
-                            <table class="ds-table w-full">
+                            <table class="ds-table w-full table-fixed">
                                 <!-- head -->
                                 <thead>
                                 <tr>
-                                    <th>
-                                        Select
-                                    </th>
-                                    <th>Extra</th>
-                                    <th>Price</th>
+                                    <th class="w-[60%]">Extra</th>
+                                    <th class="w-[20%]">Price</th>
+                                    <th class="w-[20%]">Quantity</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-
-
                                 @foreach($this->extras as $extra)
                                     <tr>
-                                        <th>
-                                            <x-checkbox
-                                                lg
-                                                wire:model="stepTwoFields.extras.{{$extra->id}}"
-                                            />
-                                        </th>
-                                        <td>
+                                        <td class="w-[50%]">
                                             <div class="flex items-center space-x-3">
                                                 <div class="ds-avatar">
                                                     <div class="ds-mask ds-mask-squircle w-12 h-12">
-                                                        <img src="{{$extra->primaryImageUrl}}"/>
+                                                        <img src="{{$extra->primaryImageUrl}}" />
                                                     </div>
                                                 </div>
                                                 <div>
                                                     <div class="font-bold"> {{$extra->name}}</div>
-                                                    <div
-                                                        class="text-sm opacity-50">{{Str::limit($extra->description,70)}}</div>
+                                                    <div class="text-sm opacity-50">{{ Str::limit($extra->description, 70) }}</div>
                                                 </div>
                                             </div>
-
-
+                                        </td>
+                                        <td class="w-[20%]">{{ Cknow\Money\Money::EUR($extra->partner->first()->pivot->price) }}</td>
+                                        <td class="w-[30%]">
+                                            <x-select
+                                                wire:model="stepTwoFields.extras.{{$extra->id}}"
+                                                wire:key="extra-{{$extra->id}}"
+                                                class="w-full"
+                                                :options="[
+                                                        ['value' => 0, 'label' => 'None'],
+                                                        ['value' => 1, 'label' => '1'],
+                                                        ['value' => 2, 'label' => '2'],
+                                                        ['value' => 3, 'label' => '3'],
+                                                        ['value' => 4, 'label' => '4'],
+                                                        ['value' => 5, 'label' => '5']
+                                                    ]"
+                                                option-value="value"
+                                                option-label="label"
+                                            />
                                         </td>
 
-                                        <td>{{Cknow\Money\Money::EUR($extra->partner->first()->pivot->price)}}</td>
 
                                     </tr>
                                 @endforeach
@@ -622,8 +650,9 @@
                         @else
                             <x-input-alert type="warning">No extras for selected partner</x-input-alert>
                         @endif
-
                     </x-card>
+
+
                 </div>
             @endif
 
@@ -805,9 +834,28 @@
                                 <p class="font-bold">Extras:</p>
 
                                 @foreach($this->selectedExtras as $extra)
-                                    <p>{{$extra->name}}:
-                                        <b>{{\Cknow\Money\Money::EUR($extra->partner->first()?->pivot->price)}}</b>
-                                    </p>
+
+                                    @php
+
+                                        $quantity = 0;
+
+                                        if(!empty($this->stepTwoFields['extras'][$extra->id]) && $this->stepTwoFields['extras'][$extra->id] > 0){
+                                            $quantity = $this->stepTwoFields['extras'][$extra->id];
+                                        }
+
+                                        if($quantity < 1){
+                                            continue;
+                                        }
+
+                                        for($i = 0; $i < $quantity;$i++){
+                                            @endphp
+                                                <p>{{$extra->name}}:
+                                                    <b>{{\Cknow\Money\Money::EUR($extra->partner->first()?->pivot->price)}}</b>
+                                                </p>
+                                            @php
+                                        }
+
+                                    @endphp
                                 @endforeach
 
 
@@ -827,11 +875,14 @@
                         </div>
 
                         @if($this->step === 2 && $this->totalPrice)
+
+
                             <x-slot name="footer">
                                 <div class="text-right ml-auto gap-2 pr-2">
                                     Total price:
                                     <?php
-                                        if($this->roundTrip){
+
+                                    if($this->roundTrip){
                                             $multiplier = 2;
                                         }else{
                                             $multiplier = 1;

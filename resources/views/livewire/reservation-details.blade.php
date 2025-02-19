@@ -22,7 +22,11 @@
                 <br/>
 
                 @if($reservation->included_in_accommodation_reservation == 1)
-                    <span class="font-extrabold text-info text-sm">Reservation included in Accommodation Reservation<br/><small><ul><li><i> - Reservation Not posted to Opera.</i>  </li></ul></small></span>
+                    <span class="font-extrabold text-info text-sm">Reservation included in Accommodation Reservation<br/><small>
+                    @if(!$reservation->isVLevelReservation())
+                                <ul><li><i> - Reservation Not posted to Opera.</i>  </li></ul></small></span>
+                    @endif
+
                     <!-- Invoice Details -->
                     @if($reservation->getInvoiceData('invoice_number') != '-')
                         <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number')}} ({{$reservation->getInvoiceData('amount')}})</span></span>
@@ -33,17 +37,23 @@
                     @if($reservation->getInvoiceData('invoice_number') == '-')
                         <x-button xs icon="external-link" wire:click="openFiskalSyncModal({{$reservation->id}})">Issue Invoice ( Fiskalizacija )</x-button>
                     @endif
+                @endif
 
-                @elseif($reservation->v_level_reservation == 1)
+                @if($reservation->v_level_reservation == 1)
                     <span class="font-extrabold text-info text-sm">V Level Rate Plan Reservation included in Accommodation Reservation<br/><small>
                             <ul>
-                                <li><i> - Reservation Not posted to Opera.</i><br/>
+                                <span class="font-extrabold text-info text-sm">Opera Status: {{$reservation->isSyncedWithOpera()?'Synced':'Not Synced'}}</span>
+                                    <x-button primary xs wire:click="openOperaSyncModal({{$reservation->id}})">{{$reservation->isSyncedWithOpera()?'Re-Sync':'Sync'}}</x-button>
+                                    <x-button xs icon="external-link" wire:click="openOperaSyncLogModal({{$reservation->id}})">View Sync Log</x-button>
+                                <br/>
                                     <i> - Reservation Invoice ( fiskalizacija popratnog dokumenta ) Not Created via Transfer App.</i></li>
                                     <li> - Connected document not sent to Opera</li>
                             </ul>
                         </small>
                     </span>
-                @else
+                @endif
+
+                @if($reservation->v_level_reservation == 0 && $reservation->included_in_accommodation_reservation == 0)
                     <span class="font-extrabold text-info text-sm">Opera Status: {{$reservation->isSyncedWithOpera()?'Synced':'Not Synced'}}</span>
                     <x-button primary xs wire:click="openOperaSyncModal({{$reservation->id}})">{{$reservation->isSyncedWithOpera()?'Re-Sync':'Sync'}}</x-button>
                     <x-button xs icon="external-link" wire:click="openOperaSyncLogModal({{$reservation->id}})">View Sync Log</x-button>
@@ -60,7 +70,6 @@
                             <x-button xs icon="external-link" wire:click="openFiskalSyncModal({{$reservation->id}})">Issue Invoice ( Fiskalizacija )</x-button>
                         @endif
                     @endif
-
                 @endif
 
                 #Main Direction
@@ -71,6 +80,7 @@
                     <p  class="text-sm font-bold" style="color:red"><u>{{$reservation->pickupLocation->name}} -> {{$reservation->dropoffLocation->name}} Cancellation Details #{{$reservation->id}}</u>
                     </p>
                     <p class="text-sm"><b>Cancellation DateTime: </b>{{$reservation->cancelled_at}}</p>
+                    <p class="text-sm"><b>Cancellation reason: </b><i>{{$reservation->cancellation_reason ? $reservation->cancellation_reason : 'No reason provided'}}</i></p>
                     @if($reservation->hasCancellationFee() > 0)
 
                         @if($reservation->included_in_accommodation_reservation != 1 && $reservation->v_level_reservation != 1)
@@ -105,6 +115,7 @@
                     <p  class="text-sm font-bold" style="color:red"><u>{{$reservation->returnReservation->pickupLocation->name}} -> {{$reservation->returnReservation->dropoffLocation->name}} Cancellation Details #{{$reservation->returnReservation->id}}</u>
                     </p>
                     <p class="text-sm"><b>Cancellation DateTime: </b>{{$reservation->returnReservation->cancelled_at}}</p>
+                    <p class="text-sm"><b>Cancellation reason: </b><i>{{$reservation->cancellation_reason ? $reservation->cancellation_reason : 'No reason provided'}}</i></p>
                     @if($reservation->returnReservation->hasCancellationFee() > 0)
 
 
@@ -219,7 +230,7 @@
                style="border-color: #136baa;"
                :class="{ 'ds-tab-active': tab === 'round-trip-reservation' }"
                x-on:click.prevent="tab = 'round-trip-reservation'" href="#">
-                @if(!$reservation->returnReservation->isCancelled())
+                @if(!$reservation->returnReservation->isCancelled() && $reservation->canCancelOneWay())
                     <x-button x-show="tab === 'round-trip-reservation'"
                               class=" absolute left-2"
                               icon="x"
@@ -281,8 +292,8 @@
     @endif
 
     @if($editReservation)
-        <x-modal.card wire:model="editModal"  title="Editing reservation #{{$this->editReservation->id}}">
-            <livewire:edit-transfer-reservation :reservation="$this->editReservation"/>
+        <x-modal.card wire:model="editModal"  title="Editing reservation #{{$this->editReservation->id}}" max-width="4xl">
+            <livewire:edit-transfer-reservation :key="$this->editReservation->id" :reservation="$this->editReservation" />
         </x-modal.card>
     @endif
 
@@ -308,7 +319,7 @@
     @endif
 
     @if($reservationHistoryModal)
-        <x-modal.card wire:model="reservationHistoryModal"  title="Reservation History Breakdown #{{$this->reservation->id}}">
+        <x-modal.card wire:model="reservationHistoryModal"  title="Reservation History Breakdown">
             <livewire:show-reservation-history  :reservation="$this->reservation"  />
         </x-modal.card>
     @endif

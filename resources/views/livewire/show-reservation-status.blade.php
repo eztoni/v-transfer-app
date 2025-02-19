@@ -8,9 +8,12 @@
     @endif
 
     <!-- If Reservation is Included In Accommodation -->
-    @if($reservation->included_in_accommodation_reservation == 1 || $reservation->v_level_reservation == 1)
-        <p class="text-right">No Opera  Download Needed<x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>
-        <small class="flex justify-end">Reservation Included in Accommodation Reservation</small>
+    @if($reservation->included_in_accommodation_reservation == 1)
+
+        @if(!$reservation->isVLevelReservation())
+            <p class="text-right">No Opera Download Needed<x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>
+            <small class="flex justify-end">Reservation Included in Accommodation Reservation</small>
+        @endif
 
         <!-- Checking Invoicing Download -->
         @if($reservation->getInvoiceData('zki') != '')
@@ -21,8 +24,17 @@
         @endif
 
         <p class="text-right">Connected document not applied to Opera Res <x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>
+    @endif
 
-    @else
+    @if($reservation->isVLevelReservation())
+        <!-- Checking Opera Download -->
+        @if($reservation->isSyncedWithOpera() == 1)
+            <p class="text-right">Reservation Alert Synced With Opera<x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>
+        @else
+            <p class="text-right">Reservation Alert Not Synced With Opera<x-icon name="exclamation" solid class="w-6 h-6  ml-4  text-red-400 float-right"></x-icon></p>
+        @endif
+
+    @elseif($reservation->isVLevelReservation() === false && $reservation->included_in_accommodation_reservation == 0)
         <!-- Checking Opera Download -->
         @if($reservation->isSyncedWithOpera() == 1)
                 <p class="text-right">Reservation Downloaded To Opera<x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>

@@ -1,3 +1,6 @@
+<?php
+use Carbon\Carbon;
+?>
 <div>
 
     <div class="ds-alert
@@ -142,6 +145,36 @@
                         <td class="font-bold">Flight number:</td>
                         <td>{{$this->reservation->flight_number}}</td>
                     </tr>
+                    @if($this->reservation->flight_pickup_time)
+
+                        @php
+
+                        $out = false;
+
+                         if($this->reservation->is_main){
+                             if($this->reservation->pickupAddress->type == 'accommodation'){
+                                $out = true;
+                             }
+                         }else{
+
+                                 $main_reservation =  \App\Models\Reservation::where('round_trip_id',$this->reservation->id)->get()->first();
+
+                                 if($main_reservation){
+
+                                     if($main_reservation->pickupAddress->type == 'airport'){
+                                         $out = true;
+                                     }
+                                 }
+                         }
+                        @endphp
+
+                        @if($out)
+                        <tr>
+                            <td class="font-bold">Guest Pick up:</td>
+                            <td>{{Carbon::parse($this->reservation->flight_pickup_time)->format('d.m.Y @ H:i')}}</td>
+                        </tr>
+                        @endif
+                    @endif
                     <tr>
                         <td class="font-bold">Remark:</td>
                         <td><textarea rows="10" cols="55" readonly >{{$this->reservation->remark}}</textarea></td>
@@ -302,6 +335,7 @@
                             <th>#</th>
                             <th>Name:</th>
                             <th>Description:</th>
+                            <th align="center">Quantity</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -310,6 +344,7 @@
                                 <td class="text-info">{{$extra->id}}</td>
                                 <td>{{$extra->name}}</td>
                                 <td> {{Str::limit($extra->description,60)}}</td>
+                                <td align="center">{{$this->reservation->getExtrasQuantity($extra->id)}}</td>
                             </tr>
                         @endforeach
 

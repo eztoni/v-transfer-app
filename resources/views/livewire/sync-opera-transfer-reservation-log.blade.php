@@ -15,6 +15,16 @@
                $request = json_decode($this->log[$key]->opera_request,true);
                $response = json_decode($this->log[$key]->opera_response,true);
 
+               #Mask US
+               if(!empty($request[\App\Services\Api\ValamarAlertApi::FIELD_SYS_USER])){
+                   $request[\App\Services\Api\ValamarAlertApi::FIELD_SYS_USER] = substr($request[\App\Services\Api\ValamarAlertApi::FIELD_SYS_USER],0,2).str_repeat('*',strlen($request[\App\Services\Api\ValamarAlertApi::FIELD_SYS_USER])-2);
+               }
+
+               #Mask PW
+               if(!empty($request[\App\Services\Api\ValamarAlertApi::FIELD_SYS_PASS])){
+                   $request[\App\Services\Api\ValamarAlertApi::FIELD_SYS_PASS] = substr($request[\App\Services\Api\ValamarAlertApi::FIELD_SYS_PASS],0,2).str_repeat('*',strlen($request[\App\Services\Api\ValamarAlertApi::FIELD_SYS_PASS])-2);
+               }
+
                echo '<div class=" my-4">
                     <p class="text">'.$updated_at.' - '.$log_message.' - LogID: #'.$key.'</p>
                     <div class="ds-divider"></div>
