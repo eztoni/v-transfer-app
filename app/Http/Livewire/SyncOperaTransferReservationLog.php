@@ -6,6 +6,7 @@ use App\BusinessModels\Reservation\Actions\CancelReservation;
 use App\BusinessModels\Reservation\Actions\UpdateReservation;
 use App\Models\Reservation;
 use App\Services\Api\ValamarOperaApi;
+use App\Services\Api\ValamarAlertApi;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 
@@ -46,6 +47,16 @@ class SyncOperaTransferReservationLog extends Component
 
         $log['request'] = json_decode($this->log[$log_id]->opera_request,true);
         $log['response'] = json_decode($this->log[$log_id]->opera_response,true);
+
+        #Mask US
+        if(!empty($log['request'] [\App\Services\Api\ValamarAlertApi::FIELD_SYS_USER])){
+            $log['request'] [\App\Services\Api\ValamarAlertApi::FIELD_SYS_USER] = substr($log['request'] [\App\Services\Api\ValamarAlertApi::FIELD_SYS_USER],0,2).str_repeat('*',strlen($log['request'] [\App\Services\Api\ValamarAlertApi::FIELD_SYS_USER])-2);
+        }
+
+        #Mask PW
+        if(!empty($log['request'] [\App\Services\Api\ValamarAlertApi::FIELD_SYS_PASS])){
+            $log['request'] [\App\Services\Api\ValamarAlertApi::FIELD_SYS_PASS] = substr($log['request'] [\App\Services\Api\ValamarAlertApi::FIELD_SYS_PASS],0,2).str_repeat('*',strlen($log['request'] [\App\Services\Api\ValamarAlertApi::FIELD_SYS_PASS])-2);
+        }
 
         dd($log);
     }

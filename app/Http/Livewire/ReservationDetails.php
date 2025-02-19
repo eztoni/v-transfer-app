@@ -89,8 +89,10 @@ use Actions;
     public function openUpdateModal($id)
     {
         $this->editModal = true;
-
         $this->editReservation = Reservation::findOrFail($id);
+
+        // Emit an event to refresh the child component
+        $this->emit('refreshEditTransfer');
     }
 
     public function openOperaSyncModal($id){

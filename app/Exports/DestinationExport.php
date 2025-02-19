@@ -66,13 +66,20 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
 
             $data_array = array();
 
+
             if($this->reportType == 'partner-report'){
+
+                if(!array_key_exists('ph_code',$item)){
+                    $item['ph_code'] = '';
+                }
+
                 $data_array['partner'] = $item['partner'];
                 $data_array['datum_vouchera'] = $item['voucher_date'];
                 $data_array['datum_realizacije'] = $item['date_time'];
                 $data_array['agent'] = $item['sales_agent'];
                 $data_array['prodajno_mjesto'] = $item['selling_place'];
                 $data_array['voucher_id'] = $item['id'];
+                $data_array['broj_rezervacije'] = $item['ph_code'];
                 $data_array['nositelj_vouchera'] = $item['name'];
                 $data_array['postupak'] = $item['procedure'];
                 $data_array['opis'] = $item['description'];
@@ -95,6 +102,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
                 $data_array['vrsta_plaćanja'] = 'Rezervacija Na Sobu';
                 $data_array['porezna_grupa'] = $item['tax_level'];
                 $data_array['broj_potvrde_narudžbe_transfera'] = gmdate('Y').'-'.$item['invoice_number'];
+                $data_array['broj_rezervacije'] = $item['ph_code'];
                 $data_array['ime_i_prezime_gosta'] = $item['name'];
                 $data_array['datum_prodaje'] = $item['voucher_date'];
                 $data_array['datum_realizacije'] = $item['date_time'];
@@ -118,6 +126,7 @@ class DestinationExport implements FromCollection, WithHeadings, ShouldAutoSize,
                 $data_array['datum_prodaje'] = $item['voucher_date'];
                 $data_array['datum_realizacije'] = $item['date_time'];
                 $data_array['broj_računa'] = gmdate('Y').'-'.$item['invoice_number'];
+                $data_array['broj_rezervacije'] = $item['ph_code'];
                 $data_array['ime_i_prezime_gosta'] = $item['name'];
                 $data_array['proizvod'] = $item['transfer'];
                 $data_array['broj_potvrde_narudžbe_transfera'] =  gmdate('Y').'-'.$item['invoice_number'];

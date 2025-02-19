@@ -271,8 +271,6 @@ class DestinationReport extends Component
 
                     $i->partner->name;
 
-
-
                     $return[] =  [
                         'id' => $i->id,
                         'name' => $i->leadTraveller?->full_name,
@@ -298,11 +296,11 @@ class DestinationReport extends Component
                         'procedure' => $status,
                         'selling_place' => $selling_place,
                         'sales_agent' => $sales_agent,
-                        'description' => $transfer_desc
+                        'description' => $transfer_desc,
+                        'ph_code' => $i->getAccommodationReservationCode()
                     ];
 
                     $has_cancellation = false;
-
 
                     #Overall Cancel
                     if($i->getOverallReservationStatus() == Reservation::STATUS_CANCELLED){
@@ -359,7 +357,8 @@ class DestinationReport extends Component
                             'procedure' => $status,
                             'selling_place' => $selling_place,
                             'sales_agent' => $sales_agent,
-                            'description' => $transfer_desc
+                            'description' => $transfer_desc,
+                            'ph_code' => $i->getAccommodationReservationCode()
                         ];
 
                     }else{

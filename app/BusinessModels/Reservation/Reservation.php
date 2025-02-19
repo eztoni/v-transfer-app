@@ -30,6 +30,8 @@ abstract class Reservation
     protected $returnTime;
     protected $returnFlightNumber;
 
+    protected $returnFlightPickupTime;
+
 
     public function __construct(\App\Models\Reservation $model)
     {

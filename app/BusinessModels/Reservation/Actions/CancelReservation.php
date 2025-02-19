@@ -6,6 +6,7 @@ use App\Events\ReservationCancelledEvent;
 use App\Events\ReservationCreatedEvent;
 use App\Events\ReservationUpdatedEvent;
 use App\Models\Reservation;
+use App\Models\Route;
 use App\Services\Api\ValamarFiskalizacija;
 use App\Services\Api\ValamarOperaApi;
 use Carbon\Carbon;
@@ -14,6 +15,8 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
 {
 
     public $cancelRoundTrip = false;
+
+    public $has_single_way_cancellation_restriction = false;
 
     public function cancelRoundTrip(){
 
@@ -31,7 +34,7 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
         }
     }
 
-    public function cancelReservation($cancellationdate = false,$cancellation_type = 'cancellation',$cancellation_fee = 0,$cancel_round_trip = false,$user_id = false)
+    public function cancelReservation($cancellationdate = false,$cancellation_type = 'cancellation',$cancellation_fee = 0,$cancel_round_trip = false,$user_id = false,$cancellation_reason = '')
     {
 
         $this->sendMail = true;
@@ -47,6 +50,7 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
         $this->model->cancellation_type = $cancellation_type;
         $this->model->cancellation_fee = $cancellation_fee;
         $this->model->cancelled_at = $cancellationdate;
+        $this->model->cancellation_reason = trim($cancellation_reason);
 
         if(!empty($user_id) && $user_id > 0){
             $this->model->updated_by = $user_id;
@@ -135,6 +139,48 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
         }
 
 
+
+    }
+
+    private function resolve_pricing(){
+
+        $round_trip = false;
+
+        if($this->model->is_main == 1 && $this->model->round_trip_id > 0){
+            $round_trip = true;
+        }
+
+        if($this->model->is_main == 0){
+
+            $main_booking = \App\Models\Reservation::where('round_trip_id',$this->model->id)->get()->first();
+
+
+            $route = Route::where('starting_point_id', $this->model->pickup_location)
+                ->where('ending_point_id', $this->model->dropoff_location)
+                ->first();
+
+            $priceHandler = (new \App\Services\TransferPriceCalculator($this->model->transfer_id,
+                $this->model->partner_id,
+                0,
+                $route ? $route->id : null,
+                collect(array())->reject(function ($item) {
+                    return $item === false;
+                })->keys()->toArray()))
+                ->setBreakdownLang($this->model->confirmation_language);
+
+
+            $this->model->price = $priceHandler->getPrice()->getAmount();
+            $this->model->price_breakdown = $priceHandler->getPriceBreakdown();
+
+            $main_booking->price = $priceHandler->getPrice()->getAmount();
+            $main_booking->price_breakdown = $priceHandler->getPriceBreakdown();
+
+            $main_booking->save();
+            $this->model->save();
+
+        }else{
+
+        }
 
     }
 }
