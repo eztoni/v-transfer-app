@@ -34,6 +34,7 @@ class CreateReservation extends Reservation
         array           $priceBreakdown,
         string          $remark='',
         string          $flightNumber ='',
+        Carbon|null        $flightPickupTime = null,
         array           $childSeats = [],
         int             $luggage = 0,
         int|string|null $pickupAddressId = null,
@@ -57,6 +58,7 @@ class CreateReservation extends Reservation
         $this->model->price = $price->getAmount();
         $this->model->child_seats =$childSeats;
         $this->model->flight_number = $flightNumber;
+        $this->model->flight_pickup_time = $flightPickupTime;
         $this->model->remark = $remark;
         $this->model->transfer_id = $transfer->id;
         $this->model->price_breakdown =  $priceBreakdown;
@@ -88,13 +90,12 @@ class CreateReservation extends Reservation
             }
 
 
-            if($this->model->included_in_accommodation_reservation == 0 && $this->model->v_level_reservation == 0){
+            if($this->model->included_in_accommodation_reservation == 0){
                 #Send Reservation To Opera
                 $OperaAPI = new ValamarOperaApi();
                 $OperaAPI->syncReservationWithOperaFull($this->model->id);
             }
-
-
+            
             #Send To Invoicing
             $fiskalAPI = new ValamarFiskalizacija($this->model->id);
             $fiskalAPI->fiskalReservation();
@@ -137,7 +138,9 @@ class CreateReservation extends Reservation
         $roundTrip->dropoff_address = $this->model->pickup_address;
         $roundTrip->date_time = $this->returnDate;
         $roundTrip->flight_number = $this->returnFlightNumber;
+        $roundTrip->flight_pickup_time = $this->returnFlightPickupTime;
         $roundTrip->is_main = false;
+        $roundTrip->remark = $this->returnRemark;
 
         $roundTrip->save();
         $roundTrip->extras()->saveMany($this->extras);
@@ -152,11 +155,13 @@ class CreateReservation extends Reservation
     }
 
 
-    public function setRoundTrip(Carbon $returnDateTime,string $flightNumber = '')
+    public function setRoundTrip(Carbon $returnDateTime,string $flightNumber = '',Carbon|null $returnFlightPickupTime = null,$remark = '')
     {
         $this->roundTrip = true;
         $this->returnDate = $returnDateTime;
         $this->returnFlightNumber = $flightNumber;
+        $this->returnFlightPickupTime = $returnFlightPickupTime;
+        $this->returnRemark = $remark;
     }
 
     public function addLeadTraveller(Traveller $traveller)

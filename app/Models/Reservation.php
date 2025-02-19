@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Casts\ModelCast;
 use App\Scopes\DestinationScope;
 use App\Services\Api\ValamarOperaApi;
+use App\Services\TransferPriceCalculator;
+
 use Carbon\Carbon;
 use Database\Seeders\TransferExtrasPriceSeeder;
 use FontLib\Table\Type\maxp;
@@ -59,7 +61,9 @@ class Reservation extends Model
       'infants' => 'Dojenčad',
       'remark' => 'Popratni komentar',
       'flight_number' => 'Broj Leta',
-      'luggage' => 'Prtljaga'
+      'luggage' => 'Prtljaga',
+      'extras' => 'Dodaci ( baby chair )',
+      'guest_pickup_time' => 'Vrijeme kupljenja gosta'
     );
 
     public function isCancelled(){
@@ -78,6 +82,43 @@ class Reservation extends Model
     {
 
         return !empty($this->round_trip_id);
+    }
+
+    public function canCancelOneWay(){
+
+        $return = true;
+
+        $booking = $this;
+
+        if($this->is_main == 0){
+            $booking = \App\BusinessModels\Reservation\Reservation::where('round_trip_id',$this->id)->get()->first();
+        }
+
+        if($booking->isRoundTrip()){
+            #If both directions are confirmed
+            if(!$booking->isCancelled() && !$booking->returnReservation->isCancelled()){
+                ##One Way Transfer
+                $route = Route::query()
+                    ->where('destination_id', $booking->destination_id)
+                    ->where('starting_point_id', $booking->pickup_location)
+                    ->where('ending_point_id', $booking->dropoff_location)
+                    ->get()->first();
+
+                $route_transfer = \DB::table('route_transfer')
+                    ->where('route_id',$route->id)
+                    ->where('partner_id',$booking->partner_id)
+                    ->where('transfer_id',$booking->transfer_id)
+                    ->get()->first();
+
+
+                #If the current one way price is < than standard price
+                if($booking->price < $route_transfer->price){
+                    $return = false;
+                }
+            }
+        }
+
+        return $return;
     }
 
     public function isTotalRoundTrip(){
@@ -127,6 +168,27 @@ class Reservation extends Model
     {
 
         return Money::EUR($this->price);
+    }
+
+    public function isVLevelReservation() : bool{
+
+        $return = false;
+
+        if($this->v_level_reservation == 1){
+            $return = true;
+        }
+
+        return $return;
+    }
+
+    public function isLateCancellation() : bool{
+        $return = false;
+
+        if($this->late_cancellation == 1){
+            $return = true;
+        }
+
+        return $return;
     }
 
     public function getDisplayPrice(): Money{
@@ -334,7 +396,7 @@ class Reservation extends Model
 
         if($this->extras){
             foreach($this->extras as $extra){
-                $extras[] = (string)$extra->name;
+                $extras[] = (string)$extra->name.' (x'.$this->getExtrasQuantity($extra->id).')';
             }
         }
 
@@ -357,6 +419,23 @@ class Reservation extends Model
         }
 
         return $commission;
+    }
+
+    public function getExtrasQuantity($extras_id){
+
+        $quantity = 0;
+
+        $extras_config = $this->getExtrasPriceStatesAttribute();
+
+        if(!empty($extras_config)){
+            foreach($extras_config as $extra_info){
+                if($extras_id == $extra_info['item_id']){
+                    $quantity++;
+                }
+            }
+        }
+
+        return $quantity;
     }
 
     public function getFormattedOtherTravellers(){
@@ -442,20 +521,44 @@ class Reservation extends Model
             ->get()->first();
 
 
-        $price = Money::EUR($route_transfer->price)->formatByDecimal();
+        $price = Money::EUR($this->price)->formatByDecimal();
+
         $vat = $this->included_in_accommodation ? 0 : 25;
         $vat_amount = number_format($price*($vat/100),2);
+
+        $extras = $this->getExtrasPriceStatesAttribute();
+
+        $name_addon = '';
+
+        $extras_checked_array = array();
+
+        if(!empty($extras)){
+            foreach($extras as $extra){
+
+                if(!in_array($extra['item_id'],$extras_checked_array)){
+
+                    $quantity = $this->getExtrasQuantity($extra['item_id']);
+
+                    if($quantity > 0){
+                        $name_addon .= ' +'.$extra['model']->name.' (x'.$quantity.')';
+                    }
+
+                    $extras_checked_array[] = $extra['item_id'];
+                }
+            }
+        }
 
         $operaPackageID = $route_transfer->opera_package_id;
 
         $item = array(
           'code' => $operaPackageID,
-          'transfer' => $this->pickupLocation->name.' - '.$this->dropoffLocation->name,
+          'transfer' => $this->pickupLocation->name.' - '.$this->dropoffLocation->name.$name_addon,
           'amount' => $price,
           'vat' => $vat,
           'vat_amount' => $vat_amount,
           'price' => $price
         );
+
 
         $return['items'][] = $item;
 
@@ -466,7 +569,7 @@ class Reservation extends Model
 
             $item = array(
                 'code' => $operaPackageID,
-                'transfer' => $this->pickupLocation->name.' - '.$this->dropoffLocation->name,
+                'transfer' => $this->pickupLocation->name.' - '.$this->dropoffLocation->name.$name_addon,
                 'amount' => $price,
                 'vat' => $vat,
                 'vat_amount' => $vat_amount,
@@ -495,14 +598,17 @@ class Reservation extends Model
 
                 $returnOperaPackageID = $return_route_transfer->opera_package_id;
 
-                $price = Money::EUR($return_route_transfer->price)->formatByDecimal();
+                #$price = Money::EUR($return_route_transfer->price)->formatByDecimal();
+
+                $price =  Money::EUR($round_trip_reservation->price)->formatByDecimal();
+
                 $vat = $this->included_in_accommodation ? 0 : 25;
                 $vat_amount = number_format($price*($vat/100),2);
 
 
                 $item = array(
                     'code' => $returnOperaPackageID,
-                    'transfer' => $round_trip_reservation->pickupLocation->name.' - '.$round_trip_reservation->dropoffLocation->name,
+                    'transfer' => $round_trip_reservation->pickupLocation->name.' - '.$round_trip_reservation->dropoffLocation->name.$name_addon,
                     'amount' => $price,
                     'vat' => $vat,
                     'vat_amount' => $vat_amount,
@@ -518,7 +624,7 @@ class Reservation extends Model
 
                     $item = array(
                         'code' => $returnOperaPackageID,
-                        'transfer' => $round_trip_reservation->pickupLocation->name.' - '.$round_trip_reservation->dropoffLocation->name,
+                        'transfer' => $round_trip_reservation->pickupLocation->name.' - '.$round_trip_reservation->dropoffLocation->name.$name_addon,
                         'amount' => $price,
                         'vat' => $vat,
                         'vat_amount' => $vat_amount,
@@ -1055,7 +1161,7 @@ class Reservation extends Model
 
             if($this->isRoundTrip() && $this->returnReservation->status == 'confirmed'){
 
-                $logs = \DB::table('reservation_modification')->where('reservation_id','=',$this->returnReservation)->get();
+                $logs = \DB::table('reservation_modification')->where('reservation_id','=',$this->returnReservation->id)->get();
 
                 if(!empty($logs)){
                     foreach($logs as $log){
@@ -1064,7 +1170,7 @@ class Reservation extends Model
                             $return = array();
                         }
 
-                        $return[$this->id][$log->updated_time]['modifications'] = array();
+                        $return[$this->returnReservation->id][$log->updated_time]['modifications'] = array();
 
                         if($log->updated_by == 1){
                             $user_update = 'Valamar';
@@ -1078,7 +1184,7 @@ class Reservation extends Model
 
                             if($value == 1 && $parameter != 'updated_by' && $parameter != 'sent'){
 
-                                if(isset($return[$this->id])){
+                                if(isset($return[$this->returnReservation->id])){
                                     if(!in_array(self::MOD_FIELD_TRANSLATIONS[$parameter],$return[$this->returnReservation->id][$log->updated_time]['modifications'])){
                                         $return[$this->returnReservation->id][$log->updated_time]['modifications'][] = self::MOD_FIELD_TRANSLATIONS[$parameter];
                                     }
