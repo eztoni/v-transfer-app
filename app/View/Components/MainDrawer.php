@@ -113,7 +113,7 @@ class MainDrawer extends Component
             ],
             [
                 'icon' => 'fas fa-tools',
-                'text' => 'Administration',
+                'text' => 'Admin Tools',
                 'show' => \Auth::user()->hasAnyRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN),
                 'items' => [
                     [
