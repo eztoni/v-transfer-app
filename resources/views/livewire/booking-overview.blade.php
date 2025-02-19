@@ -1,5 +1,5 @@
 <div>
-    <div class="mb-4">
+    <div class="mb-1">
         <x-card title="Booking overview:">
                 <div class="flex md:flex-row flex-col gap-4">
                     <div class="flex md:flex-row flex-col flex-warp flex-grow gap-4">
@@ -50,7 +50,61 @@
         </x-card>
     </div>
 
-    @foreach($this->reservations as $reservation)
+{{--    Pagination --}}
+    <div class="mb-4 bg-white">
+        <div class="mt-10 mb-10 mr-5 pb-3 pt-3 pl-3 pr-3 flex justify-between items-center">
+            @php
+                $disabled = '';
+                if ($page == 1) {
+                    $disabled = 'disabled';
+                }
+            @endphp
+
+                <!-- Previous Button -->
+            <x-button
+                success
+                wire:click="previousPage"
+                class="px-4 py-2 bg-white"
+            >
+                Previous
+            </x-button>
+
+            <!-- Page Info and Year Selector -->
+            <div class="flex items-center space-x-4">
+            <span class="whitespace-nowrap">
+                Latest reservations for <b>{{ \App\Models\Destination::findOrFail(Auth::user()->destination_id)->name }}&nbsp;</b>
+            </span>
+
+                <!-- Display Year Dropdown (Aligned to Right of Label) -->
+                <x-select
+                    :options="array_combine(range(now()->year - 1, now()->year), range(now()->year - 1, now()->year))"
+                    wire:model="selectYear"
+                    :selected="now()->year"
+                    class="w-36"
+                />
+            </div>
+
+            @php
+                $disabled = '';
+                if ($page == ceil($totalReservations / $perPage)) {
+                    $disabled = 'disabled';
+                }
+            @endphp
+
+                <!-- Next Button -->
+            <x-button
+                wire:click="nextPage"
+                class="px-4 py-2 bg-white"
+            >
+                Next
+            </x-button>
+        </div>
+    </div>
+
+
+
+
+@foreach($this->reservations as $reservation)
 
         <x-card cardClasses="mb-4" title="Transfer #{{$reservation->id}}">
                 <x-slot name="action">
@@ -105,6 +159,5 @@
 
 
     @endforeach
-
 
 </div>
