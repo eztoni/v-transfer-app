@@ -13,6 +13,7 @@ return [
     'pickup_date' => 'Data',
     'pickup_time' => 'Ora dell’incontro',
     'flight_number' => 'Numero del volo',
+    'flight_pickup_time' => ' Ritiro dell\'ospite',
     'remark' => 'Nota',
     'please_note_round_trip' => 'Si prega di notare che questo viaggio è una prenotazione di trasferimento <b>A/R</b>. Le informazioni per il viaggio di andata e ritorno sono riportate di seguito:',
     'rt_pickup' => 'Partenza per il viaggio di ritorno',

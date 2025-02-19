@@ -125,6 +125,7 @@ Im Falle von besonderen Forderungen Ihrerseits, können Sie diese im Nachgang zu
     'amount' => 'Menge',
     'reservation_cancellation' => 'Stornierung der Reservierung',
     'flight_time' => 'Flugzeit',
+    'flight_pickup_time' => 'Abholung des Gastes',
     'accommodation_reservation_holder'=>'Reservierungsbestätigung',
     'accommodation_reservation_number' => 'Reservierungsnummer',
     'transfer_reservation_confirmation' => 'Reservierungsinhaber',

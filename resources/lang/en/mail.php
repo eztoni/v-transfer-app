@@ -150,6 +150,7 @@ If you have any special requests, feel free to reply to this e-mail.
     'reservation_cancellation' => 'Reservation Cancellation',
     'telephone' => 'Telephone',
     'flight_time' => 'Flight Time',
+    'flight_pickup_time' => 'Guest Pick Up',
     'issue_location' => 'Issue Location',
     'issue_date_and_time' => 'Issue Date and Time',
     'operator' => 'Operator',
