@@ -114,7 +114,7 @@
                                         :disabled="$extra->partner->first()?->pivot->price > 0 && $this->reservation_extras[$extra->id] > 0"
                                     />
 
-                                    @if($extra->partner->first()?->pivot->price > 0 && ($this->reservation_extras[$extra->id] ?? 0) > 0)
+                                    @if($extra->partner->first()?->pivot->price > 0)
                                         <small class="text-gray-500 text-red-400">Modifying is disabled due to pricing conditions.</small>
                                     @endif
                                 </th>

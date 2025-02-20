@@ -725,10 +725,32 @@ class Reservation extends Model
 
             $operaPackageID = $route_transfer->opera_package_id;
 
+            $extras = $this->getExtrasPriceStatesAttribute();
+
+            $name_addon = '';
+
+            $extras_checked_array = array();
+
+            if(!empty($extras)){
+                foreach($extras as $extra){
+
+                    if(!in_array($extra['item_id'],$extras_checked_array)){
+
+                        $quantity = $this->getExtrasQuantity($extra['item_id']);
+
+                        if($quantity > 0){
+                            $name_addon .= ' +'.$extra['model']->name.' (x'.$quantity.')';
+                        }
+
+                        $extras_checked_array[] = $extra['item_id'];
+                    }
+                }
+            }
+
             #Original Route - added for the calculation
             $item = array(
                 'code' => $operaPackageID,
-                'transfer' => $this->pickupLocation->name.' - '.$this->dropoffLocation->name,
+                'transfer' => $this->pickupLocation->name.' - '.$this->dropoffLocation->name.$name_addon,
                 'amount' => $price,
                 'vat' => $vat,
                 'vat_amount' => $vat_amount,
@@ -783,7 +805,7 @@ class Reservation extends Model
                 #Original Route - added for the calculation
                 $item = array(
                     'code' => $operaPackageID,
-                    'transfer' => $round_trip_res->pickupLocation->name.' - '.$round_trip_res->dropoffLocation->name,
+                    'transfer' => $round_trip_res->pickupLocation->name.' - '.$round_trip_res->dropoffLocation->name.$name_addon,
                     'amount' => $price,
                     'vat' => $vat,
                     'vat_amount' => $vat_amount,
@@ -849,11 +871,34 @@ class Reservation extends Model
                 $code = $this->partner->cancellation_package_id;
             }
 
+
+            $extras = $this->getExtrasPriceStatesAttribute();
+
+            $name_addon = '';
+
+            $extras_checked_array = array();
+
+            if(!empty($extras)){
+                foreach($extras as $extra){
+
+                    if(!in_array($extra['item_id'],$extras_checked_array)){
+
+                        $quantity = $this->getExtrasQuantity($extra['item_id']);
+
+                        if($quantity > 0){
+                            $name_addon .= ' +'.$extra['model']->name.' (x'.$quantity.')';
+                        }
+
+                        $extras_checked_array[] = $extra['item_id'];
+                    }
+                }
+            }
+
             #If there is a cancellation fee involved
             if($this->hasCancellationFee()){
                 $item = array(
                     'code' => $code,
-                    'transfer' => $item_name.' - ('.$this->getCancellationPercentage().'%) - '.$this->pickupLocation->name.' - '.$this->dropoffLocation->name,
+                    'transfer' => $item_name.' - ('.$this->getCancellationPercentage().'%) - '.$this->pickupLocation->name.' - '.$this->dropoffLocation->name.$name_addon,
                     'amount' => $this->getCancellationFeeAmount('cf'),
                     'vat' => $this->getCancellationVATPercentage('cf'),
                     'vat_amount' => $this->getCancellationVatAmount('cf'),
@@ -879,7 +924,7 @@ class Reservation extends Model
                 if($round_trip_res->hasCancellationFee()){
                     $item = array(
                         'code' => $code,
-                        'transfer' => $item_name.' - ('.$round_trip_res->getCancellationPercentage().'%) - '.$round_trip_res->pickupLocation->name.' - '.$round_trip_res->dropoffLocation->name,
+                        'transfer' => $item_name.' - ('.$round_trip_res->getCancellationPercentage().'%) - '.$round_trip_res->pickupLocation->name.' - '.$round_trip_res->dropoffLocation->name.$name_addon,
                         'amount' => $round_trip_res->getCancellationFeeAmount('cf'),
                         'vat' => $round_trip_res->getCancellationVATPercentage('cf'),
                         'vat_amount' => $round_trip_res->getCancellationVatAmount('cf'),
