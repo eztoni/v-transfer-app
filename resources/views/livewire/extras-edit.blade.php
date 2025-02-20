@@ -14,7 +14,7 @@
                 option-label="name"
                 option-value="id"
                 :searchable="true"
-                class="flex-grow"
+                class="flex-grow hidden"
                 :clearable="false"
                 min-items-for-search="2"
                 wire:model="extraId"
@@ -84,12 +84,16 @@
                         </div>
                     </div>
                 @endforeach
+                <div class="flex items-center">
+                    <input type="checkbox" id="hidden" wire:model="hidden" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                    <label for="hidden" class="ml-2 text-gray-700 text-sm">Extra hidden for Booking</label>
+                </div>
 
                 <x-errors />
 
                 <x-slot name="footer">
                     <div class="float-right">
-                        <x-button wire:click="saveExtra" spinner="saveVehicle" primary label="Save Extra" />
+                        <x-button wire:click="saveExtra" spinner="saveExtra" primary label="Save Extra" />
                     </div>
                 </x-slot>
 

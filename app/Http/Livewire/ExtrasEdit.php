@@ -32,6 +32,7 @@ class ExtrasEdit extends Component
     public $extraPriceWithDiscount;
     public $extraPriceCommission;
     public $extraPrice;
+    public $hidden = 0;
 
     public int $extraId;
     public int $partnerId;
@@ -114,6 +115,8 @@ class ExtrasEdit extends Component
             $this->extra = Extra::find($this->extraId);
         }
 
+        $this->hidden = $this->extra->hidden;
+
         $this->partnerId = $this->partner->id;
         $this->setModelPrices();
         $this->instantiateComponentValues();
@@ -175,6 +178,9 @@ class ExtrasEdit extends Component
     }
 
     public function updatedExtraId(){
+
+
+
         $this->partnerId = Partner::first()?->id;
         $this->setModelPrices();
         $this->instantiateComponentValues();
@@ -257,7 +263,9 @@ class ExtrasEdit extends Component
 
         $this->extra->setTranslations('name', $this->extraName);
         $this->extra->setTranslations('description', $this->extraDescription);
+        $this->extra->hidden = $this->hidden ? 1 : 0;
         $this->extra->save();
+
         $this->notification()->success('Update successful');
     }
 

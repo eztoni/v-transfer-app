@@ -291,11 +291,23 @@ class InternalReservation extends Component
             foreach($this->selectedExtras as $index => $extra){
                 if(!in_array($extra->id,array_keys($this->getExtrasConfiguration()))){
                     unset($this->selectedExtras[$index]);
+                }else{
+                    $extra_configuration = $this->getExtrasConfiguration()[$extra->id];
+                    if($extra_configuration < 1){
+                        unset($this->selectedExtras[$index]);
+                    }
                 }
             }
+        }else{
+            if(empty($this->getExtrasConfiguration())){
+                $this->selectedExtras = collect();
+            }
         }
+        $this->emit('showSavingModal');
+
 
         $this->completeReservation = 'Saving Reservation ...';
+
 
         $traveller = new Traveller();
 
@@ -388,8 +400,10 @@ class InternalReservation extends Component
 
         $this->completeReservation = 'Save complete!';
 
-        $this->openStatusModal($id);
 
+
+        $this->openStatusModal($id);
+        $this->emit('hideSavingModal'); // Hide modal after saving
         $this->notification()->success('Reservation saved');
 
     }

@@ -14,6 +14,7 @@
                     <th class="w-24 text-center">Image</th>
                     <th>Name</th>
                     <th>Description</th>
+                    <th class="text-center">Visible for Booking</th>
                     <th class="text-center">Edit</th>
                 </tr>
                 </thead>
@@ -36,6 +37,25 @@
                         </td>
                         <th>{{ $ex->name }}</th>
                         <th>{{ strlen($ex->description) > 25 ? substr($ex->description,0,25)."..." : $ex->description }}</th>
+                        <td class="text-center">
+                            @if(!$ex->hidden)
+                                <!-- Green check button when hidden == 1 -->
+                                <x-button.circle class="bg-green-500 hover:bg-green-600 text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="white" viewBox="0 0 24 24" stroke="white">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                </x-button.circle>
+                            @else
+                                <!-- Red X button when hidden == 0 -->
+                                <x-button.circle class="bg-red-500 hover:bg-red-600 text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="white" viewBox="0 0 24 24" stroke="white">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </x-button.circle>
+                            @endif
+                        </td>
+
+
                         <td class="text-center">
                             <x-button.circle icon="pencil" primary href="{{ route('extras-edit',$ex)}}">
                             </x-button.circle>

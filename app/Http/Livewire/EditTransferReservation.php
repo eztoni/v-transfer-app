@@ -192,8 +192,6 @@ use Actions;
         }
 
         $extras_difference = false;
-        //$extras_difference = array_diff_key(,$this->getActiveReservationExtras());
-
         #Check if some of the keys are removed
         if(!empty($this->reservation->extras()->get()->keyBy('id')->toArray())){
             foreach($this->reservation->extras()->get()->keyBy('id')->toArray() as $extra){
@@ -300,11 +298,10 @@ use Actions;
 
             $priceHandler = (new \App\Services\TransferPriceCalculator($this->reservation->transfer_id,
                 $this->reservation->partner_id,
-                0,
+                $this->reservation->isRoundTrip() ? 1 : 0,
                 $route ? $route->id : null,
                 $this->getExtrasConfiguration()))
                 ->setBreakdownLang($this->reservation->confirmation_language);
-
 
             #Delete Previously Saved
             DB::table('extra_reservation')->where('reservation_id',$this->reservation->id)->delete();
@@ -330,7 +327,7 @@ use Actions;
 
                     $priceHandler = (new \App\Services\TransferPriceCalculator($this->reservation->returnReservation->transfer_id,
                         $this->reservation->returnReservation->partner_id,
-                        0,
+                        1,
                         $route ? $route->id : null,
                         $this->getExtrasConfiguration()))
                         ->setBreakdownLang($this->reservation->returnReservation->confirmation_language);
@@ -356,7 +353,7 @@ use Actions;
 
                 $priceHandler = (new \App\Services\TransferPriceCalculator($main_reservation->transfer_id,
                     $main_reservation->partner_id,
-                    0,
+                    $main_reservation->isRoundTrip() ? 1 : 0,
                     $route ? $route->id : null,
                     $this->getExtrasConfiguration()))
                     ->setBreakdownLang($main_reservation->confirmation_language);

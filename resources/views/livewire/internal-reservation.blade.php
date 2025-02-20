@@ -4,7 +4,7 @@
 
     <div class="grid grid-cols-3 gap-4">
         <div class="col-span-2 ">
-
+            <livewire:reservation-saving-modal />
             @if($step === 1)
 
                 <x-card>
@@ -609,6 +609,12 @@
                                 </thead>
                                 <tbody>
                                 @foreach($this->extras as $extra)
+
+                                    @php
+                                    if($extra->hidden == 1){
+                                        continue;
+                                    }
+                                    @endphp
                                     <tr>
                                         <td class="w-[50%]">
                                             <div class="flex items-center space-x-3">
@@ -964,6 +970,9 @@
 
             </div>
         </div>
+
+
+
 
     @if($reservationStatusModal)
         <x-modal.card wire:model="reservationStatusModal"  title="Reservation Save Breakdown #{{$this->reservationStatus->id}}">

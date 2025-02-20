@@ -29,6 +29,7 @@ class Extra extends Model implements HasMedia
     protected $fillable = [
         'name',
         'description',
+        'hidden'
     ];
 
     public $translatable = ['name','description'];
@@ -87,6 +88,26 @@ class Extra extends Model implements HasMedia
     public function partner()
     {
         return $this->belongsToMany(Partner::class)->withPivot(['price','commission','discount','tax_level','calculation_type','date_from','date_to']);
+    }
+
+    public function isHiddenForPartner($partner_id){
+
+        $hidden = false;
+
+        $hiddenSetting = (\DB::table('extra_partner')
+            ->select('hidden')
+            ->where('partner_id','=',$partner_id)
+            ->where('extra_id','=',$this->id)->first());
+
+        if($hiddenSetting){
+            $result = $hiddenSetting->hidden;
+
+            if($result == 1){
+                $hidden = true;
+            }
+        }
+
+        return $hidden;
     }
 
     public function getPrice($partnerId){

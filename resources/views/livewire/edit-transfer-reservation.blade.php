@@ -78,6 +78,11 @@
 
                         @foreach($this->available_extras as $extra)
 
+                            @php
+                                if($extra->hidden == 1){
+                                    continue;
+                                }
+                            @endphp
                             <tr>
                                 <td>
                                     <div class="flex items-center space-x-3">
@@ -111,7 +116,7 @@
                                         ]"
                                         option-value="value"
                                         option-label="label"
-                                        :disabled="$extra->partner->first()?->pivot->price > 0 && $this->reservation_extras[$extra->id] > 0"
+                                        :disabled="$extra->partner->first()?->pivot->price > 0"
                                     />
 
                                     @if($extra->partner->first()?->pivot->price > 0)
