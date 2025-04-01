@@ -8,6 +8,7 @@ use App\Scopes\DestinationScope;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 class ValamarAlertApi{
 
@@ -131,6 +132,9 @@ class ValamarAlertApi{
         #Add Vehicle Type
         $one_way_reservation_message .= ' - Vrsta Vozila: '.$this->reservation->transfer->vehicle->type;
 
+
+
+
         #One way booking
         if(!$this->reservation->isRoundTrip()){
             if(!$this->reservation->isCancelled()){
@@ -163,8 +167,89 @@ class ValamarAlertApi{
             }
         }
 
+        $reservationIdToExclude = $this->reservation->id; // <-- this should be your passed parameter
+
+        $existingReservation = DB::table('reservations')
+            ->join('reservation_traveller', 'reservations.id', '=', 'reservation_traveller.reservation_id')
+            ->join('travellers', 'reservation_traveller.traveller_id', '=', 'travellers.id')
+            ->where('reservations.status', 'confirmed')
+            ->where('reservations.is_main', 1)
+            ->where('reservations.id', '!=', $reservationIdToExclude)
+            ->where('reservation_number',$this->reservation->getAccommodationReservationCode())
+            ->select('reservations.id', 'travellers.full_name')
+            ->first();
+
+        if($existingReservation){
+
+            $add_msg = $this->buildAdditionalText($existingReservation);
+
+            if($add_msg){
+                $message .= "\n[DODATNO]: ".$add_msg;
+            }
+
+        }
         return $message;
     }
+
+    public function buildAdditionalText($booking)
+    {
+        $message = false;
+
+        $reservation = \App\Models\Reservation::findOrFail($booking->id);
+
+        // If triggered by return leg
+        if ($reservation->is_main == 0) {
+            $reservation = \App\Models\Reservation::where('round_trip_id', $reservation->id)->first();
+        }
+
+        $destination = Destination::findOrFail($reservation->destination_id);
+        $owner = Owner::findOrFail($destination->owner_id);
+
+        $cancellation_message = 'Gost je kasno otkazao uključeni transfer - ' . $owner->name . ', ' . $destination->name . ' #ID: ' . $reservation->id . '. Rezervacija je otkazana u Operi,te je primjenjen cancellation fee od 100% iznosa rezervacije transfera.';
+        $one_way_reservation_message = 'Gost ima uključeni transfer, ubaciti paket u rezervaciju - ' . $owner->name . ', ' . $destination->name . ' #ID: ' . $reservation->id;
+
+        // Add Vehicle Type if available
+        if (!empty($reservation->transfer) && !empty($reservation->transfer->vehicle)) {
+            $one_way_reservation_message .= ' - Vrsta Vozila: ' . $reservation->transfer->vehicle->type;
+        }
+
+        if (!$reservation->isRoundTrip()) {
+            if (!$reservation->isCancelled()) {
+                $message = $one_way_reservation_message;
+            } elseif ($reservation->isLateCancellation()) {
+                $message = $cancellation_message;
+            } else {
+                return false;
+            }
+        } else {
+            $returnReservation = $reservation->returnReservation ?? null;
+
+            if (!$reservation->isCancelled() && $returnReservation && !$returnReservation->isCancelled()) {
+                $message = $one_way_reservation_message . ' (round trip)';
+            } elseif (
+                $reservation->isCancelled() &&
+                $returnReservation &&
+                $returnReservation->isCancelled()
+            ) {
+                if ($reservation->isLateCancellation()) {
+                    $message = $cancellation_message;
+                } else {
+                    return false;
+                }
+            } elseif ($returnReservation && $returnReservation->isCancelled()) {
+                $message = $one_way_reservation_message;
+            } elseif ($returnReservation) {
+                $message = 'Gost ima uključeni transfer, ubaciti paket u rezervaciju - ' . $owner->name . ', ' . $destination->name . ' #ID: ' . $returnReservation->id;
+
+                if (!empty($reservation->transfer) && !empty($reservation->transfer->vehicle)) {
+                    $message .= ' - Vrsta Vozila: ' . $reservation->transfer->vehicle->type;
+                }
+            }
+        }
+
+        return $message;
+    }
+
     private function callService($request,$write_log = true){
 
         #if no request was provided
