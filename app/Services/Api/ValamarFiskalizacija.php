@@ -302,20 +302,23 @@ class ValamarFiskalizacija{
                 $acc_opera_code = $opera_res_data[$reservation_code]['propertyOperaCode'];
                 $acc_opera_class = $opera_res_data[$reservation_code]['propertyOperaClass'];
 
-                $owner_location = Point::where('pms_code', '=', $acc_opera_code)
-                    ->where('pms_class', '=', $acc_opera_class)->get()->first();
+                $owner_location = Point::whereRaw('FIND_IN_SET(?, pms_code)', [$acc_opera_code])
+                    ->whereRaw('FIND_IN_SET(?, pms_class)', [$acc_opera_class])
+                    ->first();
 
 
                 if (!$owner_location) {
-                    $owner_location = Point::where('pms_code', '=', $acc_opera_code)->get()->first();
+                    $owner_location = Point::whereRaw('FIND_IN_SET(?, pms_code)', [$acc_opera_code])
+                        ->first();
                 }
 
                 if ($owner_location) {
 
                     $owner = Owner::findOrFail($owner_location->owner_id);
                     $this->oib = $owner->oib;
+
                     #Set Property Code
-                    $this->dropoffLocationPMSCode = $owner_location->pms_code;
+                    $this->dropoffLocationPMSCode = $opera_res_data[$reservation_code]['propertyOperaCode'];
 
                     $this->setAuthenticationHeaders();
 
@@ -458,7 +461,7 @@ class ValamarFiskalizacija{
     private function sendOperaRequest() : bool{
 
         $this->setCallURL('FiskalizacijaPrateciDokument');
-
+        
         $this->validateResponse(
             Http::post($this->callURL,$this->request));
 
@@ -470,6 +473,7 @@ class ValamarFiskalizacija{
      * @return void
      */
     private function buildRequestStruct(): bool{
+
 
         #Auth Credentials
         $this->request = $this->auth_credentials;
