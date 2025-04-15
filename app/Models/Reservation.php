@@ -1046,7 +1046,7 @@ class Reservation extends Model
         return $return;
     }
 
-    public function getOperatorName(){
+    public function getOperatorName($try_pin = false){
 
         $return = 'Valamar User';
 
@@ -1054,6 +1054,13 @@ class Reservation extends Model
 
         if($user_data){
             $return = $user_data->name;
+
+            if($try_pin){
+                if(is_numeric($user_data->pin) && $user_data->pin > 0){
+                    $return = $user_data->pin;
+                }
+            }
+
         }
 
         return $return;

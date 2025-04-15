@@ -41,7 +41,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'country_code',
         'password',
         'company_id',
-        'owner_id'
+        'owner_id',
+        'pin'
     ];
 
     protected $attributes = [

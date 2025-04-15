@@ -228,7 +228,7 @@ if($reservation->destination->owner_id > 1){
                     </tr>
                     <tr>
                         <td align="right"><b>{{__('mail.operator')}}:</b></td>
-                        <td style="padding: 0 10px;">{{$reservation->getOperatorName()}}</td>
+                        <td style="padding: 0 10px;">{{$reservation->getOperatorName(true)}}</td>
                     </tr>
                     @if($reservation->getInvoiceData('zki','reservation'))
                         <tr>

@@ -88,7 +88,7 @@
                 >
                 </x-select>
             @endif
-
+            <x-input label="User PIN:" wire:model="user.pin"/>
             @if(!$this->user->id)
                 <x-input label="Password:" wire:model="user.set_password"/>
                 <x-input label="Password Confirmation:" wire:model="user.set_password_confirmation"/>

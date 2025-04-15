@@ -20,6 +20,7 @@ use Actions;
     public $userModal;
     public $userRole = '';
     public $selectedDestinations = [];
+    public $pin;
 
     protected function rules()
     {
@@ -29,6 +30,7 @@ use Actions;
             'user.owner_id' => 'required',
             'user.city' => '',
             'user.zip' => '',
+            'user.pin' => '',
             'user.oib' => 'digits:11|integer|unique:users,oib,'.$this->user->id,
             'user.set_password'=>'nullable|min:6',
             'user.set_password_confirmation'=>'nullable|same:user.set_password',
@@ -66,6 +68,7 @@ use Actions;
 
         $this->openUserModal();
         $this->user = User::findOrFail($userId);
+
         $this->userRole = $this->user->getRoleNames()->first();
         $this->selectedDestinations = $this->user->availableDestinations->pluck('id')->toArray();
 
@@ -107,7 +110,8 @@ use Actions;
         }
 
         $this->user->company_id = Auth::user()->company_id;
-        $this->user->destination_id = $this->selectedDestinations[0];
+        $this->user->destination_id = $this->selectedDestinations[0]; 
+
         $this->user->save();
         $this->user->assignRole($this->userRole);
         $this->user->availableDestinations()->sync($this->selectedDestinations);
