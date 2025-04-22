@@ -196,12 +196,17 @@ class ValamarOperaApi{
 
            $res_result = $api->getReservationList();
 
-           if(!empty($res_result[$this->reservation->getLeadTravellerAttribute()->reservation_number])){
-               $this->resortPMSCode = $res_result[$this->reservation->getLeadTravellerAttribute()->reservation_number]['propertyOperaCode'];
-               return true;
-           }
-        }
+            $lowercase_keys = array_change_key_case($res_result, CASE_LOWER);
+            $reservation_number = strtolower($this->reservation->getLeadTravellerAttribute()->reservation_number);
 
+            if (!empty($lowercase_keys[$reservation_number])) {
+
+                $this->resortPMSCode = $lowercase_keys[$reservation_number]['propertyOperaCode'];
+
+                return true;
+            }
+        }
+        
         return $return;
     }
 
