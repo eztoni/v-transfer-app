@@ -94,11 +94,11 @@ class ReservationReceptionNotifyController extends Controller
                     switch($accommodation_id){
                         #Isabella
                         case 31:
-                            $email_list[] = 'igor.bratovic@valamar.com';
+                            $email_list[] = 'irena.kosic@valamar.com';
                             break;
                         #Marea
                         case 4:
-                            $email_list[] = 'tara.redzic@valamar.com';
+                            $email_list[] = 'iva.jaksekovic@valamar.com';
                             break;
                         #Valamar Tamaris Resort
                         case 70:
@@ -142,15 +142,11 @@ class ReservationReceptionNotifyController extends Controller
                             break;
                         #Miramar Sunny plus
                         case 73:
-                            $email_list[] = 'dejana.demarin@valamar.com';
+                            $email_list[] = 'samanta.luketicpeteani@valamar.com';
                             break;
                         #Allegro
                         case 71:
                             $email_list[] = 'samanta.luketicpeteani@valamar.com';
-                            break;
-                        #Allegro
-                        case 72:
-                            $email_list[] = 'goran.smokovic@valamar.com';
                             break;
                         #Corinthia
                         case 77:
@@ -198,7 +194,7 @@ class ReservationReceptionNotifyController extends Controller
                             break;
                         #Imperial Rab
                         case 143:
-                            $email_list[] = 'anamarija.precca@imperial.hr';
+                            $email_list[] = 'katarina.mikelic@imperial.hr';
                             break;
                         #Valamar Carolina
                         case 141:
@@ -220,7 +216,7 @@ class ReservationReceptionNotifyController extends Controller
                             break;
                         #San Marino Camping Resort
                         case 146:
-                            $email_list[] = 'ines.pahljina@imperial.hr';
+                            $email_list[] = 'petar.macolic@imperial.hr';
                             break;
                         #San Marino TN ?
                         case 147:
@@ -238,12 +234,12 @@ class ReservationReceptionNotifyController extends Controller
                             break;
                         #Tirena
                         case 65:
-                            $email_list[] = 'dragan.stankovic@imperial.hr';
+                            $email_list[] = 'nino.banovac@imperial.hr';
                             $email_list[] = 'transfer.dubrovnik@traveler.agency';
                             break;
                         #Solitudo Camping
                         case 134:
-                            $email_list[] = 'ivona.camo@valamar.com';
+                            $email_list[] = 'igor.vasiljevic@imperial.hr';
                             $email_list[] = 'transfer.dubrovnik@traveler.agency';
                             break;
                         #Argosy
@@ -261,6 +257,23 @@ class ReservationReceptionNotifyController extends Controller
                             $email_list[] = 'josip.begusic@imperial.hr';
                             $email_list[] = 'transfer.dubrovnik@traveler.agency';
                             break;
+                        case 25:
+                            #Girandella Resort
+                            $email_list[] = 'iva.albertifabeta@valamar.com';
+                            break;
+                        case 72:
+                            #Sunfior
+                            $email_list[] = 'sabrina.vidmar@valamar.com';
+                            break;
+                        case 78:
+                            #Sunny Krk by Valamar
+                            $email_list[] = 'anica.plentaj@valamar.com';
+                            break;
+                        case 148:
+                            #Sunny Makarska
+                            $email_list[] = 'Martina.KeckanBabaja@imperial.hr';
+                            break;
+
                     }
                 }
 
