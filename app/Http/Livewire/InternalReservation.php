@@ -858,6 +858,13 @@ class InternalReservation extends Component
             return false;
         }
 
+        #Enable VLevel for President (17) and Lacroma (34)  only
+        if($this->stepTwoFields['vlevelrateplanReservation'] != false){
+            if(!(in_array($this->stepOneFields['pickupAddressId'],array(17,34)) || in_array($this->stepOneFields['dropoffAddressId'],array(17,34)))){
+                $this->stepTwoFields['vlevelrateplanReservation'] = false;
+            }
+        }
+
 
         $this->step = 2;
     }

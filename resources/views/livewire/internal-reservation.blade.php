@@ -543,15 +543,15 @@
                                  wire:model="stepTwoFields.leadTraveller.lastName"
                         ></x-input>
 
-                        <x-input label="Reservation number **"
+                        <x-input label="Reservation number **" readonly
                                  wire:model="stepTwoFields.leadTraveller.reservationNumber"
                         ></x-input>
 
                         <x-input label="Reservation Opera ID **"
-                                 wire:model="stepTwoFields.leadTraveller.reservationOperaID"
+                                 wire:model="stepTwoFields.leadTraveller.reservationOperaID" readonly
                         ></x-input>
 
-                        <x-input label="Opera Confirmation Number **"
+                        <x-input label="Opera Confirmation Number **" readonly
                                  wire:model="stepTwoFields.leadTraveller.reservationOperaConfirmation"
                         ></x-input>
                         <x-input label="Email"
