@@ -32,6 +32,7 @@ class ExtraPartner extends \Illuminate\Database\Eloquent\Relations\Pivot
         'price' => EzMoneyCast::class,
         'date_from'=>'datetime:Y-m-d',
         'date_to'=>'datetime:Y-m-d',
+        'package_id' => 'string'
     ];
 
 

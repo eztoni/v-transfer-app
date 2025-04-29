@@ -31,6 +31,7 @@ class ExtrasEdit extends Component
     public $extraCommissionPercentage = 0;
     public $extraPriceWithDiscount;
     public $extraPriceCommission;
+    public $extraOperaPackageId;
     public $extraPrice;
     public $hidden = 0;
 
@@ -79,7 +80,8 @@ class ExtrasEdit extends Component
             "modelPrices.$pId.tax_level" => 'extra tax level',
             "modelPrices.$pId.calculation_type" => 'extra calculation type',
             "modelPrices.$pId.date_from" => 'date from',
-            "modelPrices.$pId.date_to" => 'date to'
+            "modelPrices.$pId.date_to" => 'date to',
+            "modelPrices.$pId.package_id" => 'package id',
         ];
     }
 
@@ -234,6 +236,7 @@ class ExtrasEdit extends Component
         $priceArray['date_from'] = Carbon::createFromFormat('d.m.Y',$priceArray['date_from'])->format('Y-m-d');
         $priceArray['date_to'] = Carbon::createFromFormat('d.m.Y',$priceArray['date_to'])->format('Y-m-d');
 
+
         \DB::table('extra_partner')->updateOrInsert(
             [
                 'extra_id'=>$this->extra->id,
@@ -247,6 +250,7 @@ class ExtrasEdit extends Component
                 'calculation_type',
                 'commission',
                 'discount',
+                'package_id'
             ])
         );
 

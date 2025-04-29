@@ -250,6 +250,13 @@
 
                                                     <div class="ds-divider my-1 "></div>
 
+                                                    <h1 class="text-1xl mb-1 font-bold">Opera Mapping</h1>
+
+                                                    <x-input wire:model.debounce.500ms="modelPrices.{{$this->partnerId}}.package_id"
+                                                             label="Package ID"
+                                                             hint="If the mapping code is set, this amenity will be displayed as a separate item on the booking confirmation."
+                                                    />
+
                                                     <div class="flex justify-between my-3 gap-4 items-center">
                                                         @if(Arr::get($modelPrices,"{$this->partnerId}.new_price"))
                                                             <x-badge negative outline>
