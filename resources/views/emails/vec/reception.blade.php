@@ -2,7 +2,7 @@
     <p>Poštovani,</p>
     <br>
     <p>
-        U prilogu se nalazi PDF popisa rezervacija za današnji dan za objekt: {{ $accommodation_name }}
+        U prilogu se nalazi PDF popisa rezervacija za današnji dan za : {{ $accommodation_name }}
     </p>
     <p>Valamar Transfer App</p>
 </div>
