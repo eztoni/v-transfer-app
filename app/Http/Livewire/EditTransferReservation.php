@@ -296,13 +296,22 @@ use Actions;
                 ->first();
 
 
+            if($this->reservation->is_main == 1){
+                $is_rt = $this->reservation->isRoundTrip() ? 1 : 0;
+            }else{
+                $main_reservation =  \App\Models\Reservation::where('round_trip_id',$this->reservation->id)->get()->first();
+
+                $is_rt = $main_reservation->isRoundTrip() ? 1 : 0;
+            }
+
             $priceHandler = (new \App\Services\TransferPriceCalculator($this->reservation->transfer_id,
                 $this->reservation->partner_id,
-                $this->reservation->isRoundTrip() ? 1 : 0,
+                $is_rt,
                 $route ? $route->id : null,
                 $this->getExtrasConfiguration()))
                 ->setBreakdownLang($this->reservation->confirmation_language);
 
+        
             #Delete Previously Saved
             DB::table('extra_reservation')->where('reservation_id',$this->reservation->id)->delete();
 
