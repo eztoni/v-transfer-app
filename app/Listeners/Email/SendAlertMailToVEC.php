@@ -11,7 +11,12 @@ class SendAlertMailToVEC
 {
     // Email addresses who will receive the email
     public array $emailList = [];
-    public $vec_mail = 'transfer@valamar.com';
+
+    public $vec_mail = 'lea.heska@valamar.com';
+
+    public $angelica = 'andelika.ritossa@valamar.com';
+
+    public $ivana = 'ivana.fabijancic@valamar.com';
 
     public function sendAlertEmail($alert_list): void
     {
@@ -23,9 +28,9 @@ class SendAlertMailToVEC
 
         if( $event->shouldSendMail() && !empty($event->alert_list)){
 
-            #$this->emailList['vec_email'] = $this->vec_mail;
-
-            $this->emailList['lea_test'] = 'lea.heska@valamar.com';
+            $this->emailList['vec_email'] = $this->vec_mail;
+            $this->emailList['angelica'] = $this->angelica;
+            $this->emailList['ivana'] = $this->ivana;
 
             if($this->emailList){
                 $this->sendAlertEmail($event->alert_list);

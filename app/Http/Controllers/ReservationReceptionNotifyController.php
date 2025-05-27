@@ -204,7 +204,7 @@ class ReservationReceptionNotifyController extends Controller
                             break;
                         #Padova Camping Resort
                         case 145:
-                            $email_list[] = 'miljenko.matusan@imperial.hr';
+                            $email_list[] = 'mario.spanjol@imperial.hr';
                             break;
                         #Meteor
                         case 105:
@@ -216,7 +216,7 @@ class ReservationReceptionNotifyController extends Controller
                             break;
                         #San Marino Camping Resort
                         case 146:
-                            $email_list[] = 'petar.macolic@imperial.hr';
+                            $email_list[] = 'carlo.rezdeusek@imperial.hr';
                             break;
                         #San Marino TN ?
                         case 147:
@@ -260,6 +260,7 @@ class ReservationReceptionNotifyController extends Controller
                         case 25:
                             #Girandella Resort
                             $email_list[] = 'iva.albertifabeta@valamar.com';
+                            $email_list[] = 'sara.modrusankurtic@valamar.com';
                             break;
                         case 72:
                             #Sunfior

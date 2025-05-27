@@ -11,8 +11,14 @@ class SendWarningMailToVEC
 {
     // Email addresses who will receive the email
     public array $emailList = [];
-    public $vec_mail = 'transfer@valamar.com';
+
+    public $vec_mail = 'lea.heska@valamar.com';
+
     public $angelica = 'andelika.ritossa@valamar.com';
+
+    public $ivana = 'ivana.fabijancic@valamar.com';
+
+
     public function sendWarningEmail($resId): void
     {
         Mail::to($this->emailList)->locale('hr')->send(new ReservationWarningMail($resId));
@@ -25,6 +31,7 @@ class SendWarningMailToVEC
 
             $this->emailList['vec_email'] = $this->vec_mail;
             $this->emailList['angelica'] = $this->angelica;
+            $this->emailList['ivana'] = $this->ivana;
 
             if($this->emailList){
                 $this->sendWarningEmail($event->reservation->id);
