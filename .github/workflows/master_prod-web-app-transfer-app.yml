@@ -59,7 +59,7 @@ jobs:
         run: unzip release.zip
 
       - name: Unzip artifact for deployment
-        run: unzip release.zip
+        run: unzip -o release.zip
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
