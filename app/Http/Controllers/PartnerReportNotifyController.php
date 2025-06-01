@@ -105,7 +105,6 @@ class PartnerReportNotifyController extends Controller
             }
         }
 
-
     }
 
 }
