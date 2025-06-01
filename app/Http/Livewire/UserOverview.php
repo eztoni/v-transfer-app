@@ -110,7 +110,7 @@ use Actions;
         }
 
         $this->user->company_id = Auth::user()->company_id;
-        $this->user->destination_id = $this->selectedDestinations[0]; 
+        $this->user->destination_id = $this->selectedDestinations[0];
 
         $this->user->save();
         $this->user->assignRole($this->userRole);
