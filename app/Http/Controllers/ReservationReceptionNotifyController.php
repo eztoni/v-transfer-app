@@ -230,32 +230,26 @@ class ReservationReceptionNotifyController extends Controller
                         #LaCroma
                         case 34:
                             $email_list[] = 'ozana.simunovic@imperial.hr';
-                            $email_list[] = 'transfer.dubrovnik@traveler.agency';
                             break;
                         #Tirena
                         case 65:
                             $email_list[] = 'nino.banovac@imperial.hr';
-                            $email_list[] = 'transfer.dubrovnik@traveler.agency';
                             break;
                         #Solitudo Camping
                         case 134:
                             $email_list[] = 'igor.vasiljevic@imperial.hr';
-                            $email_list[] = 'transfer.dubrovnik@traveler.agency';
                             break;
                         #Argosy
                         case 18:
                             $email_list[] = 'mirko.komnenovic@valamar.com';
-                            $email_list[] = 'transfer.dubrovnik@traveler.agency';
                             break;
                         case 17:
                             #President
                             $email_list[] = 'jasmina.kneziccumo@valamar.com';
-                            $email_list[] = 'transfer.dubrovnik@traveler.agency';
                             break;
                         case 35:
                             #Club Dubrovnik Sunny Hotel
                             $email_list[] = 'josip.begusic@imperial.hr';
-                            $email_list[] = 'transfer.dubrovnik@traveler.agency';
                             break;
                         case 25:
                             #Girandella Resort
