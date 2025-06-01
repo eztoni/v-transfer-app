@@ -98,7 +98,7 @@ class PartnerReportNotifyController extends Controller
 
                 $reservation_list = collect($reservation_list);
 
-                $subject = ': Popis rezervacija za datum '.$date_from.' - '.$partner_name;
+                $subject = 'Popis rezervacija za datum '.$date_from.' - '.$partner_name;
 
                 Mail::to($email_list)->locale('hr')->send(new ReservationReceptionReportMail($reservation_list,$subject,$date_from,$date_to,$partner_name));
 
