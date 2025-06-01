@@ -89,7 +89,7 @@ class PartnerReportNotifyController extends Controller
                 $partner_name = 'Unknown Partner';
 
                 if(!empty($this->partner_loader[$partner_id])){
-                  //  $email_list[] = $this->partner_loader[$partner_id]->email;
+                    $email_list[] = $this->partner_loader[$partner_id]->email;
                     $partner_name = $this->partner_loader[$partner_id]->name;
                 }
 
