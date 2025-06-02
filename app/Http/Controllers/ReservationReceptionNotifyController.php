@@ -139,6 +139,9 @@ class ReservationReceptionNotifyController extends Controller
                         #Istra Premium Camping
                         case 149:
                             $email_list[] = 'danijela.kljucec@valamar.com';
+                            $email_list[] = 'kristijan.juric@valamar.com';
+                            $email_list[] = 'robert.stranic@valamar.com';
+                            $email_list[] = 'klara.budic@valamar.com';
                             break;
                         #Miramar Sunny plus
                         case 73:
