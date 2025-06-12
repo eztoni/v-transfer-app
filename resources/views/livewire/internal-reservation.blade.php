@@ -932,7 +932,7 @@
                                 <x-toggle
                                     lg
                                     wire:model="stepTwoFields.vlevelrateplanReservation"
-                                label="V Level Rate Plan Reservation"
+                                label="V Level Rate Plan Reservation" :disabled="$isVLevelDisabled"
                                 ></x-toggle>
                             <hr class="my-4">
                                 <x-select
