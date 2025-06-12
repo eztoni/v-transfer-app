@@ -28,6 +28,8 @@ class InternalReservation extends Component
 {
     use Actions, ReservationDevTools;
 
+    public bool $isVLevelDisabled = false;
+
     public $stepOneFields = [
         'destinationId' => null,
         'startingPointId' => null,
@@ -859,11 +861,18 @@ class InternalReservation extends Component
         }
 
         #Enable VLevel for President (17) and Lacroma (34)  only
-        if($this->stepTwoFields['vlevelrateplanReservation'] != false){
-            if(!(in_array($this->stepOneFields['pickupAddressId'],array(17,34)) || in_array($this->stepOneFields['dropoffAddressId'],array(17,34)))){
-                $this->stepTwoFields['vlevelrateplanReservation'] = false;
+        if(in_array($this->stepOneFields['pickupAddressId'],array(17,34)) || in_array($this->stepOneFields['dropoffAddressId'],array(17,34))){
+
+            if(preg_match('!VL!',$this->stepOneFields['rate_plan'])){
+                $this->stepTwoFields['vlevelrateplanReservation'] = true;
             }
+            
+            $this->isVLevelDisabled = false;
+        }else{
+            $this->stepTwoFields['vlevelrateplanReservation'] = false;
+            $this->isVLevelDisabled = true;
         }
+
 
 
         $this->step = 2;
