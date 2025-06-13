@@ -287,6 +287,7 @@ class InternalReservation extends Component
     public function saveReservation()
     {
 
+
         $this->validate($this->stepTwoRules(), [], $this->fieldNames);
 
         if(!empty($this->selectedExtras) && !empty($this->getExtrasConfiguration())){
@@ -478,6 +479,7 @@ class InternalReservation extends Component
 
 
         //Special Case - overriden V Level Rate Plan
+        /*
         if($property != 'stepTwoFields.vlevelrateplanReservation'){
             if(preg_match('!VL!',$this->stepOneFields['rate_plan'])){
                 if($this->stepTwoFields['vlevelrateplanReservation'] == false){
@@ -493,6 +495,7 @@ class InternalReservation extends Component
 
             }
         }
+        */
 
     }
 
@@ -866,7 +869,7 @@ class InternalReservation extends Component
             if(preg_match('!VL!',$this->stepOneFields['rate_plan'])){
                 $this->stepTwoFields['vlevelrateplanReservation'] = true;
             }
-            
+
             $this->isVLevelDisabled = false;
         }else{
             $this->stepTwoFields['vlevelrateplanReservation'] = false;
