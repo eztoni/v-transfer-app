@@ -290,14 +290,14 @@
 
                             <div class="grid grid-cols-2  gap-2">
                                 <x-flatpickr
-                                    label="Date to:"
+                                    label="Date:"
                                     :default-date="$this->stepOneFields['dateTime']"
                                     wire:model.defer="stepOneFields.dateTime"
                                 ></x-flatpickr>
                                 @if($roundTrip)
 
                                     <x-flatpickr
-                                        label="Date from:"
+                                        label="Return Date:"
                                         :default-date="$this->stepOneFields['returnDateTime']"
                                         wire:model.defer="stepOneFields.returnDateTime"
                                     ></x-flatpickr>
