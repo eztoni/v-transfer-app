@@ -11,7 +11,17 @@
 
             <ul>
             @foreach($alert_list['missing_reservation_number'] as $booking)
-                    <li>#{{$booking->id}} - {{$booking->leadTraveller->full_name}}</li>
+
+                    @php
+                        $destination = Destination::findOrFail($booking->destination_id);
+
+                        $owner = Owner::findOrFail($destination->owner_id);
+
+                        $extra_info = $owner->name.' - '.$destination->name;
+
+                    @endphp
+
+                    <li>{{$extra_info}} - #{{$booking->id}} - {{$booking->leadTraveller->full_name}}</li>
             @endforeach
             </ul>
 
@@ -25,7 +35,18 @@
 
             <ul>
                 @foreach($alert_list['not_synced'] as $booking)
-                    <li>{{$booking->id.' ('.$booking->getAccommodationReservationCode().')'}} - {{$booking->leadTraveller->full_name}}</li>
+
+                    @php
+                        $destination = Destination::findOrFail($booking->destination_id);
+
+                        $owner = Owner::findOrFail($destination->owner_id);
+
+                        $extra_info = $owner->name.' - '.$destination->name;
+
+                    @endphp
+
+
+                    <li>{{$extra_info}} - {{$booking->id.' ('.$booking->getAccommodationReservationCode().')'}} - {{$booking->leadTraveller->full_name}}</li>
                 @endforeach
             </ul>
             <br/>
@@ -40,7 +61,18 @@
 
         <ul>
                 @foreach($alert_list['has_data_failed_sync'] as $booking)
-                    <li>{{$booking->id.' ('.$booking->getAccommodationReservationCode().')'}} - {{$booking->leadTraveller->full_name}}</li>
+
+                @php
+                    $destination = Destination::findOrFail($booking->destination_id);
+
+                    $owner = Owner::findOrFail($destination->owner_id);
+
+                    $extra_info = $owner->name.' - '.$destination->name;
+
+                @endphp
+
+
+                <li>{{$extra_info}} - {{$booking->id.' ('.$booking->getAccommodationReservationCode().')'}} - {{$booking->leadTraveller->full_name}}</li>
                 @endforeach
             </ul>
             <br/>
