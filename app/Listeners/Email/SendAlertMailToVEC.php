@@ -5,6 +5,10 @@ namespace App\Listeners\Email;
 use App\Events\ReservationAlertEvent;
 use App\Mail\Partner\ReservationConfirmationMail;
 use App\Mail\Partner\ReservationAlertMail;
+use App\Models\Reservation;
+use App\Models\Destination;
+use App\Models\Owner;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
 
 class SendAlertMailToVEC
