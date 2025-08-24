@@ -175,7 +175,7 @@ if($reservation->destination->owner_id > 1){
                 </thead>
 
                 <tbody>
-                @foreach($reservation->getCancellationItemBreakDown('items') as $pbItem)
+                @foreach($reservation->getConfirmationItemBreakDown('items') as $pbItem)
 
                         <tr style="border: 1px solid black;">
                             <td style="padding:5px 5px;border: 1px solid black;">{{$loop->index + 1}}.</td>
@@ -199,7 +199,7 @@ if($reservation->destination->owner_id > 1){
                     </td>
                     <td style="border: 1px solid black;text-align: right;padding:5px 5px">
                         @if($reservation->included_in_accommodation_reservation == 0 && $reservation->v_level_reservation == 0)
-                            <b>{{$reservation->getCancellationItemBreakDown('items_total')}}</b>
+                            <b>{{$reservation->getConfirmationItemBreakDown('items_total')}}</b>
                         @else
                             <b>0,00</b>
                         @endif
