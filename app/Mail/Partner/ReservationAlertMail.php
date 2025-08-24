@@ -3,6 +3,8 @@
 namespace App\Mail\Partner;
 
 use App\Models\Reservation;
+use App\Models\Owner;
+use App\Models\Destination;
 use App\Models\Traveller;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Mail\Mailable;
