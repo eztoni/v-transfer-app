@@ -147,8 +147,6 @@ if($reservation->destination->owner_id > 1){
         <x-mail.row>
             <div class="" style="padding: 3px 0 0 0; text-align: right ;width: 100%; margin-bottom: 25px">
                 <p style="width: 100%;font-size: 12px !important">
-                    <b>{{__('mail.transfer_reservation_confirmation')}}:</b> {{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number','reservation')}}
-                    <br/>
                     <b>{{__('mail.accommodation_reservation_holder')}}:</b> {{$reservation->lead_traveller->full_name}}
                     <br>
                     <b>{{__('mail.accommodation_reservation_number')}}:</b> {{$reservation->getAccommodationReservationCode()}}
@@ -230,19 +228,6 @@ if($reservation->destination->owner_id > 1){
                         <td align="right"><b>{{__('mail.operator')}}:</b></td>
                         <td style="padding: 0 10px;">{{$reservation->getOperatorName(true)}}</td>
                     </tr>
-                    @if($reservation->getInvoiceData('zki','reservation'))
-                        <tr>
-                            <td align="right"><b>ZKI:</b></td>
-                            <td style="padding: 0 10px;">{{$reservation->getInvoiceData('zki','reservation')}}</td>
-                        </tr>
-                    @endif
-                    <!-- Jir -->
-                    @if($reservation->getInvoiceData('jir'))
-                        <tr>
-                            <td align="right"><b>JIR:</b></td>
-                            <td style="padding: 0 10px;">{{$reservation->getInvoiceData('jir','reservation')}}</td>
-                        </tr>
-                    @endif
                     <tr>
                         <td align="right"><b>{{__('mail.voucher_number')}}:</b></td>
                         <td style="padding: 0 10px;">{{$reservation->id}}</td>

@@ -218,11 +218,11 @@ class NotifyController extends Controller
 
                                         if($reservation->is_main){
                                             $operaAPI->syncReservationWithOperaFull($reservation->id);
-                                            $fiskalValamar = new ValamarFiskalizacija($reservation->id);
-                                            $fiskalValamar->fiskalReservation();
+                                           // $fiskalValamar = new ValamarFiskalizacija($reservation->id);
+                                            //$fiskalValamar->fiskalReservation();
 
                                             if($reservation->hasCancellationFee()){
-                                                $fiskalValamar->fiskalReservationCF($reservation->getCancellationFeeAmount(true));
+                                                //$fiskalValamar->fiskalReservationCF($reservation->getCancellationFeeAmount(true));
                                             }
 
                                         }else{
@@ -232,10 +232,10 @@ class NotifyController extends Controller
 
                                                 $operaAPI->syncReservationWithOperaFull($main_res->id);
                                                 $fiskalValamar = new ValamarFiskalizacija($main_res->id);
-                                                $fiskalValamar->fiskalReservation();
+                                                //$fiskalValamar->fiskalReservation();
 
                                                 if($main_res->hasCancellationFee()){
-                                                    $fiskalValamar->fiskalReservationCF($main_res->getCancellationFeeAmount(true));
+                                                    //$fiskalValamar->fiskalReservationCF($main_res->getCancellationFeeAmount(true));
                                                 }
                                             }
                                         }

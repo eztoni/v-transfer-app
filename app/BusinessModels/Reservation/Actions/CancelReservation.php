@@ -67,9 +67,9 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
             $this->cancelRoundTrip();
 
             $fiskalValamar = new ValamarFiskalizacija($this->model->id);
-            $fiskalValamar->fiskalReservation();
+           // $fiskalValamar->fiskalReservation();
             if($this->model->hasCancellationFee()){
-                $fiskalValamar->fiskalReservationCF($this->model->getCancellationFeeAmount(true));
+            //    $fiskalValamar->fiskalReservationCF($this->model->getCancellationFeeAmount(true));
             }
 
         }else{
@@ -85,10 +85,10 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
                 }
 
                 $fiskalValamar = new ValamarFiskalizacija($this->model->id);
-                $fiskalValamar->fiskalReservation();
+             //   $fiskalValamar->fiskalReservation();
 
                 if($this->model->hasCancellationFee()){
-                    $fiskalValamar->fiskalReservationCF($this->model->getCancellationFeeAmount(true));
+               //     $fiskalValamar->fiskalReservationCF($this->model->getCancellationFeeAmount(true));
                 }
 
                 if(!$this->model->getInvoiceData('zki')){
@@ -108,9 +108,9 @@ class CancelReservation extends \App\BusinessModels\Reservation\Reservation
 
 
                 $fiskalValamar = new ValamarFiskalizacija($main_booking->id);
-                $fiskalValamar->fiskalReservation();
+                //$fiskalValamar->fiskalReservation();
                 if($main_booking->hasCancellationFee()){
-                    $fiskalValamar->fiskalReservationCF($main_booking->getCancellationFeeAmount(true));
+                  //  $fiskalValamar->fiskalReservationCF($main_booking->getCancellationFeeAmount(true));
                 }
 
                 if(!$main_booking->getInvoiceData('zki')){

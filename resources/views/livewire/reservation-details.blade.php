@@ -27,16 +27,7 @@
                                 <ul><li><i> - Reservation Not posted to Opera.</i>  </li></ul></small></span>
                     @endif
 
-                    <!-- Invoice Details -->
-                    @if($reservation->getInvoiceData('invoice_number') != '-')
-                        <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number')}} ({{$reservation->getInvoiceData('amount')}})</span></span>
-                        <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->getInvoiceData('zki')}}</span></span>
-                        <span class="font-extrabold text-info text-sm">JIR: <span class="text-info font-normal">{{$reservation->getInvoiceData('jir')}}</span></span>
-                    @endif
 
-                    @if($reservation->getInvoiceData('invoice_number') == '-')
-                        <x-button xs icon="external-link" wire:click="openFiskalSyncModal({{$reservation->id}})">Issue Invoice ( Fiskalizacija )</x-button>
-                    @endif
                 @endif
 
                 @if($reservation->v_level_reservation == 1)
@@ -46,8 +37,6 @@
                                     <x-button primary xs wire:click="openOperaSyncModal({{$reservation->id}})">{{$reservation->isSyncedWithOpera()?'Re-Sync':'Sync'}}</x-button>
                                     <x-button xs icon="external-link" wire:click="openOperaSyncLogModal({{$reservation->id}})">View Sync Log</x-button>
                                 <br/>
-                                    <i> - Reservation Invoice ( fiskalizacija popratnog dokumenta ) Not Created via Transfer App.</i></li>
-                                    <li> - Connected document not sent to Opera</li>
                             </ul>
                         </small>
                     </span>
@@ -58,18 +47,6 @@
                     <x-button primary xs wire:click="openOperaSyncModal({{$reservation->id}})">{{$reservation->isSyncedWithOpera()?'Re-Sync':'Sync'}}</x-button>
                     <x-button xs icon="external-link" wire:click="openOperaSyncLogModal({{$reservation->id}})">View Sync Log</x-button>
                     <br/>
-                    @if($reservation->included_in_accommodation_reservation != 1 && $reservation->v_level_reservation != 1)
-                        @if($reservation->getInvoiceData('invoice_number') != '-')
-                            <!-- Invoice Details -->
-                            <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number')}} ({{$reservation->getInvoiceData('amount')}})</span></span>
-                            <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->getInvoiceData('zki')}}</span></span>
-                            <span class="font-extrabold text-info text-sm">JIR: <span class="text-info font-normal">{{$reservation->getInvoiceData('jir')}}</span></span>
-                        @endif
-                        @if($reservation->getInvoiceData('invoice_number') == '-')
-                            <span class="font-extrabold text-info text-sm">Invoice not issued: <span class="text-info font-normal">{{$reservation->getLatestInvoiceError()}}</span></span>
-                            <x-button xs icon="external-link" wire:click="openFiskalSyncModal({{$reservation->id}})">Issue Invoice ( Fiskalizacija )</x-button>
-                        @endif
-                    @endif
                 @endif
 
                 #Main Direction
@@ -85,10 +62,6 @@
 
                         @if($reservation->included_in_accommodation_reservation != 1 && $reservation->v_level_reservation != 1)
                             <span class="font-extrabold text-info text-sm">Cancellation Fee Applied: </span>{{$reservation->cancellation_fee}} € ( {{$reservation->cancellation_type}}) <br/></span>
-                            <!-- Cancellation Invoice Details -->
-                            <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number','cancellation_fee')}} ({{$reservation->getInvoiceData('amount','cancellation_fee')}})</span></span>
-                            <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->getInvoiceData('zki','cancellation_fee')}}</span></span>
-                            <span class="font-extrabold text-info text-sm">JIR: <span class="text-info font-normal">{{$reservation->getInvoiceData('jir','cancellation_fee')}}</span></span>
                         @else
                             <span class="font-extrabold text-info text-sm">Cancellation Fee Applied: </span>{{$reservation->cancellation_fee}} € ( {{$reservation->cancellation_type}}  - sent as 0.00€ to Opera) <br/></span>
                         @endif
@@ -100,13 +73,6 @@
                 @endif
 
                 @if($reservation->cf_null != 1)
-                    @if($reservation->isDocumentConnectedSync() && $reservation->getInvoiceData('jir'))
-                        <b class="text-sm">Connected Document Synced with Opera: </b>{{$reservation->getInvoiceData('invoice_number')}}</b>
-                        <br/><br/>
-                    @else
-                        <b class="text-sm">Connected Document not Synced with Opera: </b><x-button primary xs wire:click="openDocumentSyncModal({{$reservation->id}})">Re-try</x-button>
-                        <br/><br/>
-                    @endif
                 @endif
 
                 @if($reservation->isRoundTrip && $reservation->returnReservation->status == 'cancelled')
@@ -121,10 +87,6 @@
 
                         @if($reservation->returnReservation->included_in_accommodation_reservation != 1 && $reservation->returnReservation->v_level_reservation != 1)
                             <span class="font-extrabold text-info text-sm">Cancellation Fee Applied: </span>{{$reservation->returnReservation->cancellation_fee}} € ( {{$reservation->returnReservation->cancellation_type}} ) <br/></span>
-                            <!-- Cancellation Invoice Details -->
-                            <span class="font-extrabold text-info text-sm">Invoice: <span class="text-info font-normal">{{gmdate('Y').'-'.$reservation->getInvoiceData('invoice_number','cancellation_fee')}} ({{$reservation->getInvoiceData('amount','cancellation_fee')}})</span></span>
-                            <span class="font-extrabold text-info text-sm">ZKI: <span class="text-info font-normal">{{$reservation->getInvoiceData('zki','cancellation_fee')}}</span></span>
-                            <span class="font-extrabold text-info text-sm">JIR: <span class="text-info font-normal">{{$reservation->getInvoiceData('jir','cancellation_fee')}}</span></span>
                         @else
                             <span class="font-extrabold text-info text-sm">Cancellation Fee Applied: </span>{{$reservation->returnReservation->cancellation_fee}} € ( {{$reservation->returnReservation->cancellation_type}} - sent as 0.00€ to Opera ) <br/></span>
                         @endif
@@ -304,13 +266,6 @@
         </x-modal.card>
     @endif
 
-    @if($fiskalSyncModal)
-
-        <x-modal.card wire:model="fiskalSyncModal" title="Issue Invoice for reservation">
-            <livewire:issue-reservation-invoice :reservation="$this->reservation"/>
-        </x-modal.card>
-
-    @endif
 
     @if($reservationStatusModal)
         <x-modal.card wire:model="reservationStatusModal"  title="Reservation Status Breakdown #{{$this->reservation->id}}">

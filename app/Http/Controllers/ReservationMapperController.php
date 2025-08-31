@@ -88,7 +88,7 @@ class ReservationMapperController extends Controller
                   }
 
                    $fiskalValamar = new ValamarFiskalizacija($booking->id);
-                   $fiskalValamar->fiskalReservation();
+//                   $fiskalValamar->fiskalReservation();
                }
            }
         }

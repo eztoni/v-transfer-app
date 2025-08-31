@@ -96,15 +96,10 @@ class CreateReservation extends Reservation
                 $OperaAPI->syncReservationWithOperaFull($this->model->id);
             }
 
-            #Send To Invoicing
-            $fiskalAPI = new ValamarFiskalizacija($this->model->id);
-            $fiskalAPI->fiskalReservation();
+            ReservationCreatedEvent::dispatch($this->model,[
+                ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail
+            ]);
 
-            if($this->model->getInvoiceData('zki') != '-' || $this->model->included_in_accommodation_reservation == 1 || $this->model->v_level_reservation == 1){
-                ReservationCreatedEvent::dispatch($this->model,[
-                    ReservationCreatedEvent::SEND_MAIL_CONFIG_PARAM => $this->sendMail
-                ]);
-            }
         });
 
         //Cache the order
@@ -119,7 +114,7 @@ class CreateReservation extends Reservation
     public function fiskalInvoice($reservation_id){
         if($reservation_id > 0){
             $invoicing = new ValamarFiskalizacija($reservation_id);
-            $invoicing->fiskalReservation();
+            //$invoicing->fiskalReservation();
         }
     }
 

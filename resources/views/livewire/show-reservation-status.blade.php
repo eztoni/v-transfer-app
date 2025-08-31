@@ -14,16 +14,6 @@
             <p class="text-right">No Opera Download Needed<x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>
             <small class="flex justify-end">Reservation Included in Accommodation Reservation</small>
         @endif
-
-        <!-- Checking Invoicing Download -->
-        @if($reservation->getInvoiceData('zki') != '')
-            <p class="text-right">Fiskalizacija popratnog dokumenta {{$reservation->getInvoiceData('invoice_number')}} <x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>
-            <small class="flex justify-end">ZKI: {{$reservation->getInvoiceData('zki')}} JIR: {{$reservation->getInvoiceData('jir')}}</small>
-        @else
-            <p class="text-right">Fiskalizacija popratnog dokumenta <x-icon name="exclamation" solid class="w-6 h-6  ml-4  text-red-400 float-right" ></x-icon></p>
-        @endif
-
-        <p class="text-right">Connected document not applied to Opera Res <x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>
     @endif
 
     @if($reservation->isVLevelReservation())
@@ -42,20 +32,6 @@
                 <p class="text-right">Reservation Not Downloaded To Opera<x-icon name="exclamation" solid class="w-6 h-6  ml-4  text-red-400 float-right"></x-icon></p>
         @endif
 
-        <!-- Checking Invoicing Download -->
-        @if($reservation->getInvoiceData('zki') != '-')
-            <p class="text-right">Fiskalizacija popratnog dokumenta {{$reservation->getInvoiceData('invoice_number')}} <x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>
-            <small class="flex justify-end">ZKI: {{$reservation->getInvoiceData('zki')}} JIR: {{$reservation->getInvoiceData('jir')}}</small>
-        @else
-            <p class="text-right">Fiskalizacija popratnog dokumenta <x-icon name="exclamation" solid class="w-6 h-6  ml-4  text-red-400 float-right" ></x-icon></p>
-        @endif
-
-        @if($reservation->isDocumentConnectedSync())
-            <p class="text-right">Connected document applied to Opera Res <x-icon name="check-circle" solid class="w-6 h-6  ml-4  text-positive-400 float-right" ></x-icon></p>
-        @else
-            <p class="text-right">Connected document not applied to Opera Res <x-icon name="exclamation" solid class="w-6 h-6  ml-4  text-red-400 float-right" ></x-icon></p>
-        @endif
-
     @endif
 
     @if($reservation->ConfirmationSentMailToGuest())
@@ -69,8 +45,6 @@
     @else
         <p class="text-right">E-mail not sent to the partner <x-icon name="exclamation" solid class="w-6 h-6  ml-4  text-red-400 float-right" ></x-icon></p>
     @endif
-
-
 
     <br/>
 
